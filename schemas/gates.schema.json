@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/gates.schema.json",
+  "title": "Gates",
+  "description": "Stage 6 output (gates.json), produced deterministically by harness/gates (Playwright, headless Chromium, SwiftShader). `passed` is true only when every gate passed. On failure, `failures` carries the exact measurements fed back to the builder.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "passed",
+    "piece_path",
+    "compo",
+    "byte_size",
+    "size_budget_bytes",
+    "console_errors",
+    "network_requests",
+    "luminance_variance",
+    "motion",
+    "strobe",
+    "frame_time_ms",
+    "audio_probe",
+    "novelty_b",
+    "slop_lint",
+    "reduced_motion",
+    "screenshots",
+    "failures"
+  ],
+  "properties": {
+    "passed": { "type": "boolean" },
+    "piece_path": { "type": "string", "minLength": 1, "description": "Path of the tested index.html, relative to the repo root." },
+    "compo": { "$ref": "plan.schema.json#/$defs/compo" },
+    "byte_size": { "type": "integer", "minimum": 0 },
+    "size_budget_bytes": { "type": "integer", "minimum": 1 },
+    "console_errors": { "type": "array", "items": { "type": "string" }, "description": "Must be empty to pass." },
+    "network_requests": { "type": "array", "items": { "type": "string" }, "description": "Requested URLs. Must be empty to pass." },
+    "luminance_variance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t2", "t8", "t20", "floor", "passed"],
+      "description": "Not-blank gate: luminance variance at t = 2, 8, 20 s, each above floor.",
+      "properties": {
+        "t2": { "type": "number" },
+        "t8": { "type": "number" },
+        "t20": { "type": "number" },
+        "floor": { "type": "number" },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame_diff_mean", "frame_diff_floor", "development_diff_t2_t20", "development_floor", "passed"],
+      "description": "Not-static gate: frame-to-frame difference, and development between t = 2 s and t = 20 s.",
+      "properties": {
+        "frame_diff_mean": { "type": "number" },
+        "frame_diff_floor": { "type": "number" },
+        "development_diff_t2_t20": { "type": "number" },
+        "development_floor": { "type": "number" },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "strobe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_flashes_per_sec", "limit", "passed"],
+      "description": "Photosensitivity gate.",
+      "properties": {
+        "max_flashes_per_sec": { "type": "number", "minimum": 0 },
+        "limit": { "type": "number", "minimum": 0 },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "frame_time_ms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["median", "p90", "budget_ms", "passed"],
+      "description": "Software-renderer frame time. Relative, not real FPS.",
+      "properties": {
+        "median": { "type": "number", "minimum": 0 },
+        "p90": { "type": "number", "minimum": 0 },
+        "budget_ms": { "type": "number", "minimum": 0 },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "audio_probe": {
+      "description": "OfflineAudioContext probe. Null when the piece makes no sound and plan.requires_audio is false.",
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "autoplayed", "rms", "peak", "clipped_ratio", "passed"],
+          "properties": {
+            "required": { "type": "boolean", "description": "Copy of plan.requires_audio." },
+            "autoplayed": { "type": "boolean", "description": "True if audio started without a user gesture. Fails the gate." },
+            "rms": { "type": "number", "minimum": 0 },
+            "peak": { "type": "number", "minimum": 0 },
+            "clipped_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+            "passed": { "type": "boolean" }
+          }
+        }
+      ]
+    },
+    "novelty_b": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phashes", "color_histogram", "min_hamming_distance", "min_histogram_distance", "closest_date", "passed"],
+      "description": "Novelty gate B: perceptual hashes vs. the whole archive, colour histogram vs. the last 14 nights. Distances are null when the archive is empty.",
+      "properties": {
+        "phashes": { "$ref": "#/$defs/phashes" },
+        "color_histogram": { "$ref": "#/$defs/colorHistogram" },
+        "min_hamming_distance": { "type": ["number", "null"], "minimum": 0 },
+        "min_histogram_distance": { "type": ["number", "null"], "minimum": 0 },
+        "closest_date": {
+          "anyOf": [{ "$ref": "plan.schema.json#/$defs/date" }, { "type": "null" }],
+          "description": "Date of the most similar archived piece."
+        },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "slop_lint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "violations"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rule", "detail"],
+            "properties": {
+              "rule": { "type": "string", "minLength": 1 },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "reduced_motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "normal_motion", "reduced_motion", "ratio"],
+      "description": "prefers-reduced-motion gate: motion under reduce must be calmer than normal (ratio = reduced / normal).",
+      "properties": {
+        "passed": { "type": "boolean" },
+        "normal_motion": { "type": "number", "minimum": 0 },
+        "reduced_motion": { "type": "number", "minimum": 0 },
+        "ratio": { "type": "number", "minimum": 0 }
+      }
+    },
+    "screenshots": { "$ref": "#/$defs/screenshots" },
+    "failures": {
+      "type": "array",
+      "description": "One entry per failed gate. Empty when passed is true.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gate", "message"],
+        "properties": {
+          "gate": {
+            "type": "string",
+            "enum": ["size", "lint", "console", "network", "luminance", "motion", "development", "strobe", "frame_time", "audio_autoplay", "audio_probe", "novelty_phash", "novelty_histogram", "reduced_motion"],
+            "description": "Which check failed. size: byte_size; lint: slop_lint; console: console_errors; network: network_requests; luminance: luminance_variance; motion: motion.frame_diff_mean; development: motion.development_diff_t2_t20; strobe; frame_time: frame_time_ms; audio_autoplay: audio_probe.autoplayed; audio_probe: audio_probe level or clipping; novelty_phash and novelty_histogram: novelty_b; reduced_motion."
+          },
+          "message": { "type": "string", "minLength": 1 },
+          "measured": { "anyOf": [{ "type": "number" }, { "type": "string" }] },
+          "threshold": { "anyOf": [{ "type": "number" }, { "type": "string" }] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "colorHistogram": {
+      "type": "array",
+      "minItems": 64,
+      "maxItems": 64,
+      "items": { "type": "number", "minimum": 0, "maximum": 1 },
+      "description": "Normalised 4x4x4 RGB histogram of the three screenshots: 64 bins, index = r * 16 + g * 4 + b with each channel quantised to 0..3 (value >> 6), bins sum to 1."
+    },
+    "phash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16,64}$",
+      "description": "Perceptual hash as lowercase hex (64-bit = 16 chars)."
+    },
+    "phashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t2", "t8", "t20"],
+      "properties": {
+        "t2": { "$ref": "#/$defs/phash" },
+        "t8": { "$ref": "#/$defs/phash" },
+        "t20": { "$ref": "#/$defs/phash" }
+      }
+    },
+    "screenshots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t2", "t8", "t20"],
+      "description": "Screenshot paths at t = 2, 8, 20 s, relative to the repo root (or to the piece folder inside meta.json).",
+      "properties": {
+        "t2": { "type": "string", "minLength": 1 },
+        "t8": { "type": "string", "minLength": 1 },
+        "t20": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

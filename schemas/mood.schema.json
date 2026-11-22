@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/mood.schema.json",
+  "title": "Mood",
+  "description": "Stage 2 deterministic output (mood.json). Exported from agent-emotion-core state after tonight's appraisals, plus creative_parameters: the fixed SPEC Stage 2 mapping from mood signals to creative parameters that Stage 3 must follow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "timestamp",
+    "preset_override",
+    "dominant_emotions",
+    "pad",
+    "neurochemistry",
+    "drives",
+    "derived_signals",
+    "likes",
+    "dislikes",
+    "creative_parameters"
+  ],
+  "properties": {
+    "timestamp": { "type": "string", "format": "date-time", "description": "When the state was exported, ISO 8601 with timezone." },
+    "preset_override": {
+      "type": ["string", "null"],
+      "maxLength": 64,
+      "description": "Mood preset forced through workflow_dispatch, or null for the organic state."
+    },
+    "dominant_emotions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 15,
+      "description": "Strongest emotions, most intense first.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "intensity"],
+        "properties": {
+          "label": { "$ref": "appraisals.schema.json#/$defs/emotionLabel" },
+          "intensity": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "pad": { "$ref": "#/$defs/pad" },
+    "neurochemistry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dopamine", "noradrenaline", "serotonin", "cortisol", "oxytocin", "opioids"],
+      "description": "Engine neuromodulator levels, 0 to 1.",
+      "properties": {
+        "dopamine": { "type": "number", "minimum": 0, "maximum": 1 },
+        "noradrenaline": { "type": "number", "minimum": 0, "maximum": 1 },
+        "serotonin": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cortisol": { "type": "number", "minimum": 0, "maximum": 1 },
+        "oxytocin": { "type": "number", "minimum": 0, "maximum": 1 },
+        "opioids": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "drives": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["novelty", "social", "fatigue"],
+      "description": "agent-emotion-core summary() drives, copied verbatim, each 0 to 1.",
+      "properties": {
+        "novelty": { "type": "number", "minimum": 0, "maximum": 1 },
+        "social": { "type": "number", "minimum": 0, "maximum": 1 },
+        "fatigue": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "derived_signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interest", "boredom", "frustration"],
+      "description": "Creative signals computed by the Stage 2 script, never by an LLM. Each 0 to 1. See DECISIONS.md for the exact derivation.",
+      "properties": {
+        "interest": { "type": "number", "minimum": 0, "maximum": 1, "description": "agent-emotion-core summary() emotions.interest, copied verbatim." },
+        "boredom": { "type": "number", "minimum": 0, "maximum": 1, "description": "agent-emotion-core summary() emotions.boredom, copied verbatim." },
+        "frustration": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "clamp01(0.5 * min(shelved_streak, 3) / 3 + 0.25 * neurochemistry.cortisol + 0.25 * emotions.distress), where shelved_streak is the count of consecutive shelved nights immediately before tonight in the ledger and emotions.distress is the engine value (0 if absent)."
+        }
+      }
+    },
+    "likes": { "$ref": "#/$defs/topicScores", "description": "Topics the crew has developed a liking for, strongest first." },
+    "dislikes": { "$ref": "#/$defs/topicScores", "description": "Topics the crew has developed a dislike for, strongest first." },
+    "creative_parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tempo_density_cut_rate",
+        "palette_warmth_consonance_symmetry",
+        "scale_contrast_camera",
+        "technical_risk_budget",
+        "boredom_force_unused_30d",
+        "frustration_scope_polish_weight"
+      ],
+      "description": "Deterministic mapping of SPEC Stage 2 table. Each `guidance` is a fixed sentence from the mapping table, not free text.",
+      "properties": {
+        "tempo_density_cut_rate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["level", "value", "guidance"],
+          "description": "From pad.arousal: tempo, particle/event density, cut rate. value = (pad.arousal + 1) / 2.",
+          "properties": {
+            "level": { "type": "string", "enum": ["low", "medium", "high"] },
+            "value": { "type": "number", "minimum": 0, "maximum": 1 },
+            "guidance": { "type": "string", "minLength": 1, "maxLength": 300 }
+          }
+        },
+        "palette_warmth_consonance_symmetry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["level", "value", "guidance"],
+          "description": "From pad.pleasure: palette warmth, harmonic consonance, symmetry. value = pad.pleasure.",
+          "properties": {
+            "level": { "type": "string", "enum": ["cool-dissonant", "balanced", "warm-consonant"] },
+            "value": { "type": "number", "minimum": -1, "maximum": 1 },
+            "guidance": { "type": "string", "minLength": 1, "maxLength": 300 }
+          }
+        },
+        "scale_contrast_camera": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["level", "value", "guidance"],
+          "description": "From pad.dominance: scale, contrast, camera assertiveness. value = pad.dominance.",
+          "properties": {
+            "level": { "type": "string", "enum": ["intimate", "measured", "assertive"] },
+            "value": { "type": "number", "minimum": -1, "maximum": 1 },
+            "guidance": { "type": "string", "minLength": 1, "maxLength": 300 }
+          }
+        },
+        "technical_risk_budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["level", "value", "guidance"],
+          "description": "From derived_signals.interest: how unfamiliar a technique may be. value = derived_signals.interest.",
+          "properties": {
+            "level": { "type": "string", "enum": ["conservative", "moderate", "experimental"] },
+            "value": { "type": "number", "minimum": 0, "maximum": 1 },
+            "guidance": { "type": "string", "minLength": 1, "maxLength": 300 }
+          }
+        },
+        "boredom_force_unused_30d": {
+          "type": "boolean",
+          "description": "From derived_signals.boredom: when true, the brief must use a compo or technique family not used in 30 nights (stage 0 already applied this to the compo; see plan.boredom_override)."
+        },
+        "frustration_scope_polish_weight": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["shrink_scope", "polish_weight_boost", "guidance"],
+          "description": "From derived_signals.frustration (shelved-night streak plus cortisol and distress): shrink scope, raise polish weight.",
+          "properties": {
+            "shrink_scope": { "type": "boolean" },
+            "polish_weight_boost": { "type": "number", "minimum": 0, "maximum": 1 },
+            "guidance": { "type": "string", "minLength": 1, "maxLength": 300 }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "pad": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pleasure", "arousal", "dominance"],
+      "description": "PAD mood vector, each axis -1 to 1.",
+      "properties": {
+        "pleasure": { "type": "number", "minimum": -1, "maximum": 1 },
+        "arousal": { "type": "number", "minimum": -1, "maximum": 1 },
+        "dominance": { "type": "number", "minimum": -1, "maximum": 1 }
+      }
+    },
+    "topicScores": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["topic", "score"],
+        "properties": {
+          "topic": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "score": { "type": "number", "description": "Engine preference score, passed through unscaled." }
+        }
+      }
+    }
+  }
+}

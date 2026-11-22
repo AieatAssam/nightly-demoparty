@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/meta.schema.json",
+  "title": "Piece meta",
+  "description": "Stage 9 output (meta.json), one per night, for published, b-side and shelved nights alike. Embeds every stage artefact for the gallery and the audit trail. A night shelved early (research, brief or build never produced output) has null dossier, mood, brief, best_attempt, liner_note, screenshots and piece_rel_path as appropriate. Published and b-side nights must have all of them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "date",
+    "status",
+    "reason",
+    "publish_threshold",
+    "best_attempt",
+    "plan",
+    "dossier",
+    "mood",
+    "brief",
+    "attempts",
+    "liner_note",
+    "screenshots",
+    "piece_rel_path"
+  ],
+  "properties": {
+    "date": { "$ref": "plan.schema.json#/$defs/date" },
+    "status": { "$ref": "#/$defs/status" },
+    "reason": {
+      "type": ["string", "null"],
+      "maxLength": 400,
+      "description": "Why the night is a b-side or shelved, shown on the 'no release tonight' card. Required non-null for b-side and shelved, null for published."
+    },
+    "publish_threshold": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Publish threshold in force tonight (72 to 85 under the ratchet rule)." },
+    "best_attempt": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "maximum": 3,
+      "description": "Attempt number whose piece was kept. Null only when shelved before any attempt rendered."
+    },
+    "plan": { "$ref": "plan.schema.json" },
+    "dossier": { "anyOf": [{ "$ref": "dossier.schema.json" }, { "type": "null" }] },
+    "mood": { "anyOf": [{ "$ref": "mood.schema.json" }, { "type": "null" }] },
+    "brief": { "anyOf": [{ "$ref": "brief.schema.json" }, { "type": "null" }] },
+    "attempts": {
+      "type": "array",
+      "maxItems": 3,
+      "description": "Every build attempt in order, with its gate result and jury verdict.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["attempt", "model", "effort", "gates", "verdict", "outcome"],
+        "properties": {
+          "attempt": { "type": "integer", "minimum": 1, "maximum": 3 },
+          "model": { "type": "string", "minLength": 1, "maxLength": 64, "description": "Model used for the build, for example 'haiku' or 'opus'." },
+          "effort": { "type": ["string", "null"], "maxLength": 16, "description": "Effort flag ('low' for Opus), null when not set." },
+          "gates": {
+            "anyOf": [{ "$ref": "gates.schema.json" }, { "type": "null" }],
+            "description": "Null only when the build produced no piece to gate (outcome build_failed)."
+          },
+          "verdict": {
+            "anyOf": [{ "$ref": "verdict.schema.json" }, { "type": "null" }],
+            "description": "Null when the jury did not run (gates failed or build failed)."
+          },
+          "outcome": {
+            "type": "string",
+            "enum": ["build_failed", "gates_failed", "below_threshold", "pairwise_failed", "passed"],
+            "description": "How the attempt ended."
+          }
+        }
+      }
+    },
+    "liner_note": { "type": ["string", "null"], "maxLength": 1000, "description": "Published liner note (from the brief, possibly edited)." },
+    "screenshots": {
+      "anyOf": [{ "$ref": "gates.schema.json#/$defs/screenshots" }, { "type": "null" }],
+      "description": "Screenshots of the best attempt, relative to the piece folder. Null when shelved before render."
+    },
+    "piece_rel_path": {
+      "type": ["string", "null"],
+      "maxLength": 200,
+      "description": "Piece path relative to site/, for example 'pieces/2026-11-22/index.html'. Null when shelved."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": { "status": { "const": "published" } },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": { "reason": { "type": "null" } }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": { "status": { "enum": ["b-side", "shelved"] } },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": { "reason": { "type": "string", "minLength": 1 } }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": { "status": { "enum": ["published", "b-side"] } },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "best_attempt": { "type": "integer" },
+          "dossier": { "type": "object" },
+          "mood": { "type": "object" },
+          "brief": { "type": "object" },
+          "attempts": { "type": "array", "minItems": 1 },
+          "liner_note": { "type": "string", "minLength": 1 },
+          "screenshots": { "type": "object" },
+          "piece_rel_path": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": ["published", "b-side", "shelved"],
+      "description": "published: score >= threshold and pairwise pass. b-side: best score 60 to threshold-1. shelved: below 60 or no renderable piece."
+    }
+  }
+}

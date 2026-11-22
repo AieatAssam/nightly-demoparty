@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/appraisals.schema.json",
+  "title": "Appraisals",
+  "description": "Stage 2 Haiku output. Maps tonight's events (dossier facts, last verdict, shelved streak, optional audience reactions) to agent-emotion-core appraisal inputs. The events array is piped to `affect_core.py appraise --json -`. The LLM only appraises; the engine owns the dynamics and the state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["events"],
+  "properties": {
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/event" }
+    }
+  },
+  "$defs": {
+    "emotionLabel": {
+      "type": "string",
+      "enum": [
+        "joy",
+        "distress",
+        "hope",
+        "fear",
+        "relief",
+        "disappointment",
+        "pride",
+        "shame",
+        "admiration",
+        "reproach",
+        "gratitude",
+        "anger",
+        "interest",
+        "boredom",
+        "surprise"
+      ],
+      "description": "One of the 15 agent-emotion-core emotions."
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event"],
+      "description": "One appraisal event in agent-emotion-core CLI input format. Only `event` is required; omitted fields take the engine defaults.",
+      "properties": {
+        "event": { "type": "string", "minLength": 1, "maxLength": 300, "description": "What happened, one sentence." },
+        "event_id": { "type": "string", "minLength": 1, "maxLength": 120, "description": "Stable id, for example 'fact-3' or 'verdict-2026-11-21'." },
+        "topics": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "type": "string", "minLength": 1, "maxLength": 60 },
+          "description": "Topic and technique-family tags, at most 8 of at most 60 characters each (affect_core.py limits, so nothing is silently truncated). The engine uses them for likes, dislikes and habituation."
+        },
+        "relevance": { "type": "number", "minimum": 0, "maximum": 1, "description": "How much the event matters to the crew's goals and likes." },
+        "congruence": { "type": "number", "minimum": -1, "maximum": 1, "description": "Goal congruence: -1 is bad for the crew, 1 is good." },
+        "novelty": { "type": "number", "minimum": 0, "maximum": 1, "description": "How new the event is to the crew." },
+        "agency": { "type": "string", "enum": ["self", "other", "circumstance"], "description": "Who caused the event." },
+        "praiseworthiness": { "type": "number", "minimum": -1, "maximum": 1, "description": "Moral or quality judgement of the responsible agent's action." },
+        "control": { "type": "number", "minimum": 0, "maximum": 1, "description": "How much the crew can influence the outcome." },
+        "certainty": { "type": "number", "minimum": 0, "maximum": 1, "description": "How sure the outcome is." },
+        "source": { "type": "string", "minLength": 1, "maxLength": 120, "description": "Where the event came from: dossier, verdict, ledger, discussion." },
+        "thread": { "type": "string", "minLength": 1, "maxLength": 120, "description": "Grouping thread id, for example the night's date." },
+        "relationship": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "description": "Relationship context for the event, as accepted by affect_core.py appraise(). Omit unless the event involves a relationship.",
+          "properties": {
+            "type": { "type": "string", "enum": ["romantic"] },
+            "affection": { "type": "number", "minimum": -1, "maximum": 1 },
+            "trust_violation": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "perceived_emotion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["label", "intensity"],
+          "description": "Emotion expressed by another agent in the event (for example an audience reaction), if any.",
+          "properties": {
+            "label": { "$ref": "#/$defs/emotionLabel" },
+            "intensity": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    }
+  }
+}

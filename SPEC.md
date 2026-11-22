@@ -223,7 +223,7 @@ Three layers. The first is skills, the second is lint, the third is the ledger.
 .github/actions/agent/
 .claude/skills/      hallmark/  demo-craft/  liner-notes/  agent-emotion-core/
 prompts/             research.md  appraise.md  brief.md  build.md  jury.md  retro.md
-schemas/             dossier  mood  brief  gates  verdict  (JSON Schema)
+schemas/             plan  dossier  appraisals  mood  brief  gates  verdict  meta  ledger-entry  usage-entry  retro  (JSON Schema, *.schema.json)
 config/              domains.yml  compos.yml  curriculum.yml  thresholds.yml  slop.yml
 harness/             plan  novelty  gates (Playwright)  decide  publish  lint  (TypeScript)
 lib/                 inlineable helpers for pieces

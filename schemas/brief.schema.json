@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/brief.schema.json",
+  "title": "Brief",
+  "description": "Stage 3 output (brief.json). The build plan for tonight's piece. Must be about the research, name and discard the obvious idea, follow mood.creative_parameters, and use nothing on plan.banned. Rules JSON Schema cannot express (novel_technique membership, storyboard coverage, mechanism name matching the dossier) are checked by the harness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "concept",
+    "mechanism_embodied",
+    "discarded_obvious_idea",
+    "compo",
+    "constraint_honoured",
+    "techniques",
+    "novel_technique",
+    "technique_family",
+    "palette",
+    "motion_sound_plan",
+    "storyboard",
+    "memorable_moment",
+    "self_declared_risk",
+    "liner_note"
+  ],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "concept": { "type": "string", "minLength": 1, "maxLength": 280, "description": "One sentence. Used for shingled concept similarity in novelty gate A." },
+    "mechanism_embodied": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanism_name", "how_visualised"],
+      "properties": {
+        "mechanism_name": { "type": "string", "minLength": 1, "maxLength": 120, "description": "Must equal the name of one dossier.visualisable_mechanisms entry." },
+        "how_visualised": { "type": "string", "minLength": 1, "maxLength": 500, "description": "How the mechanism appears on screen or in sound, so a liner-note reader can see it." }
+      }
+    },
+    "discarded_obvious_idea": {
+      "type": "string",
+      "minLength": 15,
+      "maxLength": 400,
+      "description": "The obvious first idea, named and explicitly discarded, with why."
+    },
+    "compo": { "$ref": "plan.schema.json#/$defs/compo", "description": "Must equal plan.compo. One of: 4k-shader, 16k-demo, audiovisual, interactive-toy, data-sculpture, kinetic-type, simulation, constraint-night." },
+    "constraint_honoured": {
+      "type": ["string", "null"],
+      "maxLength": 200,
+      "description": "How the plan.constraint is honoured on constraint-night. Null otherwise."
+    },
+    "techniques": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 80 },
+      "description": "Techniques the piece uses. None may appear in plan.banned.techniques."
+    },
+    "novel_technique": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "description": "A technique absent from the ledger entirely. Must also appear in `techniques`."
+    },
+    "technique_family": { "type": "string", "minLength": 1, "maxLength": 80, "description": "Family of the main technique, for habituation and the boredom rule." },
+    "palette": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": { "$ref": "plan.schema.json#/$defs/hexColor" },
+      "description": "Explicit palette, 2 to 8 colours, each '#RRGGBB' hex (for example '#1a2b3c'). Checked against plan.banned.palette_hexes by hue distance."
+    },
+    "motion_sound_plan": { "type": "string", "minLength": 1, "maxLength": 600 },
+    "storyboard": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "Exactly 4 beats covering 0 to 20 s in order: beginning, development, development, ending.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["beat", "t_start_s", "t_end_s", "description"],
+        "properties": {
+          "beat": { "type": "integer", "minimum": 1, "maximum": 4 },
+          "t_start_s": { "type": "number", "minimum": 0, "maximum": 20 },
+          "t_end_s": { "type": "number", "minimum": 0, "maximum": 20 },
+          "description": { "type": "string", "minLength": 1, "maxLength": 300 }
+        }
+      }
+    },
+    "memorable_moment": { "type": "string", "minLength": 1, "maxLength": 300, "description": "The one thing a viewer will remember." },
+    "self_declared_risk": { "type": "string", "minLength": 1, "maxLength": 300, "description": "What is most likely to go wrong." },
+    "liner_note": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "Published note, at most 120 words: concrete, sourced, no hype vocabulary (liner-notes skill)."
+    }
+  }
+}

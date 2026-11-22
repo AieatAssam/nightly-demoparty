@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/ledger-entry.schema.json",
+  "title": "Ledger entry",
+  "description": "One JSON line of ledger/ledger.jsonl, appended in stage 9 for every night (published, b-side or shelved). Stage 0 and the novelty gates read it to build bans. Fields a night never produced (no brief, no render) are null or empty.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "date",
+    "status",
+    "compo",
+    "domain",
+    "topic",
+    "concept",
+    "techniques",
+    "technique_family",
+    "palette",
+    "phashes",
+    "color_histogram",
+    "score",
+    "attempts",
+    "mood_pad",
+    "dominant_emotion"
+  ],
+  "properties": {
+    "date": { "$ref": "plan.schema.json#/$defs/date" },
+    "status": { "$ref": "meta.schema.json#/$defs/status" },
+    "compo": { "$ref": "plan.schema.json#/$defs/compo" },
+    "domain": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "topic": { "type": ["string", "null"], "maxLength": 200, "description": "dossier.topic, null if research failed." },
+    "concept": { "type": ["string", "null"], "maxLength": 280, "description": "brief.concept, null if no brief." },
+    "techniques": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "type": "string", "minLength": 1, "maxLength": 80 },
+      "description": "brief.techniques, empty if no brief."
+    },
+    "technique_family": { "type": ["string", "null"], "maxLength": 80 },
+    "palette": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "plan.schema.json#/$defs/hexColor" },
+      "description": "brief.palette, lowercased. Empty if no brief."
+    },
+    "phashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t2", "t8", "t20"],
+      "description": "Perceptual hashes of the kept attempt's screenshots. Each is null when nothing rendered.",
+      "properties": {
+        "t2": { "anyOf": [{ "$ref": "gates.schema.json#/$defs/phash" }, { "type": "null" }] },
+        "t8": { "anyOf": [{ "$ref": "gates.schema.json#/$defs/phash" }, { "type": "null" }] },
+        "t20": { "anyOf": [{ "$ref": "gates.schema.json#/$defs/phash" }, { "type": "null" }] }
+      }
+    },
+    "color_histogram": {
+      "anyOf": [{ "$ref": "gates.schema.json#/$defs/colorHistogram" }, { "type": "null" }],
+      "description": "gates.novelty_b.color_histogram of the kept attempt (64-bin 4x4x4 RGB), null when nothing rendered."
+    },
+    "score": { "type": ["integer", "null"], "minimum": 0, "maximum": 100, "description": "Best verdict total, null when the jury never ran." },
+    "attempts": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Build attempts used. 0 when shelved before the build stage." },
+    "mood_pad": {
+      "anyOf": [{ "$ref": "mood.schema.json#/$defs/pad" }, { "type": "null" }],
+      "description": "mood.pad at build time. Null when stage 2 never ran (shelved before or during research)."
+    },
+    "dominant_emotion": {
+      "anyOf": [{ "$ref": "appraisals.schema.json#/$defs/emotionLabel" }, { "type": "null" }],
+      "description": "mood.dominant_emotions[0].label. Null when stage 2 never ran."
+    }
+  }
+}

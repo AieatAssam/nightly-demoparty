@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/plan.schema.json",
+  "title": "Plan",
+  "description": "Stage 0 output (plan.json), produced deterministically by harness/plan. Tonight's compo, research domain, size budget, constraint and the banned list assembled from the ledger. Also hosts the shared $defs (compo, date, hexColor) that every other schema references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "date",
+    "compo",
+    "size_budget_bytes",
+    "constraint",
+    "domain",
+    "wildcard",
+    "banned",
+    "boredom_override",
+    "requires_audio",
+    "seed",
+    "dry_run",
+    "overrides"
+  ],
+  "properties": {
+    "date": { "$ref": "#/$defs/date", "description": "Night of the run, UTC, YYYY-MM-DD." },
+    "compo": { "$ref": "#/$defs/compo" },
+    "size_budget_bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum byte size of the minified piece/index.html for tonight's compo (SPEC section 4). For constraint-night this is the constraint's own budget."
+    },
+    "constraint": {
+      "type": ["string", "null"],
+      "maxLength": 200,
+      "description": "The single harsh limit for constraint-night (for example '1 KB', 'two colours', 'CSS only, no canvas'). Null for every other compo; required non-null for constraint-night."
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Research domain picked from config/domains.yml. On wildcard nights this is the literal 'wildcard' and the researcher chooses."
+    },
+    "wildcard": { "type": "boolean", "description": "True on the one-in-seven night where the researcher picks the domain." },
+    "banned": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["techniques", "domains", "palette_hexes", "slop_patterns"],
+      "description": "Everything later stages must avoid, assembled from the ledger and config/slop.yml.",
+      "properties": {
+        "techniques": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "description": "Techniques used in the last 21 nights."
+        },
+        "domains": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "description": "Research domains of the last 10 nights."
+        },
+        "palette_hexes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/hexColor" },
+          "description": "Palette colours from the last 7 nights. New palettes must keep a hue distance from these."
+        },
+        "slop_patterns": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "description": "Permanent slop list (SPEC section 6) plus retrospective additions from config/slop.yml."
+        }
+      }
+    },
+    "boredom_override": {
+      "type": "boolean",
+      "description": "True when the boredom drive forced a compo or technique family not used in 30 nights."
+    },
+    "requires_audio": {
+      "type": "boolean",
+      "description": "True when the piece must produce WebAudio output (audiovisual compo, or another compo that opts in). Enables the audio probe in stage 6."
+    },
+    "seed": {
+      "anyOf": [
+        { "type": "string", "minLength": 1, "maxLength": 64 },
+        { "type": "integer" }
+      ],
+      "description": "Seed for every weighted random pick in stage 0, so a plan is reproducible from the ledger plus this seed."
+    },
+    "dry_run": { "type": "boolean", "description": "workflow_dispatch dry-run input: run every stage but never publish. False on scheduled runs." },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "compo", "mood_preset"],
+      "description": "workflow_dispatch inputs as given. Each is null when not forced (always null on scheduled runs).",
+      "properties": {
+        "domain": { "type": ["string", "null"], "minLength": 1, "maxLength": 100 },
+        "compo": { "anyOf": [{ "$ref": "#/$defs/compo" }, { "type": "null" }] },
+        "mood_preset": { "type": ["string", "null"], "minLength": 1, "maxLength": 64 }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": { "compo": { "const": "constraint-night" } },
+        "required": ["compo"]
+      },
+      "then": {
+        "type": "object",
+        "properties": { "constraint": { "type": "string", "minLength": 1 } }
+      }
+    }
+  ],
+  "$defs": {
+    "compo": {
+      "type": "string",
+      "enum": [
+        "4k-shader",
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "kinetic-type",
+        "simulation",
+        "constraint-night"
+      ],
+      "description": "Compo from the SPEC section 4 rotation."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "Calendar date, UTC, YYYY-MM-DD."
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$",
+      "description": "Colour as #RRGGBB. Either case is accepted; the harness lowercases before comparing or storing."
+    }
+  }
+}

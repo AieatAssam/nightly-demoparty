@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/retro.schema.json",
+  "title": "Weekly retrospective",
+  "description": "Weekly Opus (low effort) retrospective output (SPEC section 3). Reads the week's verdicts, the ledger and audit/usage.jsonl. Its slop additions go to config/slop.yml, curriculum additions to config/curriculum.yml, and the applied threshold to config/thresholds.yml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "week_ending",
+    "nights_reviewed",
+    "summary",
+    "slop_additions",
+    "curriculum_additions",
+    "threshold_recommendation",
+    "usage_alerts"
+  ],
+  "properties": {
+    "week_ending": { "$ref": "plan.schema.json#/$defs/date", "description": "Last night of the reviewed week, YYYY-MM-DD." },
+    "nights_reviewed": { "type": "integer", "minimum": 0 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 800 },
+    "slop_additions": {
+      "type": "array",
+      "maxItems": 10,
+      "description": "Habits the crew fell into this week, to ban from now on.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "pattern_type", "pattern", "rationale"],
+        "properties": {
+          "id": { "$ref": "#/$defs/slug" },
+          "pattern_type": {
+            "type": "string",
+            "enum": ["static", "visual"],
+            "description": "static: a regex the slop lint applies to source. visual: a description the jury checks against screenshots."
+          },
+          "pattern": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "rationale": { "type": "string", "minLength": 1, "maxLength": 400 }
+        }
+      }
+    },
+    "curriculum_additions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "Exactly 3 new techniques for config/curriculum.yml.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "family", "how_to", "snippet"],
+        "properties": {
+          "id": { "$ref": "#/$defs/slug" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "family": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "how_to": { "type": "string", "minLength": 1, "maxLength": 800 },
+          "snippet": { "type": "string", "minLength": 1, "maxLength": 2000, "description": "Short reference code snippet." }
+        }
+      }
+    },
+    "threshold_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["previous", "median_30d", "computed", "applied"],
+      "description": "Ratchet: computed = min(85, max(72, median_30d - 3)). applied is what goes into config/thresholds.yml.",
+      "properties": {
+        "previous": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "median_30d": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Null when there are no scored nights in the window." },
+        "computed": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "applied": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "usage_alerts": {
+      "type": "array",
+      "description": "Stages whose 7-night average usage grew over 25%.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage", "prior_7d_avg", "current_7d_avg", "pct_change"],
+        "properties": {
+          "stage": { "$ref": "usage-entry.schema.json#/$defs/stage", "description": "One of: research, appraise, brief, build, jury, retro." },
+          "prior_7d_avg": { "type": "number", "minimum": 0 },
+          "current_7d_avg": { "type": "number", "minimum": 0 },
+          "pct_change": { "type": "number", "description": "Percent change, for example 31.5 for +31.5%." }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 64,
+      "description": "Kebab-case id."
+    }
+  }
+}

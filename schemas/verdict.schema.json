@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nightly-demoparty.invalid/schemas/verdict.schema.json",
+  "title": "Verdict",
+  "description": "Stage 7 Jury output (verdict.json). Integer scores per SPEC rubric, each backed by a concrete screenshot observation, a pairwise check against the 30-night median piece, and a ranked top-3 critique. The harness checks that total equals the sum of scores and that ranks are 1, 2, 3.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scores",
+    "total",
+    "evidence",
+    "pairwise_beats_median",
+    "pairwise_median_ref",
+    "pairwise_justification",
+    "calibration_anchors_used",
+    "critique"
+  ],
+  "properties": {
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanism", "ambition", "craft", "distinctness", "polish"],
+      "properties": {
+        "mechanism": { "type": "integer", "minimum": 0, "maximum": 20, "description": "Embodies the research mechanism, not decoration." },
+        "ambition": { "type": "integer", "minimum": 0, "maximum": 25, "description": "Technical ambition for the size budget." },
+        "craft": { "type": "integer", "minimum": 0, "maximum": 25, "description": "Visual and aural craft." },
+        "distinctness": { "type": "integer", "minimum": 0, "maximum": 20, "description": "Distinct from the last 7 pieces." },
+        "polish": { "type": "integer", "minimum": 0, "maximum": 10, "description": "Framing, timing, start and end states." }
+      }
+    },
+    "total": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Sum of the 5 scores." },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanism", "ambition", "craft", "distinctness", "polish"],
+      "description": "One concrete screenshot observation per criterion. Scores without evidence are discarded.",
+      "properties": {
+        "mechanism": { "$ref": "#/$defs/evidenceText" },
+        "ambition": { "$ref": "#/$defs/evidenceText" },
+        "craft": { "$ref": "#/$defs/evidenceText" },
+        "distinctness": { "$ref": "#/$defs/evidenceText" },
+        "polish": { "$ref": "#/$defs/evidenceText" }
+      }
+    },
+    "pairwise_beats_median": { "type": "boolean", "description": "Does tonight beat the median-scored piece of the last 30 nights? A false here fails publish even with a high total." },
+    "pairwise_median_ref": {
+      "type": ["string", "null"],
+      "maxLength": 64,
+      "description": "Date (YYYY-MM-DD) or anchor id of the median piece compared against. Null only when there is no archive yet."
+    },
+    "pairwise_justification": { "type": "string", "minLength": 20, "maxLength": 400 },
+    "calibration_anchors_used": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 64 },
+      "description": "Ids of the 4 rotating calibration anchors shown in the prompt."
+    },
+    "critique": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "Top 3 changes that would raise the score most, rank 1 first.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rank", "change", "expected_gain"],
+        "properties": {
+          "rank": { "type": "integer", "enum": [1, 2, 3] },
+          "change": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "expected_gain": { "type": "number", "minimum": 0, "maximum": 30, "description": "Expected score points gained." }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "evidenceText": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 400,
+      "description": "A concrete observation from a named screenshot (t2, t8 or t20)."
+    }
+  }
+}
