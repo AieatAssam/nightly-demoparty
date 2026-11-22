@@ -1,6 +1,6 @@
 # Nightly Demoparty: build spec
 
-Working codename: `nightly-demoparty`. Hand this file to the agents in T3 Code as `SPEC.md` at the repo root.
+Working codename: `nightly-demoparty`. This file is `SPEC.md` at the repo root and is the single source of truth for the build.
 
 ## 1. What it is
 
@@ -25,7 +25,7 @@ One workflow, `nightly.yml`, sequential jobs. Each LLM stage is a separate Claud
 | 2 | Feel | agent-emotion-core (script) + Haiku appraisal | `mood.json`, updated `state/emotion.json` |
 | 3 | Brief | Haiku | `brief.json` |
 | 4 | Novelty gate A | script | pass, or back to 3 (max 2) |
-| 5 | Build | Haiku (Sonnet on final retry) | `piece/index.html` |
+| 5 | Build | Haiku (Opus at low effort on final retry) | `piece/index.html` |
 | 6 | Hard gates | script (Playwright) | `gates.json`, screenshots, audio probe |
 | 7 | Jury | Haiku, vision | `verdict.json` |
 | 8 | Decide | script | publish, retry from 5 with critique, or shelve |
@@ -91,7 +91,7 @@ Rules in the prompt:
 - Builder gets a `lib/` of vetted, minified helpers it may inline (noise, SDF primitives, a tiny WebAudio synth, a WebGL2 bootstrap, a WebGPU bootstrap with WebGL2 fallback). Curated at build time by the strong models so Haiku composes from good parts instead of reinventing them badly.
 - Builder may run the local gate script on its own work before handing off (Bash allowlisted to `npm run gate` only).
 - Tools: Read, Write, Edit, Bash(npm run gate). No web access.
-- Model: Haiku for attempts 1 and 2. Attempt 3 escalates to Sonnet. Never more than 3 attempts.
+- Model: Haiku for attempts 1 and 2. Attempt 3 escalates to Opus at low effort. Never more than 3 attempts.
 
 ### Stage 6: Hard gates (deterministic, Playwright + headless Chromium with SwiftShader)
 
@@ -126,7 +126,7 @@ Rubric (0 to 100):
 
 Keeping a cheap judge honest:
 
-- **Anchors.** At build time the strong models produce 12 anchor pieces with agreed scores spanning 30 to 95. The jury prompt includes 4 of them (rotating) as calibration.
+- **Anchors.** At build time the strong models produce 12 anchor pieces with agreed scores spanning 30 to 95. Agreed scores come from two independent Opus ratings plus one Codex CLI consultation; gaps over 15 points are reconciled by discussion, not averaging. The jury prompt includes 4 of them (rotating) as calibration.
 - **Pairwise check.** The jury must also say whether tonight beats the archive's median-scored piece from the last 30 nights. If the absolute score says publish but the pairwise says no, treat as fail.
 - **Separate persona and no access to the builder's reasoning.** It sees artefacts only.
 - **Must cite evidence.** Every criterion score needs a concrete observation from a screenshot. Scores without evidence are discarded and the call repeated once.
@@ -149,7 +149,7 @@ Keeping a cheap judge honest:
 
 ## 3. Weekly and monthly loops
 
-- **Weekly retrospective (Sonnet, one run).** Reads the week's verdicts and the ledger. Outputs: additions to the slop list (patterns the crew fell into), 3 new techniques added to `config/curriculum.yml` with a short how-to and a reference snippet, and threshold update. This is how the bar rises.
+- **Weekly retrospective (Opus at low effort, one run).** Reads the week's verdicts and the ledger. Outputs: additions to the slop list (patterns the crew fell into), 3 new techniques added to `config/curriculum.yml` with a short how-to and a reference snippet, and threshold update. This is how the bar rises.
 - **Monthly showcase (script).** Auto-builds a "best of month" page from top scores. No LLM.
 - **Manual `workflow_dispatch`** with inputs: force domain, force compo, force mood preset, dry-run (no publish).
 
@@ -168,7 +168,7 @@ Keeping a cheap judge honest:
 
 ## 5. Cost controls
 
-- Haiku for every nightly LLM stage. Sonnet only for the third build attempt and the weekly retrospective.
+- Haiku for every nightly LLM stage. Opus at low effort only for the third build attempt and the weekly retrospective.
 - Worst-case nightly LLM calls: research 2, appraisal 1, brief 3, build 3, jury 4. Typical: 6.
 - `--max-turns` per stage: research 15, appraisal 3, brief 6, build 30, jury 4.
 - Deterministic gates always run before the jury.
@@ -211,7 +211,8 @@ Three layers. The first is skills, the second is lint, the third is the ledger.
 ## 8. Claude in Actions
 
 - Use `anthropics/claude-code-action@v1` (or the base action) with `claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}`. Generate the token locally with `claude setup-token`.
-- Model and limits go through `claude_args`, for example `--model haiku --max-turns 15 --allowedTools "WebSearch,WebFetch,Write"`.
+- Model and limits go through `claude_args`, for example `--model haiku --max-turns 15 --allowedTools "WebSearch,WebFetch,Write"`. Opus invocations always add `--effort low`, for example `--model opus --effort low`.
+- Nightly runtime runs only on Claude models in GitHub Actions. No Gemini or OpenAI model may be a runtime dependency of the nightly system.
 - The token draws on the personal Claude subscription that created it, so nightly usage shares limits with interactive use. Schedule the cron for a time you are not working (suggest `17 2 * * *` UTC).
 - Wrap every invocation in one composite action, `.github/actions/agent`, taking `stage`, `model`, `max_turns`, `tools`, `prompt_file`. All prompts live in `prompts/*.md`, versioned.
 
@@ -240,18 +241,30 @@ site/                gallery source and published pieces
 - Archive: grid of real screenshots, filter by compo, technique, domain, mood.
 - "The crew" page: emotional state over time, evolving likes and dislikes, streaks, shelved nights with reasons.
 - Static, no framework runtime needed. Built by a script from `meta.json` files. Must pass `hallmark audit`.
+- `README.md` includes a pipeline diagram.
 
 ## 11. Build-time plan in T3 Code
 
 Spend freely here. The nightly system is only as good as the prompts, helper library, anchors and gates built now.
 
-| Agent | Owns |
-|-------|------|
-| Claude (Max) | Architecture, all prompts, the composite action and workflows, emotion-core integration, `demo-craft` and `liner-notes` skills, the 12 anchors |
-| Codex (Plus) | The deterministic harness (plan, novelty, gates, decide, publish, lint), schemas, unit tests, CI, adversarial review of Claude's prompts and workflows |
-| Antigravity (Pro) | Gallery site with in-browser visual verification, screenshot QA of anchors, cross-browser checks |
+Roles:
 
-Cross-checks: every component is reviewed by an agent that did not write it. Jury prompt and rubric are tuned by all three scoring the anchors independently until Haiku's scores track the agreed ones (target: rank correlation 0.8 or better across the 12).
+- **Antigravity Orchestrator (Neon planning):** plan, task breakdown, sequencing, briefs, acceptance checks, routing review findings, and final report. Writes no repo files.
+- **Claude threads:** primary and only repo worker. Schemas, harness, tests, prompts, composite action, workflows, `agent-emotion-core` integration, skills, `lib/`, the 12 anchors, gallery site, `README.md`, `SETUP.md`, plus Haiku tuning, jury calibration, and local dry runs.
+- **Codex CLI:** side tool only, not a worker; writes no repo code. Used only for (a) generating diagrams for `README.md` and docs, and (b) brief second opinions on Sol 6.2 or Astra 6.2 for contested decisions or independent review of prompts, workflows, and jury rubric.
+
+Model selection: two tiers only.
+
+- **Haiku:** scaffolding, config, fixtures, boilerplate, schema files from an agreed design, straightforward unit tests, docs, mechanical refactors, running and reporting test suites.
+- **Opus:** architecture details, harness gate logic and novelty algorithms, nightly prompts, workflows and composite action, `agent-emotion-core` integration, `demo-craft` and `liner-notes` skills, `lib/`, the 12 anchors, jury calibration, gallery design, and all code review.
+- Escalate a Haiku task to Opus after two failed acceptance checks. State the model in every brief.
+
+Review and calibration:
+
+- A fresh Opus thread with no access to the author's reasoning reviews every component.
+- Nightly prompts, workflows, and the jury rubric also get one short Codex CLI consultation.
+- Agreed anchor scores come from two independent Opus ratings plus one Codex CLI consultation; gaps over 15 points are reconciled by discussion, not averaging.
+- Tune the jury prompt and rubric against the 12 anchors until Haiku's rank correlation reaches 0.8 or better.
 
 ### Milestones
 
