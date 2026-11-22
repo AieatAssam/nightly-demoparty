@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 16,
+    "craft": 14,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 67,
+  "evidence": {
+    "mechanism": "shot-02s: four canopy nodes sit along the bottom with amber dots streaming up into a grey central hyphal web; by shot-08s the right-hand node fades under a shadow band and a dotted stream runs toward it.",
+    "ambition": "shot-20s: eight nodes arranged in a radial ring around a dense hyphal web and a ring of rust spots; shot-08s adds a shadow gradient band. Few layers and a modest dot count, well below the brief's stated 3000.",
+    "craft": "shot-02s: rust spot arcs show stair-stepped pixel edges and blurred blobs; nodes are flat fills with no material or lighting. The cream, ochre and rust palette stays harmonious across all three frames.",
+    "distinctness": "shot-20s: a radial ring of nodes over a Gray-Scott spot ring in cream and rust is not a common cliche and differs from the anchors' card weave, flat formula and bird flock.",
+    "polish": "shot-02s: composition is sparse and off-centre; shot-20s resolves into a symmetric radial layout that clearly differs from 2s, so development exists. The hard grey band at the right edge of shot-08s is unresolved."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so the pairwise check passes by rule.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "At shot-02s and shot-08s raise visible dot density toward the brief's stated scale, so the shade-reversed stream at the faded right node reads as a clear direction flip rather than a faint dotted line.", "expected_gain": 4 },
+    { "rank": 2, "change": "Render the Gray-Scott rust spots at shot-02s with antialiased or higher-resolution edges; the arcs currently show stair-stepped pixel borders visible at full size.", "expected_gain": 4 },
+    { "rank": 3, "change": "Give the four canopy nodes simple shading or a soft glow so they read as objects, and soften the hard grey shadow band at shot-08s into a gradient that matches the cream ground.", "expected_gain": 3 }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "event": {
+    "event": "Tonight's audiovisual piece on warren-truss-load-paths went to the B-sides at 69.",
+    "event_id": "2026-11-24:verdict:b-side",
+    "topics": [
+      "warren-truss-load-paths",
+      "audiovisual",
+      "physics"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "thread": "night-2026-11-24",
+    "relevance": 0.8,
+    "congruence": 0.05,
+    "novelty": 0.3,
+    "praiseworthiness": 0.1,
+    "control": 0.6
+  },
+  "elicited": {
+    "joy": 0.04038051600000002,
+    "pride": 0.09870792800000003,
+    "interest": 0.2621368497,
+    "boredom": 0.06208365568002246
+  },
+  "consolidated": {
+    "topic:warren-truss-load-paths": 0.089,
+    "topic:audiovisual": 0.089,
+    "topic:physics": 0.089,
+    "thread:night-2026-11-24": 0.089
+  },
+  "mood": {
+    "timestamp": "2026-11-22T21:39:42.383Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.262
+      },
+      {
+        "label": "pride",
+        "intensity": 0.099
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.062
+      },
+      {
+        "label": "joy",
+        "intensity": 0.04
+      }
+    ],
+    "pad": {
+      "pleasure": 0.176,
+      "arousal": 0.284,
+      "dominance": 0.293
+    },
+    "neurochemistry": {
+      "dopamine": 0.665,
+      "noradrenaline": 0.681,
+      "serotonin": 0.506,
+      "cortisol": 0.315,
+      "oxytocin": 0.425,
+      "opioids": 0.556
+    },
+    "drives": {
+      "novelty": 0.362,
+      "social": 0.403,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.262,
+      "boredom": 0.062,
+      "frustration": 0.079
+    },
+    "likes": [
+      {
+        "topic": "audiovisual",
+        "score": 0.089
+      },
+      {
+        "topic": "physics",
+        "score": 0.089
+      },
+      {
+        "topic": "warren-truss-load-paths",
+        "score": 0.089
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "medium",
+        "value": 0.642,
+        "guidance": "Steady tempo: moderate element density and a few deliberate scene changes."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "balanced",
+        "value": 0.176,
+        "guidance": "Mixed warm and cool palette, partial symmetry and open, neutral harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "measured",
+        "value": 0.293,
+        "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+      },
+      "technical_risk_budget": {
+        "level": "conservative",
+        "value": 0.262,
+        "guidance": "Conservative risk: build on a technique the crew can execute reliably."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.079,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  }
+}

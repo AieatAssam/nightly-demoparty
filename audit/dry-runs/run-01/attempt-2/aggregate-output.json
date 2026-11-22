@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 13,
+    "craft": 16,
+    "distinctness": 15,
+    "polish": 8
+  },
+  "total": 68,
+  "evidence": {
+    "mechanism": "shot-02s: rows 5-6 of strips are already bent at their base while rows 1-3 stay upright; by shot-08s the curl band crosses mid-frame, and by shot-20s the top rows curl while the bottom rows reopen, so the base-to-tip lag is visible.",
+    "ambition": "shot-08s: 48 strips of 12 nested segments each, with pale skin and fibre shading plus an ochre radial haze behind every strip; one rendering idea driven by keyframe delays, with no simulation or material change between frames.",
+    "craft": "shot-02s: cream ground with an ochre and rust palette held consistently and clean strip silhouettes; by shot-20s the tightest curls show stair-step seams between segments on the inner face.",
+    "distinctness": "shot-02s: a pine-cone scale bend-wave on an 8x6 grid appears in no anchor; the cream palette echoes anchor-04, but the base-first delay idea is distinct from every anchor shown.",
+    "polish": "shot-02s: the bend front is already visible at 2 s and shot-20s has a different composition with a cream margin; shot-08s repeats near-identical curled arcs across most of the grid, so the middle state reads as a stamp."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet; there is no head-to-head comparison possible.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-04",
+    "anchor-06",
+    "anchor-11"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "At shot-08s, vary each strip's animation delay and curl amplitude by its column so the wave reads as a front crossing the grid instead of a repeated stamp of identical arcs.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Replace the flat radial ochre halos with a shared gradient or a per-strip tissue haze that brightens along the wave front, so the haze carries the mechanism rather than sitting as static blobs.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Remove the stair-step seams on tight curls at shot-20s by adding a segment overlap or a shading step on the inner face, so the end state reads as clean.",
+      "expected_gain": 2
+    }
+  ]
+}

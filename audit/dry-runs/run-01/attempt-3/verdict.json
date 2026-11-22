@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 13,
+    "craft": 15,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 65,
+  "evidence": {
+    "mechanism": "shot-08s: bottom-row strips curl into full arcs while the top two rows stay upright and a middle row is tilted; by shot-20s the arcs open and the top rows still hold a curve, so the base-to-tip lag reads on screen.",
+    "ambition": "shot-08s: 48 strips in an 8x6 grid, each a nested segment chain with pale skin and dark fiber lines; one flat layer with no lighting, simulation or secondary rendering idea beyond the strips and tiles.",
+    "craft": "shot-02s: cream radial ground with ochre edges and upright rust strips with dark graphite bases; the strips are thin and small at 1280x720, and by shot-08s the tile panels behind them fade into the ground with muddy edges.",
+    "distinctness": "shot-02s: 48 identical rust strips on a cream ground in an 8x6 grid; by shot-20s they form a central diagonal cluster, a subject not in the anchors (sky birds, climate spiral, chart waterfall, two-pendulum beam).",
+    "polish": "shot-02s: the upright grid fills the frame as a composed start; by shot-20s the cluster pulls back into a cream margin and the open-to-closed gradient differs from shot-02s, so the piece resolves."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head comparison to make.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-04",
+    "anchor-06",
+    "anchor-11"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Enlarge the strips so the arcs at shot-08s fill about twice their current cell size; the segment chain and base-to-tip lag are too small to read at thumbnail scale.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 2,
+      "change": "Add the brown-tissue haze behind each strip from the brief, brightening and dimming with the wave, so the frame has a second rendering idea beyond the strips and tiles.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Remove the small label 'PINUS SCALE / BASAL HINGE / 48 x 12' at shot-02s and let the bend wave carry the identity of the piece.",
+      "expected_gain": 2
+    }
+  ]
+}

@@ -1,0 +1,983 @@
+{
+  "meta": {
+    "date": "2026-11-24",
+    "status": "b-side",
+    "reason": "B-side: best attempt 3 scored 69, below the publish threshold 72.",
+    "publish_threshold": 72,
+    "best_attempt": 3,
+    "plan": {
+      "date": "2026-11-24",
+      "compo": "audiovisual",
+      "size_budget_bytes": 24576,
+      "constraint": null,
+      "domain": "warren-truss-load-paths",
+      "wildcard": false,
+      "banned": {
+        "techniques": [],
+        "domains": [],
+        "palette_hexes": [],
+        "slop_patterns": [
+          "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+          "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+          "Matrix rain is on the permanent slop list.",
+          "Four-sine plasma boilerplate. Build a field with development instead.",
+          "Plain plasma: sine sums as the whole picture.",
+          "Plain starfield: points drifting toward the camera with no structure behind them.",
+          "Plain tunnel: concentric rings flying past with nothing else happening.",
+          "Matrix rain: falling glyph columns.",
+          "Mouse-following particles with no system behind them.",
+          "A single raymarched sphere or torus on a gradient.",
+          "Untouched Mandelbrot or Julia zoom.",
+          "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+          "Bloom or chromatic aberration used to hide an empty scene.",
+          "Math.random() noise as the main visual idea.",
+          "A loop with no development: the 20 s frame looks like the 2 s frame.",
+          "Title cards or captions doing the work the visuals should do.",
+          "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+        ]
+      },
+      "boredom_override": false,
+      "requires_audio": true,
+      "seed": "dry-run-02",
+      "dry_run": true,
+      "overrides": {
+        "domain": null,
+        "compo": null,
+        "mood_preset": null
+      }
+    },
+    "dossier": {
+      "topic": "Warren truss diagonal force sign flip: one equal-length diagonal switches from tension to compression as a load crosses its panel",
+      "domain": "warren-truss-load-paths",
+      "wildcard_chosen": false,
+      "summary": "A Warren truss is a row of equal-length diagonals and chords that form alternately inverted equilateral triangles. Each diagonal carries axial force only. Under a moving load the sign of a diagonal's force can change, so one bar can be pulled in one load case and pushed in another. Loads on diagonals alternate between compression and tension approaching the centre. The exact load position where a given diagonal flips needs an influence-line calculation.",
+      "facts": [
+        {
+          "claim": "Loads on the diagonals of a Warren truss alternate between compression and tension, approaching the centre of the span.",
+          "source_url": "https://en.wikipedia.org/wiki/Warren_truss",
+          "source_title": "Warren truss"
+        },
+        {
+          "claim": "The Warren truss is a weight-saving design based on equilateral triangles, forming alternately inverted triangle-shaped spaces along its length.",
+          "source_url": "https://en.wikipedia.org/wiki/Warren_truss",
+          "source_title": "Warren truss"
+        },
+        {
+          "claim": "The Warren truss is named after the British engineer James Warren, who patented it in 1848.",
+          "source_url": "https://en.wikipedia.org/wiki/Warren_truss",
+          "source_title": "Warren truss"
+        },
+        {
+          "claim": "In a Warren truss all panel lengths and diagonals are of equal length, creating a series of equilateral triangles.",
+          "source_url": "https://www.structuremag.org/article/the-warren-truss/",
+          "source_title": "the warren truss"
+        },
+        {
+          "claim": "Cubitt's Newark Dyke girders connected their members with alternate diagonal struts and ties of cast and wrought iron respectively, on a 240 ft 6 in span.",
+          "source_url": "https://www.structuremag.org/article/the-warren-truss/",
+          "source_title": "the warren truss"
+        },
+        {
+          "claim": "In the method of joints, any positive member force is tensile and any negative member force is compressive.",
+          "source_url": "https://mechanicsmap.psu.edu/websites/5_structures/5-3_method_of_joints/methodofjoints.html",
+          "source_title": "The Method of Joints"
+        },
+        {
+          "claim": "The method of joints solves for the unknown forces acting on truss members, and one should start at a joint with only two members connected.",
+          "source_url": "https://mechanicsmap.psu.edu/websites/5_structures/5-3_method_of_joints/methodofjoints.html",
+          "source_title": "The Method of Joints"
+        }
+      ],
+      "visualisable_mechanisms": [
+        {
+          "name": "diagonal sign flip",
+          "description": "Each diagonal of a Warren truss has a force whose sign depends on where the load sits. As a unit load crosses a diagonal's panel the bar goes from one sign to the other, so the same member is pulled in one position and pushed in another.",
+          "render_or_sonify_hint": "Draw each diagonal as a bar that is blue when in tension and red when in compression; as a dot load travels the span, bars flip colour one panel behind the load."
+        },
+        {
+          "name": "alternating triangle lattice",
+          "description": "Equal-length chords and diagonals form alternately inverted equilateral triangles. Because the diagonals slope in opposite directions from panel to panel, a load on one triangle pushes and pulls its neighbours differently.",
+          "render_or_sonify_hint": "Lay out a row of equilateral triangles that point up and down in turn, with bright joints and thin members that brighten when loaded."
+        },
+        {
+          "name": "centre-weighted sign zone",
+          "description": "Sources say diagonal forces alternate between compression and tension approaching the centre. Diagonals near midspan therefore carry both signs as the load moves, while end diagonals keep one sign.",
+          "render_or_sonify_hint": "Shade a central band of diagonals that pulse between two tones, with end diagonals holding one steady tone."
+        },
+        {
+          "name": "cast and wrought split",
+          "description": "Historically the struts were cast iron and the ties were wrought iron, so each sign of force was assigned a different material. The lattice reads as two materials sorted by force sign.",
+          "render_or_sonify_hint": "Render struts as thick grey cast forms and ties as thin bright wrought lines; when a diagonal flips sign it changes from one form to the other."
+        },
+        {
+          "name": "load-wave sweep",
+          "description": "A moving load sweeps a wave of sign flips across the span over time, so a 20-second piece can build from one flip to a full traverse and settle as the load leaves.",
+          "render_or_sonify_hint": "Animate a single load marker crossing left to right over 20 s; flips spread outward from the marker and fade out behind it, with a tone per diagonal that moves up or down in pitch on each flip."
+        }
+      ],
+      "open_questions": [
+        "At which load position does a given diagonal's force cross zero? This needs an influence-line calculation from a statics text.",
+        "Do end diagonals of a Warren truss ever change sign, or only those near midspan? The sources say only that alternation happens approaching the centre.",
+        "Does the flip depend on the chord slope, or only on the diagonal's direction in each panel?"
+      ],
+      "surprise": {
+        "score": 55,
+        "justification": "A generalist expects a truss diagonal to be always a brace or always a tie. In a Warren truss the same equal-length diagonal is pulled under one load and pushed under another, and diagonals near midspan carry both signs."
+      },
+      "dataset": null
+    },
+    "mood": {
+      "timestamp": "2026-11-22T20:58:25.162Z",
+      "preset_override": null,
+      "dominant_emotions": [
+        {
+          "label": "joy",
+          "intensity": 0.721
+        },
+        {
+          "label": "interest",
+          "intensity": 0.693
+        },
+        {
+          "label": "surprise",
+          "intensity": 0.413
+        },
+        {
+          "label": "boredom",
+          "intensity": 0.258
+        }
+      ],
+      "pad": {
+        "pleasure": 0.394,
+        "arousal": 0.467,
+        "dominance": 0.332
+      },
+      "neurochemistry": {
+        "dopamine": 1,
+        "noradrenaline": 1,
+        "serotonin": 0.756,
+        "cortisol": 0.315,
+        "oxytocin": 0.425,
+        "opioids": 1
+      },
+      "drives": {
+        "novelty": 0,
+        "social": 0.384,
+        "fatigue": 0
+      },
+      "derived_signals": {
+        "interest": 0.693,
+        "boredom": 0.258,
+        "frustration": 0.079
+      },
+      "likes": [
+        {
+          "topic": "physics",
+          "score": 0.251
+        },
+        {
+          "topic": "warren-truss-load-paths",
+          "score": 0.251
+        },
+        {
+          "topic": "force-sign",
+          "score": 0.249
+        },
+        {
+          "topic": "load-paths",
+          "score": 0.219
+        },
+        {
+          "topic": "history",
+          "score": 0.188
+        },
+        {
+          "topic": "truss-geometry",
+          "score": 0.185
+        },
+        {
+          "topic": "material-split",
+          "score": 0.176
+        },
+        {
+          "topic": "tiling-geometry",
+          "score": 0.176
+        },
+        {
+          "topic": "data-form",
+          "score": 0.157
+        }
+      ],
+      "dislikes": [],
+      "creative_parameters": {
+        "tempo_density_cut_rate": {
+          "level": "high",
+          "value": 0.734,
+          "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+        },
+        "palette_warmth_consonance_symmetry": {
+          "level": "warm-consonant",
+          "value": 0.394,
+          "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+        },
+        "scale_contrast_camera": {
+          "level": "measured",
+          "value": 0.332,
+          "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+        },
+        "technical_risk_budget": {
+          "level": "moderate",
+          "value": 0.693,
+          "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+        },
+        "boredom_force_unused_30d": false,
+        "frustration_scope_polish_weight": {
+          "shrink_scope": false,
+          "polish_weight_boost": 0.079,
+          "guidance": "Normal scope: polish weight follows the usual rubric."
+        }
+      }
+    },
+    "brief": {
+      "title": "Warren truss: the diagonal that flips from pull to push",
+      "concept": "A mirrored row of equal-length Warren truss diagonals, ochre in tension and rust in compression, flips sign as a load marker crosses each panel.",
+      "mechanism_embodied": {
+        "mechanism_name": "diagonal sign flip",
+        "how_visualised": "Each diagonal bar of a mirrored Warren truss is coloured by its solved axial force: ochre when tensile, rust when compressive. A load marker crosses the span over 20 s, and each diagonal changes colour the moment its force crosses zero. The same bar is pulled under one load position and pushed under another, and each flip sounds a tone."
+      },
+      "discarded_obvious_idea": "Obvious: a truss drawn as grey bars under a moving load, coloured red for hot and blue for cold. Rejected: it is a static diagram with no reason for any force to change, and it hides the sign flip the piece is about.",
+      "compo": "audiovisual",
+      "constraint_honoured": null,
+      "techniques": [
+        "method-of-joints statics solver",
+        "influence-line load sweep",
+        "tension-compression colour flip",
+        "mirrored Warren lattice"
+      ],
+      "novel_technique": "method-of-joints statics solver",
+      "technique_family": "physics",
+      "palette": [
+        "#efe3c8",
+        "#c8962e",
+        "#a84b2a",
+        "#3a342e"
+      ],
+      "motion_sound_plan": "Mood: high tempo (120 BPM) with a dense field of 60 panels and 120 bars, four hard cuts at 2.5, 7.5, 12.5 and 17.5 s; warm-consonant palette of cream, ochre, rust and graphite with mirrored symmetry; measured framing with one slow pull-back in beat 4; moderate risk, one unfamiliar solver on a safe 2D canvas base. Sound starts on click: a C major triad pulse at 120 BPM, and each sign flip sounds a sine tone, high for tension and low for compression, peak under 0.9. Constraint: none.",
+      "storyboard": [
+        {
+          "beat": 1,
+          "t_start_s": 0,
+          "t_end_s": 5,
+          "description": "Cream ground, centred wide shot of a mirrored Warren truss of 30 panels, chords and diagonals in graphite. A load marker enters at the left end and the first diagonals take ochre or rust colours from their solved forces."
+        },
+        {
+          "beat": 2,
+          "t_start_s": 5,
+          "t_end_s": 10,
+          "description": "The marker crosses the left half and diagonals flip from ochre to rust one by one as their force crosses zero. A hard cut at 7.5 s jumps to a close framing of the centre triangles, where bars near midspan show both colours in turn."
+        },
+        {
+          "beat": 3,
+          "t_start_s": 10,
+          "t_end_s": 15,
+          "description": "The marker reaches midspan and the central diagonals pulse rust and ochre as the load sits near the centre. A thin wave of flips spreads outward from the marker, and a hard cut at 12.5 s tightens the frame on the centre joints."
+        },
+        {
+          "beat": 4,
+          "t_start_s": 15,
+          "t_end_s": 20,
+          "description": "The marker exits right and the camera pulls back over 5 s to the full mirrored span. Flips fade behind the marker, leaving a settled final pattern of ochre ends and rust centre bars with cream dots on the joints at 20 s."
+        }
+      ],
+      "memorable_moment": "A single diagonal turns from ochre to rust at midspan as the marker passes, while the bar beside it stays ochre.",
+      "self_declared_risk": "Solver sign errors under the moving load, or flips too sparse to read at 2 s. Audio may stutter if a new oscillator is built per flip instead of pooled voices.",
+      "liner_note": "James Warren patented his truss in 1848. Every panel and diagonal has the same length, and each diagonal carries axial force only. Loads on its diagonals alternate between compression and tension as they approach the centre of the span. In the method of joints a positive member force is tensile and a negative one is compressive, so one bar can be pulled under one load and pushed under another. On screen a load marker crosses a row of equilateral triangles. Each diagonal glows ochre in tension and rust in compression, flipping as its force crosses zero, and each flip sounds a tone."
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "model": "haiku",
+        "effort": null,
+        "gates": {
+          "passed": true,
+          "piece_path": "audit/dry-runs/run-02/attempt-1/index.html",
+          "compo": "audiovisual",
+          "byte_size": 12117,
+          "size_budget_bytes": 24576,
+          "console_errors": [],
+          "network_requests": [],
+          "luminance_variance": {
+            "t2": 371.1569,
+            "t8": 419.1805,
+            "t20": 353.0613,
+            "floor": 12,
+            "passed": true
+          },
+          "motion": {
+            "frame_diff_mean": 1.1829,
+            "frame_diff_floor": 0.8,
+            "development_diff_t2_t20": 3.0019,
+            "development_floor": 2.5,
+            "passed": true
+          },
+          "strobe": {
+            "max_flashes_per_sec": 0,
+            "limit": 3,
+            "passed": true
+          },
+          "frame_time_ms": {
+            "median": 50,
+            "p90": 66.68,
+            "budget_ms": 250,
+            "passed": true
+          },
+          "audio_probe": {
+            "required": true,
+            "autoplayed": false,
+            "rms": 0.056482,
+            "peak": 0.42716,
+            "clipped_ratio": 0,
+            "passed": true
+          },
+          "novelty_b": {
+            "phashes": {
+              "t2": "9010909bc990e098",
+              "t8": "9010d2c445a6e038",
+              "t20": "901010ccce11e019"
+            },
+            "color_histogram": [
+              0.003959,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.000161,
+              0,
+              0,
+              0,
+              0.000526,
+              0.002398,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.001127,
+              0.002169,
+              0,
+              0,
+              0.000016,
+              0.001074,
+              0.002095,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.00002,
+              0,
+              0,
+              0.001038,
+              0.040229,
+              0.00172,
+              0,
+              0,
+              0,
+              0.011562,
+              0.931906
+            ],
+            "min_hamming_distance": null,
+            "min_histogram_distance": null,
+            "closest_date": null,
+            "passed": true
+          },
+          "slop_lint": {
+            "passed": true,
+            "violations": []
+          },
+          "reduced_motion": {
+            "passed": true,
+            "normal_motion": 1.8055,
+            "reduced_motion": 0.5103,
+            "ratio": 0.2826
+          },
+          "screenshots": {
+            "t2": "audit/dry-runs/run-02/attempt-1/shot-02s.png",
+            "t8": "audit/dry-runs/run-02/attempt-1/shot-08s.png",
+            "t20": "audit/dry-runs/run-02/attempt-1/shot-20s.png"
+          },
+          "failures": []
+        },
+        "verdict": {
+          "scores": {
+            "mechanism": 16,
+            "ambition": 14,
+            "craft": 16,
+            "distinctness": 15,
+            "polish": 6
+          },
+          "total": 67,
+          "evidence": {
+            "mechanism": "shot-02s: rust and ochre diagonals across a 30-panel truss, marker at panel 4 (x 236) with the adjacent bar already flipped; by shot-08s the marker sits near panel 9 and the colour split moves with it.",
+            "ambition": "shot-08s: one flat 2D lattice with a ghost lattice beneath, a statics-driven colour pass and a filled influence-line chart; by shot-20s the marker exits right and the chart and ghost stay, so layers only, no 3D or material.",
+            "craft": "shot-02s: crisp ochre and rust bars on graphite chords over a cream ground, no artefacts at 1280x720; the legend is tiny grey text and the influence chart is a flat filled triangle with no detail.",
+            "distinctness": "shot-02s: a Warren truss coloured by axial force sign is an uncommon idea next to the anchors' title cards, spirals and tunnels; its cream-ochre palette overlaps anchor-12, but the lattice reads differently.",
+            "polish": "shot-02s: wide framing with chords running off the right edge; by shot-20s the marker has reached the right end and the truss sits fully in frame, so the state changes but the framing does not resolve into a new composition."
+          },
+          "pairwise_beats_median": true,
+          "pairwise_median_ref": null,
+          "pairwise_justification": "No median archive exists yet, so the head-to-head check is set to true by rule.",
+          "calibration_anchors_used": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-09",
+            "anchor-12"
+          ],
+          "critique": [
+            {
+              "rank": 1,
+              "change": "Cut to a close framing of the centre triangles around 8s and 12s, as the storyboard says, so bars near midspan show both ochre and rust in one frame; the current wide shot hides the flip.",
+              "expected_gain": 4
+            },
+            {
+              "rank": 2,
+              "change": "Deform the lattice under the load: chords sag and diagonals stretch with the marker position, so the force sign reads through shape as well as colour and adds a second rendering layer.",
+              "expected_gain": 6
+            },
+            {
+              "rank": 3,
+              "change": "Resolve the 20s frame: pull back to the full span and let the flipped diagonals settle into a distinct final pattern instead of repeating the 2s composition.",
+              "expected_gain": 4
+            }
+          ]
+        },
+        "outcome": "below_threshold"
+      },
+      {
+        "attempt": 2,
+        "model": "haiku",
+        "effort": null,
+        "gates": {
+          "passed": true,
+          "piece_path": "audit/dry-runs/run-02/attempt-2/index.html",
+          "compo": "audiovisual",
+          "byte_size": 12938,
+          "size_budget_bytes": 24576,
+          "console_errors": [],
+          "network_requests": [],
+          "luminance_variance": {
+            "t2": 183.0233,
+            "t8": 590.2902,
+            "t20": 313.5281,
+            "floor": 12,
+            "passed": true
+          },
+          "motion": {
+            "frame_diff_mean": 1.4243,
+            "frame_diff_floor": 0.8,
+            "development_diff_t2_t20": 3.4081,
+            "development_floor": 2.5,
+            "passed": true
+          },
+          "strobe": {
+            "max_flashes_per_sec": 1,
+            "limit": 3,
+            "passed": true
+          },
+          "frame_time_ms": {
+            "median": 33.3,
+            "p90": 50,
+            "budget_ms": 250,
+            "passed": true
+          },
+          "audio_probe": {
+            "required": true,
+            "autoplayed": false,
+            "rms": 0.028474,
+            "peak": 0.143453,
+            "clipped_ratio": 0,
+            "passed": true
+          },
+          "novelty_b": {
+            "phashes": {
+              "t2": "1010108080101090",
+              "t8": "1010e069e0f01090",
+              "t20": "101010b2b2101090"
+            },
+            "color_histogram": [
+              0.006714,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.000209,
+              0,
+              0,
+              0,
+              0.000701,
+              0.001804,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.006494,
+              0.000889,
+              0,
+              0,
+              0.000058,
+              0.000874,
+              0.004472,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.000019,
+              0,
+              0,
+              0.001065,
+              0.001355,
+              0.002037,
+              0,
+              0,
+              0,
+              0.01271,
+              0.960599
+            ],
+            "min_hamming_distance": null,
+            "min_histogram_distance": null,
+            "closest_date": null,
+            "passed": true
+          },
+          "slop_lint": {
+            "passed": true,
+            "violations": []
+          },
+          "reduced_motion": {
+            "passed": true,
+            "normal_motion": 2.2912,
+            "reduced_motion": 0.3748,
+            "ratio": 0.1636
+          },
+          "screenshots": {
+            "t2": "audit/dry-runs/run-02/attempt-2/shot-02s.png",
+            "t8": "audit/dry-runs/run-02/attempt-2/shot-08s.png",
+            "t20": "audit/dry-runs/run-02/attempt-2/shot-20s.png"
+          },
+          "failures": []
+        },
+        "verdict": {
+          "scores": {
+            "mechanism": 14,
+            "ambition": 12,
+            "craft": 15,
+            "distinctness": 15,
+            "polish": 6
+          },
+          "total": 62,
+          "evidence": {
+            "mechanism": "shot-08s: alternating ochre and rust diagonals in the centre bays, with the load dot at x=541; by shot-20s the diagonals are filled ochre-brown and the sign flip reads only as a settled colour field.",
+            "ambition": "shot-02s: one flat 2D line layer of 30 mirrored triangles with no lighting, material or motion beyond one load dot; shot-20s adds solid triangle fills and a pale mirrored row.",
+            "craft": "shot-08s: clean hairline joints and a cohesive cream, ochre, rust and graphite palette; faint double circles beside the load marker read as stray artefacts.",
+            "distinctness": "shot-02s: cream ground with a 30-panel truss lattice of ochre and rust diagonals, a subject no anchor shows; the warm palette overlaps anchor-12 only in hue.",
+            "polish": "shot-02s: the truss sits in a thin band with large empty cream areas above and below and tiny legend text; by shot-20s the full span resolves but the end state is muddy."
+          },
+          "pairwise_beats_median": true,
+          "pairwise_median_ref": null,
+          "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head reference.",
+          "calibration_anchors_used": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-09",
+            "anchor-12"
+          ],
+          "critique": [
+            {
+              "rank": 1,
+              "change": "Add a visible load-magnitude layer: draw each diagonal's solved force as bar thickness or glow so the sign flip carries a measured value, not just a colour change.",
+              "expected_gain": 4
+            },
+            {
+              "rank": 2,
+              "change": "Keep the shot-20s end state legible: draw diagonals as ochre or rust strokes with cream joint dots instead of uniform brown fills, so the final frame still shows both signs.",
+              "expected_gain": 3
+            },
+            {
+              "rank": 3,
+              "change": "Frame shot-02s tighter on the truss with the load marker entering from the left, and remove the stray double circles beside the marker at shot-08s.",
+              "expected_gain": 2
+            }
+          ]
+        },
+        "outcome": "below_threshold"
+      },
+      {
+        "attempt": 3,
+        "model": "opus",
+        "effort": "low",
+        "gates": {
+          "passed": true,
+          "piece_path": "audit/dry-runs/run-02/attempt-3/index.html",
+          "compo": "audiovisual",
+          "byte_size": 9506,
+          "size_budget_bytes": 24576,
+          "console_errors": [],
+          "network_requests": [],
+          "luminance_variance": {
+            "t2": 292.4729,
+            "t8": 544.6908,
+            "t20": 1032.4384,
+            "floor": 12,
+            "passed": true
+          },
+          "motion": {
+            "frame_diff_mean": 1.3378,
+            "frame_diff_floor": 0.8,
+            "development_diff_t2_t20": 17.5414,
+            "development_floor": 2.5,
+            "passed": true
+          },
+          "strobe": {
+            "max_flashes_per_sec": 2,
+            "limit": 3,
+            "passed": true
+          },
+          "frame_time_ms": {
+            "median": 33.4,
+            "p90": 50,
+            "budget_ms": 250,
+            "passed": true
+          },
+          "audio_probe": {
+            "required": true,
+            "autoplayed": false,
+            "rms": 0.106813,
+            "peak": 0.603829,
+            "clipped_ratio": 0,
+            "passed": true
+          },
+          "novelty_b": {
+            "phashes": {
+              "t2": "1010909191101010",
+              "t8": "10101055a2101010",
+              "t20": "10108e110e8e860f"
+            },
+            "color_histogram": [
+              0.005692,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.000095,
+              0,
+              0,
+              0,
+              0.000187,
+              0.001876,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.012414,
+              0.006124,
+              0,
+              0,
+              0.000032,
+              0.002153,
+              0.000596,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.000513,
+              0,
+              0,
+              0.011827,
+              0.022637,
+              0.014603,
+              0,
+              0,
+              0,
+              0.040503,
+              0.880747
+            ],
+            "min_hamming_distance": null,
+            "min_histogram_distance": null,
+            "closest_date": null,
+            "passed": true
+          },
+          "slop_lint": {
+            "passed": true,
+            "violations": []
+          },
+          "reduced_motion": {
+            "passed": true,
+            "normal_motion": 1.4329,
+            "reduced_motion": 0.2333,
+            "ratio": 0.1628
+          },
+          "screenshots": {
+            "t2": "audit/dry-runs/run-02/attempt-3/shot-02s.png",
+            "t8": "audit/dry-runs/run-02/attempt-3/shot-08s.png",
+            "t20": "audit/dry-runs/run-02/attempt-3/shot-20s.png"
+          },
+          "failures": []
+        },
+        "verdict": {
+          "scores": {
+            "mechanism": 16,
+            "ambition": 15,
+            "craft": 16,
+            "distinctness": 15,
+            "polish": 7
+          },
+          "total": 69,
+          "evidence": {
+            "mechanism": "shot-08s: diagonals at midspan split into ochre and rust bars under the marker; by shot-20s a load-position by diagonal heatmap shows the sign flip as colour bands.",
+            "ambition": "shot-20s: a 2D influence-line heatmap of about 40 diagonals sits under a statics-solved truss; one flat layer plus a load sweep, no depth or material, bytes well under budget.",
+            "craft": "shot-02s: cream ground with thin graphite chords and clean ochre and rust diagonals; the glow halos on active bars look blotchy and the truss runs off the right edge.",
+            "distinctness": "shot-20s: a heatmap of diagonal sign flips has no counterpart in the anchor set; warm cream and rust echo anchor-12 but the content is a statics plot, not an orrery.",
+            "polish": "shot-02s: truss cropped at the right edge with empty cream above and below; by shot-20s the heatmap resolves the piece into a settled, readable end state."
+          },
+          "pairwise_beats_median": true,
+          "pairwise_median_ref": null,
+          "pairwise_justification": "No median archive exists yet, so tonight wins by default against an empty comparison set.",
+          "calibration_anchors_used": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-09",
+            "anchor-12"
+          ],
+          "critique": [
+            {
+              "rank": 1,
+              "change": "Centre the truss and fit the full span inside the frame at shot-02s (it is cropped at the right edge), so the first two seconds are composed before the marker moves.",
+              "expected_gain": 3
+            },
+            {
+              "rank": 2,
+              "change": "Make the memorable moment readable at shot-08s: thicken the one diagonal that flips at midspan and mark its joint with a cream dot, so the bar pulled then pushed is singled out.",
+              "expected_gain": 3
+            },
+            {
+              "rank": 3,
+              "change": "Replace the blotchy glow halos on active diagonals at shot-02s with a crisp stroke and an even soft fill, so the bars stay clean at full size.",
+              "expected_gain": 2
+            }
+          ]
+        },
+        "outcome": "below_threshold"
+      }
+    ],
+    "liner_note": "James Warren patented his truss in 1848. Every panel and diagonal has the same length, and each diagonal carries axial force only. Loads on its diagonals alternate between compression and tension as they approach the centre of the span. In the method of joints a positive member force is tensile and a negative one is compressive, so one bar can be pulled under one load and pushed under another. On screen a load marker crosses a row of equilateral triangles. Each diagonal glows ochre in tension and rust in compression, flipping as its force crosses zero, and each flip sounds a tone.",
+    "screenshots": {
+      "t2": "shot-02s.png",
+      "t8": "shot-08s.png",
+      "t20": "shot-20s.png"
+    },
+    "piece_rel_path": "pieces/2026-11-24/index.html"
+  },
+  "ledgerEntry": {
+    "date": "2026-11-24",
+    "status": "b-side",
+    "compo": "audiovisual",
+    "domain": "warren-truss-load-paths",
+    "topic": "Warren truss diagonal force sign flip: one equal-length diagonal switches from tension to compression as a load crosses its panel",
+    "concept": "A mirrored row of equal-length Warren truss diagonals, ochre in tension and rust in compression, flips sign as a load marker crosses each panel.",
+    "techniques": [
+      "method-of-joints statics solver",
+      "influence-line load sweep",
+      "tension-compression colour flip",
+      "mirrored Warren lattice"
+    ],
+    "technique_family": "physics",
+    "palette": [
+      "#efe3c8",
+      "#c8962e",
+      "#a84b2a",
+      "#3a342e"
+    ],
+    "phashes": {
+      "t2": "1010909191101010",
+      "t8": "10101055a2101010",
+      "t20": "10108e110e8e860f"
+    },
+    "color_histogram": [
+      0.005692,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.000095,
+      0,
+      0,
+      0,
+      0.000187,
+      0.001876,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.012414,
+      0.006124,
+      0,
+      0,
+      0.000032,
+      0.002153,
+      0.000596,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.000513,
+      0,
+      0,
+      0.011827,
+      0.022637,
+      0.014603,
+      0,
+      0,
+      0,
+      0.040503,
+      0.880747
+    ],
+    "score": 69,
+    "attempts": 3,
+    "mood_pad": {
+      "pleasure": 0.394,
+      "arousal": 0.467,
+      "dominance": 0.332
+    },
+    "dominant_emotion": "joy"
+  },
+  "emotionEvent": {
+    "event": "'Warren truss: the diagonal that flips from pull to push' only made the B-sides with a score of 69.",
+    "relevance": 0.6,
+    "congruence": -0.3,
+    "novelty": 0.2,
+    "praiseworthiness": 0.1,
+    "control": 0.6,
+    "event_id": "verdict-2026-11-24",
+    "topics": [
+      "physics",
+      "audiovisual"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "source": "verdict",
+    "thread": "2026-11-24"
+  },
+  "written": [
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-02/publish/site/pieces/2026-11-24/index.html",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-02/publish/site/pieces/2026-11-24/shot-02s.png",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-02/publish/site/pieces/2026-11-24/shot-08s.png",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-02/publish/site/pieces/2026-11-24/shot-20s.png",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-02/publish/site/pieces/2026-11-24/meta.json",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-02/publish/ledger/ledger.jsonl"
+  ]
+}

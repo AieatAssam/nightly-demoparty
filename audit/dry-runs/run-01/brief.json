@@ -1,0 +1,49 @@
+{
+  "title": "Basal hinge wave across a grid of pine cone scales",
+  "concept": "A grid of 48 pine cone scales, each a chain of 12 segments, curls from its base upward as humidity falls, so the bend wave crosses the field from the bottom row to the top.",
+  "mechanism_embodied": {
+    "mechanism_name": "basal hinge propagation",
+    "how_visualised": "Each of the 48 strips is a chain of 12 segments. The humidity ramp reaches each segment after a delay that grows with its height, so the bottom segment bends first and the tip lags behind. Each strip shows a pale skin on one face and dark fiber lines on the other. The viewer sees the bend wave cross the grid from base to tip."
+  },
+  "discarded_obvious_idea": "Obvious: a textbook bimetal strip bending uniformly on a gradient. Rejected: the dossier says a simple bilayer underestimates the bending, and a uniform bend hides the base-to-tip delay that is the mechanism.",
+  "compo": "constraint-night",
+  "constraint_honoured": "css-only",
+  "techniques": [
+    "nested-transform segment chain",
+    "base-to-tip animation-delay bend wave",
+    "skin-over-fiber strip layering"
+  ],
+  "novel_technique": "nested-transform segment chain",
+  "technique_family": "physics",
+  "palette": ["#EFE3C8", "#7A4E2D", "#C98A3B", "#9A4A24", "#3A3029"],
+  "motion_sound_plan": "High tempo: 48 strips with a cut rhythm of 4 beats and a bend wave paced near 120 BPM through keyframe delays. Warm-consonant: cream ground, ochre and rust, mirrored grid symmetry. Assertive: strips fill the frame, push-in to 1.3x at beat 3, pull-back to 0.8x at beat 4. Experimental: nested-transform segment chain. No sound. Constraint css-only: CSS keyframes and DOM divs only, no script and no canvas.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Cream ground with 48 strips in an 8 by 6 grid, all upright and open, with dark graphite bases. By 2 s the bottom row has begun to bend at its base while the upper rows stay straight, so the bend front is visible."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "The drying wave climbs the grid diagonally from the bottom left. Curled strips form a band across the middle, with tips lagging bases. Skin is rust and fiber lines are graphite. At 8 s the wave front sits mid-frame."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Camera pushes in to 1.3x. Every strip curls closed at full wet, rows packed tight, with an ochre brown-tissue haze behind each strip that brightens and dims with the wave. Peak density and contrast."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Camera pulls back to 0.8x, leaving a cream margin. Strips reopen base first in a staggered wave, and the top row is still curled at 20 s. The grid shows a diagonal open-to-closed gradient that differs from the 2 s frame."
+    }
+  ],
+  "memorable_moment": "A bend wave climbs the grid from base to tip, with each strip's tip visibly lagging its base.",
+  "self_declared_risk": "CSS keyframe delays may not read as a propagating wave across 48 strips, and 12 nested segments per strip may blur the bend curve into a single rotation.",
+  "liner_note": "Dawson, Vincent and Rocca reported in Nature in 1997 that pine cone scales gape open when dry and close when damp. The cells are dead, so the movement is passive. A 2025 study found the scale is multilayered, not a simple bilayer, and its simulations gave maximum displacements of 5.57 mm for a scale-like geometry and 2.90 mm for a bilayer. A 2025 Frontiers review finds drying bends the scale mainly at its base. On screen each strip is a chain of segments, pale skin on one face and dark fiber lines on the other. As humidity falls, bending starts at the base and climbs to the tip."
+}

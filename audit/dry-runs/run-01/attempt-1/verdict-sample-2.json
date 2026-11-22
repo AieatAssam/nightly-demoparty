@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 10,
+    "craft": 15,
+    "distinctness": 13,
+    "polish": 7
+  },
+  "total": 59,
+  "evidence": {
+    "mechanism": "shot-08s: strips curl into near-identical circular arcs with vertical bases and tips bent right; by shot-20s the top row stays curled while the bottom row is more upright, a base-first gradient.",
+    "ambition": "shot-08s: 48 two-tone strips (rust skin, graphite fibre face) with horizontal segment ticks on a cream ground; one flat layer with no visible haze or depth, so ambition stays low.",
+    "craft": "shot-02s: clean cream ground with an even 8x6 grid of upright strips and crisp dark bases; edges are tidy but the segment ticks are faint and the strips are small in frame.",
+    "distinctness": "shot-08s: rust-and-graphite cone-scale arcs read as a new subject beside the anchors' birds, spirals and waterfalls, though the cream palette echoes anchor-04 and anchor-11.",
+    "polish": "shot-02s: composed full-frame grid; by shot-20s the layout pulls back with a cream margin and a top-left-heavy fan, so the piece develops and resolves to a different frame."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so no head-to-head comparison is possible.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Make the base-to-tip lag visible: stagger each segment's animation-delay so the base segments bend first and the tip segments follow, concentrating the bend near the base instead of uniform circular arcs at shot-08s.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Add a second rendering idea: paint the brown-tissue haze behind each strip, as the brief describes, and add a gradient shading across the fibre face so the strips gain depth beyond one flat two-tone layer.",
+      "expected_gain": 6
+    },
+    {
+      "rank": 3,
+      "change": "Strengthen the shot-20s end state: keep the top-row curl and open the bottom bases so the cream margin frames a deliberate open-to-closed diagonal rather than a shifted fan.",
+      "expected_gain": 2
+    }
+  ]
+}

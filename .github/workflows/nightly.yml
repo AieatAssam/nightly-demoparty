@@ -1,0 +1,1210 @@
+name: Nightly Demoparty
+
+# One night: plan, research, feel, brief, then up to 3 build attempts each gated and judged, then publish.
+# Only the publish job can write to the repo or Pages, and it only reads artifacts of jobs that succeeded.
+# Job timeouts sum to 79 minutes worst-case, with 45 for build_and_judge (SPEC Section 5; see DECISIONS.md, M6C). Inside
+# build_and_judge an attempt only starts when its worst case still fits the job timeout, so a slow night stops cleanly.
+on:
+  # Uncomment after first workflow_dispatch dry run (see SETUP.md):
+  # schedule:
+  #   - cron: '17 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_domain:
+        description: Domain id from config/domains.yml (empty for the planner's pick)
+        type: string
+        default: ''
+      force_compo:
+        description: Compo id from config/compos.yml (empty for the rotation)
+        type: string
+        default: ''
+      force_mood_preset:
+        description: Mood preset name (skips the appraisal call)
+        type: string
+        default: ''
+      dry_run:
+        description: Run every stage but publish nothing (no commit, no deploy; the audit is uploaded)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+env:
+  DRY_RUN: ${{ inputs.dry_run == true }}
+  # Claude Code strips credentials (the OAuth token) from the environment of every subprocess an agent starts.
+  CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: '1'
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      date: ${{ steps.night.outputs.date }}
+      night: ${{ steps.night.outputs.night }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: "Night folder"
+        id: night
+        run: |
+          set -euo pipefail
+          date=$(date -u +%F)
+          echo "date=$date" >> "$GITHUB_OUTPUT"
+          echo "night=audit/$date" >> "$GITHUB_OUTPUT"
+          echo "NIGHT=audit/$date" >> "$GITHUB_ENV"
+      - name: "Init"
+        run: node --import tsx harness/dry-run.ts step init --night "$NIGHT"
+      - name: "Stage 0: plan"
+        env:
+          NIGHT_DATE: ${{ steps.night.outputs.date }}
+          FORCE_DOMAIN: ${{ inputs.force_domain }}
+          FORCE_COMPO: ${{ inputs.force_compo }}
+          FORCE_MOOD_PRESET: ${{ inputs.force_mood_preset }}
+        run: |
+          set -euo pipefail
+          args=(plan --date "$NIGHT_DATE" --out "$NIGHT/plan.json")
+          if [ -n "$FORCE_DOMAIN" ]; then args+=(--domain "$FORCE_DOMAIN"); fi
+          if [ -n "$FORCE_COMPO" ]; then args+=(--compo "$FORCE_COMPO"); fi
+          if [ -n "$FORCE_MOOD_PRESET" ]; then args+=(--mood-preset "$FORCE_MOOD_PRESET"); fi
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          node --import tsx harness/cli.ts "${args[@]}" > /dev/null
+          jq -c '{date, compo, domain, wildcard, dry_run}' "$NIGHT/plan.json"
+      - name: Upload night (plan)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: night-plan
+          path: ${{ env.NIGHT }}/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  research:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      NIGHT: ${{ needs.plan.outputs.night }}
+    outputs:
+      halted: ${{ steps.halt.outputs.halted }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download night (plan)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-plan
+          path: ${{ env.NIGHT }}
+      - name: "Render research prompt (try 1)"
+        id: render1
+        run: node --import tsx harness/dry-run.ts step render-research --night "$NIGHT" --try 1
+      - name: "Stage 1: research (try 1)"
+        id: research1
+        timeout-minutes: 3
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: research
+          model: haiku
+          max_turns: '15'
+          tools: WebSearch,WebFetch,Write
+          prompt_file: ${{ steps.render1.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/dossier.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '1'
+          usage_file: ${{ env.NIGHT }}/usage/research.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 1: research (try 1)"
+        if: always() && steps.research1.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-research-1.snap
+          ALLOWED: ${{ env.NIGHT }}/dossier.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Validate dossier (try 1)"
+        id: check1
+        run: |
+          if node --import tsx harness/cli.ts validate dossier "$NIGHT/dossier.json" --plan "$NIGHT/plan.json" > "$NIGHT/research-check-1.json"; then ok=true; else ok=false; fi
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+          jq -c . "$NIGHT/research-check-1.json" || true
+      - name: "Render research prompt (try 2)"
+        id: render2
+        if: steps.check1.outputs.ok != 'true'
+        run: node --import tsx harness/dry-run.ts step render-research --night "$NIGHT" --try 2
+      - name: "Stage 1: research (try 2)"
+        id: research2
+        if: steps.check1.outputs.ok != 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: research
+          model: haiku
+          max_turns: '15'
+          tools: WebSearch,WebFetch,Write
+          prompt_file: ${{ steps.render2.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/dossier.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '2'
+          usage_file: ${{ env.NIGHT }}/usage/research.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 1: research (try 2)"
+        if: always() && steps.research2.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-research-2.snap
+          ALLOWED: ${{ env.NIGHT }}/dossier.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Validate dossier (try 2)"
+        id: check2
+        if: steps.check1.outputs.ok != 'true'
+        run: |
+          if node --import tsx harness/cli.ts validate dossier "$NIGHT/dossier.json" --plan "$NIGHT/plan.json" > "$NIGHT/research-check-2.json"; then ok=true; else ok=false; fi
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+          jq -c . "$NIGHT/research-check-2.json" || true
+      - name: "Halt if both dossiers failed"
+        id: halt
+        if: steps.check1.outputs.ok != 'true' && steps.check2.outputs.ok != 'true'
+        run: node --import tsx harness/dry-run.ts step halt --night "$NIGHT" --stage research --reason "the dossier failed validation twice"
+      - name: Reject symlinks (research)
+        if: always()
+        run: |
+          set -euo pipefail
+          [ -d "$NIGHT" ] || exit 0
+          links=$(find "$NIGHT" -type l -print -delete)
+          if [ -n "$links" ]; then echo "::error::symlinks in the night folder (removed before upload):"; echo "$links"; exit 1; fi
+      - name: Guard-passed marker (research)
+        run: |
+          set -euo pipefail
+          for snap in "$RUNNER_TEMP"/guard-*.snap; do
+            [ -e "$snap" ] || continue
+            [ -f "${snap%.snap}.ok" ] || { echo "::error::no passing workspace guard for $(basename "$snap")"; exit 1; }
+          done
+          date -u +%FT%TZ > "$NIGHT/guard-passed-research"
+      - name: Upload night (research)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: night-research
+          path: ${{ env.NIGHT }}/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  feel:
+    needs: [plan, research]
+    if: needs.research.outputs.halted != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      NIGHT: ${{ needs.plan.outputs.night }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download night (research)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-research
+          path: ${{ env.NIGHT }}
+      - name: "Stage 2: preset mood"
+        if: inputs.force_mood_preset != ''
+        env:
+          NIGHT_DATE: ${{ needs.plan.outputs.date }}
+          PRESET: ${{ inputs.force_mood_preset }}
+        run: node --import tsx harness/cli.ts feel --date "$NIGHT_DATE" --preset "$PRESET" --out "$NIGHT/mood.json" > /dev/null
+      - name: "Render appraisal prompt"
+        id: render
+        if: inputs.force_mood_preset == ''
+        run: node --import tsx harness/dry-run.ts step render-appraise --night "$NIGHT"
+      - name: "Stage 2: appraise"
+        id: appraise
+        if: inputs.force_mood_preset == ''
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: appraise
+          model: haiku
+          max_turns: '3'
+          tools: Write
+          prompt_file: ${{ steps.render.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/appraisals.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '1'
+          usage_file: ${{ env.NIGHT }}/usage/appraise.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 2: appraise"
+        if: always() && steps.appraise.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-appraise-1.snap
+          ALLOWED: ${{ env.NIGHT }}/appraisals.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 2: feel"
+        if: inputs.force_mood_preset == ''
+        env:
+          NIGHT_DATE: ${{ needs.plan.outputs.date }}
+        run: |
+          set -euo pipefail
+          node --import tsx harness/dry-run.ts step check-appraisals --night "$NIGHT"
+          args=(feel --date "$NIGHT_DATE" --appraisals "$NIGHT/appraisals.json" --state-dir "$NIGHT/state" --out "$NIGHT/mood.json")
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          node --import tsx harness/cli.ts "${args[@]}" > /dev/null
+          jq -c '{pad, dominant: [.dominant_emotions[].label]}' "$NIGHT/mood.json" || true
+      - name: Reject symlinks (feel)
+        if: always()
+        run: |
+          set -euo pipefail
+          [ -d "$NIGHT" ] || exit 0
+          links=$(find "$NIGHT" -type l -print -delete)
+          if [ -n "$links" ]; then echo "::error::symlinks in the night folder (removed before upload):"; echo "$links"; exit 1; fi
+      - name: Guard-passed marker (feel)
+        run: |
+          set -euo pipefail
+          for snap in "$RUNNER_TEMP"/guard-*.snap; do
+            [ -e "$snap" ] || continue
+            [ -f "${snap%.snap}.ok" ] || { echo "::error::no passing workspace guard for $(basename "$snap")"; exit 1; }
+          done
+          date -u +%FT%TZ > "$NIGHT/guard-passed-feel"
+      - name: Upload night (feel)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: night-feel
+          path: ${{ env.NIGHT }}/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  brief:
+    needs: [plan, feel]
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      NIGHT: ${{ needs.plan.outputs.night }}
+    outputs:
+      halted: ${{ steps.halt.outputs.halted }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download night (feel)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-feel
+          path: ${{ env.NIGHT }}
+      - name: "Render brief prompt (try 1)"
+        id: render1
+        run: node --import tsx harness/dry-run.ts step render-brief --night "$NIGHT" --try 1
+      - name: "Stage 3: brief (try 1)"
+        id: brief1
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: brief
+          model: haiku
+          max_turns: '6'
+          tools: Read,Write
+          prompt_file: ${{ steps.render1.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/brief.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '1'
+          usage_file: ${{ env.NIGHT }}/usage/brief.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 3: brief (try 1)"
+        if: always() && steps.brief1.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-brief-1.snap
+          ALLOWED: ${{ env.NIGHT }}/brief.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 4: novelty gate A (try 1)"
+        id: novelty1
+        run: |
+          if node --import tsx harness/cli.ts novelty --brief "$NIGHT/brief.json" --plan "$NIGHT/plan.json" --dossier "$NIGHT/dossier.json" > "$NIGHT/novelty-1.json"; then passed=true; else passed=false; fi
+          echo "passed=$passed" >> "$GITHUB_OUTPUT"
+          jq -c . "$NIGHT/novelty-1.json" || true
+      - name: "Render brief prompt (try 2)"
+        id: render2
+        if: steps.novelty1.outputs.passed != 'true'
+        run: node --import tsx harness/dry-run.ts step render-brief --night "$NIGHT" --try 2
+      - name: "Stage 3: brief (try 2)"
+        id: brief2
+        if: steps.novelty1.outputs.passed != 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: brief
+          model: haiku
+          max_turns: '6'
+          tools: Read,Write
+          prompt_file: ${{ steps.render2.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/brief.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '2'
+          usage_file: ${{ env.NIGHT }}/usage/brief.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 3: brief (try 2)"
+        if: always() && steps.brief2.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-brief-2.snap
+          ALLOWED: ${{ env.NIGHT }}/brief.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 4: novelty gate A (try 2)"
+        id: novelty2
+        if: steps.novelty1.outputs.passed != 'true'
+        run: |
+          if node --import tsx harness/cli.ts novelty --brief "$NIGHT/brief.json" --plan "$NIGHT/plan.json" --dossier "$NIGHT/dossier.json" > "$NIGHT/novelty-2.json"; then passed=true; else passed=false; fi
+          echo "passed=$passed" >> "$GITHUB_OUTPUT"
+          jq -c . "$NIGHT/novelty-2.json" || true
+      - name: "Render brief prompt (try 3)"
+        id: render3
+        if: steps.novelty1.outputs.passed != 'true' && steps.novelty2.outputs.passed != 'true'
+        run: node --import tsx harness/dry-run.ts step render-brief --night "$NIGHT" --try 3
+      - name: "Stage 3: brief (try 3)"
+        id: brief3
+        if: steps.novelty1.outputs.passed != 'true' && steps.novelty2.outputs.passed != 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: brief
+          model: haiku
+          max_turns: '6'
+          tools: Read,Write
+          prompt_file: ${{ steps.render3.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/brief.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '3'
+          usage_file: ${{ env.NIGHT }}/usage/brief.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 3: brief (try 3)"
+        if: always() && steps.brief3.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-brief-3.snap
+          ALLOWED: ${{ env.NIGHT }}/brief.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 4: novelty gate A (try 3)"
+        id: novelty3
+        if: steps.novelty1.outputs.passed != 'true' && steps.novelty2.outputs.passed != 'true'
+        run: |
+          if node --import tsx harness/cli.ts novelty --brief "$NIGHT/brief.json" --plan "$NIGHT/plan.json" --dossier "$NIGHT/dossier.json" > "$NIGHT/novelty-3.json"; then passed=true; else passed=false; fi
+          echo "passed=$passed" >> "$GITHUB_OUTPUT"
+          jq -c . "$NIGHT/novelty-3.json" || true
+      - name: "Halt if three briefs failed"
+        id: halt
+        if: steps.novelty1.outputs.passed != 'true' && steps.novelty2.outputs.passed != 'true' && steps.novelty3.outputs.passed != 'true'
+        run: node --import tsx harness/dry-run.ts step halt --night "$NIGHT" --stage brief --reason "three briefs failed Novelty Gate A"
+      - name: Reject symlinks (brief)
+        if: always()
+        run: |
+          set -euo pipefail
+          [ -d "$NIGHT" ] || exit 0
+          links=$(find "$NIGHT" -type l -print -delete)
+          if [ -n "$links" ]; then echo "::error::symlinks in the night folder (removed before upload):"; echo "$links"; exit 1; fi
+      - name: Guard-passed marker (brief)
+        run: |
+          set -euo pipefail
+          for snap in "$RUNNER_TEMP"/guard-*.snap; do
+            [ -e "$snap" ] || continue
+            [ -f "${snap%.snap}.ok" ] || { echo "::error::no passing workspace guard for $(basename "$snap")"; exit 1; }
+          done
+          date -u +%FT%TZ > "$NIGHT/guard-passed-brief"
+      - name: Upload night (brief)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: night-brief
+          path: ${{ env.NIGHT }}/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  build_and_judge:
+    needs: [plan, brief]
+    if: needs.brief.outputs.halted != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      NIGHT: ${{ needs.plan.outputs.night }}
+      # Latest job second at which another attempt may start: its worst case (build 7 + gates 3 + 4 jury calls x 2
+      # = 18 minutes) plus 1 minute for the upload must fit the 45-minute job timeout (SPEC Section 5; job timeouts
+      # sum to 79 minutes worst-case). 1560 s = 26 minutes, and 26 + 19 = 45.
+      LAST_ATTEMPT_START_S: '1560'
+    steps:
+      - name: Start the clock
+        run: echo "JOB_START=$(date +%s)" >> "$GITHUB_ENV"
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Cache Playwright browsers
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Download night (brief)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-brief
+          path: ${{ env.NIGHT }}
+      - name: "Render build prompt (attempt 1)"
+        id: renderbuild1
+        run: |
+          set -euo pipefail
+          rm -f "$NIGHT/piece/index.html"
+          node --import tsx harness/dry-run.ts step render-build --night "$NIGHT" --attempt 1
+      - name: "Stage 5: build (attempt 1)"
+        id: build1
+        timeout-minutes: 7
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: build
+          model: haiku
+          max_turns: '30'
+          tools: Read,Write,Edit,Bash(npm run gate:*)
+          prompt_file: ${{ steps.renderbuild1.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/piece/index.html,${{ env.NIGHT }}/selfgate/
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '1'
+          usage_file: ${{ env.NIGHT }}/usage/build.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 5: build (attempt 1)"
+        if: always() && steps.build1.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-build-1.snap
+          ALLOWED: ${{ env.NIGHT }}/piece/index.html,${{ env.NIGHT }}/selfgate/
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 6: hard gates in a fresh folder (attempt 1)"
+        id: gate1
+        timeout-minutes: 3
+        continue-on-error: true
+        run: node --import tsx harness/dry-run.ts step gate --night "$NIGHT" --attempt 1
+      - name: "Render jury prompts (attempt 1)"
+        id: renderjury1
+        if: steps.gate1.outputs.passed == 'true'
+        run: node --import tsx harness/dry-run.ts step render-jury --night "$NIGHT" --attempt 1
+      - name: "Stage 7: jury sample 1 (attempt 1)"
+        id: jury1s1
+        if: steps.gate1.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury1.outputs.prompt_1 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-1/verdict-sample-1.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '1'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 1 (attempt 1)"
+        if: always() && steps.jury1s1.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-1.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-1/verdict-sample-1.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 7: jury sample 2 (attempt 1)"
+        id: jury1s2
+        if: steps.gate1.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury1.outputs.prompt_2 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-1/verdict-sample-2.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '2'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 2 (attempt 1)"
+        if: always() && steps.jury1s2.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-2.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-1/verdict-sample-2.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 7: jury sample 3 (attempt 1)"
+        id: jury1s3
+        if: steps.gate1.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury1.outputs.prompt_3 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-1/verdict-sample-3.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '3'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 3 (attempt 1)"
+        if: always() && steps.jury1s3.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-3.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-1/verdict-sample-3.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Check verdicts (attempt 1)"
+        id: jurycheck1
+        if: steps.gate1.outputs.passed == 'true'
+        run: node --import tsx harness/dry-run.ts step jury-check --night "$NIGHT" --attempt 1
+      - name: "Stage 7: jury evidence retry (attempt 1)"
+        id: jury1s4
+        if: steps.gate1.outputs.passed == 'true' && steps.jurycheck1.outputs.retry == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury1.outputs.prompt_4 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-1/verdict-sample-4.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '4'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury evidence retry (attempt 1)"
+        if: always() && steps.jury1s4.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-4.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-1/verdict-sample-4.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Recheck verdicts (attempt 1)"
+        id: jurycheck1b
+        if: steps.gate1.outputs.passed == 'true' && steps.jurycheck1.outputs.retry == 'true'
+        run: node --import tsx harness/dry-run.ts step jury-check --night "$NIGHT" --attempt 1
+      - name: "Aggregate jury (attempt 1)"
+        if: steps.gate1.outputs.passed == 'true'
+        env:
+          FILES: ${{ steps.jurycheck1b.outputs.files || steps.jurycheck1.outputs.files }}
+          ANCHORS: ${{ steps.jurycheck1.outputs.expected_anchors }}
+          ARCHIVE_FLAG: ${{ steps.jurycheck1.outputs.archive_flag }}
+        run: |
+          set -euo pipefail
+          if [ -z "$FILES" ]; then echo "no valid verdict sample"; exit 0; fi
+          read -ra files <<< "$FILES"
+          node --import tsx harness/cli.ts aggregate-jury "${files[@]}" --out "$NIGHT/attempt-1/verdict.json" --expected-anchors "$ANCHORS" "$ARCHIVE_FLAG" > /dev/null
+          jq -c '{total, pairwise_beats_median}' "$NIGHT/attempt-1/verdict.json"
+      - name: "Stage 8: decide (attempt 1)"
+        id: decide1
+        run: |
+          set -euo pipefail
+          flags=$(node --import tsx harness/dry-run.ts step attempts --night "$NIGHT")
+          anchors=$(jq -r .expected_anchors <<< "$flags")
+          archive_flag=$(jq -r .archive_flag <<< "$flags")
+          node --import tsx harness/cli.ts decide --attempts "$NIGHT/attempts.json" --current 1 --max 3 "$archive_flag" --expected-anchors "$anchors" > "$NIGHT/decision-1.json"
+          action=$(jq -r .action "$NIGHT/decision-1.json")
+          if [ "$action" = retry ] && (( $(date +%s) - JOB_START > LAST_ATTEMPT_START_S )); then
+            echo "::warning::no time left for attempt 2; Stage 9 decides on the attempts so far"
+            action=out-of-time
+          fi
+          echo "action=$action" >> "$GITHUB_OUTPUT"
+          jq -c '{action, best_attempt, best_total, reason}' "$NIGHT/decision-1.json"
+      - name: "Render build prompt (attempt 2)"
+        id: renderbuild2
+        if: steps.decide1.outputs.action == 'retry'
+        run: |
+          set -euo pipefail
+          rm -f "$NIGHT/piece/index.html"
+          node --import tsx harness/dry-run.ts step render-build --night "$NIGHT" --attempt 2
+      - name: "Stage 5: build (attempt 2)"
+        id: build2
+        if: steps.decide1.outputs.action == 'retry'
+        timeout-minutes: 7
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: build
+          model: haiku
+          max_turns: '30'
+          tools: Read,Write,Edit,Bash(npm run gate:*)
+          prompt_file: ${{ steps.renderbuild2.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/piece/index.html,${{ env.NIGHT }}/selfgate/
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '2'
+          usage_file: ${{ env.NIGHT }}/usage/build.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 5: build (attempt 2)"
+        if: always() && steps.build2.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-build-2.snap
+          ALLOWED: ${{ env.NIGHT }}/piece/index.html,${{ env.NIGHT }}/selfgate/
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 6: hard gates in a fresh folder (attempt 2)"
+        id: gate2
+        timeout-minutes: 3
+        continue-on-error: true
+        if: steps.decide1.outputs.action == 'retry'
+        run: node --import tsx harness/dry-run.ts step gate --night "$NIGHT" --attempt 2
+      - name: "Render jury prompts (attempt 2)"
+        id: renderjury2
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true'
+        run: node --import tsx harness/dry-run.ts step render-jury --night "$NIGHT" --attempt 2
+      - name: "Stage 7: jury sample 1 (attempt 2)"
+        id: jury2s1
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury2.outputs.prompt_1 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-2/verdict-sample-1.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '5'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 1 (attempt 2)"
+        if: always() && steps.jury2s1.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-5.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-2/verdict-sample-1.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 7: jury sample 2 (attempt 2)"
+        id: jury2s2
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury2.outputs.prompt_2 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-2/verdict-sample-2.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '6'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 2 (attempt 2)"
+        if: always() && steps.jury2s2.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-6.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-2/verdict-sample-2.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 7: jury sample 3 (attempt 2)"
+        id: jury2s3
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury2.outputs.prompt_3 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-2/verdict-sample-3.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '7'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 3 (attempt 2)"
+        if: always() && steps.jury2s3.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-7.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-2/verdict-sample-3.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Check verdicts (attempt 2)"
+        id: jurycheck2
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true'
+        run: node --import tsx harness/dry-run.ts step jury-check --night "$NIGHT" --attempt 2
+      - name: "Stage 7: jury evidence retry (attempt 2)"
+        id: jury2s4
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true' && steps.jurycheck2.outputs.retry == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury2.outputs.prompt_4 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-2/verdict-sample-4.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '8'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury evidence retry (attempt 2)"
+        if: always() && steps.jury2s4.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-8.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-2/verdict-sample-4.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Recheck verdicts (attempt 2)"
+        id: jurycheck2b
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true' && steps.jurycheck2.outputs.retry == 'true'
+        run: node --import tsx harness/dry-run.ts step jury-check --night "$NIGHT" --attempt 2
+      - name: "Aggregate jury (attempt 2)"
+        if: steps.decide1.outputs.action == 'retry' && steps.gate2.outputs.passed == 'true'
+        env:
+          FILES: ${{ steps.jurycheck2b.outputs.files || steps.jurycheck2.outputs.files }}
+          ANCHORS: ${{ steps.jurycheck2.outputs.expected_anchors }}
+          ARCHIVE_FLAG: ${{ steps.jurycheck2.outputs.archive_flag }}
+        run: |
+          set -euo pipefail
+          if [ -z "$FILES" ]; then echo "no valid verdict sample"; exit 0; fi
+          read -ra files <<< "$FILES"
+          node --import tsx harness/cli.ts aggregate-jury "${files[@]}" --out "$NIGHT/attempt-2/verdict.json" --expected-anchors "$ANCHORS" "$ARCHIVE_FLAG" > /dev/null
+          jq -c '{total, pairwise_beats_median}' "$NIGHT/attempt-2/verdict.json"
+      - name: "Stage 8: decide (attempt 2)"
+        id: decide2
+        if: steps.decide1.outputs.action == 'retry'
+        run: |
+          set -euo pipefail
+          flags=$(node --import tsx harness/dry-run.ts step attempts --night "$NIGHT")
+          anchors=$(jq -r .expected_anchors <<< "$flags")
+          archive_flag=$(jq -r .archive_flag <<< "$flags")
+          node --import tsx harness/cli.ts decide --attempts "$NIGHT/attempts.json" --current 2 --max 3 "$archive_flag" --expected-anchors "$anchors" > "$NIGHT/decision-2.json"
+          action=$(jq -r .action "$NIGHT/decision-2.json")
+          if [ "$action" = retry ] && (( $(date +%s) - JOB_START > LAST_ATTEMPT_START_S )); then
+            echo "::warning::no time left for attempt 3; Stage 9 decides on the attempts so far"
+            action=out-of-time
+          fi
+          echo "action=$action" >> "$GITHUB_OUTPUT"
+          jq -c '{action, best_attempt, best_total, reason}' "$NIGHT/decision-2.json"
+      - name: "Render build prompt (attempt 3)"
+        id: renderbuild3
+        if: steps.decide2.outputs.action == 'retry'
+        run: |
+          set -euo pipefail
+          rm -f "$NIGHT/piece/index.html"
+          node --import tsx harness/dry-run.ts step render-build --night "$NIGHT" --attempt 3
+      - name: "Stage 5: build (attempt 3)"
+        id: build3
+        if: steps.decide2.outputs.action == 'retry'
+        timeout-minutes: 7
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: build
+          model: opus
+          effort: low
+          max_turns: '30'
+          tools: Read,Write,Edit,Bash(npm run gate:*)
+          prompt_file: ${{ steps.renderbuild3.outputs.prompt_file }}
+          allowed_write_paths: ${{ env.NIGHT }}/piece/index.html,${{ env.NIGHT }}/selfgate/
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '3'
+          usage_file: ${{ env.NIGHT }}/usage/build.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 5: build (attempt 3)"
+        if: always() && steps.build3.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-build-3.snap
+          ALLOWED: ${{ env.NIGHT }}/piece/index.html,${{ env.NIGHT }}/selfgate/
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 6: hard gates in a fresh folder (attempt 3)"
+        id: gate3
+        timeout-minutes: 3
+        continue-on-error: true
+        if: steps.decide2.outputs.action == 'retry'
+        run: node --import tsx harness/dry-run.ts step gate --night "$NIGHT" --attempt 3
+      - name: "Render jury prompts (attempt 3)"
+        id: renderjury3
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true'
+        run: node --import tsx harness/dry-run.ts step render-jury --night "$NIGHT" --attempt 3
+      - name: "Stage 7: jury sample 1 (attempt 3)"
+        id: jury3s1
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury3.outputs.prompt_1 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-3/verdict-sample-1.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '9'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 1 (attempt 3)"
+        if: always() && steps.jury3s1.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-9.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-3/verdict-sample-1.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 7: jury sample 2 (attempt 3)"
+        id: jury3s2
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury3.outputs.prompt_2 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-3/verdict-sample-2.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '10'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 2 (attempt 3)"
+        if: always() && steps.jury3s2.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-10.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-3/verdict-sample-2.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Stage 7: jury sample 3 (attempt 3)"
+        id: jury3s3
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury3.outputs.prompt_3 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-3/verdict-sample-3.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '11'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury sample 3 (attempt 3)"
+        if: always() && steps.jury3s3.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-11.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-3/verdict-sample-3.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Check verdicts (attempt 3)"
+        id: jurycheck3
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true'
+        run: node --import tsx harness/dry-run.ts step jury-check --night "$NIGHT" --attempt 3
+      - name: "Stage 7: jury evidence retry (attempt 3)"
+        id: jury3s4
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true' && steps.jurycheck3.outputs.retry == 'true'
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: jury
+          model: haiku
+          effort: high
+          max_turns: '4'
+          tools: Read,Write
+          prompt_file: ${{ steps.renderjury3.outputs.prompt_4 }}
+          allowed_write_paths: ${{ env.NIGHT }}/attempt-3/verdict-sample-4.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ needs.plan.outputs.date }}
+          attempt: '12'
+          usage_file: ${{ env.NIGHT }}/usage/jury.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Stage 7: jury evidence retry (attempt 3)"
+        if: always() && steps.jury3s4.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-jury-12.snap
+          ALLOWED: ${{ env.NIGHT }}/attempt-3/verdict-sample-4.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: "Recheck verdicts (attempt 3)"
+        id: jurycheck3b
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true' && steps.jurycheck3.outputs.retry == 'true'
+        run: node --import tsx harness/dry-run.ts step jury-check --night "$NIGHT" --attempt 3
+      - name: "Aggregate jury (attempt 3)"
+        if: steps.decide2.outputs.action == 'retry' && steps.gate3.outputs.passed == 'true'
+        env:
+          FILES: ${{ steps.jurycheck3b.outputs.files || steps.jurycheck3.outputs.files }}
+          ANCHORS: ${{ steps.jurycheck3.outputs.expected_anchors }}
+          ARCHIVE_FLAG: ${{ steps.jurycheck3.outputs.archive_flag }}
+        run: |
+          set -euo pipefail
+          if [ -z "$FILES" ]; then echo "no valid verdict sample"; exit 0; fi
+          read -ra files <<< "$FILES"
+          node --import tsx harness/cli.ts aggregate-jury "${files[@]}" --out "$NIGHT/attempt-3/verdict.json" --expected-anchors "$ANCHORS" "$ARCHIVE_FLAG" > /dev/null
+          jq -c '{total, pairwise_beats_median}' "$NIGHT/attempt-3/verdict.json"
+      - name: "Stage 8: decide (attempt 3)"
+        id: decide3
+        if: steps.decide2.outputs.action == 'retry'
+        run: |
+          set -euo pipefail
+          flags=$(node --import tsx harness/dry-run.ts step attempts --night "$NIGHT")
+          anchors=$(jq -r .expected_anchors <<< "$flags")
+          archive_flag=$(jq -r .archive_flag <<< "$flags")
+          node --import tsx harness/cli.ts decide --attempts "$NIGHT/attempts.json" --current 3 --max 3 "$archive_flag" --expected-anchors "$anchors" > "$NIGHT/decision-3.json"
+          action=$(jq -r .action "$NIGHT/decision-3.json")
+          echo "action=$action" >> "$GITHUB_OUTPUT"
+          jq -c '{action, best_attempt, best_total, reason}' "$NIGHT/decision-3.json"
+      - name: Reject symlinks (build)
+        if: always()
+        run: |
+          set -euo pipefail
+          [ -d "$NIGHT" ] || exit 0
+          links=$(find "$NIGHT" -type l -print -delete)
+          if [ -n "$links" ]; then echo "::error::symlinks in the night folder (removed before upload):"; echo "$links"; exit 1; fi
+      - name: Guard-passed marker (build)
+        run: |
+          set -euo pipefail
+          for snap in "$RUNNER_TEMP"/guard-*.snap; do
+            [ -e "$snap" ] || continue
+            [ -f "${snap%.snap}.ok" ] || { echo "::error::no passing workspace guard for $(basename "$snap")"; exit 1; }
+          done
+          date -u +%FT%TZ > "$NIGHT/guard-passed-build_and_judge"
+      - name: Upload night (build)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: night-build
+          path: ${{ env.NIGHT }}/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  publish:
+    needs: [plan, research, feel, brief, build_and_judge]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-latest
+    # deploy-pages alone may wait up to 10 minutes.
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      NIGHT: ${{ needs.plan.outputs.night }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      # Each artifact holds the whole night so far. Only artifacts of jobs that succeeded (every guard passed) are
+      # laid over the night folder, in order, and never one after a job that did not succeed.
+      - name: Download night (plan)
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-plan
+          path: ${{ env.NIGHT }}
+      - name: Download night (research)
+        if: needs.research.result == 'success'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-research
+          path: ${{ env.NIGHT }}
+      - name: Download night (feel)
+        if: needs.research.result == 'success' && needs.feel.result == 'success'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-feel
+          path: ${{ env.NIGHT }}
+      - name: Download night (brief)
+        if: needs.research.result == 'success' && needs.feel.result == 'success' && needs.brief.result == 'success'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-brief
+          path: ${{ env.NIGHT }}
+      - name: Download night (build)
+        if: needs.research.result == 'success' && needs.feel.result == 'success' && needs.brief.result == 'success' && needs.build_and_judge.result == 'success'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: night-build
+          path: ${{ env.NIGHT }}
+      - name: "Check the night's jobs"
+        id: jobs
+        env:
+          RESEARCH: ${{ needs.research.result }}
+          FEEL: ${{ needs.feel.result }}
+          BRIEF: ${{ needs.brief.result }}
+          BUILD: ${{ needs.build_and_judge.result }}
+        run: |
+          set -euo pipefail
+          links=$(find "$NIGHT" -type l -print -delete)
+          if [ -n "$links" ]; then echo "::error::symlinks in the downloaded night:"; echo "$links"; exit 1; fi
+          failed=""
+          why=""
+          for pair in "research:$RESEARCH" "feel:$FEEL" "brief:$BRIEF" "build_and_judge:$BUILD"; do
+            job=${pair%%:*}
+            result=${pair#*:}
+            case "$result" in
+              success) if [ ! -f "$NIGHT/guard-passed-$job" ]; then failed=$job; why="its guard-passed marker is missing"; break; fi ;;
+              skipped) ;;
+              *) failed=$job; why="the job ended in $result"; break ;;
+            esac
+          done
+          if [ -n "$failed" ]; then
+            echo "::warning::$failed: $why; shelving without its outputs"
+            node --import tsx harness/dry-run.ts step halt --night "$NIGHT" --stage "$failed" --reason "$why; none of its outputs were used" > /dev/null
+            echo "state_ok=false" >> "$GITHUB_OUTPUT"
+          elif [ "$FEEL" = success ]; then
+            echo "state_ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "state_ok=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: "Stage 9: publish input"
+        run: |
+          set -euo pipefail
+          if [ "$DRY_RUN" = "true" ]; then
+            node --import tsx harness/dry-run.ts step publish-input --night "$NIGHT" --dry-run
+          else
+            node --import tsx harness/dry-run.ts step publish-input --night "$NIGHT"
+          fi
+      - name: "Stage 9: publish (dry run)"
+        if: env.DRY_RUN == 'true'
+        run: |
+          set -euo pipefail
+          node --import tsx harness/cli.ts publish --input "$NIGHT/publish-input.json" --dry-run --out "$NIGHT/publish" > "$NIGHT/publish-output.json"
+          fb="$NIGHT/feedback.json"
+          args=(emotion-feedback --date "$(jq -r .date "$fb")" --status "$(jq -r .status "$fb")" --score "$(jq -r .score "$fb")"
+            --compo "$(jq -r .compo "$fb")" --domain "$(jq -r .domain "$fb")" --dry-run --state-dir "$NIGHT/state")
+          family=$(jq -r .technique_family "$fb")
+          if [ -n "$family" ]; then args+=(--technique-family "$family"); fi
+          node --import tsx harness/cli.ts "${args[@]}" > "$NIGHT/emotion-feedback.json"
+          node --import tsx harness/dry-run.ts step finalize --night "$NIGHT" --dry-run
+      - name: "Stage 9: publish"
+        if: env.DRY_RUN != 'true'
+        env:
+          STATE_OK: ${{ steps.jobs.outputs.state_ok }}
+        run: |
+          set -euo pipefail
+          node --import tsx harness/cli.ts publish --input "$NIGHT/publish-input.json" > "$NIGHT/publish-output.json"
+          # The night's appraisals moved the scratch copy of the engine state. It becomes the real state only when feel
+          # succeeded and no job failed; otherwise the shelved night's feedback lands on the unchanged state.
+          if [ "$STATE_OK" = "true" ] && [ -f "$NIGHT/state/emotion.json" ]; then cp "$NIGHT/state/emotion.json" state/emotion.json; fi
+          fb="$NIGHT/feedback.json"
+          args=(emotion-feedback --date "$(jq -r .date "$fb")" --status "$(jq -r .status "$fb")" --score "$(jq -r .score "$fb")"
+            --compo "$(jq -r .compo "$fb")" --domain "$(jq -r .domain "$fb")")
+          family=$(jq -r .technique_family "$fb")
+          if [ -n "$family" ]; then args+=(--technique-family "$family"); fi
+          node --import tsx harness/cli.ts "${args[@]}" > "$NIGHT/emotion-feedback.json"
+          node --import tsx harness/dry-run.ts step finalize --night "$NIGHT"
+          cat "$NIGHT/usage.jsonl" >> audit/usage.jsonl
+      - name: "Summary"
+        run: jq . "$NIGHT/summary.json" || true
+      - name: "Prune the audit folder"
+        run: |
+          set -euo pipefail
+          rm -rf "$NIGHT/strips" "$NIGHT/selfgate" "$NIGHT/piece" "$NIGHT/state"
+          find "$NIGHT" -name '*.png' -delete
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: night-audit
+          path: ${{ env.NIGHT }}/
+          retention-days: 30
+          if-no-files-found: ignore
+      # Git first, Pages second: the site can never show a night that is not on the branch.
+      - name: "Commit and push the night"
+        if: env.DRY_RUN != 'true'
+        env:
+          NIGHT_DATE: ${{ needs.plan.outputs.date }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/emotion.json ledger/ledger.jsonl audit/
+          if [ -d site/pieces ]; then git add site/pieces/; fi
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Night $NIGHT_DATE: $(jq -r .status "$NIGHT/summary.json")"
+          for try in 1 2 3 4 5; do
+            if git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            git rebase --abort 2> /dev/null || true
+            sleep $((try * 5))
+          done
+          echo "::error::push failed after 5 tries"
+          exit 1
+      - name: "Build site"
+        if: env.DRY_RUN != 'true'
+        run: if [ -f site/build.ts ]; then npm run site:build; fi
+      - name: Configure Pages
+        if: env.DRY_RUN != 'true' && hashFiles('site/dist/index.html') != ''
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: Upload Pages artifact
+        if: env.DRY_RUN != 'true' && hashFiles('site/dist/index.html') != ''
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b179fa # v3
+        with:
+          path: site/dist
+      - name: Deploy Pages
+        id: deployment
+        if: env.DRY_RUN != 'true' && hashFiles('site/dist/index.html') != ''
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

@@ -1,0 +1,16 @@
+{"stage":"research","attempt":1,"model":"haiku","effort":null,"telemetry":true}
+{"stage":"research","attempt":2,"model":"haiku","effort":null,"telemetry":true}
+{"stage":"appraise","attempt":1,"model":"haiku","effort":null,"telemetry":true}
+{"stage":"brief","attempt":1,"model":"haiku","effort":null,"telemetry":true}
+{"stage":"build","attempt":1,"model":"haiku","effort":null,"telemetry":true}
+{"stage":"jury","attempt":1,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"jury","attempt":2,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"jury","attempt":3,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"build","attempt":2,"model":"haiku","effort":null,"telemetry":true}
+{"stage":"jury","attempt":5,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"jury","attempt":6,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"jury","attempt":7,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"build","attempt":3,"model":"opus","effort":"low","telemetry":true}
+{"stage":"jury","attempt":9,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"jury","attempt":10,"model":"haiku","effort":"high","telemetry":true}
+{"stage":"jury","attempt":11,"model":"haiku","effort":"high","telemetry":true}

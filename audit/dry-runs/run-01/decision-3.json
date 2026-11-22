@@ -1,0 +1,22 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 3,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "b-side",
+  "best_attempt": 2,
+  "best_total": 68,
+  "reason": "B-side: best attempt 2 scored 68, below the publish threshold 72.",
+  "feedback": null
+}

@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 12,
+    "craft": 16,
+    "distinctness": 16,
+    "polish": 7
+  },
+  "total": 66,
+  "evidence": {
+    "mechanism": "shot-02s: a rust run of diagonals sits left of the marker at x~236 while ochre bars sit right of it; by shot-08s the marker has moved to x~308 and the colour boundary has shifted with it.",
+    "ambition": "shot-08s: one flat 2D line truss of about 30 panels plus a single influence-line plot underneath; no depth, material or layered rendering, so it is one rendering idea on one solver.",
+    "craft": "shot-20s: clean cream ground with even 1px chords and evenly sized diagonals and no artefacts; the influence-line plot has a hard vertical step at midspan and the bars read thin at full size.",
+    "distinctness": "shot-02s: cream, ochre and rust palette with force-sign colouring on a line truss matches no anchor; anchor-12 shares warm tones, but its orrery and spiral overlap nothing shown here.",
+    "polish": "shot-20s: the full span pulls back with the marker parked at the right end, which resolves the piece; but the frame reads close to shot-02s, so development is mostly marker travel."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet: the median block reads NONE, so the head-to-head check is skipped.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Add a second developing layer to the truss: give each diagonal a force-magnitude glow or thickness that changes as the marker moves, so shot-08s and shot-20s differ in more than colour.",
+      "expected_gain": 6
+    },
+    {
+      "rank": 2,
+      "change": "Make shot-20s a settled end state, not a near copy of shot-02s: leave a residual pattern of rust centre bars and ochre ends on screen after the marker exits.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Mark each zero-crossing on screen: when a diagonal's force crosses zero, flash its joint and draw a tick on the influence-line plot at the same x, linking the flip to the bar that caused it.",
+      "expected_gain": 4
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-25",
+  "dry_run": true,
+  "compo": "simulation",
+  "domain": "mycorrhizal-carbon-routing",
+  "status": "b-side",
+  "reason": "B-side: best attempt 2 scored 67, below the publish threshold 72.",
+  "best_attempt": 2,
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 64
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 67
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 66
+    }
+  ],
+  "llm_calls": 16,
+  "cost_usd": 2.1952,
+  "tokens": 6728824,
+  "duration_s": 1529
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warren truss: the diagonal that flips from pull to push</title>
+<style>*{margin:0}html,body{height:100%;background:#efe3c8;overflow:hidden}canvas{width:100vw;height:100vh;display:block}#t{position:fixed;left:16px;top:14px;font:13px/1.5 ui-monospace,Menlo,monospace;color:#3a342e;pointer-events:none}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="t">WARREN TRUSS · DIAGONAL FORCE SIGN<br><span style="color:#c8962e">■</span> tension &nbsp; <span style="color:#a84b2a">■</span> compression</div>
+<script type="module">
+const srng=e=>()=>{e=e+1831565813|0;let t=Math.imul(e^e>>>15,1|e);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296},mtof=e=>440*2**((e-69)/12);function synthBus(e,{delay:t=.3,feedback:n=.35,wet:l=.25}={}){const a=h=>{const p=e.createGain();return p.gain.value=h,p},i=a(1),o=a(1),u=a(l),c=a(n),r=e.createDelay(2),s=e.createDelay(2),f=e.createChannelMerger(2),d=e.createDynamicsCompressor(),A=e.createWaveShaper(),g=e.createAnalyser(),q=new Float32Array(1024);for(let h=0;h<1024;h++)q[h]=.9*Math.tanh(2*(h/511.5-1));A.curve=q,d.threshold.value=-18,d.ratio.value=4,d.attack.value=.003,d.release.value=.2,r.delayTime.value=s.delayTime.value=t,i.connect(o),i.connect(u).connect(r).connect(s).connect(c).connect(r),r.connect(f,0,0),s.connect(f,0,1),f.connect(o),o.connect(d).connect(A).connect(g).connect(e.destination),g.fftSize=1024;const w=new Uint8Array(g.frequencyBinCount),v=new Float32Array(g.fftSize),y={bass:0,mid:0,high:0,rms:0};let R=0;const M=(h,p)=>{const b=e.sampleRate/g.fftSize,m=Math.round(h/b),k=Math.max(m+1,Math.round(p/b));let B=0;for(let T=m;T<k;T++)B+=w[T];return B/(k-m)/255};return{input:i,analyser:g,bands:()=>{g.getByteFrequencyData(w),g.getFloatTimeDomainData(v);let h=0;for(const m of v)h+=m*m;const p={bass:M(20,250),mid:M(250,2e3),high:M(2e3,1e4),rms:Math.min(1,Math.sqrt(h/v.length)*2)},b=Math.max(0,e.currentTime-R);R=e.currentTime;for(const m in y)y[m]=p[m]+(y[m]-p[m])*Math.exp(-b/(p[m]>y[m]?.05:.25));return{...y}}}}const env=(e,t,n,l,a)=>{const i=e.createGain();return i.gain.setValueAtTime(0,t),i.gain.linearRampToValueAtTime(a,t+n),i.gain.exponentialRampToValueAtTime(1e-4,t+n+l),i};function fm(e,t,n,l,a=.4,{ratio:i=2,index:o=3,vol:u=.3}={}){const c=e.createOscillator(),r=e.createOscillator(),s=e.createGain(),f=env(e,n,.005,a,u);c.frequency.value=l,r.frequency.value=l*i,s.gain.setValueAtTime(l*o,n),s.gain.exponentialRampToValueAtTime(l*o*.05+.001,n+a),r.connect(s).connect(c.frequency),c.connect(f).connect(t);for(const d of[c,r])d.start(n),d.stop(n+a+.05)}function sub(e,t,n,l,a=.3,{cutoff:i=1800,q:o=6,vol:u=.25,type:c="sawtooth"}={}){const r=e.createOscillator(),s=e.createBiquadFilter(),f=env(e,n,.005,a,u);r.type=c,r.frequency.value=l,s.type="lowpass",s.Q.value=o,s.frequency.setValueAtTime(i,n),s.frequency.exponentialRampToValueAtTime(Math.max(60,l),n+a),r.connect(s).connect(f).connect(t),r.start(n),r.stop(n+a+.05)}function ksBuffer(e,t,n=1,l=1,a=.996){const i=Math.max(2,Math.round(e/t)),o=new Float32Array(Math.ceil(e*n)),u=srng(l);for(let c=0;c<i&&c<o.length;c++)o[c]=u()*2-1;for(let c=i;c<o.length;c++)o[c]=a*.5*(o[c-i]+o[c-i+1]);return o}function pluck(e,t,n,l,a=1,{vol:i=.4,seed:o=1,damp:u=.996}={}){const c=e.createBuffer(1,Math.ceil(e.sampleRate*a),e.sampleRate),r=e.createBufferSource(),s=e.createGain();c.copyToChannel(ksBuffer(e.sampleRate,l,a,o,u),0),r.buffer=c,s.gain.value=i,r.connect(s).connect(t),r.start(n)}const seq=({bpm:e=120,div:t=4,seed:n=1}={},l)=>(a,i,o,u,c=0)=>{const r=60/e/t;for(let s=Math.max(0,Math.ceil(o/r-1e-9));s*r<u;s++)l(a,i,c+s*r,s,srng(n^Math.imul(s+1,2654435761)))};function startSynth(e,{target:t=document,ahead:n=.2,bus:l}={}){const a={ctx:null,bus:null,bands:()=>({bass:0,mid:0,high:0,rms:0})},i=()=>{if(a.ctx)return void a.ctx.resume();const o=a.ctx=new AudioContext,u=a.bus=synthBus(o,l),c=o.currentTime+.05;let r=0;a.bands=u.bands;const s=()=>{const f=o.currentTime-c+n;f>r&&(e(o,u.input,r,f,c),r=f)};s(),setInterval(s,50)};for(const o of["pointerdown","keydown"])t.addEventListener(o,i);return a}const registerAudioProbe=(e,t)=>{window.__demopartyAudioProbe=async n=>e(n,synthBus(n,t).input,0,n.length/n.sampleRate,0)};export{mtof,synthBus,fm,sub,ksBuffer,pluck,seq,startSynth,registerAudioProbe};
+const clamp01=t=>t<0?0:t>1?1:t,lerp=(t,n,c)=>t+(n-t)*c,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),quintic=t=>(t=clamp01(t),t*t*t*(t*(t*6-15)+10)),cubicInOut=t=>(t=clamp01(t),t<.5?4*t*t*t:1-(-2*t+2)**3/2),expoOut=t=>(t=clamp01(t),t===1?1:1-2**(-10*t)),backOut=(t,n=1.70158)=>(t=clamp01(t)-1,1+t*t*((n+1)*t+n)),elasticOut=t=>(t=clamp01(t),t===0||t===1?t:2**(-10*t)*Math.sin((t*10-.75)*(2*Math.PI/3))+1),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),CUTS=[0,5,10,15,20],act=(t,n=CUTS)=>{let c=0;for(;c<n.length-2&&t>=n[c+1];)c++;return{i:c,p:clamp01((t-n[c])/(n[c+1]-n[c]))}},acts=(t,n=CUTS,c=1)=>{const e=o=>o===0?1:o===n.length-1?0:smooth((t-n[o])/c+.5);return n.slice(0,-1).map((o,s)=>e(s)-e(s+1))},storyClock=({reduce:t=.2,cuts:n=CUTS}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r,...act(e,n)}}};export{clamp01,lerp,smooth,quintic,cubicInOut,expoOut,backOut,elasticOut,beat,CUTS,act,acts,storyClock};
+
+// ---- Warren truss: statics solved by the method of joints, load swept along the bottom chord ----
+const N=30,H3=Math.sqrt(3)/2,PER=40,CREAM='#efe3c8',OCHRE=[200,150,46],RUST=[168,75,42],GRAPH='#3a342e';
+const JX=[],JY=[],MA=[],MB=[],KD=[];
+for(let i=0;i<=N;i++){JX.push(i);JY.push(0)}          // bottom joints 0..N
+for(let i=0;i<N;i++){JX.push(i+.5);JY.push(-H3)}      // top joints N+1..2N
+const TOP=i=>N+1+i;
+for(let i=0;i<N;i++){MA.push(i);MB.push(i+1);KD.push(0)}                       // bottom chord
+for(let i=0;i<N-1;i++){MA.push(TOP(i));MB.push(TOP(i+1));KD.push(0)}           // top chord
+for(let i=0;i<N;i++){MA.push(TOP(i));MB.push(i);KD.push(1);MA.push(TOP(i));MB.push(i+1);KD.push(1)} // equal-length diagonals
+const M=MA.length,NV=M+3,NR=NV,WD=NV+N-1;
+// equilibrium A x = b: member forces (+ tension) and 3 reactions; one unit-load column per interior bottom joint
+const A=[];for(let r=0;r<NR;r++)A.push(new Float64Array(WD));
+for(let q=0;q<M;q++){const a=MA[q],b=MB[q],dx=JX[b]-JX[a],dy=JY[b]-JY[a],L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+  A[2*a][q]+=ux;A[2*a+1][q]+=uy;A[2*b][q]-=ux;A[2*b+1][q]-=uy}
+A[0][M]=1;A[1][M+1]=1;A[2*N+1][M+2]=1;                 // pin at joint 0, roller at joint N
+for(let k=1;k<N;k++)A[2*k+1][NV+k-1]=1;                // unit downward load at bottom joint k
+for(let c=0;c<NV;c++){let p=c;for(let r=c+1;r<NR;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;
+  [A[c],A[p]]=[A[p],A[c]];const d=A[c][c]||1e-12;
+  for(let j=c;j<WD;j++)A[c][j]/=d;
+  for(let r=0;r<NR;r++)if(r!==c&&A[r][c]!==0){const f=A[r][c];for(let j=c;j<WD;j++)A[r][j]-=f*A[c][j]}}
+const G=[];for(let k=0;k<=N;k++){const g=new Float64Array(M);if(k>0&&k<N)for(let q=0;q<M;q++)g[q]=A[q][NV+k-1];G.push(g)}
+let GM=0;for(const g of G)for(const v of g)GM=Math.max(GM,Math.abs(v));
+const F=new Float64Array(M);
+// a load between joints k and k+1 splits linearly (lever rule), so member forces interpolate the joint influence
+const forces=(u,o)=>{const f=clamp01(u)*N,k=Math.min(N-1,Math.floor(f)),a=f-k,g0=G[k],g1=G[k+1];for(let q=0;q<M;q++)o[q]=(1-a)*g0[q]+a*g1[q]};
+// marker: left to right over 0.5..19.5 s, right to left over 20..39 s, then repeats
+const U=t=>{const p=t%PER;return clamp01(p<20?(p-.5)/19:1-(p-20)/19)};
+const DIAG=[];for(let q=0;q<M;q++)if(KD[q])DIAG.push(q);
+// sign-flip events on a 0.05 s grid over one 40 s cycle; a member holds its colour where its force is zero
+const last=new Int8Array(M);forces(.02,F);for(const q of DIAG)last[q]=F[q]>0?1:-1;
+const col=new Float32Array(M);for(const q of DIAG)col[q]=last[q]>0?1:0;
+const EV=[];
+for(let s=0;s<=800;s++){const t=s*.05;forces(U(t),F);for(const q of DIAG){if(Math.abs(F[q])>1e-7){const sg=F[q]>0?1:-1;if(sg!==last[q]){last[q]=sg;EV.push([t,q,sg])}}}}
+const camZoom=t=>t<7.5?1.6:t<12.5?3:t<15?4.6:1+3.6*(1-smooth((t-15)/5));
+const camX=t=>t<7.5?9:N/2;                              // beat 1 is an off-centre medium shot on the entry end
+const QS=3*N-2;                                        // diagonal at midspan, its influence line is charted below
+let qsG=1e-9;for(let k=0;k<=N;k++)qsG=Math.max(qsG,Math.abs(G[k][QS]));
+
+const cv=document.getElementById('c'),cx=cv.getContext('2d');
+const mix=(a,b,k)=>`rgb(${a[0]+(b[0]-a[0])*k|0},${a[1]+(b[1]-a[1])*k|0},${a[2]+(b[2]-a[2])*k|0})`;
+function draw(t,dt){
+  const W=innerWidth,H=innerHeight;
+  if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+  const u=U(t);forces(u,F);
+  const ease=1-Math.exp(-dt*6);
+  for(const q of DIAG)if(Math.abs(F[q])>1e-7)col[q]+=((F[q]>0?1:0)-col[q])*ease;
+  const z=camZoom(t)*(1+.05*Math.sin(t*.5)),S0=W*.86/N,sc=S0*z;
+  const cxw=camX(t),X=x=>W/2+(x-cxw)*sc,Y=y=>H*.44+(y+H3/2)*sc;
+  cx.fillStyle=CREAM;cx.fillRect(0,0,W,H);
+  cx.lineCap='round';
+  for(const refl of [1,0]){
+    cx.globalAlpha=refl?0.2:1;
+    const sg=refl?-1:1;
+    for(let q=0;q<M;q++){
+      const a=MA[q],b=MB[q];
+      cx.beginPath();cx.moveTo(X(JX[a]),Y(sg*JY[a]));cx.lineTo(X(JX[b]),Y(sg*JY[b]));
+      if(KD[q]){cx.strokeStyle=mix(RUST,OCHRE,col[q]);cx.lineWidth=1.6+3.4*Math.abs(F[q])/GM}
+      else{cx.strokeStyle=GRAPH;cx.lineWidth=2.2}
+      cx.stroke();
+    }
+  }
+  cx.globalAlpha=1;
+  for(let j=0;j<JX.length;j++){cx.beginPath();cx.arc(X(JX[j]),Y(JY[j]),3.4,0,6.2832);cx.fillStyle=CREAM;cx.fill();cx.strokeStyle=GRAPH;cx.lineWidth=1.3;cx.stroke()}
+  // load marker: a downward arrow resting on the bottom chord
+  const xm=u*N,px=X(xm);
+  cx.beginPath();cx.moveTo(px,Y(-1.25));cx.lineTo(px,Y(-.4));cx.strokeStyle=CREAM;cx.lineWidth=5;cx.stroke();
+  cx.beginPath();cx.moveTo(px,Y(-1.25));cx.lineTo(px,Y(-.4));cx.strokeStyle=GRAPH;cx.lineWidth=2;cx.stroke();
+  cx.beginPath();cx.moveTo(px,Y(0));cx.lineTo(X(xm-.2),Y(-.4));cx.lineTo(X(xm+.2),Y(-.4));cx.closePath();cx.fillStyle=GRAPH;cx.fill();
+  // influence line of the midspan diagonal, below the truss (screen space)
+  const CY=H*.84,CH=Math.min(70,H*.1),gx=k=>W/2+(k-N/2)*S0;
+  const P=new Path2D();P.moveTo(gx(0),CY);
+  for(let k=0;k<=N;k++)P.lineTo(gx(k),CY-G[k][QS]/qsG*CH);
+  P.lineTo(gx(N),CY);P.closePath();
+  cx.save();cx.beginPath();cx.rect(0,0,W,CY);cx.clip();cx.fillStyle='rgba(200,150,46,0.55)';cx.fill(P);cx.restore();
+  cx.save();cx.beginPath();cx.rect(0,CY,W,H);cx.clip();cx.fillStyle='rgba(168,75,42,0.55)';cx.fill(P);cx.restore();
+  cx.beginPath();cx.moveTo(gx(0),CY);cx.lineTo(gx(N),CY);cx.strokeStyle=GRAPH;cx.lineWidth=0.8;cx.stroke();
+  const cxm=gx(xm),vy=CY-F[QS]/qsG*CH;
+  cx.beginPath();cx.moveTo(cxm,CY-CH);cx.lineTo(cxm,CY+CH);cx.strokeStyle='rgba(58,52,46,0.5)';cx.lineWidth=1;cx.stroke();
+  cx.beginPath();cx.arc(cxm,vy,4,0,6.2832);cx.fillStyle=CREAM;cx.fill();cx.strokeStyle=GRAPH;cx.lineWidth=1.5;cx.stroke();
+}
+const clock=storyClock({reduce:.2});let prev=0,S=0;
+const loop=ms=>{const c=clock(ms);const dt=c.t-prev;prev=c.t;S=c.t;draw(c.t,dt);requestAnimationFrame(loop)};
+requestAnimationFrame(loop);
+
+// ---- sound: C major pulse at 120 BPM; each sign flip is a sine tone, high in tension, low in compression ----
+let off=null;
+for(const e of['pointerdown','keydown'])document.addEventListener(e,()=>{if(off===null)off=S});
+const tone=(ctx,out,t,f,d,v)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(1e-4,t+d);o.connect(g).connect(out);o.start(t);o.stop(t+d+.05)};
+const play=(ctx,out,t0,t1,base)=>{
+  for(let k=Math.max(0,Math.ceil(t0/.5-1e-9));k*.5<t1;k++)for(const n of[60,64,67])fm(ctx,out,base+k*.5,mtof(n),.45,{vol:.06});
+  for(let c=Math.floor(t0/PER);c*PER<t1;c++)for(const e of EV){const s=e[0]+c*PER;if(s>=t0&&s<t1)tone(ctx,out,base+s,e[2]>0?mtof(79):mtof(52),.35,.12)}
+};
+registerAudioProbe(play);
+startSynth((ctx,out,t0,t1,base)=>play(ctx,out,t0+off,t1+off,base-off));
+</script>
+</body>
+</html>

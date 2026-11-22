@@ -1,0 +1,38 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 67,
+  "reason": "Attempt 2: scored 62, below 72. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Add a visible load-magnitude layer: draw each diagonal's solved force as bar thickness or glow so the sign flip carries a measured value, not just a colour change.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Keep the shot-20s end state legible: draw diagonals as ochre or rust strokes with cream joint dots instead of uniform brown fills, so the final frame still shows both signs.",
+        "expected_gain": 3
+      },
+      {
+        "rank": 3,
+        "change": "Frame shot-02s tighter on the truss with the load marker entering from the left, and remove the stray double circles beside the marker at shot-08s.",
+        "expected_gain": 2
+      }
+    ],
+    "build_failed": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 17,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 5
+  },
+  "total": 64,
+  "evidence": {
+    "mechanism": "shot-02s: about 60 truss diagonals coloured ochre or rust by force sign, with a load marker at x near 236 and an influence plot below; by shot-20s the marker has exited right and the colour pattern across the span has changed.",
+    "ambition": "shot-08s: one flat 2D layer of line strokes and a filled plot, with no lighting, depth or material. The solver colouring and the moving load are the only active systems, so the bytes buy little visible range.",
+    "craft": "shot-08s: crisp thin strokes and a palette matched to the brief (cream, ochre, rust, graphite). The legend text is tiny, the influence fill is a flat shape with no shading, and the truss is cropped at both screen edges.",
+    "distinctness": "shot-02s: a warm-palette structural lattice with a bar-by-bar force-sign readout. It is not a spiral, hex plate or orrery like the anchors, and no anchor shows this concept.",
+    "polish": "shot-02s: the truss is cropped at both edges and the load sits near the left third. By shot-20s the camera has pulled back so the full span fits and the load has exited right, so the loop resolves only weakly."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head comparison available.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "At shot-08s, shade each diagonal by its force magnitude (thicker and brighter as load rises) and add a soft glow behind the tension bars, so the truss gains a second rendering layer instead of flat line art.", "expected_gain": 6 },
+    { "rank": 2, "change": "Replace the static influence fill below the truss with one that updates as the marker moves, so the plot shows the solved force for the current load position instead of an unchanging triangle.", "expected_gain": 4 },
+    { "rank": 3, "change": "Frame the full span at shot-02s and shot-08s, scaled so no diagonal is cropped at the screen edge, as the pull-back at shot-20s already does.", "expected_gain": 3 }
+  ]
+}

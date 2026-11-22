@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 14,
+    "craft": 17,
+    "distinctness": 17,
+    "polish": 7
+  },
+  "total": 71,
+  "evidence": {
+    "mechanism": "shot-02s: load marker at the left panel with ochre and rust diagonals at both ends; by shot-08s the marker sits at midspan and the bars under it swap colour; by shot-20s a load-position heatmap shows each diagonal's sign across the sweep.",
+    "ambition": "shot-20s: flat 2D canvas with a method-of-joints truss, a moving-load sweep, and a 30-panel sign heatmap inset; per-flip tones add an audio layer. One solver and one inset, with no depth, material or lighting.",
+    "craft": "shot-08s: cream ground with consistent stroke weight on ochre and rust bars and graphite joints; the halo glow on flipping bars is soft. shot-02s crops the truss off the right edge, a framing lapse.",
+    "distinctness": "shot-20s: ochre-to-rust force coding on a Warren lattice with a load-position heatmap; no anchor shows a structural solve. Palette is warm like anchor-12, but the idea and structure differ.",
+    "polish": "shot-02s: truss runs off the right edge and the top half is empty, so the opening is not composed; shot-08s is a tighter cut; shot-20s settles on the full span with supports and the heatmap, resolving the piece."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so there is no head-to-head comparison to make.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Add a depth or material layer to the truss: shade each member by its absolute force and tween each flip briefly, so the sign change reads through weight and light, not only hue.",
+      "expected_gain": 6
+    },
+    {
+      "rank": 2,
+      "change": "Replace the hard bar swap at shot-08s with a short tween through a neutral mid-tone at zero force, removing the translucent double stroke around flipping bars.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Re-frame shot-02s so the full span fits the 1280 px frame with the load marker near centre; the right-edge crop and empty upper half are the opening flaws.",
+      "expected_gain": 3
+    }
+  ]
+}

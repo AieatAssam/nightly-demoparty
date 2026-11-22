@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 18,
+    "ambition": 16,
+    "craft": 15,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 71,
+  "evidence": {
+    "mechanism": "shot-08s: strips curl base-first, with rows 3 to 6 bent into arcs and hooks while the top two rows stay upright; by shot-20s the open-to-closed diagonal shows the wave has moved across the grid.",
+    "ambition": "shot-08s: 48 segmented strips, each with pale skin and dark fiber lines, plus ochre rounded haze tiles behind every strip; shot-20s: the camera has pulled back to a cream margin around the grid.",
+    "craft": "shot-02s: cream radial ground with ochre edges, rust-to-graphite strips and dark bases match the stated palette; shot-08s: an uneven gap at column five and small strips leave a lot of empty cream.",
+    "distinctness": "shot-02s: a pine-cone scale bending as a segmented grid is not a textbook bilayer or a plasma cliche; shot-20s: rust arcs against ochre tiles, unlike the flock or bar-chart anchors.",
+    "polish": "shot-02s: upright, symmetric grid composed at the start; shot-20s: strips resolve into a diagonal open-to-closed gradient that differs from 2 s, but the frame is small and the caption sits in the corner."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet exists, so there is no head-to-head comparison to make.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    { "rank": 1, "change": "Make the grid spacing uniform: column five shows an irregular gap at shot-08s and shot-20s. Use an even pitch so the wave reads as one field.", "expected_gain": 2 },
+    { "rank": 2, "change": "Scale the grid up so the strips fill more of the frame at shot-02s and shot-20s, letting the curl read at full size instead of small arcs in cream space.", "expected_gain": 3 },
+    { "rank": 3, "change": "Show the skin-versus-fiber split and the open-close path on screen: darken the fiber face on the curled strips and add a faint per-strip angle trace at shot-20s, so the hysteresis is seen rather than captioned.", "expected_gain": 4 }
+  ]
+}

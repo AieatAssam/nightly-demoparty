@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 17,
+    "craft": 15,
+    "distinctness": 15,
+    "polish": 8
+  },
+  "total": 70,
+  "evidence": {
+    "mechanism": "shot-02s: four canopy nodes (ochre, amber, graphite, rust) on the lower third emit amber dot streams into a thin graphite hyphal tangle; by shot-08s the right rust node fades and its line runs under a shade gradient, but the dot direction flip is hard to read.",
+    "ambition": "shot-08s: blurred rust Gray-Scott spots, a hyphae tangle, dot streams and a right-edge shade gradient are layered on cream; by shot-20s eight nodes mirror radially around a ring of spots and a dense web. Still flat 2D with no material or lighting.",
+    "craft": "shot-02s: blob and arc edges show visible stair-stepping at full size; palette is clean cream, ochre, rust and graphite with no clipping. By shot-20s the mirrored ring keeps the stepping and the ground is flat cream with no material or lighting.",
+    "distinctness": "shot-20s: a radial ring of rust spots with eight-way mirrored dot streams and a mycorrhizal web idea not seen in the anchors; shot-08s uses reaction-diffusion blobs close in technique to anchor-10, so the novelty is in concept more than in rendering.",
+    "polish": "shot-02s: composed, with four nodes on the lower third and a central web already present; shot-20s resolves into a radial mirror, though the ring edges still show stair-stepping and the frame lacks anchor-10's finish."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet; there is no earlier piece to compare against.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Anti-alias the Gray-Scott spot edges and the rust arc at shot-02s and shot-20s; the stair-stepped blob outlines read as low-res at full size and cost craft on every frame.", "expected_gain": 2 },
+    { "rank": 2, "change": "Make the reversal legible: at the 6.5 s cut, flip the dot velocity on the shaded rust node's hyphae so its amber dots visibly stream back into the web in shot-08s, rather than only fading the root tips.", "expected_gain": 4 },
+    { "rank": 3, "change": "Raise the dot count toward the brief's roughly 1200 at shot-08s and add a lit or shaded material pass to the nodes and web, since the frames are flat 2D with no lighting or depth.", "expected_gain": 4 }
+  ]
+}

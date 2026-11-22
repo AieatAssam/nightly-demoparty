@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fungal Sink</title>
+<style>*{margin:0}html,body{height:100%;background:#efe3c8;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+const clamp01=t=>t<0?0:t>1?1:t,lerp=(t,n,c)=>t+(n-t)*c,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),quintic=t=>(t=clamp01(t),t*t*t*(t*(t*6-15)+10)),cubicInOut=t=>(t=clamp01(t),t<.5?4*t*t*t:1-(-2*t+2)**3/2),expoOut=t=>(t=clamp01(t),t===1?1:1-2**(-10*t)),backOut=(t,n=1.70158)=>(t=clamp01(t)-1,1+t*t*((n+1)*t+n)),elasticOut=t=>(t=clamp01(t),t===0||t===1?t:2**(-10*t)*Math.sin((t*10-.75)*(2*Math.PI/3))+1),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),CUTS=[0,5,10,15,20],act=(t,n=CUTS)=>{let c=0;for(;c<n.length-2&&t>=n[c+1];)c++;return{i:c,p:clamp01((t-n[c])/(n[c+1]-n[c]))}},acts=(t,n=CUTS,c=1)=>{const e=o=>o===0?1:o===n.length-1?0:smooth((t-n[o])/c+.5);return n.slice(0,-1).map((o,s)=>e(s)-e(s+1))},storyClock=({reduce:t=.2,cuts:n=CUTS}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r,...act(e,n)}}};export{clamp01,lerp,smooth,quintic,cubicInOut,expoOut,backOut,elasticOut,beat,CUTS,act,acts,storyClock};
+
+// Seeded PRNG (same algorithm as lib/min/noise.js mulberry32)
+const mulberry32=s=>()=>{s=s+1831565813|0;let t=Math.imul(s^s>>>15,1|s);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296};
+
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const W=1000,H=562,GW=160,GH=90,NS=GW*GH,CUT6=[0,3,6.5,11,16,20];
+const HUB=[500,250];
+// canopy nodes: spruce ochre, beech amber, pine graphite, larch rust (shaded at right)
+const NODES=[[150,430,'#c98a3a'],[360,470,'#e0b050'],[640,480,'#3b2a20'],[850,420,'#9c4a2a']];
+let sd=0;for(const ch of 'dry-run-03')sd=(sd*31+ch.charCodeAt(0))|0;
+const R=mulberry32(sd);
+
+// resample a polyline to n points spaced uniformly by arc length
+function samp(pts,n){const L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const out=[];let k=1;for(let j=0;j<n;j++){const d=L[L.length-1]*j/(n-1);while(k<L.length-1&&L[k]<d)k++;const a=(d-L[k-1])/((L[k]-L[k-1])||1);out.push([pts[k-1][0]+(pts[k][0]-pts[k-1][0])*a,pts[k-1][1]+(pts[k][1]-pts[k-1][1])*a]);}return out;}
+const at=(tab,s)=>{const f=s*95,i=Math.min(94,f|0),a=f-i,p=tab[i],q=tab[i+1];return[p[0]+(q[0]-p[0])*a,p[1]+(q[1]-p[1])*a];};
+
+// hyphal trunks: each node wanders toward the hub
+const TR=NODES.map(([x0,y0,col])=>{const[x1,y1]=HUB,dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);let off=0;const pts=[];
+for(let i=0;i<=40;i++){const f=i/40,e=Math.sin(Math.PI*f);off=off*.9+(R()-.5)*16;pts.push([x0+dx*f-dy/L*off*e,y0+dy*f+dx/L*off*e]);}
+return{pts,col,tab:samp(pts,96)};});
+
+// stochastic side branches off trunks, plus a radial hub web
+const BR=[];
+for(const tr of TR)for(let m=0;m<9;m++){const k=R()*40|0;let[x,y]=tr.pts[k];const q=tr.pts[k+1];let a=Math.atan2(q[1]-y,q[0]-x)+(R()-.5)*2.6;const ln=[[x,y]];const n=5+(R()*8|0);for(let j=0;j<n;j++){a+=(R()-.5)*.7;x+=Math.cos(a)*5;y+=Math.sin(a)*5;ln.push([x,y]);}BR.push(ln);}
+for(let m=0;m<36;m++){let a=R()*6.283,x=HUB[0],y=HUB[1];const ln=[[x,y]];for(let j=0;j<6;j++){a+=(R()-.5)*.6;x+=Math.cos(a)*7;y+=Math.sin(a)*7;ln.push([x,y]);}BR.push(ln);}
+
+// hyphae path and the Gray-Scott mask (spots only grow along hyphae)
+const HY=new Path2D(),mask=new Uint8Array(NS);
+const mk=(x,y)=>{const gx=x/W*GW|0,gy=y/H*GH|0;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const a=gx+dx,b=gy+dy;if(a>=0&&a<GW&&b>=0&&b<GH)mask[b*GW+a]=1;}};
+const pl=ln=>{ln.forEach(([x,y],j)=>{if(j)HY.lineTo(x,y);else HY.moveTo(x,y);mk(x,y);});};
+TR.forEach(t=>pl(t.pts));BR.forEach(pl);
+
+// root tips per node
+const RT=NODES.map(([x,y])=>{const p=new Path2D();for(let m=0;m<6;m++){const dx=(m-2.5)*5;p.moveTo(x+dx*.6,y+14);p.lineTo(x+dx*1.6+(R()-.5)*8,y+46+R()*22);}return p;});
+
+// Gray-Scott reaction-diffusion on a 160x90 grid
+let U=new Float32Array(NS).fill(1),V=new Float32Array(NS),U2=new Float32Array(NS),V2=new Float32Array(NS);
+for(let i=0;i<NS-GW-1;i++)if(mask[i]&&R()<.06){for(const d of[0,1,GW,GW+1]){V[i+d]=1;U[i+d]=.5;}}
+const DU=.16,DV=.08,F=.037,K=.065;
+function step(){for(let y=0;y<GH;y++){const yc=y*GW,ym=((y+GH-1)%GH)*GW,yp=((y+1)%GH)*GW;for(let x=0;x<GW;x++){const i=yc+x,l=yc+(x+GW-1)%GW,r=yc+(x+1)%GW,u=U[i],v=V[i],uvv=u*v*v;const lu=U[l]+U[r]+U[ym+x]+U[yp+x]-4*u,lv=V[l]+V[r]+V[ym+x]+V[yp+x]-4*v;const nu=u+DU*lu-uvv+F*(1-u),nv=v+DV*lv+uvv-(F+K)*v;U2[i]=nu<0?0:nu>1?1:nu;V2[i]=mask[i]?(nv<0?0:nv>1?1:nv):Math.max(0,nv)*.97;}}[U,U2]=[U2,U];[V,V2]=[V2,V];}
+for(let n=0;n<400;n++)step();
+
+// colour lookup: cream -> ochre -> rust
+const LUT=new Uint8ClampedArray(256*3);
+for(let n=0;n<256;n++){const s=n/255,h=s<.5,k=h?s*2:(s-.5)*2,A=h?[239,227,200,201,138,58]:[201,138,58,156,74,42];for(let j=0;j<3;j++)LUT[n*3+j]=A[j]+(A[j+3]-A[j])*k;}
+const oc=document.createElement('canvas');oc.width=GW;oc.height=GH;const ox=oc.getContext('2d'),img=ox.createImageData(GW,GH);
+function paint(){const d=img.data;for(let i=0;i<NS;i++){const v=V[i],n=Math.min(255,v*561|0);d[i*4]=LUT[n*3];d[i*4+1]=LUT[n*3+1];d[i*4+2]=LUT[n*3+2];d[i*4+3]=Math.min(255,v*1400|0);}ox.putImageData(img,0,0);}
+
+// dots: 400 per trunk, each with a position along its trunk and a visibility rank
+const PER=600,ND=PER*4,DS=new Float32Array(ND),DR=new Float32Array(ND),DT=new Uint8Array(ND);
+for(let j=0;j<ND;j++){DT[j]=j/PER|0;DS[j]=R();DR[j]=R();}
+const PX=new Float32Array(ND),PY=new Float32Array(ND),QX=new Float32Array(ND),QY=new Float32Array(ND),VIS=new Uint8Array(ND);
+
+const clock=storyClock({cuts:CUT6});
+const CAM=[[500,300,.95],[500,300,.78],[600,330,1.35],[500,290,1],[500,300,1.2]];
+let pT=0,steps=0;
+
+function world(G,mir){
+  const m=mir?.7:1;
+  ctx.globalAlpha=mir?.55:1;ctx.drawImage(oc,0,0,W,H);
+  ctx.globalAlpha=(.25+.5*G.grow)*m;ctx.strokeStyle='#3b2a20';ctx.lineWidth=1.2;ctx.stroke(HY);
+  ctx.globalAlpha=m;ctx.fillStyle='#9c4a2a';ctx.beginPath();ctx.arc(HUB[0],HUB[1],6+30*Math.min(1,G.mass*5),0,6.2832);ctx.fill();
+  ctx.fillStyle='#3b2a20';ctx.beginPath();ctx.arc(HUB[0],HUB[1],4,0,6.2832);ctx.fill();
+  NODES.forEach(([x,y,col],k)=>{const a=k===3?1-.6*G.sh:1,ra=k===3?1-.85*G.sh:1;ctx.globalAlpha=ra*m*.9;ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.stroke(RT[k]);ctx.globalAlpha=a*m;ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,16,0,6.2832);ctx.fill();});
+  TR.forEach((tr,k)=>{const end=(k+1)*PER;let j;
+    ctx.strokeStyle=tr.col;ctx.lineWidth=1.8;ctx.globalAlpha=.6*m;ctx.beginPath();
+    for(j=k*PER;j<end;j++)if(VIS[j]){ctx.moveTo(QX[j],QY[j]);ctx.lineTo(PX[j],PY[j]);}
+    ctx.stroke();
+    ctx.globalAlpha=m;ctx.fillStyle=tr.col;ctx.beginPath();
+    for(j=k*PER;j<end;j++)if(VIS[j])ctx.rect(PX[j]-2,PY[j]-2,4,4);
+    ctx.fill();});
+}
+
+function frame(ms){
+  requestAnimationFrame(frame);
+  const{t,i,p}=clock(ms),dt=t-pT;pT=t;
+  for(let n=Math.min(40,Math.floor(t*120)-steps);n>0;n--){step();steps++;}
+  let s=0;for(let k=0;k<NS;k++)s+=V[k];const mass=s/NS;
+  paint();
+  const sh=smooth(beat(t,5.6,7)),grow=smooth(beat(t,0,6)),env=(.25+.75*smooth(beat(t,0,6)))*(1-.2*beat(t,16,19));
+  const spd=.3*(1-.4*beat(t,16,18)),dem=.5+.15*mass,sup=[1,1,1,1-1.6*sh];
+  for(let j=0;j<ND;j++)DS[j]=((DS[j]+spd*(sup[DT[j]]-dem)*dt)%1+1)%1;
+  for(let j=0;j<ND;j++){
+    if(DR[j]>=env){VIS[j]=0;continue;}
+    const k=DT[j],sg=sup[k]-dem<0?-1:1,tab=TR[k].tab;
+    const[a,b]=at(tab,DS[j]),[c,d]=at(tab,(DS[j]-.03*sg+1)%1);
+    PX[j]=a;PY[j]=b;QX[j]=c;QY[j]=d;VIS[j]=1;
+  }
+  const[ccx,ccy,z0]=CAM[i];const z=i===4?1.2-.35*smooth(p):z0;
+  const w=cv.width,h=cv.height,sc=Math.min(w/W,h/H)*z;
+  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.fillStyle='#efe3c8';ctx.fillRect(0,0,w,h);
+  ctx.setTransform(sc,0,0,sc,w/2-ccx*sc,h/2-ccy*sc);
+  const G={sh,grow,mass};
+  world(G,false);
+  if(i>=3){ctx.save();ctx.translate(W,0);ctx.scale(-1,1);world(G,true);ctx.restore();}
+  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=.8;ctx.fillStyle='#3b2a20';ctx.font='12px ui-monospace,Menlo,monospace';ctx.fillText('FUNGAL SINK // SHADE REVERSES SUGAR FLOW',24,h-24);ctx.globalAlpha=1;
+}
+
+function fit(){cv.width=innerWidth;cv.height=innerHeight;}
+fit();addEventListener('resize',fit);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -172,8 +172,8 @@ Keeping a cheap judge honest:
 - Worst-case nightly LLM calls: research 2, appraisal 1, brief 3, build 3, jury 9 (3 per judged attempt across 3 attempts, or up to 12 with evidence retries). Typical: 8, of which 3 are jury calls. The Stage 7 jury runs Haiku at `--effort high`.
 - `--max-turns` per stage: research 15, appraisal 3, brief 6, build 30, jury 4.
 - Deterministic gates always run before the jury.
-- Workflow `timeout-minutes: 50`, `concurrency: nightly` with cancel-in-progress off.
-- Cache Playwright browsers and `node_modules`.
+- Per-job timeouts summing to 79 minutes worst-case (45 minutes for build and judge; median nightly run under 25 minutes), `concurrency: nightly` with cancel-in-progress off.
+- Cache Playwright browsers and the npm package cache.
 - Log token usage per stage to `audit/usage.jsonl`; the weekly job flags any stage whose 7-night average grew over 25%.
 
 ## 6. Anti-slop

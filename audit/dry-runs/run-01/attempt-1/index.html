@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Basal hinge wave</title>
+<style>
+:root{--a:6deg}
+*{margin:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#EFE3C8}
+/* camera: push-in to 1.3 at beat 3, pull back to 0.8 at beat 4 */
+.g{position:fixed;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(6,1fr);animation:z 24s ease-in-out infinite}
+/* strip anchor sits on the cell floor; segments hang upward from it */
+.s{position:relative;justify-self:center;align-self:end;width:40px;height:0}
+.s::after{content:"";position:absolute;left:-3px;bottom:-3px;width:46px;height:4px;background:#3A3029}
+/* each segment is 8 px tall, its base at the tip of its parent (nested transform chain) */
+i{position:absolute;left:0;bottom:0;width:40px;height:8px;transform-origin:50% 100%;background:linear-gradient(90deg,#9A4A24 50%,#3A3029 50%);animation:b 24s ease-in-out infinite;animation-delay:calc(var(--d)*1s + var(--k)*.12s)}
+i i{bottom:100%}
+/* depth-specific delay index: base to tip lag */
+.s>i{--k:0}
+.s>i>i{--k:1}
+.s>i>i>i{--k:2}
+.s>i>i>i>i{--k:3}
+.s>i>i>i>i>i{--k:4}
+.s>i>i>i>i>i>i{--k:5}
+.s>i>i>i>i>i>i>i{--k:6}
+.s>i>i>i>i>i>i>i>i{--k:7}
+.s>i>i>i>i>i>i>i>i>i{--k:8}
+.s>i>i>i>i>i>i>i>i>i>i{--k:9}
+.s>i>i>i>i>i>i>i>i>i>i>i{--k:10}
+.s>i>i>i>i>i>i>i>i>i>i>i>i{--k:11}
+/* open -> curled (hold) -> reopen, base first */
+@keyframes b{0%{transform:rotate(0)}55%,62%{transform:rotate(var(--a))}90%,100%{transform:rotate(0)}}
+@keyframes z{0%,42%{transform:scale(.95)}58%,62%{transform:scale(1.3)}84%{transform:scale(.8)}100%{transform:scale(.95)}}
+@media (prefers-reduced-motion:reduce){:root{--a:1.5deg}.g,i{animation-duration:72s}}
+</style>
+</head>
+<body>
+<main class="g">
+<div class="s" style="--d:2.25"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.35"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.45"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.55"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.65"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.75"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.85"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.95"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.8"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.9"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.1"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.2"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.3"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.4"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.5"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.35"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.45"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.55"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.65"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.75"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.85"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.95"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:2.05"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.9"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.1"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.2"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.3"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.4"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.5"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.6"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.45"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.55"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.65"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.75"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.85"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.95"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.05"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:1.15"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:0"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.1"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.2"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.3"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.4"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.5"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.6"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+<div class="s" style="--d:.7"><i><i><i><i><i><i><i><i><i><i><i><i></i></i></i></i></i></i></i></i></i></i></i></i></div>
+</main>
+</body>
+</html>

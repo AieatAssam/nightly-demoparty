@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 12,
+    "craft": 16,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 64,
+  "evidence": {
+    "mechanism": "shot-08s: strips curl into matching arcs with tips leaning right and the bend repeated down five rows; by shot-20s the top rows stay curled while the bottom rows reopen, so the base-to-tip wave reads only weakly.",
+    "ambition": "shot-02s: 48 upright two-tone strips in an 8 by 6 grid; shot-08s: the same strips in arc form. One flat rendering idea (rust skin, dark fiber lines, nested segments), CSS only, with little visible layering behind the strips.",
+    "craft": "shot-02s: clean cream ground, rust and graphite faces and crisp dark bases with no artefacts; the strips are thin and small, leaving large empty margins at shot-20s where the grid is inset.",
+    "distinctness": "shot-08s: a cream and rust field of bent cards, sharing the cream editorial look of the climate spiral but not its subject or structure; no archive exists to compare against, so judged on the anchors.",
+    "polish": "shot-02s: composed grid with only the bottom row starting to bend; by shot-20s the grid is inset and the top rows curl, but the frame does not clearly resolve into a final composed state."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so there is no head-to-head reference and the check defaults to true.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Enlarge the strips so the 12 segments and the base-to-tip lag are readable at shot-08s, and add a tip offset cue so the wave front shows as a moving line across the grid.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 2,
+      "change": "Add the brief's ochre tissue haze behind each strip, brightening and dimming with the wave, so the grid gains a second rendering layer instead of one flat strip style.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Resolve the 20s end state: reopen the top rows toward the cream margin so shot-20s differs clearly from shot-02s as a finished composition.",
+      "expected_gain": 2
+    }
+  ]
+}

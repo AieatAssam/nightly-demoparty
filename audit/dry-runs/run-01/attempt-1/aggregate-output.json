@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 12,
+    "craft": 15,
+    "distinctness": 13,
+    "polish": 7
+  },
+  "total": 62,
+  "evidence": {
+    "mechanism": "shot-02s: 48 upright rust-and-graphite strips in an 8x6 grid, only the bottom row tilting; by shot-08s the arcs curl upward with tips visibly trailing bases, and by shot-20s the top rows still curl while the bottom reopens.",
+    "ambition": "shot-08s: 48 nested segment chains render as flat DOM divs with two faces, one rendering idea and no shading, lighting or material beyond rust versus graphite; by shot-20s the pull-back to a cream margin is the only added layer.",
+    "craft": "shot-08s: clean flat fills and crisp segment seams, but the fiber lines are near-invisible hairlines and the strips are small on a large empty cream field; by shot-20s the diagonal gradient is tidy without texture.",
+    "distinctness": "shot-08s: cream ground with a rust and graphite palette and a grid of bent strips; the look sits close to cream-editorial pieces, and each strip bends by one smooth rotation with no distinct layer or composition.",
+    "polish": "shot-02s: composed full-frame grid with the bottom row already tilting; by shot-20s the camera has pulled back to a cream margin and the top row is still curled, so the piece resolves into a diagonal gradient that differs from 2s."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet; no head-to-head comparison is possible.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-04",
+    "anchor-06",
+    "anchor-11"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Draw visible fiber bundles and a porous brown-tissue shade across each strip so the skin-over-fiber layering reads at shot-02s and shot-08s, not just as rust and graphite halves.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Widen the per-segment animation-delay spread so the top segments visibly lag the base at shot-08s, instead of every strip showing the same uniform arc.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Enlarge the strips so the 2 s grid fills more of the frame, cutting the empty cream field that makes the craft look thin at full size.",
+      "expected_gain": 2
+    }
+  ]
+}

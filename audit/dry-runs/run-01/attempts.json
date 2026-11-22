@@ -1,0 +1,530 @@
+[
+  {
+    "attempt": 1,
+    "model": "haiku",
+    "effort": null,
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/dry-runs/run-01/attempt-1/index.html",
+      "compo": "constraint-night",
+      "byte_size": 7628,
+      "size_budget_bytes": 16384,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 3777.7109,
+        "t8": 3642.738,
+        "t20": 2732.3525,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 1.5641,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 43.33,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 1,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 16.7,
+        "p90": 33.4,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": null,
+      "novelty_b": {
+        "phashes": {
+          "t2": "9e9e9e9e9e9e9f9f",
+          "t8": "3f1f1e1f3f1f1f1e",
+          "t20": "90b8b8b8b8b8b0f0"
+        },
+        "color_histogram": [
+          0.068886,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.008065,
+          0,
+          0,
+          0,
+          0.005625,
+          0.002992,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.072935,
+          0.006065,
+          0,
+          0,
+          0,
+          0.002322,
+          0.00105,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.001613,
+          0.002533,
+          0,
+          0,
+          0,
+          0.003136,
+          0.824777
+        ],
+        "min_hamming_distance": null,
+        "min_histogram_distance": null,
+        "closest_date": null,
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 2.3794,
+        "reduced_motion": 0.1175,
+        "ratio": 0.0494
+      },
+      "screenshots": {
+        "t2": "audit/dry-runs/run-01/attempt-1/shot-02s.png",
+        "t8": "audit/dry-runs/run-01/attempt-1/shot-08s.png",
+        "t20": "audit/dry-runs/run-01/attempt-1/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 15,
+        "ambition": 12,
+        "craft": 15,
+        "distinctness": 13,
+        "polish": 7
+      },
+      "total": 62,
+      "evidence": {
+        "mechanism": "shot-02s: 48 upright rust-and-graphite strips in an 8x6 grid, only the bottom row tilting; by shot-08s the arcs curl upward with tips visibly trailing bases, and by shot-20s the top rows still curl while the bottom reopens.",
+        "ambition": "shot-08s: 48 nested segment chains render as flat DOM divs with two faces, one rendering idea and no shading, lighting or material beyond rust versus graphite; by shot-20s the pull-back to a cream margin is the only added layer.",
+        "craft": "shot-08s: clean flat fills and crisp segment seams, but the fiber lines are near-invisible hairlines and the strips are small on a large empty cream field; by shot-20s the diagonal gradient is tidy without texture.",
+        "distinctness": "shot-08s: cream ground with a rust and graphite palette and a grid of bent strips; the look sits close to cream-editorial pieces, and each strip bends by one smooth rotation with no distinct layer or composition.",
+        "polish": "shot-02s: composed full-frame grid with the bottom row already tilting; by shot-20s the camera has pulled back to a cream margin and the top row is still curled, so the piece resolves into a diagonal gradient that differs from 2s."
+      },
+      "pairwise_beats_median": true,
+      "pairwise_median_ref": null,
+      "pairwise_justification": "No median archive yet; no head-to-head comparison is possible.",
+      "calibration_anchors_used": [
+        "anchor-03",
+        "anchor-04",
+        "anchor-06",
+        "anchor-11"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "Draw visible fiber bundles and a porous brown-tissue shade across each strip so the skin-over-fiber layering reads at shot-02s and shot-08s, not just as rust and graphite halves.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 2,
+          "change": "Widen the per-segment animation-delay spread so the top segments visibly lag the base at shot-08s, instead of every strip showing the same uniform arc.",
+          "expected_gain": 3
+        },
+        {
+          "rank": 3,
+          "change": "Enlarge the strips so the 2 s grid fills more of the frame, cutting the empty cream field that makes the craft look thin at full size.",
+          "expected_gain": 2
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 2,
+    "model": "haiku",
+    "effort": null,
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/dry-runs/run-01/attempt-2/index.html",
+      "compo": "constraint-night",
+      "byte_size": 9925,
+      "size_budget_bytes": 16384,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 1986.7721,
+        "t8": 1887.0284,
+        "t20": 1347.1895,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 6.1824,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 27.0303,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 1,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 33.3,
+        "p90": 33.4,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": null,
+      "novelty_b": {
+        "phashes": {
+          "t2": "b8f8f8b8d8d8fcd0",
+          "t8": "b0fab0f8fcfcfcbc",
+          "t20": "10d4c8d8d0d4d490"
+        },
+        "color_histogram": [
+          0.012428,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.014736,
+          0,
+          0,
+          0,
+          0.044871,
+          0.003595,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.001666,
+          0.004096,
+          0,
+          0,
+          0,
+          0.003527,
+          0.002272,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.025002,
+          0.032194,
+          0,
+          0,
+          0,
+          0.196878,
+          0.658736
+        ],
+        "min_hamming_distance": null,
+        "min_histogram_distance": null,
+        "closest_date": null,
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 7.9323,
+        "reduced_motion": 2.5881,
+        "ratio": 0.3263
+      },
+      "screenshots": {
+        "t2": "audit/dry-runs/run-01/attempt-2/shot-02s.png",
+        "t8": "audit/dry-runs/run-01/attempt-2/shot-08s.png",
+        "t20": "audit/dry-runs/run-01/attempt-2/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 16,
+        "ambition": 13,
+        "craft": 16,
+        "distinctness": 15,
+        "polish": 8
+      },
+      "total": 68,
+      "evidence": {
+        "mechanism": "shot-02s: rows 5-6 of strips are already bent at their base while rows 1-3 stay upright; by shot-08s the curl band crosses mid-frame, and by shot-20s the top rows curl while the bottom rows reopen, so the base-to-tip lag is visible.",
+        "ambition": "shot-08s: 48 strips of 12 nested segments each, with pale skin and fibre shading plus an ochre radial haze behind every strip; one rendering idea driven by keyframe delays, with no simulation or material change between frames.",
+        "craft": "shot-02s: cream ground with an ochre and rust palette held consistently and clean strip silhouettes; by shot-20s the tightest curls show stair-step seams between segments on the inner face.",
+        "distinctness": "shot-02s: a pine-cone scale bend-wave on an 8x6 grid appears in no anchor; the cream palette echoes anchor-04, but the base-first delay idea is distinct from every anchor shown.",
+        "polish": "shot-02s: the bend front is already visible at 2 s and shot-20s has a different composition with a cream margin; shot-08s repeats near-identical curled arcs across most of the grid, so the middle state reads as a stamp."
+      },
+      "pairwise_beats_median": true,
+      "pairwise_median_ref": null,
+      "pairwise_justification": "No median archive yet; there is no head-to-head comparison possible.",
+      "calibration_anchors_used": [
+        "anchor-03",
+        "anchor-04",
+        "anchor-06",
+        "anchor-11"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "At shot-08s, vary each strip's animation delay and curl amplitude by its column so the wave reads as a front crossing the grid instead of a repeated stamp of identical arcs.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 2,
+          "change": "Replace the flat radial ochre halos with a shared gradient or a per-strip tissue haze that brightens along the wave front, so the haze carries the mechanism rather than sitting as static blobs.",
+          "expected_gain": 3
+        },
+        {
+          "rank": 3,
+          "change": "Remove the stair-step seams on tight curls at shot-20s by adding a segment overlap or a shading step on the inner face, so the end state reads as clean.",
+          "expected_gain": 2
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 3,
+    "model": "opus",
+    "effort": "low",
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/dry-runs/run-01/attempt-3/index.html",
+      "compo": "constraint-night",
+      "byte_size": 7025,
+      "size_budget_bytes": 16384,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 1052.6815,
+        "t8": 1073.1366,
+        "t20": 696.8229,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 1.9693,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 13.9778,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 1,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 33.4,
+        "p90": 66.7,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": null,
+      "novelty_b": {
+        "phashes": {
+          "t2": "0f17333313333317",
+          "t8": "0f172b0909aa6b0f",
+          "t20": "0f0faaf2b2b0b217"
+        },
+        "color_histogram": [
+          0.010877,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.002078,
+          0,
+          0,
+          0,
+          0.005671,
+          0.001582,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.021449,
+          0.001688,
+          0,
+          0,
+          0.00049,
+          0.001638,
+          0.001096,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.000011,
+          0,
+          0,
+          0,
+          0.007614,
+          0.012976,
+          0.01255,
+          0,
+          0,
+          0,
+          0.39505,
+          0.52523
+        ],
+        "min_hamming_distance": null,
+        "min_histogram_distance": null,
+        "closest_date": null,
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 3.9291,
+        "reduced_motion": 1.2883,
+        "ratio": 0.3279
+      },
+      "screenshots": {
+        "t2": "audit/dry-runs/run-01/attempt-3/shot-02s.png",
+        "t8": "audit/dry-runs/run-01/attempt-3/shot-08s.png",
+        "t20": "audit/dry-runs/run-01/attempt-3/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 15,
+        "ambition": 13,
+        "craft": 15,
+        "distinctness": 15,
+        "polish": 7
+      },
+      "total": 65,
+      "evidence": {
+        "mechanism": "shot-08s: bottom-row strips curl into full arcs while the top two rows stay upright and a middle row is tilted; by shot-20s the arcs open and the top rows still hold a curve, so the base-to-tip lag reads on screen.",
+        "ambition": "shot-08s: 48 strips in an 8x6 grid, each a nested segment chain with pale skin and dark fiber lines; one flat layer with no lighting, simulation or secondary rendering idea beyond the strips and tiles.",
+        "craft": "shot-02s: cream radial ground with ochre edges and upright rust strips with dark graphite bases; the strips are thin and small at 1280x720, and by shot-08s the tile panels behind them fade into the ground with muddy edges.",
+        "distinctness": "shot-02s: 48 identical rust strips on a cream ground in an 8x6 grid; by shot-20s they form a central diagonal cluster, a subject not in the anchors (sky birds, climate spiral, chart waterfall, two-pendulum beam).",
+        "polish": "shot-02s: the upright grid fills the frame as a composed start; by shot-20s the cluster pulls back into a cream margin and the open-to-closed gradient differs from shot-02s, so the piece resolves."
+      },
+      "pairwise_beats_median": true,
+      "pairwise_median_ref": null,
+      "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head comparison to make.",
+      "calibration_anchors_used": [
+        "anchor-03",
+        "anchor-04",
+        "anchor-06",
+        "anchor-11"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "Enlarge the strips so the arcs at shot-08s fill about twice their current cell size; the segment chain and base-to-tip lag are too small to read at thumbnail scale.",
+          "expected_gain": 3
+        },
+        {
+          "rank": 2,
+          "change": "Add the brown-tissue haze behind each strip from the brief, brightening and dimming with the wave, so the frame has a second rendering idea beyond the strips and tiles.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 3,
+          "change": "Remove the small label 'PINUS SCALE / BASAL HINGE / 48 x 12' at shot-02s and let the bend wave carry the identity of the piece.",
+          "expected_gain": 2
+        }
+      ]
+    }
+  }
+]

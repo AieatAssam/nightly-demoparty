@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 15,
+    "craft": 16,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 69,
+  "evidence": {
+    "mechanism": "shot-08s: diagonals at midspan split into ochre and rust bars under the marker; by shot-20s a load-position by diagonal heatmap shows the sign flip as colour bands.",
+    "ambition": "shot-20s: a 2D influence-line heatmap of about 40 diagonals sits under a statics-solved truss; one flat layer plus a load sweep, no depth or material, bytes well under budget.",
+    "craft": "shot-02s: cream ground with thin graphite chords and clean ochre and rust diagonals; the glow halos on active bars look blotchy and the truss runs off the right edge.",
+    "distinctness": "shot-20s: a heatmap of diagonal sign flips has no counterpart in the anchor set; warm cream and rust echo anchor-12 but the content is a statics plot, not an orrery.",
+    "polish": "shot-02s: truss cropped at the right edge with empty cream above and below; by shot-20s the heatmap resolves the piece into a settled, readable end state."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so tonight wins by default against an empty comparison set.",
+  "calibration_anchors_used": [
+    "anchor-02",
+    "anchor-08",
+    "anchor-09",
+    "anchor-12"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Centre the truss and fit the full span inside the frame at shot-02s (it is cropped at the right edge), so the first two seconds are composed before the marker moves.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 2,
+      "change": "Make the memorable moment readable at shot-08s: thicken the one diagonal that flips at midspan and mark its joint with a cream dot, so the bar pulled then pushed is singled out.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Replace the blotchy glow halos on active diagonals at shot-02s with a crisp stroke and an even soft fill, so the bars stay clean at full size.",
+      "expected_gain": 2
+    }
+  ]
+}

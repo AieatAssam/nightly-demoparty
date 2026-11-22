@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 13,
+    "craft": 15,
+    "distinctness": 14,
+    "polish": 6
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-08s: strips in the lower rows arc with bases on dark graphite feet and tips lagging behind; by shot-20s the top row is still curled while the lower rows reopen, so the base-to-tip wave is visible.",
+    "ambition": "shot-08s: 48 strips with a pale skin and rust fibre stripes, plus an ochre haze tile behind each, give two visible layers; shot-20s repeats the same stack. CSS-only, so few rendering ideas.",
+    "craft": "shot-02s: cream ground with an ochre vignette and rust-to-cream strips on dark bases is a cohesive palette; shot-20s has an empty haze column near x 640 and the grid sits off centre.",
+    "distinctness": "shot-02s: a cream and ochre grid of pine scale strips is a subject none of the anchors uses; shot-08s shows arc-bent tubes on haze tiles. No recent nights, judged against anchors and cliches.",
+    "polish": "shot-02s: all 48 strips stand upright in an 8 by 6 grid with large empty cream margins; by shot-20s the frame pulls back and resolves to a diagonal open-to-closed gradient, so it develops."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head comparison to make.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    { "rank": 1, "change": "Enlarge the strips so the 12-segment chain reads at 1280x720: at shot-02s each strip is about 90 px tall in a wide empty cream field, so the segments are too small to see at full size.", "expected_gain": 4 },
+    { "rank": 2, "change": "Draw visible joints between the 12 segments, with a separate pale skin and dark fibre line on each strip, so at shot-08s the arcs read as a jointed chain rather than smooth tubes.", "expected_gain": 3 },
+    { "rank": 3, "change": "Re-centre the grid at shot-20s and fill the empty haze column near x 640 so the 0.8x pull-back reads as a deliberate frame, not a gap.", "expected_gain": 2 }
+  ]
+}

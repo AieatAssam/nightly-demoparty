@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 14,
+    "craft": 15,
+    "distinctness": 15,
+    "polish": 5
+  },
+  "total": 64,
+  "evidence": {
+    "mechanism": "shot-02s: most diagonals ochre with only the left-end bars rust; by shot-08s the marker sits near centre and bars alternate rust and ochre in a zigzag; shot-20s is mostly rust, so flips show mainly as colour.",
+    "ambition": "shot-02s: one flat 2D canvas with chords, diagonals, a ghost lower chord and one marker; shot-08s adds two faint circular halo rings; by shot-20s the span is full width with no added layers or material, only flat fills.",
+    "craft": "shot-08s: diagonals alternate ochre and rust cleanly on cream with a consistent palette and crisp joints, but two faint stray circles sit beside the marker and the ghost chord is barely visible; shot-02s is sparse.",
+    "distinctness": "shot-02s: a Warren truss lattice, a subject none of the four anchors use; colour is tied to solved force sign rather than heat or a demoscene cliche; shot-20s keeps the same cream, ochre and rust palette.",
+    "polish": "shot-02s: wide centred truss with margins and a legend already composed; shot-20s reaches a different settled state (mostly rust), so the piece resolves, though the shot-08s close crop is tighter and less readable."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet; there is no baseline piece to compare against, so tonight is marked as beating the median by default.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Make the flip legible at thumbnail size: thicken the diagonals and let the bar that flips at midspan glow through its zero crossing, so shot-02s and shot-20s show visible ochre/rust transitions instead of mostly one colour.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Add a second visual layer tied to the load: draw each member's force magnitude as bar thickness or a glowing joint halo, so the 8s and 20s frames carry more rendered detail than flat fills.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Remove the two stray halo circles beside the marker at shot-08s and raise the contrast of the ghost lower chord so the frame has no unexplained marks.",
+      "expected_gain": 3
+    }
+  ]
+}

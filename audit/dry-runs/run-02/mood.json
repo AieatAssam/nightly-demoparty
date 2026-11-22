@@ -1,0 +1,112 @@
+{
+  "timestamp": "2026-11-22T20:58:25.162Z",
+  "preset_override": null,
+  "dominant_emotions": [
+    {
+      "label": "joy",
+      "intensity": 0.721
+    },
+    {
+      "label": "interest",
+      "intensity": 0.693
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.413
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.258
+    }
+  ],
+  "pad": {
+    "pleasure": 0.394,
+    "arousal": 0.467,
+    "dominance": 0.332
+  },
+  "neurochemistry": {
+    "dopamine": 1,
+    "noradrenaline": 1,
+    "serotonin": 0.756,
+    "cortisol": 0.315,
+    "oxytocin": 0.425,
+    "opioids": 1
+  },
+  "drives": {
+    "novelty": 0,
+    "social": 0.384,
+    "fatigue": 0
+  },
+  "derived_signals": {
+    "interest": 0.693,
+    "boredom": 0.258,
+    "frustration": 0.079
+  },
+  "likes": [
+    {
+      "topic": "physics",
+      "score": 0.251
+    },
+    {
+      "topic": "warren-truss-load-paths",
+      "score": 0.251
+    },
+    {
+      "topic": "force-sign",
+      "score": 0.249
+    },
+    {
+      "topic": "load-paths",
+      "score": 0.219
+    },
+    {
+      "topic": "history",
+      "score": 0.188
+    },
+    {
+      "topic": "truss-geometry",
+      "score": 0.185
+    },
+    {
+      "topic": "material-split",
+      "score": 0.176
+    },
+    {
+      "topic": "tiling-geometry",
+      "score": 0.176
+    },
+    {
+      "topic": "data-form",
+      "score": 0.157
+    }
+  ],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.734,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.394,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "measured",
+      "value": 0.332,
+      "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+    },
+    "technical_risk_budget": {
+      "level": "moderate",
+      "value": 0.693,
+      "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.079,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

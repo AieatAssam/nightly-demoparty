@@ -1,0 +1,38 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 2,
+  "best_total": 68,
+  "reason": "Attempt 2: scored 68, below 72. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "At shot-08s, vary each strip's animation delay and curl amplitude by its column so the wave reads as a front crossing the grid instead of a repeated stamp of identical arcs.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Replace the flat radial ochre halos with a shared gradient or a per-strip tissue haze that brightens along the wave front, so the haze carries the mechanism rather than sitting as static blobs.",
+        "expected_gain": 3
+      },
+      {
+        "rank": 3,
+        "change": "Remove the stair-step seams on tight curls at shot-20s by adding a segment overlap or a shading step on the inner face, so the end state reads as clean.",
+        "expected_gain": 2
+      }
+    ],
+    "build_failed": false
+  }
+}

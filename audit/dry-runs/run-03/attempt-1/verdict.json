@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 15,
+    "polish": 6
+  },
+  "total": 64,
+  "evidence": {
+    "mechanism": "shot-02s: four nodes (ochre, amber, rust, graphite) wired by hyphae to a grey central web with streams running outward; shot-08s: rust node glows but streams stay one-directional; shot-20s: mirrored to six nodes with no clear reversal.",
+    "ambition": "shot-02s: flat 2D line-and-glow scene with one rendering idea; shot-08s: thicker hyphae and soft shadow glows on two nodes; shot-20s: radial mirror doubles the network. Uses about a third of the 24 KB budget.",
+    "craft": "shot-02s: cream ground and soft radial glows match the brief palette, but hyphae are jagged aliased polylines and dots read as line dashes; shot-20s: upper 40 percent of the frame is empty and the caption is small bottom-left.",
+    "distinctness": "shot-02s: fungal hyphae on cream ground reads unlike the anchors' contour, weave, flock or reaction-diffusion dish; shot-20s: mirrored network stays a generic line diagram and no Gray-Scott spot texture appears.",
+    "polish": "shot-02s: nodes sit in the lower third with the upper half empty; shot-08s: hard cut to a closer frame with nodes repositioned; shot-20s: mirrored composition resolves but never settles into a distinct steady-state pattern."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet, so there is no prior piece to compare against; tonight wins by default.",
+  "calibration_anchors_used": [
+    "anchor-01",
+    "anchor-05",
+    "anchor-06",
+    "anchor-10"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Make the shade reversal readable: at shot-08s the rust node's hyphae must visibly flip direction, with dots moving toward the shaded node and its stream reversed in colour or speed so the cut is legible.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Fill the empty upper half in shot-02s and shot-20s: raise the central web and seed a visible Gray-Scott spot pattern along the hyphae, the technique the brief names but shot-20s does not show.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Replace the jagged aliased hyphae and dash-like dots with smooth anti-aliased polylines and round dots, and drop the small caption from the bottom-left corner.",
+      "expected_gain": 2
+    }
+  ]
+}

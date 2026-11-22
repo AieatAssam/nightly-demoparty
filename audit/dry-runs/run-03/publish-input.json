@@ -1,0 +1,821 @@
+{
+  "status": "b-side",
+  "reason": "B-side: best attempt 2 scored 67, below the publish threshold 72.",
+  "publishThreshold": 72,
+  "plan": {
+    "date": "2026-11-25",
+    "compo": "simulation",
+    "size_budget_bytes": 24576,
+    "constraint": null,
+    "domain": "mycorrhizal-carbon-routing",
+    "wildcard": false,
+    "banned": {
+      "techniques": [],
+      "domains": [],
+      "palette_hexes": [],
+      "slop_patterns": [
+        "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+        "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+        "Matrix rain is on the permanent slop list.",
+        "Four-sine plasma boilerplate. Build a field with development instead.",
+        "Plain plasma: sine sums as the whole picture.",
+        "Plain starfield: points drifting toward the camera with no structure behind them.",
+        "Plain tunnel: concentric rings flying past with nothing else happening.",
+        "Matrix rain: falling glyph columns.",
+        "Mouse-following particles with no system behind them.",
+        "A single raymarched sphere or torus on a gradient.",
+        "Untouched Mandelbrot or Julia zoom.",
+        "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+        "Bloom or chromatic aberration used to hide an empty scene.",
+        "Math.random() noise as the main visual idea.",
+        "A loop with no development: the 20 s frame looks like the 2 s frame.",
+        "Title cards or captions doing the work the visuals should do.",
+        "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+      ]
+    },
+    "boredom_override": false,
+    "requires_audio": false,
+    "seed": "dry-run-03",
+    "dry_run": true,
+    "overrides": {
+      "domain": "mycorrhizal-carbon-routing",
+      "compo": "simulation",
+      "mood_preset": null
+    }
+  },
+  "dossier": {
+    "topic": "Sink-driven sugar flow through shared mycorrhizal hyphae: carbon is drawn to the strongest sink, which is the fungus, and heavy shade can reverse the flow into a recipient tree",
+    "domain": "mycorrhizal-carbon-routing",
+    "wildcard_chosen": false,
+    "summary": "Mycorrhizal fungi act as the strongest sink for plant sugar. Carbon moves through shared hyphae toward carbon-limited trees, so flow follows source and sink conditions rather than a tree deliberately sharing. Heavy shade on a recipient tree can deplete its own roots of carbon. A 2016 labelled-CO2 study in spruce found label moving into neighbouring beech, pine and larch, in either direction. Experts still dispute how much of the flow is cooperation versus fungal demand, and how often networks are actually connected in the field.",
+    "facts": [
+      {
+        "claim": "Carbon flow from the donor tree is clear, given that the fungus is inherently heterotrophic and thus carbon-supply dependent.",
+        "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/",
+        "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+      },
+      {
+        "claim": "Carbon flow through fungal mycelium is much more efficient than through bulk soil, supporting the idea that carbon moves through hyphal networks from one plant to another.",
+        "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/",
+        "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+      },
+      {
+        "claim": "When a recipient tree is subjected to heavy shading, the roots of the recipient tree may experience carbon depletion.",
+        "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/",
+        "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+      },
+      {
+        "claim": "A 2016 study flooded the crowns of 120-year-old, 40-metre spruce trees with labelled carbon dioxide; the label appeared in neighbouring beech, pine or larch, and in the reverse direction, via shared fungal filaments.",
+        "source_url": "https://psi.ch/en/news/psi-stories/trees-trade-carbon-among-each-other",
+        "source_title": "Trees Trade Carbon Among Each Other | News & Events | PSI"
+      },
+      {
+        "claim": "Researchers concluded that carbon is drawn to the strongest sink, namely mycorrhizal fungi, rather than being traded for nutrients.",
+        "source_url": "https://ualberta.ca/en/folio/2024/10/are-plants-and-fungi-trading-carbon-for-nutrients.html",
+        "source_title": "Are plants and fungi trading carbon for nutrients? Not likely, say researchers"
+      },
+      {
+        "claim": "The evidence for mycorrhizal networks facilitating tree cooperation is not as strong as the popular story would suggest.",
+        "source_url": "https://scientificamerican.com/article/do-trees-support-each-other-through-a-network-of-fungi",
+        "source_title": "Do Trees Really Support Each Other through a Network of Fungi?"
+      }
+    ],
+    "visualisable_mechanisms": [
+      {
+        "name": "fungal sink pull",
+        "description": "The hyphal network is a sugar sink. Carbon leaves a donor canopy tree and is drawn into the fungus, so flow depends on how much the fungus can absorb, not on a tree choosing to share.",
+        "render_or_sonify_hint": "Bright canopy nodes emit dots along thin branching hyphae into a central fungal web; the web thickens as it absorbs, and dot density follows its demand."
+      },
+      {
+        "name": "shade reversal",
+        "description": "Heavy shade on a recipient tree cuts its own carbon supply, so the recipient's roots deplete and the net flow reverses toward it.",
+        "render_or_sonify_hint": "One canopy node dims under a shadow band; its root tips fade while arrows along the hyphae flip direction, pulling sugar back toward the shaded tree."
+      },
+      {
+        "name": "two-way species exchange",
+        "description": "Carbon moves across tree species in both directions through the same shared fungal filaments.",
+        "render_or_sonify_hint": "Spruce, beech, pine and larch nodes in four colours exchange paired dot streams along shared hyphae, with the direction of each stream changing over time."
+      },
+      {
+        "name": "network thickening to steady state",
+        "description": "Connections form over time as hyphae grow between trees, then flows balance and the network settles into a steady pattern.",
+        "render_or_sonify_hint": "Over 20 seconds, sparse seedling-to-canopy threads branch and thicken, then the dot streams slow and reach an even, balanced rhythm."
+      }
+    ],
+    "open_questions": [
+      "Does net carbon move between trees, or does the flow only reflect the fungus acting as a sink?",
+      "How often are mycorrhizal networks actually connected between trees in the field?",
+      "What share of transferred carbon ends up in recipient roots versus being used by the fungus?"
+    ],
+    "surprise": {
+      "score": 70,
+      "justification": "A generalist expects a mother tree sharing sugar with seedlings. What is true: carbon follows fungal sink demand and shade, and whether any cooperation exists is still disputed."
+    },
+    "dataset": null
+  },
+  "mood": {
+    "timestamp": "2026-11-22T21:42:04.377Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.8
+      },
+      {
+        "label": "joy",
+        "intensity": 0.754
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.477
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.058
+      }
+    ],
+    "pad": {
+      "pleasure": 0.393,
+      "arousal": 0.525,
+      "dominance": 0.33
+    },
+    "neurochemistry": {
+      "dopamine": 1,
+      "noradrenaline": 1,
+      "serotonin": 0.717,
+      "cortisol": 0.315,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.404,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.8,
+      "boredom": 0.058,
+      "frustration": 0.079
+    },
+    "likes": [
+      {
+        "topic": "fungal-sink",
+        "score": 0.268
+      },
+      {
+        "topic": "two-way-exchange",
+        "score": 0.237
+      },
+      {
+        "topic": "shade-reversal",
+        "score": 0.229
+      },
+      {
+        "topic": "mycorrhizal-carbon-routing",
+        "score": 0.218
+      },
+      {
+        "topic": "network-graph",
+        "score": 0.218
+      },
+      {
+        "topic": "particle-system",
+        "score": 0.21
+      },
+      {
+        "topic": "hyphal-network",
+        "score": 0.208
+      },
+      {
+        "topic": "network-growth",
+        "score": 0.142
+      },
+      {
+        "topic": "carbon-flow",
+        "score": 0.121
+      },
+      {
+        "topic": "popular-myth",
+        "score": 0.082
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.763,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.393,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "measured",
+        "value": 0.33,
+        "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+      },
+      "technical_risk_budget": {
+        "level": "experimental",
+        "value": 0.8,
+        "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.079,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  },
+  "brief": {
+    "title": "Fungal Sink: Shade Reverses Sugar Flow Through Hyphae",
+    "concept": "Sugar dots leave four canopy trees (spruce, beech, pine and larch) and drain into one shared mycorrhizal web, and a shaded node's dots reverse back toward it.",
+    "mechanism_embodied": {
+      "mechanism_name": "fungal sink pull",
+      "how_visualised": "Each of the four canopy nodes emits amber dots along its hyphae into a central fungal web; each dot is one unit of sugar, and each node's emission rate equals the web's absorption demand. When a shadow band dims a node, its root tips fade and the dots on its hyphae flip direction, streaming back toward it, so the reversal happens without any tree choosing to share."
+    },
+    "discarded_obvious_idea": "Obvious: a mother tree at the centre sends glowing dots out to seedlings around it. Rejected: it implies deliberate sharing that the dossier disputes, and it is a hub-and-spoke picture with no sink or shade behaviour.",
+    "compo": "simulation",
+    "constraint_honoured": null,
+    "techniques": [
+      "sink-weighted dot streams along branching hyphae",
+      "Gray-Scott reaction-diffusion",
+      "shade-driven flow reversal on hyphal edges",
+      "stochastic branching hyphae growth",
+      "radial mirror symmetry of the flow field"
+    ],
+    "novel_technique": "Gray-Scott reaction-diffusion",
+    "technique_family": "simulation",
+    "palette": [
+      "#efe3c8",
+      "#c98a3a",
+      "#9c4a2a",
+      "#e0b050",
+      "#3b2a20"
+    ],
+    "motion_sound_plan": "Mood applied: high tempo (about 3000 dots at peak, emission pulsing at 120 per minute, four hard cuts at 3, 6.5, 11 and 16 s), warm-consonant palette (cream ground, ochre, rust and amber, radial mirror symmetry), measured framing (one eased pull-back at 16 s), experimental technique (Gray-Scott web). No audio. Constraint: null.",
+    "storyboard": [
+      {
+        "beat": 1,
+        "t_start_s": 0,
+        "t_end_s": 5,
+        "description": "Cream ground. Four canopy nodes in ochre, rust, amber and graphite sit along the lower third. A sparse central web of thin graphite hyphae forms, and amber dots stream from each node along it. Hard cut at 3 s to a wider frame. Camera holds."
+      },
+      {
+        "beat": 2,
+        "t_start_s": 5,
+        "t_end_s": 10,
+        "description": "Hard cut at 6.5 s to a closer frame. A shadow band crosses the rust node at right: it dims, its root tips fade, and the dots on its hyphae reverse direction, streaming back into the web. About 1200 dots on screen; the central web thickens."
+      },
+      {
+        "beat": 3,
+        "t_start_s": 10,
+        "t_end_s": 15,
+        "description": "Hard cut at 11 s to a radial mirror. About 3000 dots in four colours stream both ways across a Gray-Scott spot pattern that grows along the hyphae. Mirror symmetry doubles the flow. Camera holds still."
+      },
+      {
+        "beat": 4,
+        "t_start_s": 15,
+        "t_end_s": 20,
+        "description": "Hard cut at 16 s, then one slow eased pull-back to a full radial view. Dot streams slow to an even rhythm, the web settles into a steady mirrored pattern, and the reversed rust stream toward the shaded node persists."
+      }
+    ],
+    "memorable_moment": "A shaded rust node dims, and its amber dots turn around and stream back into the central web.",
+    "self_declared_risk": "Gray-Scott pattern may fill the frame with noise instead of a sparse web; seed only a few squares and cap the dot count. Reversal may read as random if the dots do not visibly flip direction at the 6.5 s cut.",
+    "liner_note": "In 2016 a study flooded the crowns of 120-year-old, 40-metre spruce trees with labelled carbon dioxide, and the label appeared in neighbouring beech, pine and larch, in either direction, through shared fungal filaments. Carbon is drawn to the strongest sink, which is the mycorrhizal fungus, so flow follows demand rather than a tree choosing to share. Heavy shade on a recipient tree can deplete its own roots, and the net flow then turns toward it. On screen, bright canopy nodes emit amber dots into a central web that thickens as it absorbs. When one node dims under a shadow band, its dots reverse and stream back toward it."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/dry-runs/run-03/attempt-1/index.html",
+        "compo": "simulation",
+        "byte_size": 8329,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 305.8163,
+          "t8": 708.9581,
+          "t20": 420.8042,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 1.2371,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 4.9651,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 166.6,
+          "p90": 316.6,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "1010103078aaaa88",
+            "t8": "102060a04c549292",
+            "t20": "10101030f0ecaa90"
+          },
+          "color_histogram": [
+            0.003111,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000986,
+            0,
+            0,
+            0,
+            0.000994,
+            0.003043,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.010259,
+            0.002277,
+            0,
+            0,
+            0.000059,
+            0.002281,
+            0.001993,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000311,
+            0.000004,
+            0,
+            0,
+            0.003644,
+            0.014024,
+            0.004017,
+            0,
+            0,
+            0.000267,
+            0.01412,
+            0.938609
+          ],
+          "min_hamming_distance": null,
+          "min_histogram_distance": null,
+          "closest_date": null,
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 2.0532,
+          "reduced_motion": 0.3015,
+          "ratio": 0.1468
+        },
+        "screenshots": {
+          "t2": "audit/dry-runs/run-03/attempt-1/shot-02s.png",
+          "t8": "audit/dry-runs/run-03/attempt-1/shot-08s.png",
+          "t20": "audit/dry-runs/run-03/attempt-1/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 14,
+          "craft": 14,
+          "distinctness": 15,
+          "polish": 6
+        },
+        "total": 64,
+        "evidence": {
+          "mechanism": "shot-02s: four nodes (ochre, amber, rust, graphite) wired by hyphae to a grey central web with streams running outward; shot-08s: rust node glows but streams stay one-directional; shot-20s: mirrored to six nodes with no clear reversal.",
+          "ambition": "shot-02s: flat 2D line-and-glow scene with one rendering idea; shot-08s: thicker hyphae and soft shadow glows on two nodes; shot-20s: radial mirror doubles the network. Uses about a third of the 24 KB budget.",
+          "craft": "shot-02s: cream ground and soft radial glows match the brief palette, but hyphae are jagged aliased polylines and dots read as line dashes; shot-20s: upper 40 percent of the frame is empty and the caption is small bottom-left.",
+          "distinctness": "shot-02s: fungal hyphae on cream ground reads unlike the anchors' contour, weave, flock or reaction-diffusion dish; shot-20s: mirrored network stays a generic line diagram and no Gray-Scott spot texture appears.",
+          "polish": "shot-02s: nodes sit in the lower third with the upper half empty; shot-08s: hard cut to a closer frame with nodes repositioned; shot-20s: mirrored composition resolves but never settles into a distinct steady-state pattern."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": null,
+        "pairwise_justification": "No median archive yet, so there is no prior piece to compare against; tonight wins by default.",
+        "calibration_anchors_used": [
+          "anchor-01",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Make the shade reversal readable: at shot-08s the rust node's hyphae must visibly flip direction, with dots moving toward the shaded node and its stream reversed in colour or speed so the cut is legible.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Fill the empty upper half in shot-02s and shot-20s: raise the central web and seed a visible Gray-Scott spot pattern along the hyphae, the technique the brief names but shot-20s does not show.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Replace the jagged aliased hyphae and dash-like dots with smooth anti-aliased polylines and round dots, and drop the small caption from the bottom-left corner.",
+            "expected_gain": 2
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/dry-runs/run-03/attempt-2/index.html",
+        "compo": "simulation",
+        "byte_size": 7628,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 390.8185,
+          "t8": 838.5675,
+          "t20": 808.1097,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 5.6436,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 10.9406,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 200,
+          "p90": 518.45,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "1030706068ccaaaa",
+            "t8": "7767e3f3b5db5b77",
+            "t20": "10b2fa7070f0b2b2"
+          },
+          "color_histogram": [
+            0.001433,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.003253,
+            0,
+            0,
+            0,
+            0.000095,
+            0.001517,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000884,
+            0.009434,
+            0,
+            0,
+            0.000002,
+            0.031552,
+            0.03412,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000001,
+            0,
+            0,
+            0,
+            0.002089,
+            0.0221,
+            0.05767,
+            0,
+            0,
+            0.000056,
+            0.125956,
+            0.709839
+          ],
+          "min_hamming_distance": null,
+          "min_histogram_distance": null,
+          "closest_date": null,
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 11.6922,
+          "reduced_motion": 0.2947,
+          "ratio": 0.0252
+        },
+        "screenshots": {
+          "t2": "audit/dry-runs/run-03/attempt-2/shot-02s.png",
+          "t8": "audit/dry-runs/run-03/attempt-2/shot-08s.png",
+          "t20": "audit/dry-runs/run-03/attempt-2/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 16,
+          "craft": 14,
+          "distinctness": 15,
+          "polish": 7
+        },
+        "total": 67,
+        "evidence": {
+          "mechanism": "shot-02s: four canopy nodes sit along the bottom with amber dots streaming up into a grey central hyphal web; by shot-08s the right-hand node fades under a shadow band and a dotted stream runs toward it.",
+          "ambition": "shot-20s: eight nodes arranged in a radial ring around a dense hyphal web and a ring of rust spots; shot-08s adds a shadow gradient band. Few layers and a modest dot count, well below the brief's stated 3000.",
+          "craft": "shot-02s: rust spot arcs show stair-stepped pixel edges and blurred blobs; nodes are flat fills with no material or lighting. The cream, ochre and rust palette stays harmonious across all three frames.",
+          "distinctness": "shot-20s: a radial ring of nodes over a Gray-Scott spot ring in cream and rust is not a common cliche and differs from the anchors' card weave, flat formula and bird flock.",
+          "polish": "shot-02s: composition is sparse and off-centre; shot-20s resolves into a symmetric radial layout that clearly differs from 2s, so development exists. The hard grey band at the right edge of shot-08s is unresolved."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": null,
+        "pairwise_justification": "No median archive exists yet, so the pairwise check passes by rule.",
+        "calibration_anchors_used": [
+          "anchor-01",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "At shot-02s and shot-08s raise visible dot density toward the brief's stated scale, so the shade-reversed stream at the faded right node reads as a clear direction flip rather than a faint dotted line.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Render the Gray-Scott rust spots at shot-02s with antialiased or higher-resolution edges; the arcs currently show stair-stepped pixel borders visible at full size.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Give the four canopy nodes simple shading or a soft glow so they read as objects, and soften the hard grey shadow band at shot-08s into a gradient that matches the cream ground.",
+            "expected_gain": 3
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/dry-runs/run-03/attempt-3/index.html",
+        "compo": "simulation",
+        "byte_size": 7156,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 455.0896,
+          "t8": 558.8027,
+          "t20": 377.8771,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 4.6872,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 16.7158,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 175.05,
+          "p90": 500,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "0f1b2b63492b2b0f",
+            "t8": "5c4cac5c5c4c4c1c",
+            "t20": "4c4c4c70704c4c4c"
+          },
+          "color_histogram": [
+            0.002344,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.00201,
+            0,
+            0,
+            0,
+            0.001938,
+            0.001507,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.002291,
+            0.012248,
+            0,
+            0,
+            0.000058,
+            0.009529,
+            0.004386,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000001,
+            0,
+            0,
+            0,
+            0.000478,
+            0.017554,
+            0.089288,
+            0,
+            0,
+            0.00027,
+            0.623161,
+            0.232937
+          ],
+          "min_hamming_distance": null,
+          "min_histogram_distance": null,
+          "closest_date": null,
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 5.0065,
+          "reduced_motion": 0.7005,
+          "ratio": 0.1399
+        },
+        "screenshots": {
+          "t2": "audit/dry-runs/run-03/attempt-3/shot-02s.png",
+          "t8": "audit/dry-runs/run-03/attempt-3/shot-08s.png",
+          "t20": "audit/dry-runs/run-03/attempt-3/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 16,
+          "ambition": 14,
+          "craft": 15,
+          "distinctness": 14,
+          "polish": 7
+        },
+        "total": 66,
+        "evidence": {
+          "mechanism": "shot-02s: four canopy nodes (amber, ochre, graphite, rust) with amber dot-lines converging into a central web; by shot-08s the graphite node's hyphae curl dark and the rust node dims, but reversal direction is not legible in still frames.",
+          "ambition": "shot-08s: glowing sphere nodes, blurred shade bands, branching hyphae and a gradient ground; by shot-20s an eight-node radial mirror with two crossing shade bands. One simulation layer, low dot count, no visible Gray-Scott pattern, about 29% of budget used.",
+          "craft": "shot-02s: cream and rust palette with shaded sphere nodes and soft halos is coherent, but the shade blobs show pixelated edges and the hyphae are jagged dotted lines; by shot-20s vertical banding stripes run through the background gradient.",
+          "distinctness": "shot-02s: fungal sink-and-shade concept on a cream ground with amber and rust hyphae is absent from the anchors (weave, Chladni, birds, dish); by shot-20s the radial mirror of eight nodes with crossing shade bands reads as its own image.",
+          "polish": "shot-02s: off-centre composition with the nodes low and a small caption bottom-left; shot-08s frame is half empty on the right; shot-20s resolves to a symmetric X layout that differs clearly from the 2s start."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": null,
+        "pairwise_justification": "No median archive exists yet, so there is no head-to-head comparison.",
+        "calibration_anchors_used": [
+          "anchor-01",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Make the reversal legible: at the 6.5 s cut, draw bright moving heads with short trails on the dimmed node's hyphae so the flip toward the shaded node is visible in shot-08s, not only implied by dim colour.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 2,
+            "change": "Raise the dot density to the brief's counts and draw the Gray-Scott spot pattern on the central web so shot-20s reads as a dense living network instead of sparse lines.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Render the shade bands with a soft full-resolution falloff instead of blocky blur, dither the background gradient to remove the vertical banding seen at shot-20s, and centre the shot-08s frame on the nodes.",
+            "expected_gain": 3
+          }
+        ]
+      }
+    }
+  ],
+  "bestAttempt": 2,
+  "dryRun": true
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "sample": 1,
+    "file": "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-03/attempt-1/verdict-sample-1.json",
+    "ok": true,
+    "errors": []
+  },
+  {
+    "sample": 2,
+    "file": "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-03/attempt-1/verdict-sample-2.json",
+    "ok": true,
+    "errors": []
+  },
+  {
+    "sample": 3,
+    "file": "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-03/attempt-1/verdict-sample-3.json",
+    "ok": true,
+    "errors": []
+  },
+  {
+    "sample": 4,
+    "file": "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-03/attempt-1/verdict-sample-4.json",
+    "ok": false,
+    "errors": [
+      "not written"
+    ]
+  }
+]

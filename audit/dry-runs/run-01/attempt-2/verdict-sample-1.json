@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 15,
+    "craft": 16,
+    "distinctness": 16,
+    "polish": 8
+  },
+  "total": 71,
+  "evidence": {
+    "mechanism": "shot-02s: bottom two rows are bent from the base while the upper rows stay straight; by shot-08s the whole grid curls, and by shot-20s the bottom rows reopen first while the top row stays curled.",
+    "ambition": "shot-08s: 48 strips of 12-segment nested chains with pale skin, dark fibre lines and an ochre haze behind each; by shot-20s the grid scale drops for a pull-back. CSS-only, with no simulation.",
+    "craft": "shot-02s: cream ground with rust and ochre strips and graphite bases, a clean palette; segment joints look stepped and blocky at full size, and the shot-08s curls repeat near-identical hooks.",
+    "distinctness": "shot-08s: a grid of curled C-hooks in one tone with ochre haze; by shot-20s the top row stays curled while the lower rows open, a subject not seen in the anchor strips.",
+    "polish": "shot-02s: grid framed with cream margins and the bend already started at the bottom; shot-20s: the open-to-closed gradient differs from the 2s frame, so the piece resolves."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so there is no prior piece to compare head to head.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Make the bend wave read as a front: at shot-08s give each strip its own curl amplitude and delay so a band of open and closed strips crosses the grid, instead of 48 identical hooks.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Show the skin-over-fibre split: draw the pale skin on one face and the dark fibre lines on the other at shot-02s, so the two-layer mechanism is visible as well as the bend.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Smooth the segment joints at shot-08s, where the 12 segments show stepped, blocky edges at full size; use finer segments or sub-pixel overlap so the curl reads as a continuous hinge.",
+      "expected_gain": 3
+    }
+  ]
+}

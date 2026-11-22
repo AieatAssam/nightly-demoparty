@@ -1,0 +1,106 @@
+<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; media-src blob:">
+<html lang="en"><head><meta charset="utf-8"><title>Warren truss: the diagonal that flips</title>
+<style>*{margin:0}html,body{background:#efe3c8;overflow:hidden}canvas{width:100vw;height:100vh;display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script type="module">
+const srng=e=>()=>{e=e+1831565813|0;let t=Math.imul(e^e>>>15,1|e);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296},mtof=e=>440*2**((e-69)/12);function synthBus(e,{delay:t=.3,feedback:n=.35,wet:l=.25}={}){const a=h=>{const p=e.createGain();return p.gain.value=h,p},i=a(1),o=a(1),u=a(l),c=a(n),r=e.createDelay(2),s=e.createDelay(2),f=e.createChannelMerger(2),d=e.createDynamicsCompressor(),A=e.createWaveShaper(),g=e.createAnalyser(),q=new Float32Array(1024);for(let h=0;h<1024;h++)q[h]=.9*Math.tanh(2*(h/511.5-1));A.curve=q,d.threshold.value=-18,d.ratio.value=4,d.attack.value=.003,d.release.value=.2,r.delayTime.value=s.delayTime.value=t,i.connect(o),i.connect(u).connect(r).connect(s).connect(c).connect(r),r.connect(f,0,0),s.connect(f,0,1),f.connect(o),o.connect(d).connect(A).connect(g).connect(e.destination),g.fftSize=1024;const w=new Uint8Array(g.frequencyBinCount),v=new Float32Array(g.fftSize),y={bass:0,mid:0,high:0,rms:0};let R=0;const M=(h,p)=>{const b=e.sampleRate/g.fftSize,m=Math.round(h/b),k=Math.max(m+1,Math.round(p/b));let B=0;for(let T=m;T<k;T++)B+=w[T];return B/(k-m)/255};return{input:i,analyser:g,bands:()=>{g.getByteFrequencyData(w),g.getFloatTimeDomainData(v);let h=0;for(const m of v)h+=m*m;const p={bass:M(20,250),mid:M(250,2e3),high:M(2e3,1e4),rms:Math.min(1,Math.sqrt(h/v.length)*2)},b=Math.max(0,e.currentTime-R);R=e.currentTime;for(const m in y)y[m]=p[m]+(y[m]-p[m])*Math.exp(-b/(p[m]>y[m]?.05:.25));return{...y}}}}const env=(e,t,n,l,a)=>{const i=e.createGain();return i.gain.setValueAtTime(0,t),i.gain.linearRampToValueAtTime(a,t+n),i.gain.exponentialRampToValueAtTime(1e-4,t+n+l),i};function fm(e,t,n,l,a=.4,{ratio:i=2,index:o=3,vol:u=.3}={}){const c=e.createOscillator(),r=e.createOscillator(),s=e.createGain(),f=env(e,n,.005,a,u);c.frequency.value=l,r.frequency.value=l*i,s.gain.setValueAtTime(l*o,n),s.gain.exponentialRampToValueAtTime(l*o*.05+.001,n+a),r.connect(s).connect(c.frequency),c.connect(f).connect(t);for(const d of[c,r])d.start(n),d.stop(n+a+.05)}function sub(e,t,n,l,a=.3,{cutoff:i=1800,q:o=6,vol:u=.25,type:c="sawtooth"}={}){const r=e.createOscillator(),s=e.createBiquadFilter(),f=env(e,n,.005,a,u);r.type=c,r.frequency.value=l,s.type="lowpass",s.Q.value=o,s.frequency.setValueAtTime(i,n),s.frequency.exponentialRampToValueAtTime(Math.max(60,l),n+a),r.connect(s).connect(f).connect(t),r.start(n),r.stop(n+a+.05)}function ksBuffer(e,t,n=1,l=1,a=.996){const i=Math.max(2,Math.round(e/t)),o=new Float32Array(Math.ceil(e*n)),u=srng(l);for(let c=0;c<i&&c<o.length;c++)o[c]=u()*2-1;for(let c=i;c<o.length;c++)o[c]=a*.5*(o[c-i]+o[c-i+1]);return o}function pluck(e,t,n,l,a=1,{vol:i=.4,seed:o=1,damp:u=.996}={}){const c=e.createBuffer(1,Math.ceil(e.sampleRate*a),e.sampleRate),r=e.createBufferSource(),s=e.createGain();c.copyToChannel(ksBuffer(e.sampleRate,l,a,o,u),0),r.buffer=c,s.gain.value=i,r.connect(s).connect(t),r.start(n)}const seq=({bpm:e=120,div:t=4,seed:n=1}={},l)=>(a,i,o,u,c=0)=>{const r=60/e/t;for(let s=Math.max(0,Math.ceil(o/r-1e-9));s*r<u;s++)l(a,i,c+s*r,s,srng(n^Math.imul(s+1,2654435761)))};function startSynth(e,{target:t=document,ahead:n=.2,bus:l}={}){const a={ctx:null,bus:null,bands:()=>({bass:0,mid:0,high:0,rms:0})},i=()=>{if(a.ctx)return void a.ctx.resume();const o=a.ctx=new AudioContext,u=a.bus=synthBus(o,l),c=o.currentTime+.05;let r=0;a.bands=u.bands;const s=()=>{const f=o.currentTime-c+n;f>r&&(e(o,u.input,r,f,c),r=f)};s(),setInterval(s,50)};for(const o of["pointerdown","keydown"])t.addEventListener(o,i);return a}const registerAudioProbe=(e,t)=>{window.__demopartyAudioProbe=async n=>e(n,synthBus(n,t).input,0,n.length/n.sampleRate,0)};
+
+// ---- Warren truss, method of joints ----
+const N=30,S=Math.sin(Math.PI/3),CO=.5,DEAD=.012,LOOP=24;
+const C={g:'#efe3c8',o:'#c8962e',r:'#a84b2a',k:'#3a342e'};
+// marker position (panels) at story time t; off-span returns null
+const mx=t=>{const x=-1+32*((t%LOOP)/19);return x>=0&&x<=N?x:null};
+// solve all diagonal forces for a unit load at x (+ dead load on every bottom node). + = tension
+function solve(x,F){
+  const L=new Float32Array(N+1).fill(DEAD);
+  if(x!==null){const i=Math.min(N-1,Math.floor(x)),f=x-i;L[i]+=1-f;L[i+1]+=f}
+  let R0=0;for(let i=0;i<=N;i++)R0+=L[i]*(1-i/N);
+  let E=0,Cb=0;
+  for(let i=0;i<N;i++){
+    const Fy=(i?0:R0)-L[i];
+    const D=-Fy/S-E;            // joint B_i, sum Fy
+    Cb=Cb+E*CO-D*CO;            // joint B_i, sum Fx (bottom chord)
+    E=-D;                       // joint T_i, sum Fy
+    F[2*i]=D;F[2*i+1]=E;
+  }
+  return F;
+}
+const sgn=(F,j)=>F[j]>1e-6?1:F[j]<-1e-6?-1:0;
+
+// ---- audio: triad pulse + one tone per sign flip, from the same score ----
+const fa=new Float32Array(2*N),fb=new Float32Array(2*N);
+const play=seq({bpm:120,div:4,seed:24},(ctx,out,t,i)=>{
+  const st=i*.125;
+  if(i%4==0)sub(ctx,out,t,mtof(48),.35,{vol:.16,cutoff:900});
+  if(i%4==2)fm(ctx,out,t,mtof(i%8==2?64:67),.3,{vol:.06,index:1.5});
+  solve(mx(Math.max(0,st-.125)),fa);solve(mx(st),fb);
+  let n=0;for(let j=0;j<2*N&&n<3;j++){const a=sgn(fa,j),b=sgn(fb,j);if(a&&b&&a!=b){n++;pluck(ctx,out,t+n*.02,mtof(b>0?76+(j%3)*3:52+(j%3)*3),.7,{vol:.22,seed:j+1})}}
+});
+registerAudioProbe(play);
+let T=0,off=null;
+for(const e of['pointerdown','keydown'])document.addEventListener(e,()=>{if(off===null)off=T});
+startSynth((ctx,out,t0,t1,base)=>play(ctx,out,t0+off,t1+off,base-off));
+
+// ---- visuals ----
+const cv=document.getElementById('c'),g=cv.getContext('2d'),RM=matchMedia('(prefers-reduced-motion: reduce)');
+const wf=document.createElement('canvas');wf.width=2*N;wf.height=80;const wg=wf.getContext('2d'),row=wg.createImageData(2*N,1);
+const hx=h=>[1,3,5].map(k=>parseInt(h.slice(k,k+2),16)),PG=hx(C.g),PO=hx(C.o),PR=hx(C.r);
+let rec=0,cyc=-1;const F=new Float32Array(2*N),prev=new Int8Array(2*N),flipT=new Float32Array(2*N).fill(-99);
+const cl=v=>v<0?0:v>1?1:v,ease=v=>{v=cl(v);return v*v*(3-2*v)};
+function cam(t){
+  t%=LOOP;
+  if(t<4)return[8,1.7];
+  if(t<6)return[15,1];
+  if(t<10)return[12,2.4];
+  if(t<12.5)return[15.5,2.4];
+  if(t<15)return[Math.min(25,mx(t)??25),3.2];
+  const k=ease((t-15)/5);return[20+(15-20)*k+Math.sin(t*.3)*.4*k,2.2+(1-2.2)*k];
+}
+let M=-1;
+function frame(m){
+  requestAnimationFrame(frame);
+  const W=cv.clientWidth,H=cv.clientHeight;if(cv.width!=W||cv.height!=H){cv.width=W;cv.height=H}
+  T+=M<0?0:Math.min((m-M)/1e3,.5)*(RM.matches?.2:1);M=m;
+  const c=Math.floor(T/LOOP);if(c!=cyc){cyc=c;rec=0;wg.clearRect(0,0,2*N,80)}
+  while(rec<80&&cyc*LOOP+rec*.25<=T){
+    solve(mx(rec*.25),fa);
+    for(let j=0;j<2*N;j++){const a=Math.min(1,Math.abs(fa[j])*1.1),P=fa[j]>0?PO:PR;for(let q=0;q<3;q++)row.data[4*j+q]=PG[q]+(P[q]-PG[q])*a;row.data[4*j+3]=255}
+    wg.putImageData(row,0,rec++);
+  }
+  const x=mx(T);solve(x,F);
+  for(let j=0;j<2*N;j++){const s=sgn(F,j);if(prev[j]&&s&&s!=prev[j])flipT[j]=T;if(s)prev[j]=s}
+  const [cx,z]=cam(T),u=38.4*z*W/1280,wa=cl((1.6-z)/.5),ty=H*(.5-.16*wa),hh=S*u,yb=ty+hh/2,yt=ty-hh/2;
+  const px=v=>W/2+(v-cx)*u;
+  g.fillStyle=C.g;g.fillRect(0,0,W,H);
+  // influence plate: each row = one load position, each column = one diagonal
+  if(wa>0){g.globalAlpha=wa;g.imageSmoothingEnabled=false;const x0=px(0),x1=px(N),y0=H*.6,y1=H*.92;
+    g.drawImage(wf,0,0,2*N,rec||1,x0,y0,x1-x0,(y1-y0)*(rec||1)/80);
+    g.strokeStyle=C.k;g.lineWidth=1;g.strokeRect(x0-.5,y0-.5,x1-x0+1,y1-y0+1);
+    g.fillStyle=C.k;g.font='11px ui-monospace,Menlo,monospace';g.fillText('load position ↓   diagonal →',x0,y0-8);g.globalAlpha=1}
+  // chords
+  g.strokeStyle=C.k;g.lineCap='round';g.lineWidth=Math.max(1.5,1.2*z);g.beginPath();
+  g.moveTo(px(0),yb);g.lineTo(px(N),yb);g.moveTo(px(.5),yt);g.lineTo(px(N-.5),yt);g.stroke();
+  // diagonals: colour = sign, width = |force|, halo eases out after a flip
+  for(let j=0;j<2*N;j++){
+    const i=j>>1,a=j&1?[i+.5,yt,i+1,yb]:[i,yb,i+.5,yt],f=F[j],col=f>0?C.o:C.r,w=(1.2+Math.abs(f)*6)*Math.pow(z,.7);
+    const h=Math.exp(-(T-flipT[j])/.8);
+    if(h>.02){g.globalAlpha=.3*h;g.strokeStyle=col;g.lineWidth=w+10*z*h;g.beginPath();g.moveTo(px(a[0]),a[1]);g.lineTo(px(a[2]),a[3]);g.stroke();g.globalAlpha=1}
+    g.strokeStyle=col;g.lineWidth=w;g.beginPath();g.moveTo(px(a[0]),a[1]);g.lineTo(px(a[2]),a[3]);g.stroke();
+  }
+  // joints
+  const r=Math.max(2.5,2.4*z);g.fillStyle=C.g;g.strokeStyle=C.k;g.lineWidth=1.2;g.beginPath();
+  for(let i=0;i<=N;i++){g.moveTo(px(i)+r,yb);g.arc(px(i),yb,r,0,7)}
+  for(let i=0;i<N;i++){g.moveTo(px(i+.5)+r,yt);g.arc(px(i+.5),yt,r,0,7)}
+  g.fill();g.stroke();
+  // supports
+  g.fillStyle=C.k;for(const v of[0,N]){g.beginPath();g.moveTo(px(v),yb+r);g.lineTo(px(v)-.3*u,yb+.45*u);g.lineTo(px(v)+.3*u,yb+.45*u);g.fill()}
+  // load marker: one weight on the bottom chord
+  if(x!==null){const X=px(x),s=.32*u;g.fillStyle=C.k;g.fillRect(X-s,yt-2.2*s-1.4*s,2*s,1.4*s);
+    g.lineWidth=Math.max(1.5,z);g.strokeStyle=C.k;g.beginPath();g.moveTo(X,yt-2.2*s);g.lineTo(X,yb-r-s*.6);g.stroke();
+    g.beginPath();g.moveTo(X,yb-r);g.lineTo(X-s*.4,yb-r-s*.7);g.lineTo(X+s*.4,yb-r-s*.7);g.fill()}
+  // title block
+  g.fillStyle=C.k;g.font='12px ui-monospace,Menlo,monospace';g.fillText('WARREN 1848',24,H-40);
+  g.fillStyle=C.o;g.fillText('■ tension',24,H-22);g.fillStyle=C.r;g.fillText('■ compression',120,H-22);
+}
+requestAnimationFrame(frame);
+</script></body></html>

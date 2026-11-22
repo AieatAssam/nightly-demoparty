@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 6
+  },
+  "total": 62,
+  "evidence": {
+    "mechanism": "shot-02s: four canopy nodes (ochre, amber, rust, graphite) emit amber dots along hyphae into a grey central web; by shot-08s the rust node sits under a blurred shade glow, but the reversed flow is hard to read.",
+    "ambition": "shot-08s: a vector hyphal network with blurred shade glows and dot streams; by shot-20s radial mirror symmetry doubles it to six nodes. No visible reaction-diffusion texture or material layering appears.",
+    "craft": "shot-08s: cohesive cream, ochre and rust palette with clean soft glow blobs; the hyphae are stair-stepped polylines, and the top 40 percent of shot-02s is empty ground.",
+    "distinctness": "shot-02s: a four-node radial sink network in cream and rust, unlike the flat contours, card weave, flocking birds or spiral rings of the anchors; shot-20s shows no Gray-Scott spot pattern.",
+    "polish": "shot-20s: the mirrored six-node layout resolves from the sparser shot-02s, but the frame stays top-empty and the opening frame reads as an unfinished composition."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet, so there is no head-to-head comparison to make.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Make the reversal legible: at the 6.5 s cut, tint the reversed dots a distinct colour and animate a visible flip of the shaded node's hyphae so the stream clearly runs back toward it (shot-08s).", "expected_gain": 3 },
+    { "rank": 2, "change": "Fill the empty top 40 percent of shot-02s and shot-20s by scaling up the central web or seeding the promised Gray-Scott spots, so the frame is not sparse.", "expected_gain": 2 },
+    { "rank": 3, "change": "Replace the stair-stepped hyphae polylines with smoothed, tapered strokes and sharper dot sprites so the lines read as organic filaments at full size (shot-08s and shot-20s).", "expected_gain": 3 }
+  ]
+}

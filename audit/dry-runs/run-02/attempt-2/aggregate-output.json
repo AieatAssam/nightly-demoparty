@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 12,
+    "craft": 15,
+    "distinctness": 15,
+    "polish": 6
+  },
+  "total": 62,
+  "evidence": {
+    "mechanism": "shot-08s: alternating ochre and rust diagonals in the centre bays, with the load dot at x=541; by shot-20s the diagonals are filled ochre-brown and the sign flip reads only as a settled colour field.",
+    "ambition": "shot-02s: one flat 2D line layer of 30 mirrored triangles with no lighting, material or motion beyond one load dot; shot-20s adds solid triangle fills and a pale mirrored row.",
+    "craft": "shot-08s: clean hairline joints and a cohesive cream, ochre, rust and graphite palette; faint double circles beside the load marker read as stray artefacts.",
+    "distinctness": "shot-02s: cream ground with a 30-panel truss lattice of ochre and rust diagonals, a subject no anchor shows; the warm palette overlaps anchor-12 only in hue.",
+    "polish": "shot-02s: the truss sits in a thin band with large empty cream areas above and below and tiny legend text; by shot-20s the full span resolves but the end state is muddy."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head reference.",
+  "calibration_anchors_used": [
+    "anchor-02",
+    "anchor-08",
+    "anchor-09",
+    "anchor-12"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Add a visible load-magnitude layer: draw each diagonal's solved force as bar thickness or glow so the sign flip carries a measured value, not just a colour change.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Keep the shot-20s end state legible: draw diagonals as ochre or rust strokes with cream joint dots instead of uniform brown fills, so the final frame still shows both signs.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Frame shot-02s tighter on the truss with the load marker entering from the left, and remove the stray double circles beside the marker at shot-08s.",
+      "expected_gain": 2
+    }
+  ]
+}

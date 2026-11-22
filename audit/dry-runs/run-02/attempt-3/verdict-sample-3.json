@@ -1,0 +1,31 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 15,
+    "craft": 16,
+    "distinctness": 15,
+    "polish": 6
+  },
+  "total": 68,
+  "evidence": {
+    "mechanism": "shot-02s: ochre and rust diagonals already split around the marker at the left; by shot-08s the marker sits at midspan and the bars beneath it switch colour as their force changes sign, with no caption needed.",
+    "ambition": "shot-20s: a second layer appears, a load-position by diagonal strip of ochre and rust columns under the truss; still one flat 2D canvas with line-drawn members, so the rendering ideas stay few.",
+    "craft": "shot-08s: cream, ochre and rust sit cleanly on the ground with no hard artefacts; the glow strokes around the marker stack and look smeared at full size, and the top third of the frame is empty.",
+    "distinctness": "shot-02s: per-member force colour on a Warren truss has no counterpart among the anchors shown; the influence strip at shot-20s gives a composition none of them use.",
+    "polish": "shot-02s: marker and load already read at the left, but the truss rides high in frame; by shot-20s the strip resolves into a settled pattern unlike the 2s frame, though the truss is small."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No archive yet: the median block is NONE, so there is no median piece to compare against head to head.",
+  "calibration_anchors_used": [
+    "anchor-02",
+    "anchor-08",
+    "anchor-09",
+    "anchor-12"
+  ],
+  "critique": [
+    { "rank": 1, "change": "Add a second rendering layer to the truss itself: shade each member by its force magnitude as well as sign, so the bars carry depth and load intensity instead of one flat stroke per diagonal.", "expected_gain": 5 },
+    { "rank": 2, "change": "Scale the truss to fill the 1280x720 frame at 2s and centre it vertically, and give the influence strip at 20s a larger share of the frame so the end state is not a small truss in empty space.", "expected_gain": 3 },
+    { "rank": 3, "change": "Draw the highlight around the marker's diagonals once with alpha instead of stacking translucent strokes, so the glow at shot-08s stops doubling up and looking smeared at full size.", "expected_gain": 2 }
+  ]
+}

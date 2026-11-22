@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Warren truss</title>
+<style>*{margin:0}html,body{height:100%;overflow:hidden;background:#efe3c8}canvas{display:block;width:100vw;height:100vh}</style>
+</head><body><canvas id="c"></canvas>
+<script type="module">
+const srng=e=>()=>{e=e+1831565813|0;let t=Math.imul(e^e>>>15,1|e);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296},mtof=e=>440*2**((e-69)/12);function synthBus(e,{delay:t=.3,feedback:n=.35,wet:l=.25}={}){const a=h=>{const p=e.createGain();return p.gain.value=h,p},i=a(1),o=a(1),u=a(l),c=a(n),r=e.createDelay(2),s=e.createDelay(2),f=e.createChannelMerger(2),d=e.createDynamicsCompressor(),A=e.createWaveShaper(),g=e.createAnalyser(),q=new Float32Array(1024);for(let h=0;h<1024;h++)q[h]=.9*Math.tanh(2*(h/511.5-1));A.curve=q,d.threshold.value=-18,d.ratio.value=4,d.attack.value=.003,d.release.value=.2,r.delayTime.value=s.delayTime.value=t,i.connect(o),i.connect(u).connect(r).connect(s).connect(c).connect(r),r.connect(f,0,0),s.connect(f,0,1),f.connect(o),o.connect(d).connect(A).connect(g).connect(e.destination),g.fftSize=1024;const w=new Uint8Array(g.frequencyBinCount),v=new Float32Array(g.fftSize),y={bass:0,mid:0,high:0,rms:0};let R=0;const M=(h,p)=>{const b=e.sampleRate/g.fftSize,m=Math.round(h/b),k=Math.max(m+1,Math.round(p/b));let B=0;for(let T=m;T<k;T++)B+=w[T];return B/(k-m)/255};return{input:i,analyser:g,bands:()=>{g.getByteFrequencyData(w),g.getFloatTimeDomainData(v);let h=0;for(const m of v)h+=m*m;const p={bass:M(20,250),mid:M(250,2e3),high:M(2e3,1e4),rms:Math.min(1,Math.sqrt(h/v.length)*2)},b=Math.max(0,e.currentTime-R);R=e.currentTime;for(const m in y)y[m]=p[m]+(y[m]-p[m])*Math.exp(-b/(p[m]>y[m]?.05:.25));return{...y}}}}const env=(e,t,n,l,a)=>{const i=e.createGain();return i.gain.setValueAtTime(0,t),i.gain.linearRampToValueAtTime(a,t+n),i.gain.exponentialRampToValueAtTime(1e-4,t+n+l),i};function fm(e,t,n,l,a=.4,{ratio:i=2,index:o=3,vol:u=.3}={}){const c=e.createOscillator(),r=e.createOscillator(),s=e.createGain(),f=env(e,n,.005,a,u);c.frequency.value=l,r.frequency.value=l*i,s.gain.setValueAtTime(l*o,n),s.gain.exponentialRampToValueAtTime(l*o*.05+.001,n+a),r.connect(s).connect(c.frequency),c.connect(f).connect(t);for(const d of[c,r])d.start(n),d.stop(n+a+.05)}function sub(e,t,n,l,a=.3,{cutoff:i=1800,q:o=6,vol:u=.25,type:c="sawtooth"}={}){const r=e.createOscillator(),s=e.createBiquadFilter(),f=env(e,n,.005,a,u);r.type=c,r.frequency.value=l,s.type="lowpass",s.Q.value=o,s.frequency.setValueAtTime(i,n),s.frequency.exponentialRampToValueAtTime(Math.max(60,l),n+a),r.connect(s).connect(f).connect(t),r.start(n),r.stop(n+a+.05)}function ksBuffer(e,t,n=1,l=1,a=.996){const i=Math.max(2,Math.round(e/t)),o=new Float32Array(Math.ceil(e*n)),u=srng(l);for(let c=0;c<i&&c<o.length;c++)o[c]=u()*2-1;for(let c=i;c<o.length;c++)o[c]=a*.5*(o[c-i]+o[c-i+1]);return o}function pluck(e,t,n,l,a=1,{vol:i=.4,seed:o=1,damp:u=.996}={}){const c=e.createBuffer(1,Math.ceil(e.sampleRate*a),e.sampleRate),r=e.createBufferSource(),s=e.createGain();c.copyToChannel(ksBuffer(e.sampleRate,l,a,o,u),0),r.buffer=c,s.gain.value=i,r.connect(s).connect(t),r.start(n)}const seq=({bpm:e=120,div:t=4,seed:n=1}={},l)=>(a,i,o,u,c=0)=>{const r=60/e/t;for(let s=Math.max(0,Math.ceil(o/r-1e-9));s*r<u;s++)l(a,i,c+s*r,s,srng(n^Math.imul(s+1,2654435761)))};function startSynth(e,{target:t=document,ahead:n=.2,bus:l}={}){const a={ctx:null,bus:null,bands:()=>({bass:0,mid:0,high:0,rms:0})},i=()=>{if(a.ctx)return void a.ctx.resume();const o=a.ctx=new AudioContext,u=a.bus=synthBus(o,l),c=o.currentTime+.05;let r=0;a.bands=u.bands;const s=()=>{const f=o.currentTime-c+n;f>r&&(e(o,u.input,r,f,c),r=f)};s(),setInterval(s,50)};for(const o of["pointerdown","keydown"])t.addEventListener(o,i);return a}const registerAudioProbe=(e,t)=>{window.__demopartyAudioProbe=async n=>e(n,synthBus(n,t).input,0,n.length/n.sampleRate,0)};export{mtof,synthBus,fm,sub,ksBuffer,pluck,seq,startSynth,registerAudioProbe};
+const clamp01=t=>t<0?0:t>1?1:t,lerp=(t,n,c)=>t+(n-t)*c,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),quintic=t=>(t=clamp01(t),t*t*t*(t*(t*6-15)+10)),cubicInOut=t=>(t=clamp01(t),t<.5?4*t*t*t:1-(-2*t+2)**3/2),expoOut=t=>(t=clamp01(t),t===1?1:1-2**(-10*t)),backOut=(t,n=1.70158)=>(t=clamp01(t)-1,1+t*t*((n+1)*t+n)),elasticOut=t=>(t=clamp01(t),t===0||t===1?t:2**(-10*t)*Math.sin((t*10-.75)*(2*Math.PI/3))+1),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),CUTS=[0,5,10,15,20],act=(t,n=CUTS)=>{let c=0;for(;c<n.length-2&&t>=n[c+1];)c++;return{i:c,p:clamp01((t-n[c])/(n[c+1]-n[c]))}},acts=(t,n=CUTS,c=1)=>{const e=o=>o===0?1:o===n.length-1?0:smooth((t-n[o])/c+.5);return n.slice(0,-1).map((o,s)=>e(s)-e(s+1))},storyClock=({reduce:t=.2,cuts:n=CUTS}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r,...act(e,n)}}};export{clamp01,lerp,smooth,quintic,cubicInOut,expoOut,backOut,elasticOut,beat,CUTS,act,acts,storyClock};
+
+// ---- Warren truss: method-of-joints solver, equal-length members (panel 1, h = sqrt(3)/2).
+const N = 30, HT = Math.sqrt(3) / 2, GRAPH = '#3a342e', OCHRE = [200, 150, 46], RUST = [168, 75, 42];
+const LOAD_T = 17, SEED = 3;
+// bottom joints 0..N at (i,0); top joints N+1+i at (i+0.5, HT)
+const pos = j => j <= N ? [j, 0] : [j - N - 1 + 0.5, HT];
+const MEM = [];
+for (let i = 0; i < N; i++) MEM.push([i, i + 1]);              // bottom chords
+for (let i = 0; i < N - 1; i++) MEM.push([N + 1 + i, N + 2 + i]); // top chords
+for (let i = 0; i < N; i++) MEM.push([i, N + 1 + i]);          // diagonals B_i-T_i
+for (let i = 0; i < N; i++) MEM.push([N + 1 + i, i + 1]);      // diagonals T_i-B_{i+1}
+const NM = MEM.length, NU = NM + 3, NR = 2 * (2 * N + 1), K = N + 1;
+const DIAG = [];
+for (let i = 0; i < 2 * N; i++) DIAG.push(2 * N - 1 + i);     // member ids of the 2N diagonals
+const DIDX = new Int32Array(NM).fill(-1);
+DIAG.forEach((m, d) => DIDX[m] = d);
+// A x = b, unknowns: member forces (tension +) then Rx0, Ry0, RyN. One load of 1 on each bottom joint k (RHS column k).
+const M = [];
+for (let r = 0; r < NR; r++) M.push(new Float64Array(NU + K));
+MEM.forEach(([a, b], m) => {
+  const [ax, ay] = pos(a), [bx, by] = pos(b), L = Math.hypot(bx - ax, by - ay), ux = (bx - ax) / L, uy = (by - ay) / L;
+  M[2 * a][m] += ux; M[2 * a + 1][m] += uy; M[2 * b][m] -= ux; M[2 * b + 1][m] -= uy;
+});
+M[0][NM] = 1; M[1][NM + 1] = 1; M[2 * N + 1][NM + 2] = 1;
+for (let k = 0; k <= N; k++) M[2 * k + 1][NU + k] = 1;
+for (let c = 0; c < NU; c++) {
+  let p = c;
+  for (let r = c + 1; r < NR; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+  [M[c], M[p]] = [M[p], M[c]];
+  const pv = M[c][c];
+  for (let r = c + 1; r < NR; r++) {
+    const f = M[r][c] / pv;
+    if (f) for (let q = c; q < NU + K; q++) M[r][q] -= f * M[c][q];
+  }
+}
+const FORCES = [];
+for (let q = 0; q < K; q++) {
+  const x = new Float64Array(NU);
+  for (let r = NU - 1; r >= 0; r--) {
+    let s = M[r][NU + q];
+    for (let c = r + 1; c < NU; c++) s -= M[r][c] * x[c];
+    x[r] = s / M[r][r];
+  }
+  FORCES.push(x);
+}
+// load at bottom coordinate x (0..N) by linear split between joints: exact for a truss
+const FAT = (m, x) => {
+  const xc = Math.min(Math.max(x, 0), N), k = Math.min(N - 1, Math.floor(xc)), f = xc - k;
+  return (1 - f) * FORCES[k][m] + f * FORCES[k + 1][m];
+};
+let FMAX = 0;
+for (const v of FORCES) for (let m = 0; m < NM; m++) FMAX = Math.max(FMAX, Math.abs(v[m]));
+const EPS = 0.02 * FMAX;
+const XT = t => N * Math.min(1, Math.max(0, t / LOAD_T));
+// precomputed sign flips of every diagonal as the load sweeps the span
+const FLIPS = [];
+DIAG.forEach((m, d) => {
+  let prev = 0;
+  for (let s = 0; s <= 600; s++) {
+    const x = s / 600 * N, F = FAT(m, x), sg = F > EPS ? 1 : F < -EPS ? -1 : 0;
+    if (sg) { if (prev && sg !== prev) FLIPS.push({ t: x / N * LOAD_T, d, sg }); prev = sg; }
+  }
+});
+FLIPS.sort((a, b) => a.t - b.t);
+
+// ---- sound: 120 BPM triad pulse from t = 0; each flip sounds a sine (high tension, low compression)
+const tone = (ctx, out, t, f, v) => {
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = 'sine'; o.frequency.value = f;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.01); g.gain.exponentialRampToValueAtTime(1e-4, t + 0.7);
+  o.connect(g).connect(out); o.start(t); o.stop(t + 0.75);
+};
+const beats = seq({ bpm: 120, div: 1, seed: SEED }, (ctx, out, t, i) => {
+  if (i % 4 === 0) sub(ctx, out, t, mtof(36), 0.45, { vol: 0.2 });
+  fm(ctx, out, t, mtof([60, 64, 67, 72][i % 4]), 0.45, { vol: 0.07, index: 1.5 });
+});
+const play = (ctx, out, t0, t1, base) => {
+  beats(ctx, out, t0, t1, base);
+  for (const e of FLIPS) if (e.t >= t0 && e.t < t1) tone(ctx, out, base + e.t, e.sg > 0 ? mtof(79 + e.d % 6) : mtof(52 + e.d % 6), 0.14);
+};
+let T = 0, off = null;
+for (const ev of ['pointerdown', 'keydown']) document.addEventListener(ev, () => { if (off === null) off = T; });
+startSynth((ctx, out, t0, t1, base) => play(ctx, out, t0 + off, t1 + off, base - off));
+registerAudioProbe(play);
+
+// ---- render
+const cv = document.getElementById('c'), cx = cv.getContext('2d');
+let W = 0, Hh = 0;
+const fit = () => { W = cv.width = innerWidth; Hh = cv.height = innerHeight; };
+fit(); addEventListener('resize', fit);
+const clock = storyClock({ reduce: 0.2 });
+const ST = new Float64Array(2 * N), FNOW = new Float64Array(NM);
+const SHOT = [[0, 1.0, 15], [2.5, 1.7, 9], [7.5, 2.9, 15], [12.5, 3.6, 15], [17.5, 2.3, 15]];
+let lastT = -1, ready = false;
+const rgbOf = s => `rgb(${RUST[0] + (OCHRE[0] - RUST[0]) * s | 0},${RUST[1] + (OCHRE[1] - RUST[1]) * s | 0},${RUST[2] + (OCHRE[2] - RUST[2]) * s | 0})`;
+
+function frame(ms) {
+  const { t } = clock(ms);
+  T = t;
+  const x = XT(t);
+  const dt = lastT < 0 ? 0 : Math.min(0.5, t - lastT);
+  lastT = t;
+  for (let m = 0; m < NM; m++) FNOW[m] = FAT(m, x);
+  if (!ready) { for (let d = 0; d < 2 * N; d++) ST[d] = FNOW[DIAG[d]] >= 0 ? 1 : 0; ready = true; }
+  const k = 1 - Math.exp(-dt / 0.25);
+  for (let d = 0; d < 2 * N; d++) {
+    const F = FNOW[DIAG[d]], tg = F > EPS ? 1 : F < -EPS ? 0 : ST[d];
+    ST[d] += (tg - ST[d]) * k;
+  }
+  // camera: hard cuts at 2.5, 7.5, 12.5, 17.5 s; beat 4 pulls back to the full span
+  let i = 0;
+  while (i < 4 && t >= SHOT[i + 1][0]) i++;
+  let z = SHOT[i][1] * (1 + 0.03 * (t - SHOT[i][0])), fx = SHOT[i][2];
+  if (i === 4) { const p = Math.min(1, Math.max(0, (t - 17.5) / 2.5)); z = 2.3 + (1 - 2.3) * smooth(p); }
+  const S = W * 0.88 / N * z;
+  const sx = X => W / 2 + (X - fx) * S, sy = Y => Hh / 2 - Y * S;
+  const lw = Math.sqrt(z);
+  const SETTLE = smooth((t - 15) / 4);
+
+  cx.globalAlpha = 1;
+  cx.fillStyle = '#efe3c8';
+  cx.fillRect(0, 0, W, Hh);
+  for (const [sg, al] of [[-1, 0.28], [1, 1]]) {
+    cx.globalAlpha = al;
+    // settle (beat 4): panels fill with the colour of their two diagonals, so the 20 s frame gains colour mass
+    if (SETTLE > 0) {
+      cx.globalAlpha = al * SETTLE * 0.9;
+      for (let i = 0; i < N; i++) {
+        cx.fillStyle = rgbOf((ST[i] + ST[N + i]) / 2);
+        cx.beginPath(); cx.moveTo(sx(i), sy(0)); cx.lineTo(sx(i + 1), sy(0)); cx.lineTo(sx(i + 0.5), sy(HT * sg)); cx.closePath(); cx.fill();
+      }
+      cx.globalAlpha = al;
+    }
+    for (let m = 0; m < NM; m++) {
+      const [a, b] = MEM[m], [xa, ya] = pos(a), [xb, yb] = pos(b), d = DIDX[m];
+      cx.strokeStyle = d >= 0 ? rgbOf(ST[d]) : GRAPH;
+      cx.lineWidth = (1 + 3.2 * Math.abs(FNOW[m]) / FMAX) * lw;
+      cx.beginPath(); cx.moveTo(sx(xa), sy(ya * sg)); cx.lineTo(sx(xb), sy(yb * sg)); cx.stroke();
+    }
+    for (let j = 0; j <= 2 * N; j++) {
+      const [px, py] = pos(j), qx = sx(px), qy = sy(py * sg);
+      cx.fillStyle = GRAPH; cx.beginPath(); cx.arc(qx, qy, 2.6 * lw, 0, 6.2832); cx.fill();
+      cx.fillStyle = '#efe3c8'; cx.beginPath(); cx.arc(qx, qy, 1.1 * lw, 0, 6.2832); cx.fill();
+    }
+  }
+  cx.globalAlpha = 1;
+  // flip rings: each sign change sends a ring out from its diagonal for 0.9 s
+  for (const e of FLIPS) {
+    const age = t - e.t;
+    if (age < 0) break;
+    if (age > 0.9) continue;
+    const [a, b] = MEM[DIAG[e.d]], [xa, ya] = pos(a), [xb, yb] = pos(b);
+    cx.strokeStyle = GRAPH; cx.globalAlpha = 0.7 * (1 - age / 0.9); cx.lineWidth = 1.2;
+    cx.beginPath(); cx.arc(sx((xa + xb) / 2), sy((ya + yb) / 2), (4 + 22 * age / 0.9) * lw, 0, 6.2832); cx.stroke();
+  }
+  // load marker on the bottom chord
+  cx.globalAlpha = 1;
+  cx.fillStyle = GRAPH; cx.beginPath(); cx.arc(sx(x), sy(0), 6, 0, 6.2832); cx.fill();
+  cx.strokeStyle = '#efe3c8'; cx.lineWidth = 1.5; cx.stroke();
+  // small annotation block
+  cx.fillStyle = GRAPH; cx.font = '12px ui-monospace,Menlo,monospace';
+  cx.fillText('WARREN TRUSS  30 PANELS  MIRRORED', 16, 24);
+  cx.fillText('OCHRE = TENSION   RUST = COMPRESSION', 16, Hh - 18);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body></html>

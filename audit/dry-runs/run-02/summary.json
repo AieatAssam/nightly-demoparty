@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-24",
+  "dry_run": true,
+  "compo": "audiovisual",
+  "domain": "warren-truss-load-paths",
+  "status": "b-side",
+  "reason": "B-side: best attempt 3 scored 69, below the publish threshold 72.",
+  "best_attempt": 3,
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 67
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 62
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 69
+    }
+  ],
+  "llm_calls": 15,
+  "cost_usd": 1.6416,
+  "tokens": 5931817,
+  "duration_s": 1291
+}

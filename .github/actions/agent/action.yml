@@ -1,0 +1,256 @@
+name: Demoparty agent stage
+description: >
+  Runs one LLM stage through claude-code-action with a fixed model, effort, turn cap and tool list. Write and Edit are
+  scoped to allowed_write_paths only (Edit(//abs/path) rules). A pure-Bash workspace guard, written to $RUNNER_TEMP
+  before the agent starts, then fails the step if the stage changed anything outside allowed_write_paths, touched
+  package.json, harness/, config/, schemas/, .github/ or .git/config, or left a symlink in an allowed path. Only a
+  passing guard writes the marker $RUNNER_TEMP/guard-<stage>-<attempt>.ok, and only then is a usage row appended
+  (and only when the execution file holds real usage). The calling job must have checked out the repo and run npm ci.
+  Set timeout-minutes and continue-on-error on the step that uses this action, and follow it with a step that runs
+  `bash "$RUNNER_TEMP/agent-guard.sh" check "$RUNNER_TEMP/guard-<stage>-<attempt>.snap" "<allowed_write_paths>"` when
+  it failed, so a timeout still gets the guard.
+
+inputs:
+  stage:
+    description: research, appraise, brief, build, jury or retro (the usage-entry stage).
+    required: true
+  model:
+    description: haiku or opus. No other model is allowed.
+    required: true
+  effort:
+    description: low, medium or high; empty for the model default.
+    required: false
+    default: ''
+  max_turns:
+    description: Turn cap for the agent loop.
+    required: true
+  tools:
+    description: >
+      Comma-separated tools, for example Read,Write,Edit,Bash(npm run gate:*). Bare Write and Edit are replaced in
+      --allowedTools by Edit(//<workspace>/<path>) rules built from allowed_write_paths.
+    required: true
+  prompt_file:
+    description: Rendered prompt file (at most 100 KB).
+    required: true
+  allowed_write_paths:
+    description: Comma-separated repo-relative files, or folders ending in /, the stage may change.
+    required: true
+  run_id:
+    description: Run id for the usage row.
+    required: true
+  date:
+    description: Night date (YYYY-MM-DD) for the usage row.
+    required: true
+  attempt:
+    description: Attempt number for the usage row.
+    required: false
+    default: '1'
+  usage_file:
+    description: JSONL file the usage row is appended to.
+    required: false
+    default: audit/usage.jsonl
+  claude_code_oauth_token:
+    description: Claude Code OAuth token (secrets.CLAUDE_CODE_OAUTH_TOKEN). Never printed.
+    required: true
+
+outputs:
+  outcome:
+    description: success or failure of the claude-code-action step (continue-on-error keeps the job going either way).
+    value: ${{ steps.claude.outcome }}
+  conclusion:
+    description: Execution status Claude Code itself reported (success or failure; empty when it never ran).
+    value: ${{ steps.claude.outputs.conclusion }}
+  guard:
+    description: success when the workspace guard passed.
+    value: ${{ steps.guard.outcome }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check inputs
+      id: args
+      shell: bash
+      env:
+        STAGE: ${{ inputs.stage }}
+        MODEL: ${{ inputs.model }}
+        EFFORT: ${{ inputs.effort }}
+        MAX_TURNS: ${{ inputs.max_turns }}
+        TOOLS: ${{ inputs.tools }}
+        ALLOWED: ${{ inputs.allowed_write_paths }}
+        PROMPT_FILE: ${{ inputs.prompt_file }}
+        ATTEMPT: ${{ inputs.attempt }}
+        TOKEN_SET: ${{ inputs.claude_code_oauth_token != '' }}
+      run: |
+        set -euo pipefail
+        fail() { echo "::error::$1"; exit 1; }
+        [[ "$TOKEN_SET" == "true" ]] || fail "claude_code_oauth_token is empty (set the CLAUDE_CODE_OAUTH_TOKEN secret)"
+        [[ "$STAGE" =~ ^(research|appraise|brief|build|jury|retro)$ ]] || fail "unknown stage"
+        [[ "$MODEL" =~ ^(haiku|opus)$ ]] || fail "model must be haiku or opus"
+        [[ -z "$EFFORT" || "$EFFORT" =~ ^(low|medium|high)$ ]] || fail "effort must be low, medium, high or empty"
+        [[ "$MAX_TURNS" =~ ^[1-9][0-9]?$ ]] || fail "max_turns must be an integer from 1 to 99"
+        [[ "$ATTEMPT" =~ ^[1-9][0-9]?$ ]] || fail "attempt must be a positive integer"
+        [[ "$TOOLS" =~ ^[A-Za-z][A-Za-z0-9_,:*\(\)\ ./-]*$ ]] || fail "tools contains characters outside the allowed set"
+        [[ "$TOOLS" != *"Write("* ]] || fail "Claude Code ignores Write(path) rules; pass bare Write and let allowed_write_paths scope it"
+        [[ -f "$PROMPT_FILE" ]] || fail "prompt file not found"
+        size=$(wc -c < "$PROMPT_FILE")
+        (( size > 0 && size <= 102400 )) || fail "prompt file must be 1 to 102400 bytes (got $size)"
+        # Write and Edit only on this stage's outputs: Claude Code applies Edit(//abs) rules to both tools.
+        ws=$(pwd -P)
+        rules=()
+        IFS=, read -ra paths <<< "$ALLOWED"
+        (( ${#paths[@]} > 0 )) || fail "allowed_write_paths is empty"
+        for a in "${paths[@]}"; do
+          [[ "$a" =~ ^[A-Za-z0-9_][A-Za-z0-9_./-]*$ && "$a" != *..* ]] || fail "allowed_write_paths entry '$a' must be repo-relative with no .."
+          if [[ "$a" == */ ]]; then rules+=("Edit(/$ws/$a**)"); else rules+=("Edit(/$ws/$a)"); fi
+        done
+        allowed_tools=()
+        wants_write=false
+        IFS=, read -ra tools <<< "$TOOLS"
+        for t in "${tools[@]}"; do
+          case "$t" in
+            Write|Edit) wants_write=true ;;
+            *) allowed_tools+=("$t") ;;
+          esac
+        done
+        if $wants_write; then allowed_tools+=("${rules[@]}"); fi
+        allowed=$(IFS=,; echo "${allowed_tools[*]}")
+        # Built-in tool names: the list without its (...) scopes.
+        builtins=$(sed -E 's/\([^)]*\)//g' <<< "$TOOLS")
+        args="--model $MODEL --max-turns $MAX_TURNS --tools \"$builtins\" --allowedTools \"$allowed\" --permission-mode dontAsk"
+        if [[ -n "$EFFORT" ]]; then args="$args --effort $EFFORT"; fi
+        echo "claude_args=$args" >> "$GITHUB_OUTPUT"
+        # Fixed name: a workflow step can re-run the check when a step timeout cuts this action off.
+        echo "guard_file=$RUNNER_TEMP/guard-$STAGE-$ATTEMPT.snap" >> "$GITHUB_OUTPUT"
+        echo "$STAGE on $MODEL${EFFORT:+ (effort $EFFORT)}, $MAX_TURNS turns, allowed tools $allowed"
+
+    # The guard is plain Bash written from this file (loaded before the agent runs) to $RUNNER_TEMP, outside the
+    # workspace, so nothing the agent edits in the repo (harness/, node_modules/, .git/hooks) runs inside the check.
+    - name: Snapshot workspace
+      shell: bash
+      env:
+        GUARD_FILE: ${{ steps.args.outputs.guard_file }}
+      run: |
+        set -euo pipefail
+        cat > "$RUNNER_TEMP/agent-guard.sh" <<'GUARD_EOF'
+        #!/usr/bin/env bash
+        # agent-guard.sh snapshot FILE | check FILE ALLOWED_CSV
+        set -euo pipefail
+        hash_of() {
+          if [ -L "$1" ]; then printf 'link:%s' "$(readlink "$1")"
+          elif [ -f "$1" ]; then sha256sum < "$1" | cut -c1-64
+          else printf gone; fi
+        }
+        snap() {
+          git -c core.fsmonitor= -c core.hooksPath=/dev/null -c core.untrackedCache=false \
+            status --porcelain=v1 -z --untracked-files=all --no-renames |
+            while IFS= read -r -d '' e; do printf '%s\t%s %s\n' "${e:3}" "${e:0:2}" "$(hash_of "${e:3}")"; done
+          local prot=() f
+          for f in package.json package-lock.json harness config schemas .github .git/hooks; do
+            if [ -e "$f" ]; then prot+=("$f"); fi
+          done
+          find "${prot[@]}" \( -type f -o -type l \) -print0 | sort -z |
+            while IFS= read -r -d '' f; do printf '%s\tprotected %s\n' "$f" "$(hash_of "$f")"; done
+          # claude-code-action rewrites the origin URL, the commit identity, the credential helper and the checkout
+          # extraheader inside the agent step. Every other key (core.*, include*, alias.*, filter.*) is compared.
+          local cfg
+          cfg=$(git config --file .git/config --list 2>&1 |
+            grep -Ev '^(remote\.origin\.url|user\.(name|email)|credential\.https://[^=]*\.helper|http\.https://[^=]*/\.extraheader)=' || true)
+          printf '.git/config\tprotected %s\n' "$(printf '%s' "$cfg" | sha256sum | cut -c1-64)"
+        }
+        case "${1:-}" in
+          snapshot)
+            rm -f "${2%.snap}.ok"
+            snap > "$2"
+            ;;
+          check)
+            [ -f "$2" ] || { echo "::error::workspace guard: no snapshot $2"; exit 1; }
+            IFS=, read -ra allow <<< "${3:-}"
+            bad=()
+            while IFS= read -r p; do
+              ok=false
+              for a in "${allow[@]}"; do
+                a=${a#./}
+                [ -n "$a" ] || continue
+                if [[ "$a" == */ ]]; then [[ "$p" == "$a"* ]] && ok=true
+                else [[ "$p" == "$a" || "$p" == "$a/"* ]] && ok=true; fi
+              done
+              $ok || bad+=("$p")
+            done < <(diff <(sort "$2") <(snap | sort) | sed -n 's/^[<>] //p' | cut -f1 | sort -u)
+            for a in "${allow[@]}"; do
+              a=${a#./}
+              [ -n "$a" ] || continue
+              if [ -L "${a%/}" ]; then bad+=("${a%/} (symlink)"); fi
+              if [ -d "${a%/}" ]; then
+                while IFS= read -r -d '' l; do bad+=("$l (symlink)"); done < <(find "${a%/}" -type l -print0)
+              fi
+            done
+            if (( ${#bad[@]} )); then
+              echo "::error::workspace guard: the LLM stage changed paths outside allowed_write_paths or left symlinks"
+              printf '  %s\n' "${bad[@]}"
+              exit 1
+            fi
+            touch "${2%.snap}.ok"
+            echo "workspace guard: ok"
+            ;;
+          *) echo "usage: agent-guard.sh snapshot FILE | check FILE ALLOWED_CSV"; exit 2 ;;
+        esac
+        GUARD_EOF
+        bash "$RUNNER_TEMP/agent-guard.sh" snapshot "$GUARD_FILE"
+
+    - name: Load prompt
+      id: prompt
+      shell: bash
+      env:
+        PROMPT_FILE: ${{ inputs.prompt_file }}
+      run: |
+        set -euo pipefail
+        delim="PROMPT_EOF_$(od -An -tx8 -N16 /dev/urandom | tr -d ' \n')"
+        if grep -qF "$delim" "$PROMPT_FILE"; then echo "::error::delimiter collision"; exit 1; fi
+        {
+          echo "text<<$delim"
+          cat "$PROMPT_FILE"
+          echo
+          echo "$delim"
+        } >> "$GITHUB_OUTPUT"
+
+    - name: Run agent
+      id: claude
+      continue-on-error: true
+      uses: anthropics/claude-code-action@acfe7992852970efb4fee683d63d628e3e52df67 # v1
+      env:
+        # Keeps the OAuth token and other credentials out of every Bash/tool subprocess the agent spawns.
+        CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: '1'
+      with:
+        claude_code_oauth_token: ${{ inputs.claude_code_oauth_token }}
+        github_token: ${{ github.token }}
+        prompt: ${{ steps.prompt.outputs.text }}
+        claude_args: ${{ steps.args.outputs.claude_args }}
+        display_report: 'false'
+
+    - name: Workspace guard
+      id: guard
+      if: always() && steps.args.outcome == 'success'
+      shell: bash
+      env:
+        GUARD_FILE: ${{ steps.args.outputs.guard_file }}
+        ALLOWED: ${{ inputs.allowed_write_paths }}
+      run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+
+    # Runs repo code (tsx), so only after the guard proved harness/, package.json and .github/ are unchanged.
+    - name: Log usage
+      if: always() && steps.guard.outcome == 'success'
+      shell: bash
+      env:
+        EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        USAGE_FILE: ${{ inputs.usage_file }}
+        STAGE: ${{ inputs.stage }}
+        ATTEMPT: ${{ inputs.attempt }}
+        MODEL: ${{ inputs.model }}
+        EFFORT: ${{ inputs.effort }}
+        NIGHT_DATE: ${{ inputs.date }}
+        RUN_ID: ${{ inputs.run_id }}
+      run: >-
+        node --import tsx harness/dry-run.ts log-usage
+        --execution-file "$EXECUTION_FILE" --usage-file "$USAGE_FILE"
+        --stage "$STAGE" --attempt "$ATTEMPT" --model "$MODEL" --effort "$EFFORT"
+        --date "$NIGHT_DATE" --run-id "$RUN_ID"

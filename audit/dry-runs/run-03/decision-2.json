@@ -1,0 +1,38 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 2,
+  "best_total": 67,
+  "reason": "Attempt 2: scored 67, below 72. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "At shot-02s and shot-08s raise visible dot density toward the brief's stated scale, so the shade-reversed stream at the faded right node reads as a clear direction flip rather than a faint dotted line.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Render the Gray-Scott rust spots at shot-02s with antialiased or higher-resolution edges; the arcs currently show stair-stepped pixel borders visible at full size.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 3,
+        "change": "Give the four canopy nodes simple shading or a soft glow so they read as objects, and soften the hard grey shadow band at shot-08s into a gradient that matches the cream ground.",
+        "expected_gain": 3
+      }
+    ],
+    "build_failed": false
+  }
+}

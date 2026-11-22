@@ -1,0 +1,148 @@
+{
+  "timestamp": "2026-11-22T20:39:56.180Z",
+  "preset_override": null,
+  "dominant_emotions": [
+    {
+      "label": "interest",
+      "intensity": 0.761
+    },
+    {
+      "label": "joy",
+      "intensity": 0.659
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.39
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.072
+    }
+  ],
+  "pad": {
+    "pleasure": 0.409,
+    "arousal": 0.508,
+    "dominance": 0.339
+  },
+  "neurochemistry": {
+    "dopamine": 1,
+    "noradrenaline": 1,
+    "serotonin": 0.806,
+    "cortisol": 0.315,
+    "oxytocin": 0.425,
+    "opioids": 1
+  },
+  "drives": {
+    "novelty": 0,
+    "social": 0.376,
+    "fatigue": 0
+  },
+  "derived_signals": {
+    "interest": 0.761,
+    "boredom": 0.072,
+    "frustration": 0.079
+  },
+  "likes": [
+    {
+      "topic": "tissue-layers",
+      "score": 0.279
+    },
+    {
+      "topic": "physics",
+      "score": 0.254
+    },
+    {
+      "topic": "bilayer-vs-fibers",
+      "score": 0.244
+    },
+    {
+      "topic": "simulation",
+      "score": 0.231
+    },
+    {
+      "topic": "pine-cone-hygroscopic-scales",
+      "score": 0.227
+    },
+    {
+      "topic": "moisture-hysteresis",
+      "score": 0.213
+    },
+    {
+      "topic": "bundle-mismatch",
+      "score": 0.212
+    },
+    {
+      "topic": "microfibril-angle",
+      "score": 0.205
+    },
+    {
+      "topic": "delay-propagation",
+      "score": 0.202
+    },
+    {
+      "topic": "wave-modal",
+      "score": 0.202
+    },
+    {
+      "topic": "network-graph",
+      "score": 0.183
+    },
+    {
+      "topic": "porous-matrix",
+      "score": 0.183
+    },
+    {
+      "topic": "data-form",
+      "score": 0.158
+    },
+    {
+      "topic": "hysteresis-loop",
+      "score": 0.158
+    },
+    {
+      "topic": "displacement",
+      "score": 0.157
+    },
+    {
+      "topic": "passive-actuation",
+      "score": 0.144
+    },
+    {
+      "topic": "basal-bending",
+      "score": 0.136
+    },
+    {
+      "topic": "repeated-cycles",
+      "score": 0.118
+    }
+  ],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.754,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.409,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "assertive",
+      "value": 0.339,
+      "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.761,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.079,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

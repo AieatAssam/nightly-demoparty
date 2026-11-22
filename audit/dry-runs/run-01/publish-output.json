@@ -1,0 +1,998 @@
+{
+  "meta": {
+    "date": "2026-11-23",
+    "status": "b-side",
+    "reason": "B-side: best attempt 2 scored 68, below the publish threshold 72.",
+    "publish_threshold": 72,
+    "best_attempt": 2,
+    "plan": {
+      "date": "2026-11-23",
+      "compo": "constraint-night",
+      "size_budget_bytes": 16384,
+      "constraint": "css-only",
+      "domain": "pine-cone-hygroscopic-scales",
+      "wildcard": false,
+      "banned": {
+        "techniques": [],
+        "domains": [],
+        "palette_hexes": [],
+        "slop_patterns": [
+          "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+          "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+          "Matrix rain is on the permanent slop list.",
+          "Four-sine plasma boilerplate. Build a field with development instead.",
+          "Plain plasma: sine sums as the whole picture.",
+          "Plain starfield: points drifting toward the camera with no structure behind them.",
+          "Plain tunnel: concentric rings flying past with nothing else happening.",
+          "Matrix rain: falling glyph columns.",
+          "Mouse-following particles with no system behind them.",
+          "A single raymarched sphere or torus on a gradient.",
+          "Untouched Mandelbrot or Julia zoom.",
+          "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+          "Bloom or chromatic aberration used to hide an empty scene.",
+          "Math.random() noise as the main visual idea.",
+          "A loop with no development: the 20 s frame looks like the 2 s frame.",
+          "Title cards or captions doing the work the visuals should do.",
+          "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+        ]
+      },
+      "boredom_override": false,
+      "requires_audio": false,
+      "seed": "dry-run-01",
+      "dry_run": true,
+      "overrides": {
+        "domain": null,
+        "compo": null,
+        "mood_preset": null
+      }
+    },
+    "dossier": {
+      "topic": "Pine cone scales bend with humidity through discrete fiber bundles in a porous brown-tissue matrix, not a simple bilayer strip",
+      "domain": "pine-cone-hygroscopic-scales",
+      "wildcard_chosen": false,
+      "summary": "Pine cone scales open when dry and close when damp, with no living muscle: the cells in a mature cone are dead, so the movement is passive. The textbook picture is a bilayer strip with swelling cells on one face and stiff fibers on the other. A 2025 study finds real scales are multilayered: a sclereid skin, discrete fiber bundles and a porous brown-tissue matrix. Its simulations show a simple bilayer underestimates the bending. Bending concentrates at the scale base, and the drying and wetting paths differ in moisture content.",
+      "facts": [
+        {
+          "claim": "Dawson, Vincent and Rocca (Nature, 1997) report that pine cone scales gape open when dry and close up when damp, and that the cells in a mature cone are dead, so the mechanism is passive.",
+          "source_url": "https://ideas.repec.org/a/nat/nature/v390y1997i6661d10.1038_37745.html",
+          "source_title": "How pine cones open"
+        },
+        {
+          "claim": "Non-serotinous pine cones open when dry and close when wet, and a single cone goes through many opening and closing cycles over its life.",
+          "source_url": "https://en.wikipedia.org/wiki/Pine_cone",
+          "source_title": "Cone (botany)"
+        },
+        {
+          "claim": "The 2025 study names three tissues in the scale: a sclereid cell layer with the abaxial epidermis, brown tissue, and sclerenchyma fibers.",
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+          "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+        },
+        {
+          "claim": "Microfibril angle is highest in sclereid cells, so their longitudinal expansion is higher and radial expansion lower; sclerenchyma fibers have a lower microfibril angle.",
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+          "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+        },
+        {
+          "claim": "Simulations in the 2025 study found that discrete fibers embedded in a brown-tissue matrix reproduced the observed bending angles more accurately than a simple bilayer.",
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+          "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+        },
+        {
+          "claim": "In the same study's simulations, the maximum displacement was 2.90 mm for a bilayer geometry and 5.57 mm for a scale-like geometry.",
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+          "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+        },
+        {
+          "claim": "The study reports desorption-absorption moisture hysteresis at 60% RH of about 2.4 to 2.5 percentage points for each tissue, so drying and wetting follow different paths.",
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+          "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+        },
+        {
+          "claim": "A 2025 Frontiers review of cone scale movement reports that in pine the actuator is abaxial sclereids forming a skin, with adaxial fibers clustered in compact vascular bundles, and that during wet-to-dry transition the scale bends mainly in its basal region.",
+          "source_url": "https://www.frontiersin.org/articles/10.3389/fpls.2025.1603330/full",
+          "source_title": "Hygroscopic movements of cone scale of white fir Abies concolor are tuned by quantitative variation of the scale Bauplan"
+        }
+      ],
+      "visualisable_mechanisms": [
+        {
+          "name": "sclereid skin over fiber bundles",
+          "description": "The abaxial sclereid skin has a high microfibril angle, so it swells mainly along the scale length when moisture rises. The adaxial fiber bundles have a lower microfibril angle and resist that stretch. The mismatch between the two faces bends the scale.",
+          "render_or_sonify_hint": "A tapered strip: a thin soft band on one face and three to five dark vertical bundles of fine lines on the other. As humidity changes, the strip curls and straightens."
+        },
+        {
+          "name": "porous brown-tissue stitch",
+          "description": "Brown tissue sits between the fiber bundles, shrinks less than the sclereid layer and is more porous. It links the bundles into one matrix, so bending depends on bundle placement, not on two uniform layers.",
+          "render_or_sonify_hint": "A dimmer mesh of soft cells filling the gaps between the bundles, with cells that brighten and dim as humidity moves, drawn over the strip's structure."
+        },
+        {
+          "name": "basal hinge propagation",
+          "description": "During wet-to-dry transition the bending concentrates in the basal region. Motion starts at the base and spreads toward the apex as the scale dries.",
+          "render_or_sonify_hint": "Over a drying ramp, a bend wave starts at the bottom of a strip and travels upward, so the tip lags the base by a visible delay before it moves."
+        },
+        {
+          "name": "open-close hysteresis loop",
+          "description": "Drying and wetting follow different moisture paths, about 2.5 percentage points apart at 60% RH. Plotting scale angle against humidity gives a loop rather than one curve, so each cycle leaves a trace.",
+          "render_or_sonify_hint": "A trail of the scale angle against humidity over repeated cycles, opening and closing paths drawn as two lines forming a loop that thickens with each cycle."
+        }
+      ],
+      "open_questions": [
+        "How are the fiber bundles and brown-tissue matrix arranged in 3D across a whole scale, and does the layout vary between pine species?",
+        "Does the simulation include transient multiphase motion, which the authors list as future work?",
+        "How fast does moisture travel from base to apex, and does that set the speed of the basal hinge wave?"
+      ],
+      "surprise": {
+        "score": 64,
+        "justification": "A generalist expects a bimetal-style bilayer strip bending uniformly. Real scales are multilayered: a simple bilayer underestimates the bending, and fiber bundles in a porous matrix set the motion."
+      },
+      "dataset": null
+    },
+    "mood": {
+      "timestamp": "2026-11-22T20:39:56.180Z",
+      "preset_override": null,
+      "dominant_emotions": [
+        {
+          "label": "interest",
+          "intensity": 0.761
+        },
+        {
+          "label": "joy",
+          "intensity": 0.659
+        },
+        {
+          "label": "surprise",
+          "intensity": 0.39
+        },
+        {
+          "label": "boredom",
+          "intensity": 0.072
+        }
+      ],
+      "pad": {
+        "pleasure": 0.409,
+        "arousal": 0.508,
+        "dominance": 0.339
+      },
+      "neurochemistry": {
+        "dopamine": 1,
+        "noradrenaline": 1,
+        "serotonin": 0.806,
+        "cortisol": 0.315,
+        "oxytocin": 0.425,
+        "opioids": 1
+      },
+      "drives": {
+        "novelty": 0,
+        "social": 0.376,
+        "fatigue": 0
+      },
+      "derived_signals": {
+        "interest": 0.761,
+        "boredom": 0.072,
+        "frustration": 0.079
+      },
+      "likes": [
+        {
+          "topic": "tissue-layers",
+          "score": 0.279
+        },
+        {
+          "topic": "physics",
+          "score": 0.254
+        },
+        {
+          "topic": "bilayer-vs-fibers",
+          "score": 0.244
+        },
+        {
+          "topic": "simulation",
+          "score": 0.231
+        },
+        {
+          "topic": "pine-cone-hygroscopic-scales",
+          "score": 0.227
+        },
+        {
+          "topic": "moisture-hysteresis",
+          "score": 0.213
+        },
+        {
+          "topic": "bundle-mismatch",
+          "score": 0.212
+        },
+        {
+          "topic": "microfibril-angle",
+          "score": 0.205
+        },
+        {
+          "topic": "delay-propagation",
+          "score": 0.202
+        },
+        {
+          "topic": "wave-modal",
+          "score": 0.202
+        },
+        {
+          "topic": "network-graph",
+          "score": 0.183
+        },
+        {
+          "topic": "porous-matrix",
+          "score": 0.183
+        },
+        {
+          "topic": "data-form",
+          "score": 0.158
+        },
+        {
+          "topic": "hysteresis-loop",
+          "score": 0.158
+        },
+        {
+          "topic": "displacement",
+          "score": 0.157
+        },
+        {
+          "topic": "passive-actuation",
+          "score": 0.144
+        },
+        {
+          "topic": "basal-bending",
+          "score": 0.136
+        },
+        {
+          "topic": "repeated-cycles",
+          "score": 0.118
+        }
+      ],
+      "dislikes": [],
+      "creative_parameters": {
+        "tempo_density_cut_rate": {
+          "level": "high",
+          "value": 0.754,
+          "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+        },
+        "palette_warmth_consonance_symmetry": {
+          "level": "warm-consonant",
+          "value": 0.409,
+          "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+        },
+        "scale_contrast_camera": {
+          "level": "assertive",
+          "value": 0.339,
+          "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+        },
+        "technical_risk_budget": {
+          "level": "experimental",
+          "value": 0.761,
+          "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+        },
+        "boredom_force_unused_30d": false,
+        "frustration_scope_polish_weight": {
+          "shrink_scope": false,
+          "polish_weight_boost": 0.079,
+          "guidance": "Normal scope: polish weight follows the usual rubric."
+        }
+      }
+    },
+    "brief": {
+      "title": "Basal hinge wave across a grid of pine cone scales",
+      "concept": "A grid of 48 pine cone scales, each a chain of 12 segments, curls from its base upward as humidity falls, so the bend wave crosses the field from the bottom row to the top.",
+      "mechanism_embodied": {
+        "mechanism_name": "basal hinge propagation",
+        "how_visualised": "Each of the 48 strips is a chain of 12 segments. The humidity ramp reaches each segment after a delay that grows with its height, so the bottom segment bends first and the tip lags behind. Each strip shows a pale skin on one face and dark fiber lines on the other. The viewer sees the bend wave cross the grid from base to tip."
+      },
+      "discarded_obvious_idea": "Obvious: a textbook bimetal strip bending uniformly on a gradient. Rejected: the dossier says a simple bilayer underestimates the bending, and a uniform bend hides the base-to-tip delay that is the mechanism.",
+      "compo": "constraint-night",
+      "constraint_honoured": "css-only",
+      "techniques": [
+        "nested-transform segment chain",
+        "base-to-tip animation-delay bend wave",
+        "skin-over-fiber strip layering"
+      ],
+      "novel_technique": "nested-transform segment chain",
+      "technique_family": "physics",
+      "palette": [
+        "#EFE3C8",
+        "#7A4E2D",
+        "#C98A3B",
+        "#9A4A24",
+        "#3A3029"
+      ],
+      "motion_sound_plan": "High tempo: 48 strips with a cut rhythm of 4 beats and a bend wave paced near 120 BPM through keyframe delays. Warm-consonant: cream ground, ochre and rust, mirrored grid symmetry. Assertive: strips fill the frame, push-in to 1.3x at beat 3, pull-back to 0.8x at beat 4. Experimental: nested-transform segment chain. No sound. Constraint css-only: CSS keyframes and DOM divs only, no script and no canvas.",
+      "storyboard": [
+        {
+          "beat": 1,
+          "t_start_s": 0,
+          "t_end_s": 5,
+          "description": "Cream ground with 48 strips in an 8 by 6 grid, all upright and open, with dark graphite bases. By 2 s the bottom row has begun to bend at its base while the upper rows stay straight, so the bend front is visible."
+        },
+        {
+          "beat": 2,
+          "t_start_s": 5,
+          "t_end_s": 10,
+          "description": "The drying wave climbs the grid diagonally from the bottom left. Curled strips form a band across the middle, with tips lagging bases. Skin is rust and fiber lines are graphite. At 8 s the wave front sits mid-frame."
+        },
+        {
+          "beat": 3,
+          "t_start_s": 10,
+          "t_end_s": 15,
+          "description": "Camera pushes in to 1.3x. Every strip curls closed at full wet, rows packed tight, with an ochre brown-tissue haze behind each strip that brightens and dims with the wave. Peak density and contrast."
+        },
+        {
+          "beat": 4,
+          "t_start_s": 15,
+          "t_end_s": 20,
+          "description": "Camera pulls back to 0.8x, leaving a cream margin. Strips reopen base first in a staggered wave, and the top row is still curled at 20 s. The grid shows a diagonal open-to-closed gradient that differs from the 2 s frame."
+        }
+      ],
+      "memorable_moment": "A bend wave climbs the grid from base to tip, with each strip's tip visibly lagging its base.",
+      "self_declared_risk": "CSS keyframe delays may not read as a propagating wave across 48 strips, and 12 nested segments per strip may blur the bend curve into a single rotation.",
+      "liner_note": "Dawson, Vincent and Rocca reported in Nature in 1997 that pine cone scales gape open when dry and close when damp. The cells are dead, so the movement is passive. A 2025 study found the scale is multilayered, not a simple bilayer, and its simulations gave maximum displacements of 5.57 mm for a scale-like geometry and 2.90 mm for a bilayer. A 2025 Frontiers review finds drying bends the scale mainly at its base. On screen each strip is a chain of segments, pale skin on one face and dark fiber lines on the other. As humidity falls, bending starts at the base and climbs to the tip."
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "model": "haiku",
+        "effort": null,
+        "gates": {
+          "passed": true,
+          "piece_path": "audit/dry-runs/run-01/attempt-1/index.html",
+          "compo": "constraint-night",
+          "byte_size": 7628,
+          "size_budget_bytes": 16384,
+          "console_errors": [],
+          "network_requests": [],
+          "luminance_variance": {
+            "t2": 3777.7109,
+            "t8": 3642.738,
+            "t20": 2732.3525,
+            "floor": 12,
+            "passed": true
+          },
+          "motion": {
+            "frame_diff_mean": 1.5641,
+            "frame_diff_floor": 0.8,
+            "development_diff_t2_t20": 43.33,
+            "development_floor": 2.5,
+            "passed": true
+          },
+          "strobe": {
+            "max_flashes_per_sec": 1,
+            "limit": 3,
+            "passed": true
+          },
+          "frame_time_ms": {
+            "median": 16.7,
+            "p90": 33.4,
+            "budget_ms": 250,
+            "passed": true
+          },
+          "audio_probe": null,
+          "novelty_b": {
+            "phashes": {
+              "t2": "9e9e9e9e9e9e9f9f",
+              "t8": "3f1f1e1f3f1f1f1e",
+              "t20": "90b8b8b8b8b8b0f0"
+            },
+            "color_histogram": [
+              0.068886,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.008065,
+              0,
+              0,
+              0,
+              0.005625,
+              0.002992,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.072935,
+              0.006065,
+              0,
+              0,
+              0,
+              0.002322,
+              0.00105,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.001613,
+              0.002533,
+              0,
+              0,
+              0,
+              0.003136,
+              0.824777
+            ],
+            "min_hamming_distance": null,
+            "min_histogram_distance": null,
+            "closest_date": null,
+            "passed": true
+          },
+          "slop_lint": {
+            "passed": true,
+            "violations": []
+          },
+          "reduced_motion": {
+            "passed": true,
+            "normal_motion": 2.3794,
+            "reduced_motion": 0.1175,
+            "ratio": 0.0494
+          },
+          "screenshots": {
+            "t2": "audit/dry-runs/run-01/attempt-1/shot-02s.png",
+            "t8": "audit/dry-runs/run-01/attempt-1/shot-08s.png",
+            "t20": "audit/dry-runs/run-01/attempt-1/shot-20s.png"
+          },
+          "failures": []
+        },
+        "verdict": {
+          "scores": {
+            "mechanism": 15,
+            "ambition": 12,
+            "craft": 15,
+            "distinctness": 13,
+            "polish": 7
+          },
+          "total": 62,
+          "evidence": {
+            "mechanism": "shot-02s: 48 upright rust-and-graphite strips in an 8x6 grid, only the bottom row tilting; by shot-08s the arcs curl upward with tips visibly trailing bases, and by shot-20s the top rows still curl while the bottom reopens.",
+            "ambition": "shot-08s: 48 nested segment chains render as flat DOM divs with two faces, one rendering idea and no shading, lighting or material beyond rust versus graphite; by shot-20s the pull-back to a cream margin is the only added layer.",
+            "craft": "shot-08s: clean flat fills and crisp segment seams, but the fiber lines are near-invisible hairlines and the strips are small on a large empty cream field; by shot-20s the diagonal gradient is tidy without texture.",
+            "distinctness": "shot-08s: cream ground with a rust and graphite palette and a grid of bent strips; the look sits close to cream-editorial pieces, and each strip bends by one smooth rotation with no distinct layer or composition.",
+            "polish": "shot-02s: composed full-frame grid with the bottom row already tilting; by shot-20s the camera has pulled back to a cream margin and the top row is still curled, so the piece resolves into a diagonal gradient that differs from 2s."
+          },
+          "pairwise_beats_median": true,
+          "pairwise_median_ref": null,
+          "pairwise_justification": "No median archive yet; no head-to-head comparison is possible.",
+          "calibration_anchors_used": [
+            "anchor-03",
+            "anchor-04",
+            "anchor-06",
+            "anchor-11"
+          ],
+          "critique": [
+            {
+              "rank": 1,
+              "change": "Draw visible fiber bundles and a porous brown-tissue shade across each strip so the skin-over-fiber layering reads at shot-02s and shot-08s, not just as rust and graphite halves.",
+              "expected_gain": 4
+            },
+            {
+              "rank": 2,
+              "change": "Widen the per-segment animation-delay spread so the top segments visibly lag the base at shot-08s, instead of every strip showing the same uniform arc.",
+              "expected_gain": 3
+            },
+            {
+              "rank": 3,
+              "change": "Enlarge the strips so the 2 s grid fills more of the frame, cutting the empty cream field that makes the craft look thin at full size.",
+              "expected_gain": 2
+            }
+          ]
+        },
+        "outcome": "below_threshold"
+      },
+      {
+        "attempt": 2,
+        "model": "haiku",
+        "effort": null,
+        "gates": {
+          "passed": true,
+          "piece_path": "audit/dry-runs/run-01/attempt-2/index.html",
+          "compo": "constraint-night",
+          "byte_size": 9925,
+          "size_budget_bytes": 16384,
+          "console_errors": [],
+          "network_requests": [],
+          "luminance_variance": {
+            "t2": 1986.7721,
+            "t8": 1887.0284,
+            "t20": 1347.1895,
+            "floor": 12,
+            "passed": true
+          },
+          "motion": {
+            "frame_diff_mean": 6.1824,
+            "frame_diff_floor": 0.8,
+            "development_diff_t2_t20": 27.0303,
+            "development_floor": 2.5,
+            "passed": true
+          },
+          "strobe": {
+            "max_flashes_per_sec": 1,
+            "limit": 3,
+            "passed": true
+          },
+          "frame_time_ms": {
+            "median": 33.3,
+            "p90": 33.4,
+            "budget_ms": 250,
+            "passed": true
+          },
+          "audio_probe": null,
+          "novelty_b": {
+            "phashes": {
+              "t2": "b8f8f8b8d8d8fcd0",
+              "t8": "b0fab0f8fcfcfcbc",
+              "t20": "10d4c8d8d0d4d490"
+            },
+            "color_histogram": [
+              0.012428,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.014736,
+              0,
+              0,
+              0,
+              0.044871,
+              0.003595,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.001666,
+              0.004096,
+              0,
+              0,
+              0,
+              0.003527,
+              0.002272,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.025002,
+              0.032194,
+              0,
+              0,
+              0,
+              0.196878,
+              0.658736
+            ],
+            "min_hamming_distance": null,
+            "min_histogram_distance": null,
+            "closest_date": null,
+            "passed": true
+          },
+          "slop_lint": {
+            "passed": true,
+            "violations": []
+          },
+          "reduced_motion": {
+            "passed": true,
+            "normal_motion": 7.9323,
+            "reduced_motion": 2.5881,
+            "ratio": 0.3263
+          },
+          "screenshots": {
+            "t2": "audit/dry-runs/run-01/attempt-2/shot-02s.png",
+            "t8": "audit/dry-runs/run-01/attempt-2/shot-08s.png",
+            "t20": "audit/dry-runs/run-01/attempt-2/shot-20s.png"
+          },
+          "failures": []
+        },
+        "verdict": {
+          "scores": {
+            "mechanism": 16,
+            "ambition": 13,
+            "craft": 16,
+            "distinctness": 15,
+            "polish": 8
+          },
+          "total": 68,
+          "evidence": {
+            "mechanism": "shot-02s: rows 5-6 of strips are already bent at their base while rows 1-3 stay upright; by shot-08s the curl band crosses mid-frame, and by shot-20s the top rows curl while the bottom rows reopen, so the base-to-tip lag is visible.",
+            "ambition": "shot-08s: 48 strips of 12 nested segments each, with pale skin and fibre shading plus an ochre radial haze behind every strip; one rendering idea driven by keyframe delays, with no simulation or material change between frames.",
+            "craft": "shot-02s: cream ground with an ochre and rust palette held consistently and clean strip silhouettes; by shot-20s the tightest curls show stair-step seams between segments on the inner face.",
+            "distinctness": "shot-02s: a pine-cone scale bend-wave on an 8x6 grid appears in no anchor; the cream palette echoes anchor-04, but the base-first delay idea is distinct from every anchor shown.",
+            "polish": "shot-02s: the bend front is already visible at 2 s and shot-20s has a different composition with a cream margin; shot-08s repeats near-identical curled arcs across most of the grid, so the middle state reads as a stamp."
+          },
+          "pairwise_beats_median": true,
+          "pairwise_median_ref": null,
+          "pairwise_justification": "No median archive yet; there is no head-to-head comparison possible.",
+          "calibration_anchors_used": [
+            "anchor-03",
+            "anchor-04",
+            "anchor-06",
+            "anchor-11"
+          ],
+          "critique": [
+            {
+              "rank": 1,
+              "change": "At shot-08s, vary each strip's animation delay and curl amplitude by its column so the wave reads as a front crossing the grid instead of a repeated stamp of identical arcs.",
+              "expected_gain": 4
+            },
+            {
+              "rank": 2,
+              "change": "Replace the flat radial ochre halos with a shared gradient or a per-strip tissue haze that brightens along the wave front, so the haze carries the mechanism rather than sitting as static blobs.",
+              "expected_gain": 3
+            },
+            {
+              "rank": 3,
+              "change": "Remove the stair-step seams on tight curls at shot-20s by adding a segment overlap or a shading step on the inner face, so the end state reads as clean.",
+              "expected_gain": 2
+            }
+          ]
+        },
+        "outcome": "below_threshold"
+      },
+      {
+        "attempt": 3,
+        "model": "opus",
+        "effort": "low",
+        "gates": {
+          "passed": true,
+          "piece_path": "audit/dry-runs/run-01/attempt-3/index.html",
+          "compo": "constraint-night",
+          "byte_size": 7025,
+          "size_budget_bytes": 16384,
+          "console_errors": [],
+          "network_requests": [],
+          "luminance_variance": {
+            "t2": 1052.6815,
+            "t8": 1073.1366,
+            "t20": 696.8229,
+            "floor": 12,
+            "passed": true
+          },
+          "motion": {
+            "frame_diff_mean": 1.9693,
+            "frame_diff_floor": 0.8,
+            "development_diff_t2_t20": 13.9778,
+            "development_floor": 2.5,
+            "passed": true
+          },
+          "strobe": {
+            "max_flashes_per_sec": 1,
+            "limit": 3,
+            "passed": true
+          },
+          "frame_time_ms": {
+            "median": 33.4,
+            "p90": 66.7,
+            "budget_ms": 250,
+            "passed": true
+          },
+          "audio_probe": null,
+          "novelty_b": {
+            "phashes": {
+              "t2": "0f17333313333317",
+              "t8": "0f172b0909aa6b0f",
+              "t20": "0f0faaf2b2b0b217"
+            },
+            "color_histogram": [
+              0.010877,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.002078,
+              0,
+              0,
+              0,
+              0.005671,
+              0.001582,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.021449,
+              0.001688,
+              0,
+              0,
+              0.00049,
+              0.001638,
+              0.001096,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.000011,
+              0,
+              0,
+              0,
+              0.007614,
+              0.012976,
+              0.01255,
+              0,
+              0,
+              0,
+              0.39505,
+              0.52523
+            ],
+            "min_hamming_distance": null,
+            "min_histogram_distance": null,
+            "closest_date": null,
+            "passed": true
+          },
+          "slop_lint": {
+            "passed": true,
+            "violations": []
+          },
+          "reduced_motion": {
+            "passed": true,
+            "normal_motion": 3.9291,
+            "reduced_motion": 1.2883,
+            "ratio": 0.3279
+          },
+          "screenshots": {
+            "t2": "audit/dry-runs/run-01/attempt-3/shot-02s.png",
+            "t8": "audit/dry-runs/run-01/attempt-3/shot-08s.png",
+            "t20": "audit/dry-runs/run-01/attempt-3/shot-20s.png"
+          },
+          "failures": []
+        },
+        "verdict": {
+          "scores": {
+            "mechanism": 15,
+            "ambition": 13,
+            "craft": 15,
+            "distinctness": 15,
+            "polish": 7
+          },
+          "total": 65,
+          "evidence": {
+            "mechanism": "shot-08s: bottom-row strips curl into full arcs while the top two rows stay upright and a middle row is tilted; by shot-20s the arcs open and the top rows still hold a curve, so the base-to-tip lag reads on screen.",
+            "ambition": "shot-08s: 48 strips in an 8x6 grid, each a nested segment chain with pale skin and dark fiber lines; one flat layer with no lighting, simulation or secondary rendering idea beyond the strips and tiles.",
+            "craft": "shot-02s: cream radial ground with ochre edges and upright rust strips with dark graphite bases; the strips are thin and small at 1280x720, and by shot-08s the tile panels behind them fade into the ground with muddy edges.",
+            "distinctness": "shot-02s: 48 identical rust strips on a cream ground in an 8x6 grid; by shot-20s they form a central diagonal cluster, a subject not in the anchors (sky birds, climate spiral, chart waterfall, two-pendulum beam).",
+            "polish": "shot-02s: the upright grid fills the frame as a composed start; by shot-20s the cluster pulls back into a cream margin and the open-to-closed gradient differs from shot-02s, so the piece resolves."
+          },
+          "pairwise_beats_median": true,
+          "pairwise_median_ref": null,
+          "pairwise_justification": "No median archive yet: the median block is NONE, so there is no head-to-head comparison to make.",
+          "calibration_anchors_used": [
+            "anchor-03",
+            "anchor-04",
+            "anchor-06",
+            "anchor-11"
+          ],
+          "critique": [
+            {
+              "rank": 1,
+              "change": "Enlarge the strips so the arcs at shot-08s fill about twice their current cell size; the segment chain and base-to-tip lag are too small to read at thumbnail scale.",
+              "expected_gain": 3
+            },
+            {
+              "rank": 2,
+              "change": "Add the brown-tissue haze behind each strip from the brief, brightening and dimming with the wave, so the frame has a second rendering idea beyond the strips and tiles.",
+              "expected_gain": 4
+            },
+            {
+              "rank": 3,
+              "change": "Remove the small label 'PINUS SCALE / BASAL HINGE / 48 x 12' at shot-02s and let the bend wave carry the identity of the piece.",
+              "expected_gain": 2
+            }
+          ]
+        },
+        "outcome": "below_threshold"
+      }
+    ],
+    "liner_note": "Dawson, Vincent and Rocca reported in Nature in 1997 that pine cone scales gape open when dry and close when damp. The cells are dead, so the movement is passive. A 2025 study found the scale is multilayered, not a simple bilayer, and its simulations gave maximum displacements of 5.57 mm for a scale-like geometry and 2.90 mm for a bilayer. A 2025 Frontiers review finds drying bends the scale mainly at its base. On screen each strip is a chain of segments, pale skin on one face and dark fiber lines on the other. As humidity falls, bending starts at the base and climbs to the tip.",
+    "screenshots": {
+      "t2": "shot-02s.png",
+      "t8": "shot-08s.png",
+      "t20": "shot-20s.png"
+    },
+    "piece_rel_path": "pieces/2026-11-23/index.html"
+  },
+  "ledgerEntry": {
+    "date": "2026-11-23",
+    "status": "b-side",
+    "compo": "constraint-night",
+    "domain": "pine-cone-hygroscopic-scales",
+    "topic": "Pine cone scales bend with humidity through discrete fiber bundles in a porous brown-tissue matrix, not a simple bilayer strip",
+    "concept": "A grid of 48 pine cone scales, each a chain of 12 segments, curls from its base upward as humidity falls, so the bend wave crosses the field from the bottom row to the top.",
+    "techniques": [
+      "nested-transform segment chain",
+      "base-to-tip animation-delay bend wave",
+      "skin-over-fiber strip layering"
+    ],
+    "technique_family": "physics",
+    "palette": [
+      "#efe3c8",
+      "#7a4e2d",
+      "#c98a3b",
+      "#9a4a24",
+      "#3a3029"
+    ],
+    "phashes": {
+      "t2": "b8f8f8b8d8d8fcd0",
+      "t8": "b0fab0f8fcfcfcbc",
+      "t20": "10d4c8d8d0d4d490"
+    },
+    "color_histogram": [
+      0.012428,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.014736,
+      0,
+      0,
+      0,
+      0.044871,
+      0.003595,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.001666,
+      0.004096,
+      0,
+      0,
+      0,
+      0.003527,
+      0.002272,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.025002,
+      0.032194,
+      0,
+      0,
+      0,
+      0.196878,
+      0.658736
+    ],
+    "score": 68,
+    "attempts": 3,
+    "mood_pad": {
+      "pleasure": 0.409,
+      "arousal": 0.508,
+      "dominance": 0.339
+    },
+    "dominant_emotion": "interest"
+  },
+  "emotionEvent": {
+    "event": "'Basal hinge wave across a grid of pine cone scales' only made the B-sides with a score of 68.",
+    "relevance": 0.6,
+    "congruence": -0.3,
+    "novelty": 0.2,
+    "praiseworthiness": 0.1,
+    "control": 0.6,
+    "event_id": "verdict-2026-11-23",
+    "topics": [
+      "physics",
+      "constraint-night"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "source": "verdict",
+    "thread": "2026-11-23"
+  },
+  "written": [
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-01/publish/site/pieces/2026-11-23/index.html",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-01/publish/site/pieces/2026-11-23/shot-02s.png",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-01/publish/site/pieces/2026-11-23/shot-08s.png",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-01/publish/site/pieces/2026-11-23/shot-20s.png",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-01/publish/site/pieces/2026-11-23/meta.json",
+    "/Users/aieat/.t3/worktrees/demoparty/t3-1383ee8d-981b042d07b5887a/audit/dry-runs/run-01/publish/ledger/ledger.jsonl"
+  ]
+}

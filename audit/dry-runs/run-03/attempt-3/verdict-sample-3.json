@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 17,
+    "ambition": 14,
+    "craft": 15,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 67,
+  "evidence": {
+    "mechanism": "shot-02s: four nodes (ochre, gold, graphite, rust) at the base trace amber and graphite streams into a central web; by shot-08s the amber stream runs up to the faded rust node at right, so the reversal toward a shaded node is readable.",
+    "ambition": "shot-20s: eight nodes in a mirrored radial layout with a rust shadow X and dense hyphae tangled at centre; the Gray-Scott spot pattern from the brief is not visible, only polyline hyphae and sparse dots at shot-02s.",
+    "craft": "shot-02s: soft radial glow and shaded spheres on the nodes, cohesive cream, ochre and rust palette; hyphae are wobbly polylines, and shot-20s shows vertical banded vignette stripes on the cream ground.",
+    "distinctness": "shot-02s: amber, rust and graphite sink-flow streams on cream, a mycorrhizal subject none of the anchors use (card weave, Chladni field, birds, reaction-diffusion dish); no slop form visible in any shot.",
+    "polish": "shot-08s: framing shifts off-centre with a grey shade band down the right edge; shot-20s resolves into a symmetric four-fold pattern, so 2s is composed and 20s settles."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet (block says NONE), so pairwise_beats_median is true by rule.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Make the Gray-Scott spot pattern visible at shot-08s by seeding a few squares as the brief promises, so the hyphae carry a reaction-diffusion texture instead of plain polylines.", "expected_gain": 6 },
+    { "rank": 2, "change": "Raise the dot density toward the brief's 1200 to 3000 so the amber and graphite streams read as dense dot flows along the hyphae rather than thin lines with a few dots.", "expected_gain": 4 },
+    { "rank": 3, "change": "Remove the vertical banded vignette on the cream ground at shot-20s and the grey shade band at shot-08s, so the background is a flat cream field and the framing stays centred.", "expected_gain": 3 }
+  ]
+}

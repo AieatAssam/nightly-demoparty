@@ -1,0 +1,34 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 64,
+  "reason": "Attempt 1: scored 64, below 72. Retrying (2/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Make the shade reversal readable: at shot-08s the rust node's hyphae must visibly flip direction, with dots moving toward the shaded node and its stream reversed in colour or speed so the cut is legible.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Fill the empty upper half in shot-02s and shot-20s: raise the central web and seed a visible Gray-Scott spot pattern along the hyphae, the technique the brief names but shot-20s does not show.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 3,
+        "change": "Replace the jagged aliased hyphae and dash-like dots with smooth anti-aliased polylines and round dots, and drop the small caption from the bottom-left corner.",
+        "expected_gain": 2
+      }
+    ],
+    "build_failed": false
+  }
+}

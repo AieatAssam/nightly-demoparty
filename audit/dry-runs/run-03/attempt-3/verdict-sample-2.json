@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 65,
+  "evidence": {
+    "mechanism": "shot-02s: four canopy nodes send amber dot-streams along hyphae into a central graphite web; by shot-08s a faded rust node at right has amber streams running toward it, so the reversal is visible.",
+    "ambition": "shot-20s: eight radial nodes, rust shade bands forming an X, mirrored hyphae and glow halos on flat 2D line art; no spot pattern or material is visible, so ambition stays moderate.",
+    "craft": "shot-02s: cream, ochre, rust and graphite palette is coherent and the node glows are soft, but the shade-band blobs have stair-stepped edges and shot-20s shows faint vertical banding in the background.",
+    "distinctness": "shot-02s: a mycorrhizal sugar-flow idea on a cream ground is not in the anchor set and reads differently from the cards, birds and reaction rings, but the line art and glowing spheres are generic.",
+    "polish": "shot-08s: hard cut to a closer frame leaves the right half empty and the faded node cropped; shot-20s resolves into a symmetric radial mirror that differs clearly from the 2s start."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so there is no head-to-head comparison; the pairwise result defaults to true.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Add the Gray-Scott spot pattern visibly across the central web at shot-08s, as the brief promises; it is absent on screen and would lift ambition and mechanism.", "expected_gain": 5 },
+    { "rank": 2, "change": "Feather the shade-band blobs with a smooth falloff instead of stair-stepped edges, and remove the vertical banding in the background gradient visible at shot-20s.", "expected_gain": 3 },
+    { "rank": 3, "change": "Keep all nodes and the faded rust node inside the frame at the shot-08s hard cut, so the reversal reads as a composed shot rather than a cropped close-up.", "expected_gain": 2 }
+  ]
+}

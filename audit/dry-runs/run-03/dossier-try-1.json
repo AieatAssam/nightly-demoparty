@@ -1,0 +1,81 @@
+{
+  "topic": "Carbon in mycorrhizal networks is pulled toward the strongest sink, the fungus, rather than traded by a tree-set nutrient price",
+  "domain": "mycorrhizal-carbon-routing",
+  "wildcard_chosen": false,
+  "summary": "Mycorrhizal fungi link tree roots into shared networks, and sugar (carbon) can move through them between trees. A common picture says trees pay carbon to fungi in exchange for nutrients, with a market-like price. A 2024 review found no empirical evidence that nutrient prices regulate carbon transfer to fungi, and found more support for the idea that carbon is drawn to the strongest sink, which is the fungus. Flow runs from carbon-rich donor roots toward fungi and then onward to neighbours with less carbon. Measured transfer is small, and isotope tracing results are contested. A designer can show a sink-driven flow with asymmetric donors and recipients.",
+  "facts": [
+    {
+      "claim": "A 2024 University of Alberta review found no empirical evidence of direct regulation of carbon transfer to fungi by nutrient 'prices', rejecting the carbon-for-nutrient market model.",
+      "source_url": "https://ualberta.ca/en/folio/2024/10/are-plants-and-fungi-trading-carbon-for-nutrients.html",
+      "source_title": "Are plants and fungi trading carbon for nutrients? Not likely, say researchers"
+    },
+    {
+      "claim": "The same review found more support for the theory that carbon is drawn to the strongest sink, namely mycorrhizal fungi.",
+      "source_url": "https://ualberta.ca/en/folio/2024/10/are-plants-and-fungi-trading-carbon-for-nutrients.html",
+      "source_title": "Are plants and fungi trading carbon for nutrients? Not likely, say researchers"
+    },
+    {
+      "claim": "Levels of hexose (a sugar) are consistently higher in host roots than in the fungus, which runs against the usual concentration gradient.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/",
+      "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+    },
+    {
+      "claim": "Carbon flow from a donor tree to the fungus is described as clear, because the fungus is heterotrophic and depends on carbon supply from the tree.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/",
+      "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+    },
+    {
+      "claim": "Carbon transfer across mycorrhizal networks is typically small compared with autotrophic carbon assimilation by the plant.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/"
+      ,
+      "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+    },
+    {
+      "claim": "Multiple labelling experiments detect carbon transfer across networks while others do not, and labelling intensity may be too low to detect an otherwise small flow.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10751480/",
+      "source_title": "Belowground carbon transfer across mycorrhizal networks among trees: Facts, not fantasy"
+    },
+    {
+      "claim": "Trees with more carbon in their roots give carbon to fungi and on to trees with less carbon.",
+      "source_url": "https://kids.frontiersin.org/en/articles/10.3389/frym.2023.1194085",
+      "source_title": "Relationships Between Trees and Fungi in a Time of Climate Change"
+    },
+    {
+      "claim": "Some tree species, such as oaks, transfer more carbon to the fungi and on to neighbouring trees than they receive.",
+      "source_url": "https://kids.frontiersin.org/en/articles/10.3389/frym.2023.1194085",
+      "source_title": "Relationships Between Trees and Fungi in a Time of Climate Change"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "strongest-sink pull",
+      "description": "Carbon leaves donor roots and moves to whichever partner has the strongest sink. The review proposes that this is the fungus, so flow is set by sink strength, not by a tree-controlled nutrient price.",
+      "render_or_sonify_hint": "Carbon particles stream out of a root node and bend toward a fungal hub. Hub brightness rises with sink pull, and the stream thickens where pull is strongest."
+    },
+    {
+      "name": "inverted hexose gradient",
+      "description": "Sugar concentration is higher in host roots than in the fungus, so the fungus gains carbon against a concentration gradient. This shows the fungus is not a passive sponge but a drawn sink.",
+      "render_or_sonify_hint": "Root cells show dense sugar dots, fungal hyphae show sparse dots, and dots still migrate from the sparse-to-dense side only where a hyphal bridge exists. Density bars invert at the boundary."
+    },
+    {
+      "name": "donor-to-neighbour cascade",
+      "description": "Carbon-rich donor trees pass carbon through the fungal network to neighbours with less carbon, and some species, such as oaks, give more than they receive. Over time the carbon spreads outward from rich donors to poorer neighbours.",
+      "render_or_sonify_hint": "Begin with three tree nodes, one bright. Over the piece, glow spreads through a hyphal mesh to the dimmer trees. Donors dim as recipients brighten, and oak-like donors stay net-negative in the tally."
+    },
+    {
+      "name": "sub-threshold labelling flicker",
+      "description": "Transfer is small relative to plant assimilation, so labelled carbon can fall below the detection limit. Some experiments see the flow and others miss it.",
+      "render_or_sonify_hint": "Faint flows appear only when a label-intensity threshold is crossed. Display a noisy field where some links flash on and others stay dark, with the threshold line visible as a slider."
+    }
+  ],
+  "open_questions": [
+    "How large is the carbon flow through a mycorrhizal network compared with the carbon a tree fixes itself?",
+    "Does the strongest-sink model hold for every donor and recipient pair, or only for some species?",
+    "What isotope or labelling evidence would separate tree-directed transfer from fungus-driven draw?"
+  ],
+  "surprise": {
+    "score": 70,
+    "justification": "A well-read generalist expects trees to trade carbon for nutrients through a market-like price. The 2024 review found no empirical evidence of nutrient-price regulation and favoured carbon being drawn to the fungal sink instead."
+  },
+  "dataset": null
+}

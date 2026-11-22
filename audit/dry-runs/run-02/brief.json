@@ -1,0 +1,55 @@
+{
+  "title": "Warren truss: the diagonal that flips from pull to push",
+  "concept": "A mirrored row of equal-length Warren truss diagonals, ochre in tension and rust in compression, flips sign as a load marker crosses each panel.",
+  "mechanism_embodied": {
+    "mechanism_name": "diagonal sign flip",
+    "how_visualised": "Each diagonal bar of a mirrored Warren truss is coloured by its solved axial force: ochre when tensile, rust when compressive. A load marker crosses the span over 20 s, and each diagonal changes colour the moment its force crosses zero. The same bar is pulled under one load position and pushed under another, and each flip sounds a tone."
+  },
+  "discarded_obvious_idea": "Obvious: a truss drawn as grey bars under a moving load, coloured red for hot and blue for cold. Rejected: it is a static diagram with no reason for any force to change, and it hides the sign flip the piece is about.",
+  "compo": "audiovisual",
+  "constraint_honoured": null,
+  "techniques": [
+    "method-of-joints statics solver",
+    "influence-line load sweep",
+    "tension-compression colour flip",
+    "mirrored Warren lattice"
+  ],
+  "novel_technique": "method-of-joints statics solver",
+  "technique_family": "physics",
+  "palette": [
+    "#efe3c8",
+    "#c8962e",
+    "#a84b2a",
+    "#3a342e"
+  ],
+  "motion_sound_plan": "Mood: high tempo (120 BPM) with a dense field of 60 panels and 120 bars, four hard cuts at 2.5, 7.5, 12.5 and 17.5 s; warm-consonant palette of cream, ochre, rust and graphite with mirrored symmetry; measured framing with one slow pull-back in beat 4; moderate risk, one unfamiliar solver on a safe 2D canvas base. Sound starts on click: a C major triad pulse at 120 BPM, and each sign flip sounds a sine tone, high for tension and low for compression, peak under 0.9. Constraint: none.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Cream ground, centred wide shot of a mirrored Warren truss of 30 panels, chords and diagonals in graphite. A load marker enters at the left end and the first diagonals take ochre or rust colours from their solved forces."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "The marker crosses the left half and diagonals flip from ochre to rust one by one as their force crosses zero. A hard cut at 7.5 s jumps to a close framing of the centre triangles, where bars near midspan show both colours in turn."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "The marker reaches midspan and the central diagonals pulse rust and ochre as the load sits near the centre. A thin wave of flips spreads outward from the marker, and a hard cut at 12.5 s tightens the frame on the centre joints."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "The marker exits right and the camera pulls back over 5 s to the full mirrored span. Flips fade behind the marker, leaving a settled final pattern of ochre ends and rust centre bars with cream dots on the joints at 20 s."
+    }
+  ],
+  "memorable_moment": "A single diagonal turns from ochre to rust at midspan as the marker passes, while the bar beside it stays ochre.",
+  "self_declared_risk": "Solver sign errors under the moving load, or flips too sparse to read at 2 s. Audio may stutter if a new oscillator is built per flip instead of pooled voices.",
+  "liner_note": "James Warren patented his truss in 1848. Every panel and diagonal has the same length, and each diagonal carries axial force only. Loads on its diagonals alternate between compression and tension as they approach the centre of the span. In the method of joints a positive member force is tensile and a negative one is compressive, so one bar can be pulled under one load and pushed under another. On screen a load marker crosses a row of equilateral triangles. Each diagonal glows ochre in tension and rust in compression, flipping as its force crosses zero, and each flip sounds a tone."
+}

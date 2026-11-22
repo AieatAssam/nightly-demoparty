@@ -1,0 +1,34 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 67,
+  "reason": "Attempt 1: scored 67, below 72. Retrying (2/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Cut to a close framing of the centre triangles around 8s and 12s, as the storyboard says, so bars near midspan show both ochre and rust in one frame; the current wide shot hides the flip.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Deform the lattice under the load: chords sag and diagonals stretch with the marker position, so the force sign reads through shape as well as colour and adds a second rendering layer.",
+        "expected_gain": 6
+      },
+      {
+        "rank": 3,
+        "change": "Resolve the 20s frame: pull back to the full span and let the flipped diagonals settle into a distinct final pattern instead of repeating the 2s composition.",
+        "expected_gain": 4
+      }
+    ],
+    "build_failed": false
+  }
+}

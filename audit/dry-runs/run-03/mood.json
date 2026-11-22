@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-11-22T21:42:04.377Z",
+  "preset_override": null,
+  "dominant_emotions": [
+    {
+      "label": "interest",
+      "intensity": 0.8
+    },
+    {
+      "label": "joy",
+      "intensity": 0.754
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.477
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.058
+    }
+  ],
+  "pad": {
+    "pleasure": 0.393,
+    "arousal": 0.525,
+    "dominance": 0.33
+  },
+  "neurochemistry": {
+    "dopamine": 1,
+    "noradrenaline": 1,
+    "serotonin": 0.717,
+    "cortisol": 0.315,
+    "oxytocin": 0.425,
+    "opioids": 1
+  },
+  "drives": {
+    "novelty": 0,
+    "social": 0.404,
+    "fatigue": 0
+  },
+  "derived_signals": {
+    "interest": 0.8,
+    "boredom": 0.058,
+    "frustration": 0.079
+  },
+  "likes": [
+    {
+      "topic": "fungal-sink",
+      "score": 0.268
+    },
+    {
+      "topic": "two-way-exchange",
+      "score": 0.237
+    },
+    {
+      "topic": "shade-reversal",
+      "score": 0.229
+    },
+    {
+      "topic": "mycorrhizal-carbon-routing",
+      "score": 0.218
+    },
+    {
+      "topic": "network-graph",
+      "score": 0.218
+    },
+    {
+      "topic": "particle-system",
+      "score": 0.21
+    },
+    {
+      "topic": "hyphal-network",
+      "score": 0.208
+    },
+    {
+      "topic": "network-growth",
+      "score": 0.142
+    },
+    {
+      "topic": "carbon-flow",
+      "score": 0.121
+    },
+    {
+      "topic": "popular-myth",
+      "score": 0.082
+    }
+  ],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.763,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.393,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "measured",
+      "value": 0.33,
+      "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.8,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.079,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

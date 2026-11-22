@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 13,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 8
+  },
+  "total": 65,
+  "evidence": {
+    "mechanism": "shot-02s: bottom row of strips bends at its base while the upper rows stay straight; by shot-08s the curl front sits mid-frame with tips visibly lagging their bases.",
+    "ambition": "shot-08s: 48 strips of 12 nested segments form near-closed C-curls with a radial ochre glow behind each; by shot-20s the top rows stay curled while lower rows straighten. One glow layer plus the segment chain.",
+    "craft": "shot-02s: cream ground with rust and ochre palette is harmonious; segment edges show visible stepping and the ochre glows are flat radial blobs that sit off-centre from the strip bases.",
+    "distinctness": "shot-08s: pale skin edge and dark fibre stripes on the curled strips; no plasma, tunnel or sphere on screen, and a hygroscopic bend wave is not a common demoscene cliche.",
+    "polish": "shot-02s: grid is centred and fills the frame; shot-20s: the state differs clearly from 2 s (top rows curled, bottom rows straight), so the piece resolves rather than sitting static."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so there is no head-to-head comparison to make.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    { "rank": 1, "change": "At shot-08s the strips curl into near-identical C-hooks. Vary each strip's delay offset, bend amplitude and tilt so the wave reads as a field of different states rather than one stamped shape.", "expected_gain": 4 },
+    { "rank": 2, "change": "Fix the segment stepping at strip edges by overlapping segment borders or raising segment resolution, and centre each ochre glow on its strip base instead of offset to one side.", "expected_gain": 3 },
+    { "rank": 3, "change": "Strengthen the skin-over-fibre contrast: make the pale skin face bright and the dark fibre lines visible along the full strip length, so the two-layer mechanism reads and not only the bend.", "expected_gain": 2 }
+  ]
+}

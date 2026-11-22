@@ -381,3 +381,148 @@ Presets are hand-set signals that go through the same creative mapping, so their
   - `moodFromEngine` never reports `topic:shelved-streak` as a like or dislike, even from older state.
   - A batch whose events are all dropped is passed to the engine as `[]`, which the engine accepts.
 - **`SPEC.md` Stage 2** now says that each of the verdict and the streak is counted once, deterministically.
+
+## M6A (composite action, workflows, retro and monthly scripts, local dry run)
+
+- **One night folder.** Every stage reads and writes one folder: `audit/<date>/` in Actions, `--out` locally. `harness/dry-run.ts` holds all non-LLM glue as `step <name>` subcommands. `nightly.yml` and the local runner call the same steps and the same `harness/cli.ts` commands, so a local dry run exercises the workflow's code paths. Jobs pass the folder forward as one cumulative artifact per job (`night-plan` to `night-build`). The publish job downloads them in order, so the furthest one wins.
+- **Composite action (`.github/actions/agent`).**
+  - It validates its inputs. The model must be haiku or opus. The prompt file must be at most 100 KB, because claude-code-action copies the prompt into two environment variables.
+  - It snapshots `git status --porcelain -z -uall` with content hashes and loads the prompt through a random heredoc delimiter.
+  - It calls claude-code-action with `continue-on-error`. The agent's own failure is judged by the stage's check, not by the step. The workspace guard and the usage log run with `if: always()`.
+  - A change outside `allowed_write_paths` fails the job. That includes a second change to an already dirty file.
+- **claude-code-action v1 nuances (pinned at `acfe799`).**
+  - Agent mode defaults to `--permission-mode auto`. Our `claude_args` come last and set `dontAsk`, so any tool outside `--allowedTools` is denied, not prompted. `--tools` limits the built-in set to the same names without their `(...)` scopes.
+  - Without a `github_token` input the action requests an OIDC token, which needs `id-token: write`. We pass `github.token`, so `id-token` stays on the publish job.
+  - Usage comes from `execution_file`, the raw SDK message array; its last `result` message carries tokens, cost, turns and duration. A missing or broken file logs zeros instead of failing.
+  - The action installs Bun on every call, which adds about 20 to 30 s per LLM step. The job timeouts include that.
+- **Timeouts.** Nightly jobs: plan 2, research 6, feel 3, brief 5, build_and_judge 30, publish 4, for 50 minutes in total. Every agent step also has its own `timeout-minutes`: research 3 then 2, appraise 2, brief 2, build 6, jury 3. claude-code-action has no timeout input, and a step timeout kills the whole composite (its inner guard included), so each agent step also sets `continue-on-error` and is followed by a step that re-runs `guard check` on the same fixed snapshot file when it failed. A timeout then falls through to the stage's own check (the retry still happens), while a write outside the allowed paths still fails the job. A cut-off call logs no usage row. Three full attempts with a jury retry can exceed 30 minutes. A night cut off after a `retry` decision is decided again by `step publish-input`, treating the last judged attempt as final, so a B-side-worthy attempt still ships instead of being shelved.
+- **Local runner.** `npm run dry-run -- --out DIR` runs the same stages on the local `claude` CLI with the same flags (`--permission-mode dontAsk`, `--tools`, `--allowedTools`), the same guard and the same usage rows. Jury samples run one at a time, as in CI, so each guard sees only its own verdict file. First live run (2026-11-22, `--max-attempts 1`): 7 calls, $0.25, about 7 minutes; 3/3 valid verdicts; shelved at 59; repo state untouched.
+- **Halts.** Two failed dossiers or three failed briefs write `halt.json`, and later jobs skip. Publish runs with `always()` whenever plan succeeded and turns any missing decision into a shelved night with a reason, so every night leaves a ledger row and an audit.
+- **Jury.** Three Haiku `--effort high` samples, plus at most one evidence retry per attempt when fewer than 3 samples pass `validateVerdictStrict`. That stays within SPEC's 12-call cap. The 4 calibration anchors rotate with the date. `archive_empty` is true exactly when `median30d` is null. Validate, aggregate and decide all get the same `--expected-anchors` and archive flag; `step attempts` recomputes them, so an attempt with failed gates still checks earlier verdicts the same way.
+- **Emotion state.** `feel` runs on a scratch copy of `state/emotion.json` inside the night folder. Live publish copies it back, then records the verdict feedback on the real state, in the same commit as the ledger, `audit/` and `site/pieces/`.
+- **Retro (`harness/retro-apply.ts`).** The model's threshold and usage alerts are never trusted. They are recomputed with `computeRatchetedThreshold` and `computeUsageAlerts`.
+  - Each static regex is compiled with the `i` flag in a child process with a 2 s timeout. It must match nothing in `lib/min/*.js`, `tests/fixtures/good*.html`, the anchors and the existing curriculum snippets.
+  - Each snippet is wrapped as a shader or module script and must pass `lintPieceHtml` against the old and the new static rules.
+  - Ids must be new. Rejected items are skipped and reported as warnings.
+  - The YAML is edited with `parseDocument`, so comments survive, then reloaded with the normal loaders. Any reload failure restores all three files.
+- **Monthly.** No LLM. `harness/monthly-showcase.ts` writes `site/monthly/<YYYY-MM>/` from the month's top 5 published scores. Shelved nights and B-sides are excluded.
+- **Least privilege.** Every workflow defaults to `contents: read`. Only nightly `publish` (contents, pages, id-token), weekly `apply` (contents) and monthly `showcase` (contents, pages, id-token) can write. No `${{ }}` expression appears inside any `run:` script: dispatch inputs and step outputs reach the shell through `env:` only, and `tests/workflows.test.ts` enforces this.
+- **Enabling the crons.** All three schedules ship commented out. Uncomment each one after a `workflow_dispatch` run with `dry_run: true` has passed. The `github-pages` environment's branch protection can block deploys from non-default branches.
+
+## M6B (6R review and Codex Consultation #3: security and workflow hardening, then 3 local dry runs)
+
+### Codex Consultation #3 and review 6R: what was wrong
+
+- **B0: unscoped writes, a guard that ran repo code, and symlinks.** `Write` and `Edit` were allowed anywhere, so the only protection was the after-the-fact guard. That guard was `node --import tsx harness/dry-run.ts guard`, code from the very workspace the agent had just been able to touch. A stage could also leave a symlink in the night folder for `upload-artifact` to follow.
+- **B1:** the OAuth token was visible to every subprocess an agent started.
+- **B2:** `publish` downloaded every job's artifact with `continue-on-error` and laid them over `$NIGHT`, so the outputs of a failed job (a guard violation included) could reach the ledger, the site and `state/emotion.json`.
+- **Codex #4:** a build that timed out without writing left the previous attempt's `piece/index.html` in place, so the next gate and jury judged the old HTML as a new attempt.
+- **Codex #5:** the action reported only `outcome`, and a cut-off call logged an all-zero usage row that pulled the 7-night averages down.
+- **Codex #6:** Pages deployed before the commit was pushed, so a failed push left the site ahead of Git. A 4-minute `publish` job could not fit `deploy-pages` (up to 10 minutes).
+- **Codex #7:** weekly and monthly shared the `nightly` concurrency group, which keeps a single pending run, so a dispatch could drop a queued nightly run.
+- **Retro ReDoS:** a catastrophic regex was only caught if the 2 s probe happened to hit a slow input in the corpus.
+
+### Fixes
+
+- **Path-scoped Write and Edit (checked against the CLI first).** Claude Code 2.1.330, `--permission-mode dontAsk`, tested locally:
+  - `Write(path)` rules are ignored, so every write is denied.
+  - `Edit(//abs/file)` and `Edit(//abs/dir/**)` scope both the Write and the Edit tool: the allowed path is written, and a sibling path is denied.
+  - Relative `Edit(./x)` also works, but it depends on the working directory.
+
+  The composite action therefore builds the rules itself from `allowed_write_paths`, one `Edit(/<workspace>/<path>)` per entry (folders get `/**`), and drops bare `Write`/`Edit` from `--allowedTools`. It rejects `Write(` in `tools`, rejects entries with `..` or a leading `/`, and accepts `/` in tool rules. `harness/dry-run.ts` does the same through `scopedAllowedTools`, on the real path of the night folder (macOS `/tmp` is `/private/tmp`). Scopes per stage:
+  - research: `dossier.json`
+  - appraise: `appraisals.json`
+  - brief: `brief.json`
+  - build: `piece/index.html` and `selfgate/**`, plus `Bash(npm run gate:*)`
+  - jury: `attempt-N/verdict-sample-K.json`
+  - retro: `retro.json`
+
+  I read claude-code-action at `acfe799`. In agent mode it merges no tools of its own into `--allowedTools`. It parses `claude_args` with shell-quote after escaping `()`, so the quoted rules arrive intact. The user `--permission-mode` comes last and wins.
+- **Pure-Bash workspace guard.** The "Snapshot workspace" step writes `agent-guard.sh` from text inside `action.yml` to `$RUNNER_TEMP`, before the agent runs. That text was loaded when the step started, and the agent cannot reach `$RUNNER_TEMP`.
+  - **Snapshot contents:** `git -c core.fsmonitor= -c core.hooksPath=/dev/null -c core.untrackedCache=false status --porcelain=v1 -z --untracked-files=all --no-renames` with a `sha256sum` per path, plus a `sha256sum` of every file under `package.json`, `package-lock.json`, `harness/`, `config/`, `schemas/`, `.github/`, `.git/config` and `.git/hooks`.
+  - **`.git/config` is compared by key, not by bytes.** In agent mode claude-code-action (`configureGitAuth` at `acfe799`) itself sets `user.name` and `user.email`, unsets the checkout's `http.https://github.com/.extraheader`, and either runs `git remote set-url origin https://x-access-token:<token>@github.com/...` or adds `credential.https://github.com.helper`. A byte hash would fail every CI stage. The guard therefore hashes `git config --file .git/config --list` without exactly those keys, so `core.*`, `include*`, `alias.*`, `filter.*` and any other key the agent adds still fail the check. The local runner, which has no action, still hashes the raw file.
+  - **Known exposure:** that remote URL puts the job's `github.token` (read-only `contents: read` in the agent jobs) in `.git/config`, where a stage with `Read` can see it. It cannot push, and the subprocess scrub does not cover files. The action writes it before the agent starts, so no step of ours can remove it in time; it is documented, not changed. Follow-up: pass a dedicated token with no scopes beyond `contents: read` once the action can skip git setup in agent mode.
+  - **Failure conditions:** `check` fails on any changed line outside `allowed_write_paths` and on any symlink inside an allowed path. A line that cannot be parsed counts as a violation.
+  - **Pass marker:** only a pass writes `guard-<stage>-<attempt>.ok`.
+  - **Usage logging:** the `Log usage` step (the only `tsx` in the action) runs only after the guard passed, so the harness code it runs is known to be untouched.
+  - **Cut-off calls:** the workflow's re-check steps call the same script. No `tsx` runs before or inside any guard.
+  - **Local runner:** it also hashes the `--out` folder directly (it may sit outside the repo) and rejects symlinks there.
+- **Marker and symlink steps before every upload.** Each agent job in nightly runs "Reject symlinks" (`find "$NIGHT" -type l -print -delete`; finding any fails the job) with `always()`. It then runs "Guard-passed marker", which fails unless every `guard-*.snap` in `$RUNNER_TEMP` has its `.ok`, and writes `$NIGHT/guard-passed-<job>` only on success. Weekly removes symlinks before its upload.
+- **Subprocess scrub.** `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: '1'` is set in the workflow `env:` of nightly and weekly, on the claude-code-action step, and in the local runner's agent environment.
+- **Publish reads only successful jobs.** Each `download-artifact` in `publish` runs only when its job and every earlier job have `result == 'success'`. Nothing uses `continue-on-error` any more.
+  - "Check the night's jobs" walks research, feel, brief and build_and_judge in order.
+    - The first job that is neither `success` nor `skipped`, or a successful one without its `guard-passed-<job>` marker, becomes `halt.json`: "Stopped at <job>: the job ended in failure; none of its outputs were used". The night then shelves with that reason.
+    - A `skipped` job after a halt is normal.
+  - The night's `state/emotion.json` is copied back only when `feel` succeeded and no job failed. A brief halt leaves build `skipped`, which still counts as clean, so a legitimate night keeps its appraisal.
+- **No stale candidate.** `stepRenderBuild` deletes `piece/index.html` before every attempt, and each nightly "Render build prompt" step runs `rm -f "$NIGHT/piece/index.html"` first. The judged copy of each attempt stays in `attempt-N/index.html`. A timed-out build now ends as `build-failed.json`.
+  - **Known cost:** `prompts/build.md` says to fix an existing piece in place on attempts 2 and 3. That branch no longer triggers, so retries rebuild from the brief plus the gate or jury feedback.
+  - **Not done:** the previous attempt's path is not passed through `PREVIOUS_FEEDBACK`, because the prompt marks that block untrusted and tells the builder to ignore file paths in it.
+  - **Follow-up for the prompt owner:** a trusted `PREVIOUS_PIECE_PATH` input.
+- **Outcome, conclusion and real usage only.** The action outputs `outcome` (`steps.claude.outcome`), `conclusion` (`steps.claude.outputs.conclusion`) and `guard`.
+  - `log-usage` appends a row only when the execution file holds a `result` message with a `usage` object and a numeric `total_cost_usd`.
+  - Locally, `calls.jsonl` records every call (with `telemetry: true|false`), and `summary.llm_calls` counts it, so calls that timed out still count.
+- **Push before Pages, retries, timeouts.** Nightly `publish` and monthly `showcase` now commit, then `git pull --rebase` and push with 5 tries and backoff, and only then configure, upload and deploy Pages. Weekly `apply` pushes with the same retry loop.
+  - **Job timeouts:** `publish` 15 minutes and monthly 15 minutes, so `deploy-pages` has headroom; `brief` 8; `build_and_judge` 35.
+  - **Step budgets in build_and_judge:** build 7, gates 3 (`continue-on-error`, so a hung gate fails the attempt, not the night), each jury call 2.
+  - **Attempt start check:** "Start the clock" records `JOB_START`. Decide 1 and 2 turn a `retry` into `out-of-time` when the job is past `LAST_ATTEMPT_START_S` = 960 s, because a worst-case attempt (7 + 3 + 4 x 2 = 18) plus 1 minute of upload must fit in 35. The build budget was 6 minutes until the dry runs: local builds took 124 to 406 s (two of nine over 360 s), so it is now 7. Even so, attempts 1 and 2 of run-02 and run-03 together took about 900 to 915 s, close to the 960 s limit, so on a slow CI runner the Opus attempt 3 will often not start. That is the price of the 35-minute job. Stage 9 then decides on the attempts so far, and the decision of every completed attempt is already in `decision-N.json`.
+  - **Deviation from SPEC line 175:** job timeouts now sum to 69 minutes, against the 50 that line asks for. The lead set these numbers. `tests/workflows.test.ts` pins each job's value instead of an upper bound, so changing one is a deliberate act.
+- **Concurrency.** Nightly keeps `group: nightly, cancel-in-progress: false` (SPEC line 175). Weekly uses `weekly` and monthly uses `monthly`, so neither can displace a pending nightly run. All three pushes rebase and retry.
+- **Retro ReDoS.** `redosRisk` statically rejects two shapes inside an unboundedly repeated group:
+  - a group that holds a repeat quantifier, such as `([a-z]+)+`, `(q+q+)+`, `(\w+\s?)+` or `(?:a*)*b`;
+  - overlapping alternatives, such as `(a|aa)+` (one literal branch a prefix of another) or `(\w|\d)+` (two class branches).
+
+  All four current slop rules pass the screen. The child-process probe then runs the regex on adversarial long runs before the corpus: each of `a q x 0`, space, tab, `_`, `.` and the pattern's own letters, repeated 64 times and followed by `!`. A pattern that slips past the static screen, such as `(?:\w\w?)+@`, times out there.
+- **Tests (`tests/workflows.test.ts`).** New regression tests cover:
+  - the scrub variable;
+  - `outcome` and `conclusion`;
+  - usage logging only after the guard;
+  - no `tsx` up to and including the guard;
+  - the Bash guard run against a scratch repo: allowed write, outside write, `.git/config` edit, symlink, `.ok` marker;
+  - the `Check inputs` script producing the exact `Edit(//...)` rules and rejecting `Write(`, `..` and absolute paths;
+  - symlink and marker steps before every upload;
+  - success-gated downloads and the state rule;
+  - `piece/index.html` cleared before each attempt (workflow and `stepRenderBuild`);
+  - the time budget arithmetic;
+  - push before Pages;
+  - the three concurrency groups;
+  - ReDoS rejections;
+  - `hasUsageTelemetry`;
+  - the night-folder snapshot.
+
+  The existing actionlint test passes (exit 0, no output).
+
+### Three local end-to-end dry runs (`audit/dry-runs/run-01..03/`)
+
+I ran the dry runs one at a time, because the repo-wide guard would read one run's writes as a violation inside another. Every run used `npm run dry-run -- --max-attempts 3`. Each one ran the full pipeline:
+- real web research on Haiku;
+- the `agent-emotion-core` appraisal on the night's copy of the state;
+- the Haiku brief and Novelty Gate A;
+- Haiku builds for attempts 1 and 2 and an Opus low-effort build for attempt 3;
+- the Playwright hard gates at `timingScale = 1`;
+- 3 Haiku `--effort high` jury samples per attempt;
+- `cli decide`;
+- the dry Stage 9 publish snapshot under `publish/`.
+
+I previewed the plans first. Seeds `dry-run-01` and `dry-run-03` both drew `constraint-night`, so run-03 forced `--force-compo simulation` and kept its seeded domain with `--force-domain mycorrhizal-carbon-routing`.
+
+| Run | Date | Compo | Domain / topic | Attempts (model) | Gates | Jury samples, then aggregate | Outcome | LLM calls | Cost |
+|---|---|---|---|---|---|---|---|---|---|
+| run-01 | 2026-11-23 | constraint-night (css-only, 16 KB) | pine-cone-hygroscopic-scales: scales bend through discrete fibre bundles in a porous matrix | 1 haiku, 2 haiku, 3 opus low | 3/3 pass | a1 62 59 64 = 62; a2 71 65 68 = 68; a3 71 63 66 = 65 | b-side (best attempt 2, 68) | 15 | $1.3937 |
+| run-02 | 2026-11-24 | audiovisual (24 KB) | warren-truss-load-paths: a diagonal flips from tension to compression as the load crosses its panel | 1 haiku, 2 haiku, 3 opus low | 3/3 pass | a1 68 64 66 = 67; a2 53 63 64 = 62; a3 70 71 68 = 69 | b-side (best attempt 3, 69) | 15 | $1.6416 |
+| run-03 | 2026-11-25 | simulation (24 KB, forced) | mycorrhizal-carbon-routing: sink-driven sugar flow through shared hyphae, reversible under shade | 1 haiku, 2 haiku, 3 opus low | 3/3 pass | a1 63 62 67 = 64; a2 67 70 67 = 67; a3 67 65 67 = 66 | b-side (best attempt 2, 67) | 16 | $2.1952 |
+
+- **Totals:** 46 LLM calls, $5.23. All 46 calls had real usage telemetry, so `calls.jsonl` and `usage.jsonl` agree.
+- **Retries:** run-03's first dossier was rejected (summary over 600 characters), and the one research retry fixed it. Every brief passed Novelty Gate A on its first try. No jury evidence retry was needed (27/27 samples valid).
+- **Outcomes:** every attempt passed the hard gates, and every night ended a B-side between 67 and 69, under the publish threshold of 72. Opus low-effort was the best attempt only on run-02, and it is the bulk of each night's cost ($0.98 to $1.14 per call).
+- **Wall clock:** build calls took 124 to 406 s and jury calls 26 to 47 s. Three full attempts took 17 to 28 minutes. With the nightly step budgets above, the third attempt would only start on a night like run-01.
+- **No pipeline breakage:** the path-scoped `Edit(//...)` rules, the night-folder snapshot and the symlink check raised no false positives. No run hit a pipeline, tool, parsing or path-scoping failure, so `harness/dry-run.ts` needed no further fix.
+- **Repo files untouched:** `git diff main -- state/ ledger/ audit/usage.jsonl site/` is empty after all three runs. No symlink exists under `audit/dry-runs/`.
+- **Screenshots:** I inspected `shot-08s.png` and `shot-20s.png` of each night's best attempt. All rendered cleanly:
+  - run-01: a grid of hinged pine-cone scales unfolding;
+  - run-02: a Warren truss under a moving load, with a tension and compression influence map;
+  - run-03: a hyphal network with trees drawing carbon along coloured routes.
+
+## M6C (build_and_judge timeout headroom and SPEC Section 5 alignment)
+
+- Raised `build_and_judge` `timeout-minutes` from 35 to 45 and `LAST_ATTEMPT_START_S` from 960 to 1560 s, so per-job timeouts now sum to 79 minutes worst-case. M6B dry-run timings put Attempts 1-2 at about 900 to 915 s, so under the old limit Attempt 3 (Opus low effort, which won `run-02`) would rarely start. Now it has headroom on GitHub-hosted runners (26 minutes start limit + 19 minutes worst-case attempt and upload = 45), while median runs stay under 25 minutes.
+- Updated `SPEC.md` Section 5 lines 175-176 (per-job 79-minute worst-case sum with 45 minutes for build and judge, and npm package cache wording per Codex #3) and the pinned tests in `tests/workflows.test.ts`, so spec, workflows and tests stay aligned.

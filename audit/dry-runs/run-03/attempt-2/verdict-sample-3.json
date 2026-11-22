@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 16,
+    "craft": 13,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 67,
+  "evidence": {
+    "mechanism": "shot-08s: the right-edge shade band greys the rust node and its graphite dots flow back toward the central web; by shot-20s eight radial nodes feed one centred sink web, so the reversal and the sink both read.",
+    "ambition": "shot-02s: four colour-coded canopy nodes, a thin hyphal web and sparse dot streams; shot-20s: radial mirror of eight nodes, a rust Gray-Scott spot ring and a dense central web, all in one 2D plane.",
+    "craft": "shot-02s: flat cream ground with soft rust blobs whose edges step into visible pixel blocks at full size; the dot streams look sparse against the claimed peak, and the rust bands are the weakest finish.",
+    "distinctness": "shot-02s: cream, rust and amber fungal palette with root nodes and no birds or card weave; shot-20s: a centred rust spot ring with radial hyphae, unlike the flock, weave or sphere anchors.",
+    "polish": "shot-02s: nodes sit composed in the lower third; shot-20s resolves into a centred mirrored web that differs from the opening, though the nodes are small and the outer cream field stays empty."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so pairwise defaults to true per the rules.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Anti-alias or smooth the Gray-Scott spot field before drawing so the rust bands at shot-02s and shot-20s lose their stepped pixel edges.", "expected_gain": 2 },
+    { "rank": 2, "change": "Raise the live dot count toward the claimed peak so the streams at shot-02s read as flows, not sparse dashes on the hyphae.", "expected_gain": 2 },
+    { "rank": 3, "change": "Fade the root tips and tint the reversed dots more strongly at the 8 s shade cut so the reversal reads at a glance, not as a grey node.", "expected_gain": 2 }
+  ]
+}

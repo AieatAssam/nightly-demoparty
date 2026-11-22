@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 14,
+    "craft": 17,
+    "distinctness": 15,
+    "polish": 6
+  },
+  "total": 68,
+  "evidence": {
+    "mechanism": "shot-02s: rust and ochre diagonals across a 30-panel truss, marker at panel 4 (x 236) with the adjacent bar already flipped; by shot-08s the marker sits near panel 9 and the colour split moves with it.",
+    "ambition": "shot-08s: one flat 2D lattice with a ghost lattice beneath, a statics-driven colour pass and a filled influence-line chart; by shot-20s the marker exits right and the chart and ghost stay, so layers only, no 3D or material.",
+    "craft": "shot-02s: crisp ochre and rust bars on graphite chords over a cream ground, no artefacts at 1280x720; the legend is tiny grey text and the influence chart is a flat filled triangle with no detail.",
+    "distinctness": "shot-02s: a Warren truss coloured by axial force sign is an uncommon idea next to the anchors' title cards, spirals and tunnels; its cream-ochre palette overlaps anchor-12, but the lattice reads differently.",
+    "polish": "shot-02s: wide framing with chords running off the right edge; by shot-20s the marker has reached the right end and the truss sits fully in frame, so the state changes but the framing does not resolve into a new composition."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so the head-to-head check is set to true by rule.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Cut to a close framing of the centre triangles around 8s and 12s, as the storyboard says, so bars near midspan show both ochre and rust in one frame; the current wide shot hides the flip.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Deform the lattice under the load: chords sag and diagonals stretch with the marker position, so the force sign reads through shape as well as colour and adds a second rendering layer.",
+      "expected_gain": 6
+    },
+    {
+      "rank": 3,
+      "change": "Resolve the 20s frame: pull back to the full span and let the flipped diagonals settle into a distinct final pattern instead of repeating the 2s composition.",
+      "expected_gain": 4
+    }
+  ]
+}

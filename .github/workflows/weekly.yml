@@ -1,0 +1,149 @@
+name: Weekly Retro
+
+# Opus at low effort reads the week and proposes slop rules, 3 techniques and the threshold. The LLM job is
+# read-only; the apply job checks every proposal (harness/retro-apply.ts) before it touches config/.
+on:
+  # Uncomment after first workflow_dispatch dry run (see SETUP.md):
+  # schedule:
+  #   - cron: '30 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Check the proposals but commit nothing
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Its own group: a queued weekly run never displaces a pending nightly run (a group holds one pending run). Pushes
+# rebase and retry, since nightly and monthly may push to the same branch at the same time.
+concurrency:
+  group: weekly
+  cancel-in-progress: false
+
+env:
+  # Claude Code strips credentials (the OAuth token) from the environment of every subprocess an agent starts.
+  CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: '1'
+
+jobs:
+  retro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    outputs:
+      week: ${{ steps.render.outputs.week }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Render retro prompt
+        id: render
+        run: |
+          set -euo pipefail
+          week=$(date -u +%F)
+          dir="audit/retro/$week"
+          mkdir -p "$dir"
+          node --import tsx harness/retro-apply.ts render --week-ending "$week" --dir "$dir"
+          {
+            echo "week=$week"
+            echo "dir=$dir"
+            echo "prompt_file=$dir/prompt.md"
+          } >> "$GITHUB_OUTPUT"
+      - name: Retro
+        id: retro
+        timeout-minutes: 8
+        continue-on-error: true
+        uses: ./.github/actions/agent
+        with:
+          stage: retro
+          model: opus
+          effort: low
+          max_turns: '8'
+          tools: Read,Write
+          prompt_file: ${{ steps.render.outputs.prompt_file }}
+          allowed_write_paths: ${{ steps.render.outputs.dir }}/retro.json
+          run_id: ${{ github.run_id }}-${{ github.run_attempt }}
+          date: ${{ steps.render.outputs.week }}
+          usage_file: ${{ steps.render.outputs.dir }}/usage.jsonl
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - name: "Guard after a cut-off call: Retro"
+        if: always() && steps.retro.outcome == 'failure'
+        env:
+          GUARD_FILE: ${{ runner.temp }}/guard-retro-1.snap
+          ALLOWED: ${{ steps.render.outputs.dir }}/retro.json
+        run: bash "$RUNNER_TEMP/agent-guard.sh" check "$GUARD_FILE" "$ALLOWED"
+      - name: Reject symlinks
+        if: always()
+        env:
+          DIR: ${{ steps.render.outputs.dir }}
+        run: |
+          set -euo pipefail
+          [ -n "$DIR" ] && [ -d "$DIR" ] || exit 0
+          links=$(find "$DIR" -type l -print -delete)
+          if [ -n "$links" ]; then echo "::error::symlinks in the retro folder (removed before upload):"; echo "$links"; exit 1; fi
+      - name: Upload retro
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: retro
+          path: ${{ steps.render.outputs.dir }}/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  apply:
+    needs: retro
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    env:
+      WEEK: ${{ needs.retro.outputs.week }}
+      DIR: audit/retro/${{ needs.retro.outputs.week }}
+      DRY_RUN: ${{ inputs.dry_run == true }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download retro
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: retro
+          path: ${{ env.DIR }}
+      - name: Check and apply
+        run: |
+          set -euo pipefail
+          args=(apply --input "$DIR/retro.json" --week-ending "$WEEK" --report "$DIR/applied.json")
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          status=0
+          node --import tsx harness/retro-apply.ts "${args[@]}" > /dev/null || status=$?
+          jq -c '{ok, errors, applied, rejected, threshold}' "$DIR/applied.json"
+          jq -r '.rejected[] | "::warning::retro \(.kind) \(.id) rejected: \(.reason)"' "$DIR/applied.json"
+          jq -r '.usage_alerts[] | "::warning::usage alert: \(.stage) up \(.pct_change)% (\(.prior_7d_avg) to \(.current_7d_avg))"' "$DIR/applied.json"
+          exit "$status"
+      - name: Commit
+        if: env.DRY_RUN != 'true'
+        run: |
+          set -euo pipefail
+          if [ -f "$DIR/usage.jsonl" ]; then cat "$DIR/usage.jsonl" >> audit/usage.jsonl; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/slop.yml config/curriculum.yml config/thresholds.yml audit/
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Weekly retro $WEEK"
+          for try in 1 2 3 4 5; do
+            if git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            git rebase --abort 2> /dev/null || true
+            sleep $((try * 5))
+          done
+          echo "::error::push failed after 5 tries"
+          exit 1

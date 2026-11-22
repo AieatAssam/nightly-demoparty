@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 13,
+    "ambition": 7,
+    "craft": 14,
+    "distinctness": 13,
+    "polish": 6
+  },
+  "total": 53,
+  "evidence": {
+    "mechanism": "shot-08s: alternating ochre and rust diagonals across the centre triangles with the load marker near x 541; by shot-20s the bars merge into one brown filled field, so per-bar sign flips are hard to follow.",
+    "ambition": "shot-02s: one flat 2D lattice of 30 mirrored panels with a single load marker and a colour map; shot-08s adds faint wake rings near midspan. No simulation layers, lighting or material beyond the colour logic.",
+    "craft": "shot-02s: cream ground, graphite chords and thin ochre and rust diagonals with small clean legend text; by shot-20s the filled triangles turn muddy brown and lose their edges.",
+    "distinctness": "shot-08s: cream, ochre and rust palette and a mirrored Warren lattice share no shape or colour with the copper beads, navy rings or hex plates in the anchors; the idea itself is a physics diagram.",
+    "polish": "shot-02s: the lattice is centred and composed, but shot-20s resolves to a uniform filled field, not the settled ochre-ends and rust-centre pattern the brief describes; the end state reads flat."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet; no head-to-head comparison is possible, so tonight is marked as beating the median by default.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Keep the diagonals as outlined bars at shot-20s instead of filling the triangles, and set the end state to ochre ends with rust centre bars so the final frame shows the sign flip.", "expected_gain": 4 },
+    { "rank": 2, "change": "Thicken the diagonals and fade a short trail of the last flip behind the load marker at shot-02s and shot-08s, so each zero-crossing is readable at full size.", "expected_gain": 4 },
+    { "rank": 3, "change": "Add a thin influence-line curve under the truss, traced by the load marker, so the piece has a second rendering layer that shows where each diagonal's force crosses zero.", "expected_gain": 3 }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "topic": "Pine cone scales bend with humidity through discrete fiber bundles in a porous brown-tissue matrix, not a simple bilayer strip",
+  "domain": "pine-cone-hygroscopic-scales",
+  "wildcard_chosen": false,
+  "summary": "Pine cone scales open when dry and close when damp, with no living muscle: the cells in a mature cone are dead, so the movement is passive. The textbook picture is a bilayer strip with swelling cells on one face and stiff fibers on the other. A 2025 study finds real scales are multilayered: a sclereid skin, discrete fiber bundles and a porous brown-tissue matrix. Its simulations show a simple bilayer underestimates the bending. Bending concentrates at the scale base, and the drying and wetting paths differ in moisture content.",
+  "facts": [
+    {
+      "claim": "Dawson, Vincent and Rocca (Nature, 1997) report that pine cone scales gape open when dry and close up when damp, and that the cells in a mature cone are dead, so the mechanism is passive.",
+      "source_url": "https://ideas.repec.org/a/nat/nature/v390y1997i6661d10.1038_37745.html",
+      "source_title": "How pine cones open"
+    },
+    {
+      "claim": "Non-serotinous pine cones open when dry and close when wet, and a single cone goes through many opening and closing cycles over its life.",
+      "source_url": "https://en.wikipedia.org/wiki/Pine_cone",
+      "source_title": "Cone (botany)"
+    },
+    {
+      "claim": "The 2025 study names three tissues in the scale: a sclereid cell layer with the abaxial epidermis, brown tissue, and sclerenchyma fibers.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+      "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+    },
+    {
+      "claim": "Microfibril angle is highest in sclereid cells, so their longitudinal expansion is higher and radial expansion lower; sclerenchyma fibers have a lower microfibril angle.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+      "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+    },
+    {
+      "claim": "Simulations in the 2025 study found that discrete fibers embedded in a brown-tissue matrix reproduced the observed bending angles more accurately than a simple bilayer.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+      "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+    },
+    {
+      "claim": "In the same study's simulations, the maximum displacement was 2.90 mm for a bilayer geometry and 5.57 mm for a scale-like geometry.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+      "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+    },
+    {
+      "claim": "The study reports desorption-absorption moisture hysteresis at 60% RH of about 2.4 to 2.5 percentage points for each tissue, so drying and wetting follow different paths.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12498252/",
+      "source_title": "Beyond the bilayer: multilayered hygroscopic actuation in pine cone scales"
+    },
+    {
+      "claim": "A 2025 Frontiers review of cone scale movement reports that in pine the actuator is abaxial sclereids forming a skin, with adaxial fibers clustered in compact vascular bundles, and that during wet-to-dry transition the scale bends mainly in its basal region.",
+      "source_url": "https://www.frontiersin.org/articles/10.3389/fpls.2025.1603330/full",
+      "source_title": "Hygroscopic movements of cone scale of white fir Abies concolor are tuned by quantitative variation of the scale Bauplan"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "sclereid skin over fiber bundles",
+      "description": "The abaxial sclereid skin has a high microfibril angle, so it swells mainly along the scale length when moisture rises. The adaxial fiber bundles have a lower microfibril angle and resist that stretch. The mismatch between the two faces bends the scale.",
+      "render_or_sonify_hint": "A tapered strip: a thin soft band on one face and three to five dark vertical bundles of fine lines on the other. As humidity changes, the strip curls and straightens."
+    },
+    {
+      "name": "porous brown-tissue stitch",
+      "description": "Brown tissue sits between the fiber bundles, shrinks less than the sclereid layer and is more porous. It links the bundles into one matrix, so bending depends on bundle placement, not on two uniform layers.",
+      "render_or_sonify_hint": "A dimmer mesh of soft cells filling the gaps between the bundles, with cells that brighten and dim as humidity moves, drawn over the strip's structure."
+    },
+    {
+      "name": "basal hinge propagation",
+      "description": "During wet-to-dry transition the bending concentrates in the basal region. Motion starts at the base and spreads toward the apex as the scale dries.",
+      "render_or_sonify_hint": "Over a drying ramp, a bend wave starts at the bottom of a strip and travels upward, so the tip lags the base by a visible delay before it moves."
+    },
+    {
+      "name": "open-close hysteresis loop",
+      "description": "Drying and wetting follow different moisture paths, about 2.5 percentage points apart at 60% RH. Plotting scale angle against humidity gives a loop rather than one curve, so each cycle leaves a trace.",
+      "render_or_sonify_hint": "A trail of the scale angle against humidity over repeated cycles, opening and closing paths drawn as two lines forming a loop that thickens with each cycle."
+    }
+  ],
+  "open_questions": [
+    "How are the fiber bundles and brown-tissue matrix arranged in 3D across a whole scale, and does the layout vary between pine species?",
+    "Does the simulation include transient multiphase motion, which the authors list as future work?",
+    "How fast does moisture travel from base to apex, and does that set the speed of the basal hinge wave?"
+  ],
+  "surprise": {
+    "score": 64,
+    "justification": "A generalist expects a bimetal-style bilayer strip bending uniformly. Real scales are multilayered: a simple bilayer underestimates the bending, and fiber bundles in a porous matrix set the motion."
+  },
+  "dataset": null
+}
