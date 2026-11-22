@@ -10,10 +10,19 @@ Third-party material
 The following third-party works are vendored or referenced by this project.
 Each keeps its own license, which applies to that material only.
 
-- hallmark (MIT). Design skill, vendored under .claude/skills/hallmark/.
-  [Attribution and copyright notice to be filled in when vendored.]
+- hallmark (MIT)
+  Design skill, vendored under .claude/skills/hallmark/.
+  Copyright (c) 2026 Hallmark contributors. Upstream by Together AI (nutlope).
+  Source: https://github.com/Nutlope/hallmark
+  Upstream commit: 04977e15f3dfd6ee4b74c887dac3eb52665d6c92
+  License text: .claude/skills/hallmark/LICENSE
 
-- agent-emotion-core. Emotion engine used as a library at stage 2.
-  [Attribution, copyright notice and license identifier to be filled in when vendored.]
+- agent-emotion-core (Apache-2.0)
+  Emotion engine, vendored under .claude/skills/agent-emotion-core/ and used as a library at stage 2.
+  Copyright 2026 Aieat Assam.
+  Source: https://github.com/AieatAssam/agent-emotion-core
+  Upstream commit: 3dfc2081afc0679692698cf92edb25db2b2a1225
+  License text: .claude/skills/agent-emotion-core/LICENSE
+  Upstream NOTICE: .claude/skills/agent-emotion-core/NOTICE
 
 <!-- Add further third-party entries here: name, license, copyright, source. -->
