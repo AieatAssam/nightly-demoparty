@@ -166,3 +166,100 @@ Rejected outright (the canonical CSP blocks most of these at runtime too; the li
   - **anchor-07 agreed at 72** (15/18/20/12/7, exactly at `publish_min`). The curvature-ordered reveal and the ring count growing with curvature are both visible on screen, and the shader work fits in 3.1 KB. Against that: the gasket is a famous form, the strip inversion itself is never shown, the dive reaches only about 1.15x zoom by 20 s, and the 20 s frame is cropped where the storyboard promises a pull back. This is the set's threshold anchor.
 - **The range falls short of SPEC.** Agreed totals run from 35 (anchor-02) to 87 (anchor-10): 5 publish (72 and up), 3 B-sides (60 to 71) and 4 shelved. SPEC Stage 7 asks anchors to span 30 to 95, so nothing below 35 or above 87 calibrates the extremes yet. This is a known gap for Milestone 4 jury calibration (`harness/calibrate-jury.ts`): either add a sub-35 anchor and a 90-plus anchor, or have the calibration treat anything above 87 as an extrapolation.
 - **anchor-10 was re-gated after the ratings.** Its stray `window.__dbg` global was removed and the gates re-run at `timingScale` 1. The piece shrank from 11,781 to 11,739 bytes and still passes. The removed line only assigned a debug global and drew nothing. The re-run overwrote the three anchor-10 screenshots, so the stored rater evidence describes the earlier screenshots.
+
+## Milestone 4 (prompt hardening, stage tuning and jury calibration)
+
+### Prompt rendering (`harness/prompt-render.ts`)
+
+- **One pass, function replacer.** `renderPrompt` replaces every `{{TOKEN}}` in a single `String.replace` with a function, so a `{{OUTPUT_PATH}}` or `$&` inside a dossier value stays literal and is never expanded a second time.
+- **The INPUTS header is the contract.** Rendering throws when a body token is missing from `<!-- INPUTS: ... -->`, when a declared token is unused or has no value, or when an unknown variable is passed. Leftover `{{` in the output is not checked, because an untrusted value may legitimately contain it.
+- **`<` is escaped on untrusted keys.** Keys listed in `escapeHtmlLtKeys` get `<` when the key ends in `_JSON` (the value sits in JSON, where `<` decodes back to `<`) and `&lt;` otherwise. A value can therefore never close `</UNTRUSTED_DOSSIER_DATA>`, `</UNTRUSTED_BRIEF_DATA>` or `</UNTRUSTED_PRIOR_DATA>`. Callers escape every dossier, brief and prior-night key.
+- **Build runs a pre-rendered gate command.** `build.md` takes `{{GATE_COMMAND}}` from the harness and tells the builder to run only that exact string.
+
+### Jury images: contact strips (`harness/contact-sheet.ts`)
+
+- Each anchor, the median piece and the recent nights are shown as one horizontal strip: tiles box-filtered to 426 x 240 with a 2 px `#111111` border, left to right `shot-02s | shot-08s | shot-20s`. Tonight's 3 shots stay full size. That caps the jury at 9 images (3 + 4 anchors + 1 recent + 1 median), all read in one parallel Turn 1; Turn 2 prints the `rank:` and `sum:` lines and writes the verdict. Every calibration verdict finished in 3 or 4 API turns.
+
+### Quartile-stratified anchor rotation (`harness/calibrate-jury.ts`)
+
+- The 12 anchors are sorted by agreed total (id breaks ties) and cut into 4 groups of 3. For a target, each group drops the target and picks `pool[(rot + q) % pool.length]`, where `rot` is the target's index in the sorted id list and `q` the quartile index. The target is never shown, every anchor serves as calibration somewhere, and the rotation is fixed so runs are comparable.
+
+### Verdict hardening (4R2)
+
+- `validateVerdictStrict(verdict, repoRoot?, options?)` keeps `repoRoot` second so existing callers are unchanged. All options are opt-in: `archiveEmpty: false` rejects a null `pairwise_median_ref`, `expectedAnchors` must equal `calibration_anchors_used` as a set, and `requireScreenshotRef: true` requires a frame reference in all 5 evidence strings. In the library `requireScreenshotRef` defaults to off because the Milestone 1 fixture evidence cites no frames; the CLI turns it on (see M4C below).
+- `archiveEmpty` flows through `pairwisePasses`, `classifyAttempt` and `decideAttempt`. Left undefined it keeps the night-1 rule; `false` makes a null median ref a pairwise fail.
+
+### Jury calibration findings, M4B (`audit/calibration/jury-calibration.json`, `m4b_*` keys; superseded by M4C below)
+
+- **Target not met reliably.** On local Haiku with `--max-turns 4`, the shipped `jury.md` gave Spearman rho 0.860, 0.660, 0.900, 0.777, 0.833 and 0.684 over six full leave-one-out runs (mean 0.786, 3 of 6 at or above 0.80). Every run produced 12/12 valid verdicts citing screenshots, all in 3 or 4 API turns.
+- **Noise dominates.** The same prompt and rotation swing rho by about 0.25 between runs. Head-to-head voting against each anchor (iteration 2) was worse on both runs (0.641, 0.607). Bottom-up criterion anchoring (iteration 3) cut the bias from about -5 to -2 but not the mean rho (nine runs, mean 0.773), so the simpler iteration 1 prompt ships.
+- **Haiku compresses the scale.** Over the six shipped runs its per-criterion SD is ambition 3.2 vs 5.9, craft 2.2 vs 3.9, distinctness 2.0 vs 3.1 (Haiku vs raters), and the 80 to 87 anchors land at 61 to 77. anchor-12 (80) is underrated by 17 to 19 on every run; anchor-01 (49) swings from 47 to 64 (median 58). No anchor-specific rule was added.
+- **Calibration measures absolute scoring only.** The recent and median blocks are `NONE`, and target shots are copied to a neutral directory outside the repo so the child cannot find the anchor files. The `archiveEmpty: false` path is covered by unit tests only.
+- **Next lever: a 3-sample median jury.** The per-anchor median of three runs gave rho 0.917 and 0.756, and of six runs 0.876. That is a pipeline change for a later milestone.
+- **Removed rules.** The "under half the budget caps ambition at 12" rule contradicted anchor-10 (48% used, 87), anchor-06 (47%, 67) and anchor-08 (41%, 60), and the fixed "72 or more" publish line duplicated the anchors' job; both are gone. The top band is 83 to 92, and above 90 needs a piece that clearly beats the 84 to 87 tier.
+- **CLI facts.** `--allowedTools` under `bypassPermissions` does not restrict tools. Calibration passes `--tools Read,Write` to limit what exists, and the build tuning run used `acceptEdits` so `Bash(npm run gate:*)` was enforced. The CLI's `num_turns` counts content blocks, so turns are counted as distinct assistant API messages in `stream-json`.
+
+## M4C (jury calibration fix and CLI verdict hardening)
+
+### Stage 7 jury runs Haiku at `--effort high`
+
+- The jury is one Haiku vision call: `claude --model haiku --effort high --max-turns 4` with only `Read` and `Write`. `harness/calibrate-jury.ts` takes `--effort` (default `high`) and records it in every run summary. All 36 final calibration verdicts finished in 3 or 4 API turns at about $0.012 each.
+
+### Jury prompt changes (`prompts/jury.md`)
+
+- **No downward pressure.** "Most nights do not deserve publication" is gone; the persona now asks for accuracy across the full 30 to 92 scale. Overplotting is no longer listed in the 60 to 71 band row, because the top anchors themselves carry it.
+- **Slop trap follows SPEC Section 6 only.** `distinctness` is capped at 12 only for an untouched Mandelbrot or Julia zoom, a plain concentric tunnel, plain plasma, a plain starfield, Matrix rain, or a single raymarched sphere or torus on a gradient. Rich generative systems (orbital dynamics, reaction-diffusion, fluid or field shaders, packed geometries) are scored on execution and on novelty against the last 7 nights.
+- **Resolution parity.** Tonight's shots are 1280 x 720 and the anchor strips 426 x 240. The prompt says so, and points at the blemishes noted in the top anchors' `raters saw` lines, so full-size flaws alone do not drop a strong piece out of 75 to 87.
+- **Criterion first.** Each of the 5 criteria starts from the agreed value of the anchor closest on that criterion, moves at most 2 points (between two anchors when tonight sits between them, up to 3 beyond the range at the ends), and the sum is the total. Turn 2 prints a `crit:` line naming those picks before the `rank:` and `sum:` lines. The rank and the band are checks on the sum, with a coherence rule: ranked clearly above an anchor means most criteria at or above its values.
+- **Ambition counts rendering ideas.** One flat 2D layer from one formula is low ambition however compact; file size is not a cap either way.
+- **Evidence format.** Every evidence string starts with `shot-02s:`, `shot-08s:` or `shot-20s:`, `distinctness` included. The example is content-free, because a concrete example that resembled one anchor moved scores in M4B.
+- `{{CALIBRATION_ANCHORS_BLOCK}}` already carried each shown anchor's 5 agreed criteria, total and `summary_evidence`, leave-one-out; a unit test now pins both.
+
+### Calibration result (`audit/calibration/jury-calibration.json`, `m4c-*` iterations)
+
+- **Rho target met 3/3; top band met on per-anchor median, missed on 2 of 9 individual verdicts.** Three consecutive full 12-anchor leave-one-out runs on the frozen prompt gave Spearman rho 0.895, 0.839 and 0.965 (mean 0.900, sd 0.05); the identical m4c-v4 dev run gave 0.914. 36/36 verdicts were valid under `validateVerdictStrict` with `requireScreenshotRef` and the exact anchor set.
+- **Scale.** Mean bias across the final runs is -0.03, MAE 4.9 to 7.4. The 80 to 87 anchors have per-anchor medians 73 (anchor-12), 79 (anchor-11) and 78 (anchor-10), against 62 to 70 in M4B. Two of the 9 top-anchor verdicts still landed at 68: anchor-12 run 1 ranked itself below anchor-07, and anchor-11 run 2 ranked itself above anchor-06 but copied anchor-06's criterion values, ignoring the coherence rule. Those are two different failure modes, so no further prompt change was made. anchor-10 reads 78 on every run because it ranks itself just below its top shown anchor (anchor-12, 80). The shelved quartile reads 4 to 8 points high. `allowNegative` in `parseArgs` needs Node 22.4 or later.
+- **Development runs.** v1 0.863, v2 0.825, v3 0.886, v4 0.914, each a single full run, all recorded. No anchor-specific rule was added.
+
+### CLI verdict hardening (`harness/cli.ts`)
+
+- `validate verdict` and `decide` take `--archive-empty` / `--no-archive-empty`, `--expected-anchors a,b,c,d` and `--no-require-screenshot-ref`. Screenshot references are required by default on the CLI, since production verdicts come from the hardened jury prompt.
+- **`archiveEmpty` precedence.** An explicit flag wins. Otherwise, when `--ledger` is passed, the archive is empty iff the ledger has no `published` or `b-side` entry dated before `--date` (any date when `--date` is absent). Otherwise it stays undefined and the night-1 rule applies. `decide` passes the result to both `validateVerdictStrict` and `decideAttempt`, so a null median ref with a non-empty archive is rejected as an invalid verdict.
+- **Known edge (fixed in M4D).** If every shipped night was older than the 30-night median window, `archiveEmpty` was false while `median30d` was null. See M4D below.
+
+## M4D (generic jury prompt, 30-night empty archive, re-calibration)
+
+### Jury prompt scrubbed of anchor-specific phrasing (`prompts/jury.md`, prompt_sha256 `2ed18107b1a6339a0576870d7f4a6cd06c5b6238b8695b8a838f6df0d573e890`)
+
+- **Resolution parity, now generic:** "Tonight's shots are full 1280x720 while the anchor strips are 426x240 thumbnails. Fine flaws show up clearly at full size, whereas the anchor strips hide small defects; check the shown anchors' raters-saw notes, which list real visual flaws even on high-scoring pieces, and hold tonight to that same standard." The M4C list of specific anchor flaws and the 75 to 87 range are gone.
+- **Slop trap, now generic:** "Only mark down the SPEC permanent slop items (untouched Mandelbrot/Julia zoom, plain concentric tunnel, plain plasma, plain starfield, Matrix rain, single sphere/torus on a gradient, caption-led slideshows); these get `distinctness` at most 12. Any genuine generative implementation of a scientific, physical, or mathematical mechanism is NOT on this list and can earn up to the full 20 `distinctness` on its visual execution and novelty against the last 7 nights." Two deliberate deviations from the review wording: the cap of 12 is kept on the listed items, and "can earn up to the full 20" replaces "earns full distinctness" so it is not read as an automatic 20. The M4C list of example systems is gone.
+- **Further scrub found by grep.** "editorial chart", "sparklines" and "applet with readouts" became "a tidy chart", "small inset graphics" and "labelled applet"; "the top calibration tier (about 84 to 87)" became "the highest-scoring calibration anchor shown". A unit test now fails on any anchor id, anchor score tier or anchor flaw word in the prompt.
+- **Honest history.** The jury prompt was developed across M4B, M4C and M4D with all 12 anchors, their scores and their raters-saw notes in view, and M4C wording paraphrased specific anchors. M4D removes that wording, but the structure (bands, traps, criterion-first scoring) was still tuned against the same 12 anchors. The leave-one-out rho is therefore an in-sample estimate, not a blind one.
+- `harness/calibrate-jury.ts` records `prompt_sha256` (SHA-256 of the template file) in every run summary.
+
+### Calibration result (`audit/calibration/jury-calibration.json`, `m4d_clean_runs`)
+
+- **Target missed on 1 of 3 runs.** Three consecutive full 12-anchor leave-one-out runs, Haiku `--effort high --max-turns 4`, identical prompt_sha256: rho 0.890, 0.832 and 0.750 (mean 0.824). MAE 5.50, 6.67, 7.08; bias +0.83, +0.33, +0.42. 36/36 valid under `validateVerdictStrict`, 36/36 in 3 API turns. Per protocol no fourth run was made. The rho of the per-anchor median of the 3 runs is 0.848.
+- **Where it misses.** The 80 to 87 anchors land at 68 to 80 and anchor-10 (87) reads 76 to 77 on every run, so the top of the scale is compressed again. The shelved quartile reads high: anchor-01 (49) at 59 to 69, anchor-03 (51) at 57 to 64. Removing the anchor-derived wording cost some of the M4C gain, which is expected if part of that gain was anchor leakage.
+- M4C keys `status`, `shipped_prompt`, `findings` and `final_table_shipped_prompt` are kept under `m4c_*` as history.
+
+### Empty archive follows the 30-night median window (`harness/cli.ts`)
+
+- With `--ledger` and no explicit flag, `archiveEmpty` is `median30d(readLedger(ledger), date) === null`, the same window the jury median uses. A ledger whose only shipped night is 31 or more days old counts as empty, so a null `pairwise_median_ref` passes `validate verdict` and `decide`; a night 30 days old still makes the archive non-empty. Both cases are regression tested through the CLI.
+- `engines.node` is `>=22.4.0`, because `parseArgs` `allowNegative` needs it.
+
+## M4E (3-sample median Haiku jury)
+
+### Stage 7 runs 3 independent Haiku calls and aggregates them (`harness/jury-aggregate.ts`)
+
+- **Why.** On the frozen generic prompt (prompt_sha256 `2ed18107b1a6339a0576870d7f4a6cd06c5b6238b8695b8a838f6df0d573e890`) a single Haiku call is too noisy: M4D single-call runs gave rho 0.890, 0.832 and 0.750, so one night in three could rank pieces below the 0.80 target. Further prompt wording risks the anchor leakage M4D removed. Sampling 3 times and taking the median removes most of the per-call variance without touching the prompt. Both independent 3-sample median calibrations clear 0.80 (see below). Measured cost is about $0.067 per judged attempt (3 calls) in calibration, against about $0.022 for one call.
+- **Aggregation.** `aggregateJuryVerdicts` validates each sample with `validateVerdictStrict`, takes the integer median of each of the 5 criteria (rounded mean of the two middle values for an even count), sets `total` to the exact sum of those medians, and sets `pairwise_beats_median` by strict majority (a tie is false). Evidence, critique, `pairwise_median_ref`, `pairwise_justification` and `calibration_anchors_used` are copied whole from the one sample whose total is closest to the aggregate (ties: same pairwise vote, then lowest index), so the prose stays one coherent visual pass instead of a mix of three. The result is checked again with `validateVerdictStrict`.
+- **Total is a sum of medians, not a median of totals.** For anchor-12 the samples read 69, 69 and 74 and the aggregate reads 72. This keeps `total` equal to the criterion sum, which the schema checks require.
+- **CLI.** `harness/cli.ts aggregate-jury <v1> <v2> <v3> [--out P]` takes the same verdict flags as `validate verdict` and prints the aggregate. `harness/calibrate-jury.ts --samples N` runs N calls per anchor, each in its own blinded case dir, and records the raw samples next to the aggregate.
+- **Call budget.** Worst case jury calls rise from 4 to 9 per night (3 per judged attempt across 3 attempts, up to 12 with evidence retries); typical nightly calls rise from 6 to 8.
+
+### Calibration result (`audit/calibration/jury-calibration.json`, `m4e_*` keys)
+
+- **Prior 3-sample median.** The per-anchor median of the 3 M4D single-call runs gives rho 0.848.
+- **Fresh run.** One new full 12-anchor leave-one-out run with `--samples 3` (36 Haiku `--effort high` calls, same prompt_sha256): rho 0.961, MAE 5.00, bias +0.33, max abs error 10. 12/12 aggregated verdicts valid; 36/36 raw verdicts valid with screenshot citations and exact anchor sets; 36/36 within 4 API turns (35 in 3, 1 in 4). Cost $0.804.
+- **Remaining bias.** The top of the scale is still compressed (anchor-10 at 87 reads 78, anchor-12 at 80 reads 72) and the shelved quartile still reads high (anchor-02 at 35 reads 44, anchor-01 at 49 reads 59). Ranking is right; absolute scores near the publish threshold carry about plus or minus 8 points of systematic error at the scale ends. The leave-one-out rho remains an in-sample estimate, as noted under M4D.

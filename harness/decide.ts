@@ -46,17 +46,26 @@ export function computeRatchetedThreshold(
   return Math.min(thresholds.ratchet_cap, Math.max(RATCHET_FLOOR, Math.floor(m - thresholds.ratchet_median_offset)));
 }
 
-/** Night-1 rule: an empty archive (`pairwise_median_ref === null`) counts as a pairwise pass. */
-export function pairwisePasses(v: Verdict): boolean {
-  return v.pairwise_median_ref === null || v.pairwise_beats_median === true;
+/**
+ * Night-1 rule: an empty archive (`pairwise_median_ref === null`) counts as a pairwise pass.
+ * With `archiveEmpty === false` the harness knows a median exists, so a null ref never passes.
+ */
+export function pairwisePasses(v: Verdict, archiveEmpty?: boolean): boolean {
+  if (v.pairwise_median_ref === null) return archiveEmpty !== false;
+  return v.pairwise_beats_median === true;
 }
 
-export function classifyAttempt(gates: GatesResult | null, verdict: Verdict | null, publishThreshold: number): AttemptOutcome {
+export function classifyAttempt(
+  gates: GatesResult | null,
+  verdict: Verdict | null,
+  publishThreshold: number,
+  archiveEmpty?: boolean,
+): AttemptOutcome {
   if (!gates) return "build_failed";
   if (!gates.passed) return "gates_failed";
   // Gates passed but no valid verdict (jury failed): not publishable, recorded as below_threshold (DECISIONS.md).
   if (!verdict || verdict.total < publishThreshold) return "below_threshold";
-  return pairwisePasses(verdict) ? "passed" : "pairwise_failed";
+  return pairwisePasses(verdict, archiveEmpty) ? "passed" : "pairwise_failed";
 }
 
 export interface AttemptRecord {
@@ -110,11 +119,13 @@ export function decideAttempt(params: {
   maxAttempts?: number;
   publishThreshold: number;
   bSideMin?: number;
+  /** false: a median piece exists, so a null `pairwise_median_ref` is a pairwise fail, never a pass. */
+  archiveEmpty?: boolean;
 }): DecideResult {
-  const { attempts, currentAttempt, publishThreshold } = params;
+  const { attempts, currentAttempt, publishThreshold, archiveEmpty } = params;
   const maxAttempts = params.maxAttempts ?? 3;
   const bSideMin = params.bSideMin ?? 60;
-  const outcomes = attempts.map((a) => ({ attempt: a.attempt, outcome: classifyAttempt(a.gates, a.verdict, publishThreshold) }));
+  const outcomes = attempts.map((a) => ({ attempt: a.attempt, outcome: classifyAttempt(a.gates, a.verdict, publishThreshold, archiveEmpty) }));
   const base = { publish_threshold: publishThreshold, outcomes };
 
   const passing = attempts.filter((a, i) => outcomes[i]!.outcome === "passed");
@@ -137,7 +148,7 @@ export function decideAttempt(params: {
   if (currentAttempt < maxAttempts) {
     const gateFailures = current?.gates && !current.gates.passed ? current.gates.failures : [];
     const critique = current?.verdict ? [...current.verdict.critique].sort((a, b) => a.rank - b.rank) : [];
-    const outcome = current ? classifyAttempt(current.gates, current.verdict, publishThreshold) : "build_failed";
+    const outcome = current ? classifyAttempt(current.gates, current.verdict, publishThreshold, archiveEmpty) : "build_failed";
     const why =
       outcome === "build_failed"
         ? "build produced no piece"

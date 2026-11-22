@@ -149,8 +149,20 @@ export function validateBriefStrict(
   return errors.length ? { ok: false, errors } : { ok: true, data: b };
 }
 
-/** Stage 7 check: schema, total equals the score sum, critique ranks are exactly 1, 2, 3. */
-export function validateVerdictStrict(verdict: Verdict, repoRoot?: string): ValidationResult<Verdict> {
+export interface VerdictStrictOptions {
+  /** false: the archive has a median piece, so `pairwise_median_ref` must not be null. */
+  archiveEmpty?: boolean;
+  /** The exact set of anchor ids shown in the prompt; `calibration_anchors_used` must match it (order-free). */
+  expectedAnchors?: string[];
+  /** true: every evidence string must cite a frame (shot-02s/08s/20s or t = 2/8/20 s). Off by default. */
+  requireScreenshotRef?: boolean;
+}
+
+/** A concrete frame reference in a jury evidence string. */
+export const SCREENSHOT_REF_RE = /\b(shot-0?2s|shot-0?8s|shot-20s|t\s*=?\s*(2|8|20)\s*s|t2|t8|t20|2\s*s|8\s*s|20\s*s)\b/i;
+
+/** Stage 7 check: schema, total equals the score sum, critique ranks are exactly 1, 2, 3, plus opt-in 4R2 checks. */
+export function validateVerdictStrict(verdict: Verdict, repoRoot?: string, options: VerdictStrictOptions = {}): ValidationResult<Verdict> {
   const r = validateSchema<Verdict>("verdict", verdict, repoRoot);
   if (!r.ok) return r;
   const v = r.data;
@@ -159,5 +171,18 @@ export function validateVerdictStrict(verdict: Verdict, repoRoot?: string): Vali
   if (v.total !== sum) errors.push(`total ${v.total} does not equal the score sum ${sum}`);
   const ranks = v.critique.map((c) => c.rank).sort((a, b) => a - b);
   if (ranks.join(",") !== "1,2,3") errors.push(`critique ranks must be 1, 2, 3 without repeats (got ${ranks.join(", ")})`);
+  if (options.archiveEmpty === false && v.pairwise_median_ref === null) {
+    errors.push("pairwise_median_ref is null but the archive is not empty");
+  }
+  if (options.expectedAnchors) {
+    const want = [...new Set(options.expectedAnchors)].sort().join(",");
+    const got = [...v.calibration_anchors_used].sort().join(",");
+    if (want !== got) errors.push(`calibration_anchors_used [${got}] does not match the anchors shown [${want}]`);
+  }
+  if (options.requireScreenshotRef) {
+    for (const [k, text] of Object.entries(v.evidence)) {
+      if (!SCREENSHOT_REF_RE.test(text)) errors.push(`evidence.${k} cites no screenshot (shot-02s, shot-08s or shot-20s)`);
+    }
+  }
   return errors.length ? { ok: false, errors } : { ok: true, data: v };
 }

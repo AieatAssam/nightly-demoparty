@@ -27,7 +27,7 @@ One workflow, `nightly.yml`, sequential jobs. Each LLM stage is a separate Claud
 | 4 | Novelty gate A | script | pass, or back to 3 (max 2) |
 | 5 | Build | Haiku (Opus at low effort on final retry) | `piece/index.html` |
 | 6 | Hard gates | script (Playwright) | `gates.json`, screenshots, audio probe |
-| 7 | Jury | Haiku, vision | `verdict.json` |
+| 7 | Jury | Haiku, vision (3-sample median) | `verdict.json` |
 | 8 | Decide | script | publish, retry from 5 with critique, or shelve |
 | 9 | Publish | script | Pages deploy, ledger update, emotion feedback |
 
@@ -112,7 +112,7 @@ Gate failures go back to stage 5 with the exact failing measurements. They count
 
 ### Stage 7: Jury
 
-One Haiku vision call, three screenshots plus the brief, the dossier summary, code size, and thumbnails of the last 7 pieces.
+Three Haiku vision calls aggregated by per-criterion median and majority pairwise vote (one call uses three screenshots plus the brief, the dossier summary, code size, and thumbnails of the last 7 pieces).
 
 Rubric (0 to 100):
 
@@ -169,7 +169,7 @@ Keeping a cheap judge honest:
 ## 5. Cost controls
 
 - Haiku for every nightly LLM stage. Opus at low effort only for the third build attempt and the weekly retrospective.
-- Worst-case nightly LLM calls: research 2, appraisal 1, brief 3, build 3, jury 4. Typical: 6.
+- Worst-case nightly LLM calls: research 2, appraisal 1, brief 3, build 3, jury 9 (3 per judged attempt across 3 attempts, or up to 12 with evidence retries). Typical: 8, of which 3 are jury calls. The Stage 7 jury runs Haiku at `--effort high`.
 - `--max-turns` per stage: research 15, appraisal 3, brief 6, build 30, jury 4.
 - Deterministic gates always run before the jury.
 - Workflow `timeout-minutes: 50`, `concurrency: nightly` with cancel-in-progress off.

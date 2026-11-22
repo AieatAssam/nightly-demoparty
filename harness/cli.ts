@@ -3,11 +3,14 @@
 //   novelty  --brief P --plan P [--dossier P] [--ledger P]
 //   lint     <piece.html> [--compo C | --budget N] [--constraint X] [--require-csp]
 //   gate     <piece.html> --compo C --out DIR [--budget N] [--audio] [--constraint X] [--ledger P] [--timing-scale N] [--date D]
-//   decide   --attempts P --current N [--threshold N] [--max N]   (threshold defaults to thresholds.yml publish_min)
+//   decide   --attempts P --current N [--threshold N] [--max N] [verdict flags]   (threshold defaults to thresholds.yml publish_min)
 //   ratchet  [--date D] [--ledger P]   (weekly: the new publish_min for thresholds.yml)
 //   publish  --input P [--dry-run --out DIR]
 //   usage    [--file P] [--end D] [--metric tokens|cost_usd]
-//   validate <schema> <file.json|file.jsonl>
+//   validate <schema> <file.json|file.jsonl> [verdict flags for schema verdict]
+//   aggregate-jury <v1.json> <v2.json> <v3.json> [--out P] [verdict flags]   (Stage 7 per-criterion median of N samples)
+// Verdict flags (validate verdict, decide, aggregate-jury): [--archive-empty | --no-archive-empty | --ledger P [--date D]]
+//   [--expected-anchors a,b,c,d] [--no-require-screenshot-ref]. Screenshot refs are required by default here.
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -20,7 +23,9 @@ import { checkNoveltyA, readLedger } from "./novelty.js";
 import { buildPlan } from "./plan.js";
 import { publishNight } from "./publish.js";
 import type { PublishInput } from "./publish.js";
+import { aggregateJuryVerdicts } from "./jury-aggregate.js";
 import { assertSchema, validateBriefStrict, validateDossierStrict, validateSchema, validateVerdictStrict } from "./schema.js";
+import type { VerdictStrictOptions } from "./schema.js";
 import { computeUsageAlerts, readUsage } from "./usage.js";
 import { COMPO_IDS, SCHEMA_NAMES } from "./types.js";
 import type { Brief, CompoId, Dossier, Mood, Plan, SchemaName, Verdict } from "./types.js";
@@ -49,6 +54,25 @@ function compoArg(v: string | undefined): CompoId | undefined {
   return v as CompoId;
 }
 
+/**
+ * 4R2 hardening for production verdict checks. archiveEmpty: an explicit flag wins; else, with --ledger, the archive
+ * is empty iff median30d has no scored night in the same 30-night window the jury median uses; else undefined.
+ */
+function verdictOptions(
+  o: { ledger?: string; date?: string; "archive-empty"?: boolean; "expected-anchors"?: string; "require-screenshot-ref"?: boolean },
+  repoRoot: string,
+): VerdictStrictOptions {
+  const archiveEmpty =
+    o["archive-empty"] ??
+    (o.ledger ? median30d(readLedger(o.ledger, repoRoot), o.date) === null : undefined);
+  const expected = o["expected-anchors"]?.split(",").map((s) => s.trim()).filter(Boolean);
+  return {
+    ...(archiveEmpty !== undefined ? { archiveEmpty } : {}),
+    ...(expected?.length ? { expectedAnchors: expected } : {}),
+    requireScreenshotRef: o["require-screenshot-ref"] ?? true,
+  };
+}
+
 function out(data: unknown): void {
   process.stdout.write(`${JSON.stringify(data, null, 2)}\n`);
 }
@@ -58,6 +82,7 @@ export async function main(argv: string[]): Promise<number> {
   const { values: o, positionals: pos } = parseArgs({
     args: rest,
     allowPositionals: true,
+    allowNegative: true,
     options: {
       date: { type: "string" },
       seed: { type: "string" },
@@ -85,6 +110,9 @@ export async function main(argv: string[]): Promise<number> {
       end: { type: "string" },
       metric: { type: "string" },
       "repo-root": { type: "string" },
+      "archive-empty": { type: "boolean" },
+      "expected-anchors": { type: "string" },
+      "require-screenshot-ref": { type: "boolean" },
     },
   });
   const repoRoot = o["repo-root"] ? resolve(o["repo-root"]) : findRepoRoot();
@@ -162,10 +190,11 @@ export async function main(argv: string[]): Promise<number> {
       const config = loadAllConfig(repoRoot);
       const attempts = readJson(need(o.attempts, "attempts")) as AttemptRecord[];
       if (!Array.isArray(attempts)) throw new UsageError("--attempts must be a JSON array of {attempt, gates, verdict}");
+      const vopts = verdictOptions(o, repoRoot);
       for (const a of attempts) {
         if (a.gates) assertSchema("gates", a.gates, repoRoot);
         if (a.verdict) {
-          const v = validateVerdictStrict(a.verdict, repoRoot);
+          const v = validateVerdictStrict(a.verdict, repoRoot, vopts);
           if (!v.ok) throw new Error(`attempt ${a.attempt} verdict invalid: ${v.errors.join("; ")}`);
         }
       }
@@ -177,6 +206,7 @@ export async function main(argv: string[]): Promise<number> {
         maxAttempts: int(o.max, "max") ?? 3,
         publishThreshold,
         bSideMin: config.thresholds.b_side_min,
+        ...(vopts.archiveEmpty !== undefined ? { archiveEmpty: vopts.archiveEmpty } : {}),
       });
       out(res);
       return 0; // shelve is a correct outcome; the workflow branches on .action
@@ -234,7 +264,7 @@ export async function main(argv: string[]): Promise<number> {
                   o.ledger ? readLedger(o.ledger, repoRoot) : null,
                   { plan, maxWords: config.thresholds.gates.liner_note_max_words, repoRoot },
                 )
-              : validateVerdictStrict(JSON.parse(text) as Verdict, repoRoot);
+              : validateVerdictStrict(JSON.parse(text) as Verdict, repoRoot, verdictOptions(o, repoRoot));
         const errors = r.ok ? [] : r.errors;
         out({ ok: r.ok, schema, file, strict: true, errors });
         return r.ok ? 0 : 1;
@@ -249,8 +279,15 @@ export async function main(argv: string[]): Promise<number> {
       out({ ok: errors.length === 0, schema, file, errors });
       return errors.length ? 1 : 0;
     }
+    case "aggregate-jury": {
+      if (!pos.length) throw new UsageError("aggregate-jury needs at least one verdict file");
+      const v = aggregateJuryVerdicts(pos.map((f) => readJson(f) as Verdict), verdictOptions(o, repoRoot), repoRoot);
+      if (o.out) writeFileSync(o.out, `${JSON.stringify(v, null, 2)}\n`);
+      out(v);
+      return 0;
+    }
     default:
-      throw new UsageError(`unknown command '${cmd ?? ""}' (plan, novelty, lint, gate, decide, ratchet, publish, usage, validate)`);
+      throw new UsageError(`unknown command '${cmd ?? ""}' (plan, novelty, lint, gate, decide, ratchet, publish, usage, validate, aggregate-jury)`);
   }
 }
 
