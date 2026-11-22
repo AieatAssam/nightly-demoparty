@@ -1,0 +1,73 @@
+{
+  "topic": "Each starling tracks a fixed number of neighbours, about seven, regardless of how far away they are, which keeps the flock together when its density changes",
+  "domain": "Starling topological neighbours",
+  "wildcard_chosen": false,
+  "summary": "Field measurements of starling flocks over Rome reconstructed the 3D positions of thousands of birds and found that a bird's interactions depend on its rank among neighbours, not on distance: each bird follows about six or seven nearest birds. A topological rule keeps the flock cohesive when it stretches or compresses, for example under predator attack. Later work showed that turning information spreads through the flock fast and with little loss.",
+  "facts": [
+    {
+      "claim": "Ballerini et al. reconstructed the three-dimensional positions of individual birds in starling flocks of up to a few thousand birds.",
+      "source_url": "https://arxiv.org/abs/0709.1916",
+      "source_title": "Interaction ruling animal collective behaviour depends on topological rather than metric distance"
+    },
+    {
+      "claim": "The interaction between birds depends on topological distance (neighbour rank), not metric distance.",
+      "source_url": "https://arxiv.org/abs/0709.1916",
+      "source_title": "Interaction ruling animal collective behaviour depends on topological rather than metric distance"
+    },
+    {
+      "claim": "Each bird interacts on average with a fixed number of neighbours, six to seven.",
+      "source_url": "https://arxiv.org/abs/0709.1916",
+      "source_title": "Interaction ruling animal collective behaviour depends on topological rather than metric distance"
+    },
+    {
+      "claim": "A topological interaction keeps the flock cohesive against large density changes such as those caused by predation, which a metric rule would not.",
+      "source_url": "https://arxiv.org/abs/0709.1916",
+      "source_title": "Interaction ruling animal collective behaviour depends on topological rather than metric distance"
+    },
+    {
+      "claim": "In turning flocks, the turn propagates across the flock linearly in time with negligible attenuation, and faster when the flock is more ordered.",
+      "source_url": "https://arxiv.org/abs/1303.7097",
+      "source_title": "Superfluid transport of information in turning flocks of starlings"
+    },
+    {
+      "claim": "This work was published as 'Information transfer and behavioural inertia in starling flocks' in Nature Physics (2014).",
+      "source_url": "https://www.nature.com/articles/nphys3035",
+      "source_title": "Information transfer and behavioural inertia in starling flocks"
+    },
+    {
+      "claim": "Starlings in flight interact with at most about seven topological neighbours.",
+      "source_url": "https://en.wikipedia.org/wiki/Flocking",
+      "source_title": "Flocking"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Seven-neighbour topological links",
+      "description": "Every bird aligns with, is drawn toward, and keeps clear of its seven nearest flockmates by rank, however far away they are.",
+      "render_or_sonify_hint": "Draw each bird's seven links as faint filaments; highlight one bird's seven so the count stays visible as their lengths change."
+    },
+    {
+      "name": "Cohesion under density change",
+      "description": "Because the neighbour count is fixed, the flock can expand or contract without breaking apart.",
+      "render_or_sonify_hint": "Raise personal space mid-piece so the flock swells to several times its volume while staying one body."
+    },
+    {
+      "name": "Escape wave propagation",
+      "description": "A turn started by birds near a predator spreads to the rest through neighbour alignment.",
+      "render_or_sonify_hint": "Light birds in a hard turn with warm low sun so the escape shows as a travelling band."
+    },
+    {
+      "name": "Re-cohesion after attack",
+      "description": "Once the threat passes, alignment and cohesion pull split sub-groups back together.",
+      "render_or_sonify_hint": "Let the flock reform into a compact ball at the end."
+    }
+  ],
+  "open_questions": [
+    "Why six or seven? Is it a limit of attention, of vision, or an optimum for cohesion against noise?",
+    "How does the neighbour count change in very sparse flocks at the edge of a murmuration?"
+  ],
+  "surprise": {
+    "score": 57,
+    "justification": "Murmurations are familiar, but the fact that each bird counts neighbours instead of measuring distance is not widely known and has a clear, testable consequence."
+  }
+}

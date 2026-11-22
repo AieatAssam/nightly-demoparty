@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cooling Front</title>
+<style>
+html,body{margin:0;height:100%;background:#141210;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+// lib/webgl2.js: fullscreen-triangle WebGL2 bootstrap, standard uniforms, ping-pong FBOs.
+
+/** Prepended to fragment sources without #version. Write to `o`. */
+export const GL_HEAD = `#version 300 es
+precision highp float;precision highp int;precision highp sampler2D;
+uniform float u_time,u_reduced;uniform vec2 u_res,u_mouse;uniform vec4 u_audio;out vec4 o;
+`;
+const GL_VS = '#version 300 es\nvoid main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}';
+
+/** Compiles and links; throws with the info log. */
+export function glProgram(gl, frag, vert = GL_VS) {
+  const p = gl.createProgram();
+  for (const [type, src] of [[gl.VERTEX_SHADER, vert], [gl.FRAGMENT_SHADER, frag]]) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw Error('GLSL compile failed: ' + gl.getShaderInfoLog(s));
+    gl.attachShader(p, s);
+  }
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw Error('GLSL link failed: ' + gl.getProgramInfoLog(p));
+  return p;
+}
+
+/** set(name, number | array) for active uniforms; unknown names are ignored. */
+export function glSetter(gl, prog) {
+  const fns = { [gl.FLOAT]: 'uniform1fv', [gl.FLOAT_VEC2]: 'uniform2fv', [gl.FLOAT_VEC3]: 'uniform3fv', [gl.FLOAT_VEC4]: 'uniform4fv', [gl.INT]: 'uniform1iv', [gl.SAMPLER_2D]: 'uniform1iv' };
+  const u = {};
+  for (let i = gl.getProgramParameter(prog, gl.ACTIVE_UNIFORMS); i--;) {
+    const a = gl.getActiveUniform(prog, i);
+    u[a.name.replace('[0]', '')] = [gl.getUniformLocation(prog, a.name), fns[a.type]];
+  }
+  return (name, v) => { const x = u[name]; if (x && x[1]) gl[x[1]](x[0], typeof v === 'number' ? [v] : v); };
+}
+
+/** Draws the fullscreen triangle into fb (null = screen). */
+export const glDraw = (gl, fb = null, w = gl.drawingBufferWidth, h = gl.drawingBufferHeight) => {
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+  gl.viewport(0, 0, w, h);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+};
+
+/** Render loop: frame(st) runs first (extra passes, st.audio), then frag draws to screen. Reduced motion slows time to `reduce`. */
+export function glStart(canvas, frag, { scale = 1, dprMax = 1, reduce = 0.2, frame } = {}) {
+  const gl = canvas.getContext('webgl2', { antialias: false });
+  if (!gl) throw Error('WebGL2 unavailable');
+  const prog = glProgram(gl, frag.startsWith('#version') ? frag : GL_HEAD + frag);
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  const st = { kind: 'webgl2', gl, prog, set: glSetter(gl, prog), time: 0, reduced: false, mouse: [0.5, 0.5], audio: [0, 0, 0, 0], raf: 0 };
+  canvas.addEventListener('pointermove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    st.mouse = [(e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height];
+  });
+  let last = -1;
+  const loop = (ms) => {
+    st.raf = requestAnimationFrame(loop);
+    const k = Math.min(devicePixelRatio, dprMax) * scale, w = Math.max(1, (canvas.clientWidth * k) | 0), h = Math.max(1, (canvas.clientHeight * k) | 0);
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    st.reduced = mq.matches;
+    st.time += last < 0 ? 0 : Math.min((ms - last) / 1000, 0.5) * (st.reduced ? reduce : 1);
+    last = ms;
+    if (frame) frame(st);
+    gl.useProgram(prog);
+    st.set('u_time', st.time); st.set('u_reduced', st.reduced ? 1 : 0); st.set('u_res', [w, h]);
+    st.set('u_mouse', st.mouse); st.set('u_audio', st.audio);
+    glDraw(gl);
+  };
+  st.raf = requestAnimationFrame(loop);
+  st.stop = () => cancelAnimationFrame(st.raf);
+  return st;
+}
+
+/** Targets pp.a (read) and pp.b (write), each { tex, fb }; RGBA16F when renderable, else RGBA8. */
+export function createPingPong(gl, w, h) {
+  const f = !!gl.getExtension('EXT_color_buffer_float');
+  const mk = () => {
+    const tex = gl.createTexture(), fb = gl.createFramebuffer();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, f ? gl.RGBA16F : gl.RGBA8, w, h, 0, gl.RGBA, f ? gl.HALF_FLOAT : gl.UNSIGNED_BYTE, null);
+    for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.REPEAT], [gl.TEXTURE_WRAP_T, gl.REPEAT]]) gl.texParameteri(gl.TEXTURE_2D, k, v);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    return { tex, fb };
+  };
+  const pp = { w, h, float: f, a: mk(), b: mk(), swap: () => { [pp.a, pp.b] = [pp.b, pp.a]; } };
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  return pp;
+}
+
+// ---- piece: cooling front, crack network, column field ----
+const FS = `
+#define S3 1.7320508
+const float SC=.45,GAP=.012,HM=2.5;
+float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+vec2 h22(vec2 p){float n=h21(p);return vec2(n,h21(p+n*17.13+3.1));}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f*=f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+1.),f.x),f.y);}
+float fb(vec2 p){float s=0.,a=.5;for(int i=0;i<4;i++){s+=a*vn(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return s;}
+// ---------- the crust seen from above: cracks as a Voronoi network whose seed lattice matures ----------
+float RH,J;
+vec2 sp(vec2 c){return vec2(c.x+.5*mod(c.y,2.),c.y*RH)+(h22(c)-.5)*J*vec2(1.,RH);}
+vec3 voro(vec2 p){
+  float j0=floor(p.y/RH+.5),md=1e9;vec2 mr=vec2(0),mc=vec2(0);
+  for(int b=-1;b<=1;b++){float j=j0+float(b),i0=floor(p.x-.5*mod(j,2.)+.5);
+    for(int a=-1;a<=1;a++){vec2 c=vec2(i0+float(a),j),r=sp(c)-p;float d=dot(r,r);if(d<md){md=d;mr=r;mc=c;}}}
+  float ed=1e9;
+  for(int b=-2;b<=2;b++){float j=mc.y+float(b),i0=floor(mc.x+.5*mod(mc.y,2.)-.5*mod(j,2.)+.5);
+    for(int a=-2;a<=2;a++){vec2 c=vec2(i0+float(a),j);if(c==mc)continue;vec2 r=sp(c)-p,dd=r-mr;
+      if(dot(dd,dd)>1e-6)ed=min(ed,dot(.5*(mr+r),normalize(dd)));}}
+  return vec3(ed,h21(mc),sqrt(md));
+}
+vec3 heat(float x){x=clamp(x,0.,1.5);return vec3(1.,.13,.018)*x+vec3(.3,.22,.08)*x*x*x*x*.4;}
+vec3 crust(vec2 uv,float t){
+  float zm=mix(6.,8.6,smoothstep(0.,10.,t));
+  vec2 p=uv*zm+vec2(1.3,-.7)*(1.-smoothstep(0.,10.,t));
+  RH=mix(1.78,.8660254,smoothstep(4.6,9.8,t));J=mix(.34,0.,smoothstep(4.,9.8,t));
+  vec3 v=voro(p);float ed=v.x;
+  float n=fb(p*.35);
+  float tc=min(length(p-vec2(.9,-.5))*.95,length(p-vec2(-3.6,2.2))*.9+1.6)+n*1.2-.45;
+  float age=t-tc,op=smoothstep(0.,1.4,age),on=step(0.,age);
+  float w=(.008+.032*op)*on;
+  float g=clamp(1.-ed/max(w,1e-3),0.,1.)*on;
+  float hot=exp(-max(age,0.)*.07)*(1.-.5*smoothstep(5.,10.,t));
+  float dome=smoothstep(0.,.5,ed);
+  vec3 rock=vec3(.04,.036,.033)*(.45+.8*fb(p*3.3+v.y*7.))*(.55+.6*dome);
+  rock=mix(rock,vec3(.11,.05,.025),.4*smoothstep(.45,.8,fb(p*1.1+5.)));
+  float gr=fb(p*.18+vec2(t*.03,0.))*(1.-smoothstep(1.,9.,t));
+  rock+=heat(.5)*.07*smoothstep(.35,.75,gr)*(1.-op*.7);
+  rock*=.85+.3*v.y;
+  float f=fract(ed*10.),cl=smoothstep(.09,0.,min(f,1.-f))*op*exp(-ed*4.)*.5;
+  vec3 col=rock+heat(hot*.5)*cl*.22;
+  col+=heat(hot*.9)*(.2+.9*g*g)*smoothstep(w+.015,w*.4,ed)*on+heat(hot*.5)*.12*smoothstep(.12,0.,ed)*on;
+  col+=vec3(1.,.38,.08)*exp(-age*age*4.)*smoothstep(.05,0.,ed)*1.3;
+  col+=heat(.3)*.05*(1.-smoothstep(0.,.3,ed));
+  return col;
+}
+// ---------- the column field ----------
+vec4 hx(vec2 p){const vec2 s=vec2(1,S3);vec4 c=floor(vec4(p,p-vec2(.5,1))/s.xyxy)+.5;vec4 h=vec4(p-c.xy*s,p-(c.zw+.5)*s);
+  return dot(h.xy,h.xy)<dot(h.zw,h.zw)?vec4(h.xy,c.xy*s):vec4(h.zw,(c.zw+.5)*s);}
+float hd(vec2 q){q=abs(q);return max(dot(q,vec2(.5,.8660254)),q.x);}
+float T3;
+float colH(vec2 c){
+  float b=min(1.15-.045*c.y,2.1)-.004*c.x*c.x+.45*(vn(c*.14)-.5)+floor(h21(c)*4.)*.12+.25*smoothstep(.55,.8,vn(c*.3+4.));
+  float r=smoothstep(0.,1.,(T3-.5-.06*length(c-vec2(0,1)))/1.9);
+  return mix(.62,b,r);}
+float mapN(vec3 p){
+  vec2 q=p.xz/SC;vec4 h=hx(q);float H=colH(h.zw);
+  float side=(hd(h.xy)-.5)*SC+GAP;
+  float rr=dot(h.xy,h.xy);
+  float top=p.y-H+.03*rr*rr;
+  float d=length(max(vec2(side,top),0.))+min(max(side,top),0.);
+  return d-.0025*smoothstep(-.01,-.05,top)*step(.85,fract(p.y*3.1+h21(h.zw)));}
+float map(vec3 p){
+  vec2 q=p.xz/SC;float e=(.5-hd(q-hx(q).zw))*SC;
+  return max(min(mapN(p),e+.02),p.y-HM);}
+vec3 nor(vec3 p){vec2 k=vec2(1,-1)*.0015;return normalize(k.xyy*mapN(p+k.xyy)+k.yyx*mapN(p+k.yyx)+k.yxy*mapN(p+k.yxy)+k.xxx*mapN(p+k.xxx));}
+const vec3 L=normalize(vec3(-.5,.122,.86));
+vec3 sky(vec3 rd){
+  float y=max(rd.y,0.),s=max(dot(rd,L),0.);
+  vec3 c=mix(vec3(.29,.29,.29),vec3(.06,.065,.08),pow(y,.25));
+  c+=vec3(1.,.5,.2)*(pow(s,10.)*.5+pow(s,80.)*1.2)*(1.-y*.6);
+  vec2 cp=rd.xz/(y+.06);float cl=smoothstep(.45,.85,fb(cp*vec2(.5,2.2)+vec2(u_time*.02,0)))*smoothstep(.02,.12,y);
+  c=mix(c,vec3(.09,.085,.09)+vec3(1.,.55,.25)*pow(s,6.)*.9,cl*.85);
+  c+=vec3(1.,.86,.62)*smoothstep(.99965,.9999,s)*8.*(1.-cl);
+  return c;}
+vec3 fogc(vec3 rd){float s=max(dot(rd,L),0.);return mix(vec3(.34,.34,.345),vec3(1.,.6,.3),pow(s,10.)*.8);}
+vec3 field(vec2 uv,float t){
+  float k1=smoothstep(1.,5.,T3),k2=smoothstep(4.6,11.5,T3);
+  vec3 ro=mix(mix(vec3(0,7.6,.25),vec3(-2.4,3.5,-3.1),k1),vec3(3.,2.3,-2.4),k2);
+  vec3 ta=mix(mix(vec3(0,0,.75),vec3(.2,.5,1.2),k1),vec3(-1.9,1.65,5.6),k2);
+  ro.x+=k2*(1.-k2)*-5.;
+  vec3 fw=normalize(ta-ro),ri=normalize(cross(vec3(0,1,0),fw)),up=cross(fw,ri);
+  vec3 rd=normalize(uv.x*ri+uv.y*up+1.8*fw);
+  float tw=rd.y<0.?-ro.y/rd.y:1e9,tm=min(tw,40.);
+  float t0=rd.y<0.?max(0.,(ro.y-HM)/-rd.y):(ro.y>HM?1e9:0.),tt=t0;
+  bool hit=false;
+  for(int i=0;i<90;i++){if(tt>tm)break;float h=map(ro+rd*tt);if(h<.0015*tt+.0004){if(mapN(ro+rd*tt)<.003*tt+.001){hit=true;break;}h=.02;}tt+=h;}
+  vec3 col;float dist;
+  if(hit){
+    vec3 p=ro+rd*tt,n=nor(p);dist=tt;
+    vec2 q=p.xz/SC;vec4 h=hx(q);float H=colH(h.zw),dep=H-p.y,cid=h21(h.zw);
+    float ao=1.;for(int i=1;i<4;i++){float s=.05*float(i);ao-=(s-mapN(p+n*s))*(1.6/float(i));}
+    ao=clamp(ao,.12,1.)*(.4+.6*smoothstep(0.,.5,1.-dep));
+    float sh=1.,st=.02;
+    for(int i=0;i<22;i++){float d=map(p+n*.004+L*st);sh=min(sh,10.*d/st);st+=clamp(d,.03,.25);if(sh<.01||st>5.)break;}
+    sh=clamp(sh,0.,1.);
+    float isTop=smoothstep(.5,.9,n.y);
+    vec3 alb=vec3(.085,.08,.077)*(.7+.6*cid)*(.7+.5*vn(p.xz*14.+p.y*9.));
+    alb=mix(alb,vec3(.13,.06,.035),isTop*step(.84,cid)*(.4+.6*fb(p.xz*9.)));
+    alb=mix(alb,vec3(.13,.12,.11),isTop*.35*vn(p.xz*30.));
+    float wet=smoothstep(.45,.05,p.y);
+    alb*=1.-.45*wet;
+    float dif=max(dot(n,L),0.);
+    vec3 hv=normalize(L-rd);
+    float sp=pow(max(dot(n,hv),0.),mix(18.,90.,wet))*(.18+.9*wet)*(.4+.6*isTop);
+    col=alb*(vec3(4.6,2.8,1.4)*dif*sh+vec3(.15,.155,.17)*(.5+.5*n.y)*ao+vec3(.18,.11,.06)*max(-n.y,0.)+vec3(.12,.08,.05)*max(dot(n,-L*vec3(1,0,1)),0.)*ao);
+    col+=sp*sh*vec3(1.,.8,.55)*1.6;
+    float ember=(1.-smoothstep(.4,3.2,T3))*smoothstep(.0,.25,dep)*smoothstep(.03,.0,(.5-hd(h.xy))*SC);
+    col+=heat(.9)*ember*1.6;
+  }else if(tw<40.){
+    vec3 p=ro+rd*tw;dist=tw;
+    vec2 g=vec2(vn(p.xz*3.+t*vec2(.3,.5))-vn(p.xz*3.+vec2(.4,.1)+t*vec2(-.2,.4)),vn(p.xz*2.1-t*.3)-vn(p.xz*2.1+.3))*.18;
+    vec3 n=normalize(vec3(g.x,1.,g.y));
+    float fr=.04+.96*pow(1.-max(dot(-rd,n),0.),5.);
+    vec3 rr=reflect(rd,n);
+    col=vec3(.01,.013,.015)+sky(rr)*fr*.18;
+    col+=vec3(1.,.68,.36)*(pow(max(dot(rr,L),0.),220.)*6.+pow(max(dot(rr,L),0.),18.)*.3);
+    float dc=mapN(vec3(p.x,.01,p.z));
+    col+=vec3(.05,.042,.032)*smoothstep(.2,0.,dc);
+  }else{col=sky(rd);dist=18.;}
+  float fg=1.-exp(-dist*dist*.0006);
+  float mist=exp(-max(ro.y+rd.y*min(dist,12.)*.5,0.)*1.6)*.1*(1.-exp(-dist*.06));
+  col=mix(col,fogc(rd),clamp(fg+mist,0.,1.));
+  return col;
+}
+void main(){
+  vec2 uv=(gl_FragCoord.xy-.5*u_res)/u_res.y;float t=u_time;T3=t-10.;
+  vec3 col=vec3(0);
+  float x=smoothstep(10.,11.3,t);
+  if(x<1.)col=crust(uv,t);
+  if(x>0.)col=mix(col,field(uv,t),x);
+  col=1.-exp(-col*1.15);
+  col=pow(col,vec3(.95,.97,1.));
+  col*=1.-.32*dot(uv*.9,uv*.9);
+  col+=(h21(gl_FragCoord.xy+fract(t*7.)*99.)-.5)*.02;
+  o=vec4(pow(max(col,0.),vec3(.4545)),1);
+}`;
+glStart(document.getElementById('c'), FS, { scale: 0.6 });
+</script>
+</body>
+</html>

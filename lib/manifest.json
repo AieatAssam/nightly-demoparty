@@ -1,0 +1,496 @@
+{
+  "version": 1,
+  "how_to_inline": "Paste lib/min/<name>.js files (field `min_file`) verbatim, one after another, into a single <script type=\"module\"> in index.html, then write the piece below them. Each min file is the raw lib/<name>.js with comments and whitespace stripped and local variables shortened; every top-level name (exports and reserved) keeps its raw spelling, and each file ends in one `export{...}` list, which is legal in an inline module script. Files have no imports between them. Do not redeclare any name listed in a file's exports or reserved list. Budgets count the bytes you paste: `min_bytes` for lib/min, `raw_bytes` for lib/ (read lib/<name>.js for the commented source).",
+  "constraint_night": "constraint-night in `compos` means only the variants listed in a file's `constraint_night`. No lib file fits 1kb-micro (copy a GLSL snippet instead) or css-only (no JS rendering); no-canvas allows only the pure JS maths (noise, 2D sdf, palette, easing) driving SVG or DOM.",
+  "glsl": "Every GLSL snippet targets #version 300 es under webgl2.js GL_HEAD (precision highp float, highp int, highp sampler2D; uniforms u_time, u_reduced, u_res, u_mouse, u_audio; output `o`). Pick snippets with noiseGlsl(...) and sdfGlsl(...), which add dependencies once, in order. If you write your own header, keep `precision highp int;` because the hashes use uint.",
+  "4k_shader": "No whole file fits a 4K intro. Copy only the GLSL snippet strings you need (sizes in glsl_bytes) plus a hand-written 10-line bootstrap modelled on webgl2.js glStart.",
+  "files": [
+    {
+      "file": "lib/noise.js",
+      "min_file": "lib/min/noise.js",
+      "raw_bytes": 5419,
+      "min_bytes": 3544,
+      "exports": [
+        {
+          "name": "mulberry32",
+          "kind": "function",
+          "summary": "mulberry32(seed) -> () => float in [0, 1). Fast seeded PRNG; use it everywhere a piece needs randomness."
+        },
+        {
+          "name": "xoshiro128ss",
+          "kind": "function",
+          "summary": "xoshiro128ss(a, b, c, d) -> () => float in [0, 1). Longer-period PRNG from four 32-bit seeds (not all zero)."
+        },
+        {
+          "name": "simplex",
+          "kind": "function",
+          "summary": "simplex(seed) -> { n2(x, y), n3(x, y, z) }, seeded gradient noise in [-1, 1]; n2(0, 0) is 0."
+        },
+        {
+          "name": "fbm",
+          "kind": "function",
+          "summary": "fbm(n, oct = 5, lac = 2, gain = 0.5) -> (x, y, z) => sum with |sum| < 1. Pass n2 or n3."
+        },
+        {
+          "name": "ridged",
+          "kind": "function",
+          "summary": "ridged(n, oct, lac, gain) -> (x, y, z) => [0, 1). Ridged multifractal: crests, veins, mountain spines."
+        },
+        {
+          "name": "warp",
+          "kind": "function",
+          "summary": "warp(f, k = 1) -> (x, y) => f(p + k * (f(p + o1), f(p + o2))). Quilez domain warp of any 2D field."
+        },
+        {
+          "name": "NOISE_GLSL",
+          "kind": "object",
+          "summary": "GLSL snippets name -> [deps, code]: hashU (uint mix), hash31 (vec3 -> [0, 1)), hash33 (vec3 -> [-1, 1]^3), vnoise (vec2 value noise [0, 1]), gnoise (vec3 quintic gradient noise ~[-1, 1]), fbm, ridged, warp (3 fbm calls: expensive on SwiftShader)."
+        },
+        {
+          "name": "noiseGlsl",
+          "kind": "function",
+          "summary": "noiseGlsl(...names) -> GLSL string with deps first, each once. Throws on an unknown name."
+        }
+      ],
+      "glsl_bytes": {
+        "NOISE_GLSL.hashU": 89,
+        "NOISE_GLSL.hash31": 120,
+        "NOISE_GLSL.hash33": 154,
+        "NOISE_GLSL.vnoise": 192,
+        "NOISE_GLSL.gnoise": 383,
+        "NOISE_GLSL.fbm": 114,
+        "NOISE_GLSL.ridged": 148,
+        "NOISE_GLSL.warp": 86
+      },
+      "reserved": [
+        "G3"
+      ],
+      "usage": "const { n2, n3 } = simplex(seed); const field = fbm(n3, 4); value = field(x * 0.01, y * 0.01, t * 0.1). Shader: GL_HEAD + noiseGlsl('fbm', 'ridged') + your main.",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "kinetic-type",
+        "simulation",
+        "constraint-night"
+      ],
+      "constraint_night": [
+        "two-colour",
+        "no-canvas"
+      ]
+    },
+    {
+      "file": "lib/sdf.js",
+      "min_file": "lib/min/sdf.js",
+      "raw_bytes": 4198,
+      "min_bytes": 3331,
+      "exports": [
+        {
+          "name": "sdCircle",
+          "kind": "function",
+          "summary": "sdCircle(x, y, r): 2D distance, negative inside."
+        },
+        {
+          "name": "sdBox",
+          "kind": "function",
+          "summary": "sdBox(x, y, hx, hy): exact 2D box distance from half-extents."
+        },
+        {
+          "name": "sdRoundBox",
+          "kind": "function",
+          "summary": "sdRoundBox(x, y, hx, hy, r): 2D box with rounded corners of radius r."
+        },
+        {
+          "name": "sdSegment",
+          "kind": "function",
+          "summary": "sdSegment(x, y, ax, ay, bx, by): distance to a segment."
+        },
+        {
+          "name": "sdCapsule",
+          "kind": "function",
+          "summary": "sdCapsule(x, y, ax, ay, bx, by, r): segment thickened by r."
+        },
+        {
+          "name": "smin",
+          "kind": "function",
+          "summary": "smin(a, b, k): polynomial smooth union, k = blend radius > 0, never above min(a, b)."
+        },
+        {
+          "name": "opSmoothSubtraction",
+          "kind": "function",
+          "summary": "opSmoothSubtraction(d, cut, k): smoothly carves cut out of d."
+        },
+        {
+          "name": "rot2",
+          "kind": "function",
+          "summary": "rot2(x, y, a) -> [x, y] rotated counter-clockwise by a radians."
+        },
+        {
+          "name": "opRep",
+          "kind": "function",
+          "summary": "opRep(x, s): repeats a coordinate every s units, centred on 0."
+        },
+        {
+          "name": "opRepPolar",
+          "kind": "function",
+          "summary": "opRepPolar(x, y, n) -> [x, y] folded into one of n angular sectors (radius preserved)."
+        },
+        {
+          "name": "SDF_GLSL",
+          "kind": "object",
+          "summary": "GLSL snippets name -> [deps, code]: sdCircle, sdBox2 (2D), sdBox, sdRoundBox, sdSegment, sdCapsule, sdTorus, sdOctahedron (bound), sdGyroid(p, scale, thickness) (bound, pre-scaled 0.6), smin, opSmoothSubtraction, opRep (vec3), opRepPolar (vec2), rot2 (mat2, M * v rotates CCW), calcNormal, calcAO, softShadow(ro, rd, k) (32 steps), march(ro, rd) (64 steps, returns t > 20 on a miss). Raymarch helpers pull in the prototype `float map(vec3 p);` so your map may come after them."
+        },
+        {
+          "name": "sdfGlsl",
+          "kind": "function",
+          "summary": "sdfGlsl(...names) -> GLSL string with deps first, each once. Throws on an unknown name."
+        }
+      ],
+      "glsl_bytes": {
+        "SDF_GLSL.sdCircle": 51,
+        "SDF_GLSL.sdBox2": 91,
+        "SDF_GLSL.sdBox": 99,
+        "SDF_GLSL.sdRoundBox": 116,
+        "SDF_GLSL.sdSegment": 114,
+        "SDF_GLSL.sdCapsule": 73,
+        "SDF_GLSL.sdTorus": 76,
+        "SDF_GLSL.sdOctahedron": 78,
+        "SDF_GLSL.sdGyroid": 90,
+        "SDF_GLSL.smin": 92,
+        "SDF_GLSL.opSmoothSubtraction": 77,
+        "SDF_GLSL.opRep": 49,
+        "SDF_GLSL.opRepPolar": 131,
+        "SDF_GLSL.rot2": 66,
+        "SDF_GLSL.map": 18,
+        "SDF_GLSL.calcNormal": 142,
+        "SDF_GLSL.calcAO": 147,
+        "SDF_GLSL.softShadow": 183,
+        "SDF_GLSL.march": 129
+      },
+      "reserved": [],
+      "usage": "GL_HEAD + sdfGlsl('sdTorus', 'smin', 'rot2', 'march', 'calcNormal', 'calcAO') + 'float map(vec3 p){...} void main(){...}'. Keep map cheap: SwiftShader pays for every march step. Render at glStart scale 0.5 for raymarched scenes.",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "kinetic-type",
+        "simulation",
+        "constraint-night"
+      ],
+      "constraint_night": [
+        "two-colour",
+        "no-canvas"
+      ]
+    },
+    {
+      "file": "lib/synth.js",
+      "min_file": "lib/min/synth.js",
+      "raw_bytes": 5964,
+      "min_bytes": 3706,
+      "exports": [
+        {
+          "name": "mtof",
+          "kind": "function",
+          "summary": "mtof(midi) -> Hz (69 -> 440)."
+        },
+        {
+          "name": "synthBus",
+          "kind": "function",
+          "summary": "synthBus(ctx, { delay, feedback, wet }) -> { input, analyser, bands() }. Dry + stereo ping-pong delay -> compressor -> tanh limiter (output peak <= 0.87, always) -> analyser -> destination. bands() -> { bass, mid, high, rms } in 0..1 with 50 ms attack / 250 ms release smoothing, so audio-driven visuals do not strobe."
+        },
+        {
+          "name": "fm",
+          "kind": "function",
+          "summary": "fm(ctx, out, t, freq, dur = 0.4, { ratio = 2, index = 3, vol = 0.3 }): FM bell/brass voice with decaying index."
+        },
+        {
+          "name": "sub",
+          "kind": "function",
+          "summary": "sub(ctx, out, t, freq, dur = 0.3, { cutoff = 1800, q = 6, vol = 0.25, type = 'sawtooth' }): subtractive voice, resonant lowpass sweeping down to freq."
+        },
+        {
+          "name": "ksBuffer",
+          "kind": "function",
+          "summary": "ksBuffer(sampleRate, freq, dur, seed, damp = 0.996) -> Float32Array of Karplus-Strong samples (deterministic per seed)."
+        },
+        {
+          "name": "pluck",
+          "kind": "function",
+          "summary": "pluck(ctx, out, t, freq, dur = 1, { vol = 0.4, seed = 1, damp }): plucked string from ksBuffer."
+        },
+        {
+          "name": "seq",
+          "kind": "function",
+          "summary": "seq({ bpm = 120, div = 4, seed = 1 }, step) -> play(ctx, out, t0, t1, base). step(ctx, out, time, i, rnd) runs once per step whose offset lies in [t0, t1); rnd is seeded per step, so output never depends on chunking."
+        },
+        {
+          "name": "startSynth",
+          "kind": "function",
+          "summary": "startSynth(play, { target = document, ahead = 0.2, bus }) -> h { ctx, bus, bands() }. Creates the AudioContext only on the first pointerdown/keydown (never autoplays), then schedules play() 0.2 s ahead every 50 ms. bands() is zeros before the gesture. Keep the handle and call h.bands() each frame; do not destructure (const { bands } = startSynth(...)) before the gesture unlocks audio, because the handle's bands is replaced once the bus exists."
+        },
+        {
+          "name": "registerAudioProbe",
+          "kind": "function",
+          "summary": "registerAudioProbe(play, bus) sets window.__demopartyAudioProbe so the Stage 6 OfflineAudioContext probe renders the same play() through the same limited bus from t = 0. Start notes at t = 0 so 2 s clears the RMS floor."
+        }
+      ],
+      "glsl_bytes": {},
+      "reserved": [
+        "env",
+        "srng"
+      ],
+      "usage": "const play = seq({ bpm: 92, seed }, (ctx, out, t, i, rnd) => { if (i % 4 === 0) sub(ctx, out, t, mtof(36), 0.4); if (rnd() < 0.4) pluck(ctx, out, t, mtof(60 + (rnd() * 12 | 0)), 1.2, { seed: i }); }); registerAudioProbe(play); const syn = startSynth(play); then each frame: const b = syn.bands(); st.audio = [b.bass, b.mid, b.high, b.rms].",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "simulation"
+      ]
+    },
+    {
+      "file": "lib/webgl2.js",
+      "min_file": "lib/min/webgl2.js",
+      "raw_bytes": 4584,
+      "min_bytes": 3093,
+      "exports": [
+        {
+          "name": "GL_HEAD",
+          "kind": "string",
+          "summary": "Fragment header: #version 300 es, highp float/int/sampler2D, uniforms u_time, u_reduced (0 or 1), u_res (px), u_mouse (0..1, y up), u_audio (bass, mid, high, rms), and `out vec4 o`."
+        },
+        {
+          "name": "glProgram",
+          "kind": "function",
+          "summary": "glProgram(gl, frag, vert = fullscreen triangle) -> WebGLProgram. Throws Error with the compile or link log."
+        },
+        {
+          "name": "glSetter",
+          "kind": "function",
+          "summary": "glSetter(gl, prog) -> set(name, number | array) for float, vec2, vec3, vec4, int and sampler2D (pass the texture unit) uniforms; unknown names are ignored. mat*, ivec*, uint* and bool uniforms are unsupported: call gl.uniform* yourself."
+        },
+        {
+          "name": "glDraw",
+          "kind": "function",
+          "summary": "glDraw(gl, fb = null, w, h): binds fb (null = screen), sets the viewport, draws the 3-vertex fullscreen triangle (no buffers)."
+        },
+        {
+          "name": "glStart",
+          "kind": "function",
+          "summary": "glStart(canvas, frag, { scale = 1, dprMax = 1, reduce = 0.2, frame }) -> st { kind: 'webgl2', gl, prog, set, time, reduced, mouse, audio, stop }. Prepends GL_HEAD unless frag starts with #version. Resizes to CSS size * min(DPR, dprMax) * scale. Time advances by frame deltas (capped 0.5 s), times `reduce` under prefers-reduced-motion. frame(st) runs before the main draw: do extra passes there and set st.audio."
+        },
+        {
+          "name": "createPingPong",
+          "kind": "function",
+          "summary": "createPingPong(gl, w, h) -> pp { a, b, swap(), w, h, float }, each target { tex, fb }. Read pp.a.tex, glDraw(gl, pp.b.fb, w, h), pp.swap(). RGBA16F when EXT_color_buffer_float exists, else RGBA8; linear filter, repeat wrap. For reaction-diffusion, fluids, feedback trails. glStart sizes the canvas on the first animation frame, so pass a fixed simulation size (e.g. 256, 256) or create the buffers lazily inside frame(st) once gl.canvas has its size."
+        }
+      ],
+      "glsl_bytes": {
+        "GL_HEAD": 176
+      },
+      "reserved": [
+        "GL_VS"
+      ],
+      "usage": "const st = glStart(canvas, noiseGlsl('fbm') + 'void main(){vec2 uv=gl_FragCoord.xy/u_res;o=vec4(vec3(fbm(vec3(uv*4.,u_time*.1))*.5+.5),1);}', { scale: 0.5 }). Canvas CSS should fill the viewport (width:100vw;height:100vh;display:block).",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "kinetic-type",
+        "simulation",
+        "constraint-night"
+      ],
+      "constraint_night": [
+        "two-colour"
+      ]
+    },
+    {
+      "file": "lib/webgpu.js",
+      "min_file": "lib/min/webgpu.js",
+      "raw_bytes": 3886,
+      "min_bytes": 2641,
+      "exports": [
+        {
+          "name": "gpuStart",
+          "kind": "function",
+          "summary": "async gpuStart(canvas, wgsl, fallback, { scale, dprMax, reduce, storage = 0, workgroups = 0, frame }) -> st { kind: 'webgpu', dev, buf, time, reduced, mouse, audio, stop } or whatever fallback() returns. wgsl defines `@fragment fn fs(@builtin(position) p: vec4f) -> @location(0) vec4f` and reads `u.time, u.reduced, u.res, u.mouse, u.audio`. With storage = n floats and workgroups = w it gets `S: array<f32>` (read_write) and must define `@compute @workgroup_size(..) fn cs(..)`, dispatched w times per frame before the draw. Falls back on no navigator.gpu, no adapter or device, or WGSL validation errors (console.warn, not an error), before touching the canvas, so fallback may reuse it: () => glStart(canvas, glsl). Y axis: WGSL @builtin(position).y points down (0 at the top), while GLSL gl_FragCoord.y and u.mouse.y point up, so port GLSL with p.y = u.res.y - p.y."
+        }
+      ],
+      "glsl_bytes": {},
+      "reserved": [
+        "WGSL_HEAD"
+      ],
+      "usage": "gpuStart(canvas, WGSL, () => glStart(canvas, GLSL, { scale: 0.5 }), { scale: 0.5 }). The WebGPU path is never gated: the gates serve plain http (no WebGPU), so gates and jury see only the fallback, while https visitors run the WGSL. Prefer WebGL2-only unless the piece needs compute; if you use this, write the WGSL as a faithful port of the GLSL (same motion, same palette, no flashing).",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "simulation"
+      ]
+    },
+    {
+      "file": "lib/palette.js",
+      "min_file": "lib/min/palette.js",
+      "raw_bytes": 3056,
+      "min_bytes": 1713,
+      "exports": [
+        {
+          "name": "oklch",
+          "kind": "function",
+          "summary": "oklch(L 0..1, C 0..~0.37, h degrees) -> sRGB [r, g, b] 0..1. Out-of-gamut colours lose chroma, not hue."
+        },
+        {
+          "name": "hex",
+          "kind": "function",
+          "summary": "hex([r, g, b]) -> '#rrggbb'."
+        },
+        {
+          "name": "cosPal",
+          "kind": "function",
+          "summary": "cosPal(t, a, b, c, d) -> [r, g, b] = a + b * cos(2 pi (c t + d)), Quilez cosine palette."
+        },
+        {
+          "name": "luminance",
+          "kind": "function",
+          "summary": "luminance([r, g, b]) -> WCAG relative luminance."
+        },
+        {
+          "name": "contrast",
+          "kind": "function",
+          "summary": "contrast(x, y) -> WCAG contrast ratio 1..21. Check text and key forms reach 3 or more."
+        },
+        {
+          "name": "ramp",
+          "kind": "function",
+          "summary": "ramp(n, hue, C = 0.12, { L0 = 0.18, L1 = 0.94, hs = 0 }) -> n sRGB colours from dark to light, chroma peaking in the midtones, hue drifting hs degrees (cool shadows to warm lights reads as natural light)."
+        },
+        {
+          "name": "GLSL_COSPAL",
+          "kind": "string",
+          "summary": "GLSL vec3 cosPal(float t, vec3 a, vec3 b, vec3 c, vec3 d)."
+        },
+        {
+          "name": "GLSL_OKLCH",
+          "kind": "string",
+          "summary": "GLSL vec3 oklch(float L, float C, float hRadians) -> sRGB, clamped (no gamut mapping; keep C under ~0.15)."
+        }
+      ],
+      "glsl_bytes": {
+        "GLSL_COSPAL": 84,
+        "GLSL_OKLCH": 355
+      },
+      "reserved": [
+        "enc",
+        "inGamut",
+        "lin"
+      ],
+      "usage": "Pick one anchor hue from the brief, build ramp(5, h, 0.1, { hs: 25 }) for the ground and one accent at h + 150 with lower L. Avoid the slop list: no purple-to-blue or teal-to-orange whole-frame gradients, no neon on black by default.",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "kinetic-type",
+        "simulation",
+        "constraint-night"
+      ],
+      "constraint_night": [
+        "two-colour",
+        "no-canvas"
+      ]
+    },
+    {
+      "file": "lib/easing.js",
+      "min_file": "lib/min/easing.js",
+      "raw_bytes": 2208,
+      "min_bytes": 1027,
+      "exports": [
+        {
+          "name": "clamp01",
+          "kind": "function",
+          "summary": "clamp01(x) to [0, 1]."
+        },
+        {
+          "name": "lerp",
+          "kind": "function",
+          "summary": "lerp(a, b, t)."
+        },
+        {
+          "name": "smooth",
+          "kind": "function",
+          "summary": "smooth(x): clamped smoothstep 3x^2 - 2x^3."
+        },
+        {
+          "name": "quintic",
+          "kind": "function",
+          "summary": "quintic(x): clamped smootherstep, zero first and second derivative at the ends."
+        },
+        {
+          "name": "cubicInOut",
+          "kind": "function",
+          "summary": "cubicInOut(x): clamped cubic ease in-out."
+        },
+        {
+          "name": "expoOut",
+          "kind": "function",
+          "summary": "expoOut(x): fast start, long settle."
+        },
+        {
+          "name": "backOut",
+          "kind": "function",
+          "summary": "backOut(x, s = 1.70158): overshoots about 10% past 1 then settles."
+        },
+        {
+          "name": "elasticOut",
+          "kind": "function",
+          "summary": "elasticOut(x): springy settle onto 1."
+        },
+        {
+          "name": "beat",
+          "kind": "function",
+          "summary": "beat(t, t0, t1, ease = smooth): eased 0..1 progress through [t0, t1], clamped."
+        },
+        {
+          "name": "CUTS",
+          "kind": "object",
+          "summary": "[0, 5, 10, 15, 20]: the default 4-beat, 20-second storyboard cut times."
+        },
+        {
+          "name": "act",
+          "kind": "function",
+          "summary": "act(t, cuts = CUTS) -> { i: beat 0..3 (held at 3 after the end), p: linear progress 0..1 }."
+        },
+        {
+          "name": "acts",
+          "kind": "function",
+          "summary": "acts(t, cuts = CUTS, blend = 1) -> 4 weights summing to 1, crossfading over blend seconds around each cut. Mix the four beats' parameters with them."
+        },
+        {
+          "name": "storyClock",
+          "kind": "function",
+          "summary": "storyClock({ reduce = 0.2, cuts }) -> (rafMs) => { t, reduced, i, p }. Frame-driven, never loops, 0.5 s delta cap, time times reduce under prefers-reduced-motion. Keep some motion alive after 20 s and make the first frame readable."
+        }
+      ],
+      "glsl_bytes": {},
+      "reserved": [],
+      "usage": "const clock = storyClock(); requestAnimationFrame(function f(ms) { const { t } = clock(ms); const [w0, w1, w2, w3] = acts(t); scale = w0 * 1 + w1 * 1.4 + w2 * 0.8 + w3 * 1.1; requestAnimationFrame(f); }).",
+      "compos": [
+        "16k-demo",
+        "audiovisual",
+        "interactive-toy",
+        "data-sculpture",
+        "kinetic-type",
+        "simulation",
+        "constraint-night"
+      ],
+      "constraint_night": [
+        "two-colour",
+        "no-canvas"
+      ]
+    }
+  ]
+}

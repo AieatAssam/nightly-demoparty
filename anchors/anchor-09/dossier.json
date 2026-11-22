@@ -1,0 +1,74 @@
+{
+  "topic": "Basalt columns start as a random net of T-shaped cracks; as the cooling front sinks, the junctions anneal toward 120-degree Y-junctions and the cells become hexagons.",
+  "domain": "columnar-jointing-basalt",
+  "wildcard_chosen": true,
+  "summary": "A thick lava flow cools from its top surface. Contraction opens cracks that meet existing cracks at right angles, forming T-junctions, much like mud cracks. Each new crack segment grows a little below the last as the cooling front descends, and the pattern gradually relaxes: junctions rotate toward 120 degrees and the polygons become more regular and hexagonal. The result, seen at the Giant's Causeway, is tens of thousands of tall prisms whose width is set by how fast the front advanced.",
+  "facts": [
+    {
+      "claim": "The Giant's Causeway in County Antrim consists of over 40,000 interlocking basalt columns formed by an ancient volcanic eruption.",
+      "source_url": "https://en.wikipedia.org/wiki/Giant%27s_Causeway",
+      "source_title": "Giant's Causeway"
+    },
+    {
+      "claim": "Near the cooled surface the crack pattern is dominated by T-junctions, like mudcracks, because each crack forms and runs until it hits an earlier one.",
+      "source_url": "https://en.wikipedia.org/wiki/Columnar_jointing",
+      "source_title": "Columnar jointing"
+    },
+    {
+      "claim": "As the cooling front moves deeper the crack pattern anneals to a lower-energy state, and the column width is set by the material properties and the speed of the front.",
+      "source_url": "https://en.wikipedia.org/wiki/Columnar_jointing",
+      "source_title": "Columnar jointing"
+    },
+    {
+      "claim": "Desiccating corn starch grows columnar joints statistically similar to basalt columns, making the process reproducible on a kitchen table.",
+      "source_url": "https://arxiv.org/abs/cond-mat/0501015",
+      "source_title": "Goehring and Morris, Order and disorder in columnar joints (arXiv:cond-mat/0501015)"
+    },
+    {
+      "claim": "In starch under constant drying power, the mean column cross-section coarsens with depth as a power law; under a constant drying rate the coarsening stops.",
+      "source_url": "https://arxiv.org/abs/cond-mat/0501015",
+      "source_title": "Goehring and Morris, Order and disorder in columnar joints (arXiv:cond-mat/0501015)"
+    },
+    {
+      "claim": "Goehring, Mahadevan and Morris showed that column size scales inversely with the speed of the cooling or drying front, linking lab starch and field basalt on one curve.",
+      "source_url": "https://www.pnas.org/doi/10.1073/pnas.0805132106",
+      "source_title": "Nonequilibrium scale selection mechanism for columnar jointing (PNAS 2009)"
+    },
+    {
+      "claim": "Columnar joints form as thick lava cools and contracts, with cracks propagating inward perpendicular to the cooling surfaces.",
+      "source_url": "https://volcano.oregonstate.edu/columnar-jointing",
+      "source_title": "Columnar jointing (Oregon State University, Volcano World)"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "T-junction to Y-junction annealing",
+      "description": "Early cracks meet at right angles in T-junctions. With each increment of depth the crack tips reposition slightly, the junction angles drift toward 120 degrees, and the irregular polygons relax into a near-hexagonal net.",
+      "render_or_sonify_hint": "A Voronoi crack net whose seed lattice morphs from a jittered brick pattern to a regular triangular lattice, so junctions visibly rotate from T to Y."
+    },
+    {
+      "name": "Crack front propagation from a cooling surface",
+      "description": "Cracks open first where the crust is coolest and run outward as a front, each newly opened crack hot and glowing before it closes in on its neighbours.",
+      "render_or_sonify_hint": "A distance-plus-noise arrival time per point; cracks appear when time passes it and cool from orange to dark."
+    },
+    {
+      "name": "Columns grown downward from the crack net",
+      "description": "The surface polygons extend downward as prisms as the front descends; later erosion exposes them as stepped columns of uneven height.",
+      "render_or_sonify_hint": "Raymarched hexagonal prisms rising from the polygon net with per-column heights."
+    },
+    {
+      "name": "Front speed sets column width",
+      "description": "A faster cooling front leaves narrower columns, a slower front wider ones, which is why different flows and different tiers of one flow have different column sizes.",
+      "render_or_sonify_hint": "Vary polygon scale across the field as a gradient in front speed."
+    }
+  ],
+  "open_questions": [
+    "Why does the pattern stop maturing at hexagons with residual disorder rather than reaching a perfect lattice?",
+    "How exactly do the curved ball-and-socket cross-joints between column segments form?"
+  ],
+  "surprise": {
+    "score": 72,
+    "justification": "Most people assume the hexagons were there from the start; the fact that the surface begins as a random T-junction net and only orders itself with depth is little known."
+  },
+  "dataset": null
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Card Chain Sampler",
+  "concept": "A Jacquard loom weaves a two-colour sampler one punched card per pick, from plain weave through twill and satin to a damask of Pascal's triangle mod 2.",
+  "mechanism_embodied": {
+    "mechanism_name": "Card row as binary lift mask",
+    "how_visualised": "Every cell is a linen bar on ink: vertical where the card has a hole (warp float), horizontal where it has none (weft float). The pick in progress fills as the shuttle crosses, and the next four cards hang punched below the fell line."
+  },
+  "discarded_obvious_idea": "A rotating 3D loom with coloured yarns: it needs more than two colours and shows the machine instead of the binary logic on the cards.",
+  "compo": "constraint-night",
+  "constraint_honoured": "two-colour",
+  "techniques": [
+    "binary lift-mask weave drafting",
+    "integer-aligned fillRect raster",
+    "ring-buffer row cache",
+    "Lucas-theorem bitmask"
+  ],
+  "novel_technique": "binary lift-mask weave drafting",
+  "technique_family": "grammar",
+  "palette": [
+    "#161513",
+    "#efe8d8"
+  ],
+  "motion_sound_plan": "Silent. About 2.7 picks per second: the shuttle carries each weft across, alternating direction, while the punched card chain advances one card. The sampler fills the screen at 20 s, then the cloth is taken up row by row.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 4.5,
+      "description": "Plain weave, then 2/2 twill, with the first punched cards visible under the fell."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 4.5,
+      "t_end_s": 8.5,
+      "description": "3/1 warp twill, then a point draw that reverses it into herringbone."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 8.5,
+      "t_end_s": 12,
+      "description": "5-end warp satin, then an 8-end satin damask of lozenges."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 12,
+      "t_end_s": 20,
+      "description": "Pascal's triangle mod 2 woven as damask: Sierpinski triangles emerge row by row until the sampler is full."
+    }
+  ],
+  "memorable_moment": "A Sierpinski triangle growing out of satin damask one card at a time.",
+  "self_declared_risk": "Every cell is half linen, so at a glance the sections can read as one grey texture until the eye finds the thread direction.",
+  "liner_note": "Each Jacquard card is one row of holes: a hole lifts a warp end, no hole leaves the weft on top. This sampler weaves in two colours only, one card per pick. Vertical bars are warp floats, horizontal bars weft floats, so every cell is half linen and the weaves differ only by thread direction. It runs from plain weave to twill, herringbone and satin damask, then ends with Pascal's triangle mod 2. Lucas's theorem makes each row a single bitwise test, (k AND n) equals k. In 1843 Ada Lovelace wrote that the Analytical Engine weaves algebraical patterns as the Jacquard loom weaves flowers and leaves."
+}

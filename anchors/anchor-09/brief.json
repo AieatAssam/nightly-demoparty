@@ -1,0 +1,59 @@
+{
+  "title": "Cooling Front",
+  "concept": "A lava crust cracks into a random T-junction net, anneals into 120-degree hexagons, then the polygons rise as basalt columns stepping into a dusk sea.",
+  "mechanism_embodied": {
+    "mechanism_name": "T-junction to Y-junction annealing",
+    "how_visualised": "The crack net is a Voronoi diagram over a seed lattice that starts as a jittered, stretched brick pattern (cracks meet at right angles) and continuously morphs into a regular triangular lattice by 10 s, so every junction rotates from T to Y while the cracks cool from orange to dark. The same hexagons then extrude into raymarched columns."
+  },
+  "discarded_obvious_idea": "A static flyover of hexagonal columns was discarded: it shows the result, not the process, and it hides the surprising part, that the surface starts as right-angled cracks and only becomes hexagonal with depth.",
+  "compo": "16k-demo",
+  "constraint_honoured": null,
+  "techniques": [
+    "morphing-lattice Voronoi crack net",
+    "arrival-time crack front",
+    "raymarched hexagonal prism field",
+    "cell-clamped sphere tracing",
+    "soft shadows and ambient occlusion",
+    "Fresnel water with sun glitter"
+  ],
+  "novel_technique": "morphing-lattice Voronoi crack net",
+  "technique_family": "raymarched procedural geology",
+  "palette": [
+    "#1c1a18",
+    "#3a3734",
+    "#6b3a22",
+    "#e0581c",
+    "#c9c3b8",
+    "#f2c98a"
+  ],
+  "motion_sound_plan": "No sound. Cracks open along a front for the first five seconds, then the lattice relaxes from T to Y junctions while the view zooms out. At 10 s the crust crossfades into a raymarched column field rising from the same hexagons, and the camera glides from overhead down to a low view along the causeway into a low sun. The camera is still moving at 20 s. Under prefers-reduced-motion the clock runs at one fifth speed.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Dark cooling crust; hot orange cracks run out from a corner and meet earlier cracks at right angles."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "The net anneals: junctions swing toward 120 degrees and the polygons settle into hexagons as the glow fades."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Seen from above, the hexagons rise into columns of uneven height under a low golden sun, with long shadows and oxidised iron tops."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "The camera glides low along the stepped causeway toward the sea, wet basalt and a glitter path under a setting sun in haze."
+    }
+  ],
+  "memorable_moment": "The instant the last right-angled junctions swing into Y-junctions and the net suddenly reads as honeycomb.",
+  "self_declared_risk": "On the software renderer the raymarched column field may drop frames, and drowned column heads near the waterline can read as fragments.",
+  "liner_note": "A lava flow cools from the top. It contracts and cracks, and each new crack runs until it meets an older one at a right angle, a T-junction, like drying mud. As the cooling front sinks, the crack tips shift slightly at every step and the junctions drift toward 120 degrees, so the net becomes hexagonal with depth. Here the crack net is a Voronoi diagram whose seed lattice morphs from a jittered brick pattern into a perfect triangular lattice. Then the hexagons rise as columns, the way erosion exposed the 40,000 at the Giant's Causeway."
+}

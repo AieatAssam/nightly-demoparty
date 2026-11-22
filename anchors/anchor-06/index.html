@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seven Neighbours</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:linear-gradient(#1f2731 0%,#4d5a68 45%,#8c7a62 77%,#c8934c 92%)}
+canvas{position:fixed;inset:0;display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<canvas id="r"></canvas>
+<script>
+// A murmuration where every starling steers by its seven nearest neighbours, counted by rank and
+// not by distance (the topological rule measured in real flocks). The filaments are those seven
+// links. When the flock spreads out, each bird still keeps exactly seven links, just longer ones,
+// so the flock stays one body. When a falcon cuts through, the escape turn passes from bird to bird
+// along those links and shows as a moving band of warm-lit birds.
+(() => {
+  const cv = document.getElementById('c'), rc = document.getElementById('r');
+  const gl = cv.getContext('webgl2', { antialias: true, premultipliedAlpha: true });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let seed = 0x5717a2;
+  const rnd = () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const sm = (a, b, x) => { const u = Math.min(1, Math.max(0, (x - a) / (b - a))); return u * u * (3 - 2 * u); };
+
+  const N = 620, K = 7, DT = 1 / 60, V0 = 11;
+  const P = new Float32Array(N * 3), V = new Float32Array(N * 3), NB = new Int32Array(N * K);
+  const TURN = new Float32Array(N), PH = new Float32Array(N);
+  const nd = new Float32Array(K), ni = new Int32Array(K);
+
+  for (let i = 0; i < N; i++) {
+    const gs = () => (rnd() + rnd() + rnd() - 1.5) * 2;
+    P[i * 3] = gs() * 7; P[i * 3 + 1] = gs() * 2.5; P[i * 3 + 2] = gs() * 5;
+    V[i * 3] = V0 + gs(); V[i * 3 + 1] = gs() * 0.5; V[i * 3 + 2] = gs();
+    PH[i] = rnd() * 6.283;
+  }
+  P[0] = P[1] = P[2] = 0;  // the bird whose seven links are drawn bright
+
+  // the roost the flock wheels above, and the falcon's pass (sim-time ts)
+  const roost = (ts) => [16 * Math.sin(0.23 * ts), 3 * Math.sin(0.41 * ts), 12 * Math.sin(0.17 * ts + 1)];
+  const cen = [0, 0, 0];
+  let falcon = null;
+
+  // ponytail: brute-force O(N^2) nearest-seven search; a spatial grid if N grows past ~1500
+  function neighbours() {
+    for (let i = 0; i < N; i++) {
+      const x = P[i * 3], y = P[i * 3 + 1], z = P[i * 3 + 2];
+      nd.fill(1e9);
+      for (let j = 0; j < N; j++) {
+        if (j === i) continue;
+        const dx = P[j * 3] - x, dy = P[j * 3 + 1] - y, dz = P[j * 3 + 2] - z, d = dx * dx + dy * dy + dz * dz;
+        if (d >= nd[K - 1]) continue;
+        let k = K - 1;
+        while (k > 0 && nd[k - 1] > d) { nd[k] = nd[k - 1]; ni[k] = ni[k - 1]; k--; }
+        nd[k] = d; ni[k] = j;
+      }
+      NB.set(ni, i * K);
+    }
+  }
+
+  function step(ts) {
+    neighbours();
+    const sepD = 1.7 + 3.2 * sm(4.5, 8, ts) * (1 - sm(15, 18.5, ts));  // personal space: grows, then shrinks
+    const R = roost(ts);
+    cen[0] = cen[1] = cen[2] = 0;
+    for (let i = 0; i < N * 3; i += 3) { cen[0] += P[i] / N; cen[1] += P[i + 1] / N; cen[2] += P[i + 2] / N; }
+    const u = (ts - 10.2) / 4.6;
+    falcon = u > 0 && u < 1 ? [cen[0] - 48 + 96 * u, cen[1] + 9 - 16 * u, cen[2] - 10 + 20 * u] : null;
+    for (let i = 0; i < N; i++) {
+      const o = i * 3, x = P[o], y = P[o + 1], z = P[o + 2];
+      let ax = 0, ay = 0, az = 0, mx = 0, my = 0, mz = 0, vx = 0, vy = 0, vz = 0;
+      for (let k = 0; k < K; k++) {
+        const q = NB[i * K + k] * 3, dx = x - P[q], dy = y - P[q + 1], dz = z - P[q + 2];
+        mx += P[q]; my += P[q + 1]; mz += P[q + 2];
+        vx += V[q]; vy += V[q + 1]; vz += V[q + 2];
+        const d = Math.sqrt(dx * dx + dy * dy + dz * dz) + 1e-3;
+        if (d < sepD) { const s = 22 * (1 - d / sepD) / d; ax += dx * s; ay += dy * s; az += dz * s; }
+      }
+      ax += 2.6 * (vx / K - V[o]) + 0.7 * (mx / K - x) + 0.09 * (R[0] - x);
+      ay += 2.6 * (vy / K - V[o + 1]) + 0.7 * (my / K - y) + 0.35 * (R[1] - y);
+      az += 2.6 * (vz / K - V[o + 2]) + 0.7 * (mz / K - z) + 0.09 * (R[2] - z);
+      if (falcon) {
+        const dx = x - falcon[0], dy = y - falcon[1], dz = z - falcon[2], d = Math.sqrt(dx * dx + dy * dy + dz * dz) + 1e-3;
+        if (d < 13) { const s = 90 * (1 - d / 13) / d; ax += dx * s; ay += dy * s; az += dz * s; }
+      }
+      TURN[i] = TURN[i] * 0.93 + 0.07 * Math.sqrt(ax * ax + ay * ay + az * az);
+      let nx = V[o] + ax * DT, ny = V[o + 1] + ay * DT, nz = V[o + 2] + az * DT;
+      const sp = Math.sqrt(nx * nx + ny * ny + nz * nz) + 1e-3, f = 1 + 2 * DT * (V0 - sp) / sp;
+      V[o] = nx * f; V[o + 1] = ny * f; V[o + 2] = nz * f;
+    }
+    for (let i = 0; i < N * 3; i++) P[i] += V[i] * DT;
+  }
+
+  // GL: one program, coloured vertices in pixel space, premultiplied blending over the CSS sky
+  const pr = gl.createProgram();
+  for (const [ty, src] of [[gl.VERTEX_SHADER, '#version 300 es\nin vec2 p;in vec4 c;uniform vec2 R;out vec4 v;void main(){gl_Position=vec4(p/R*vec2(2,-2)+vec2(-1,1),0,1);v=c;}'],
+    [gl.FRAGMENT_SHADER, '#version 300 es\nprecision mediump float;in vec4 v;out vec4 o;void main(){o=vec4(v.rgb*v.a,v.a);}']]) {
+    const s = gl.createShader(ty); gl.shaderSource(s, src); gl.compileShader(s); gl.attachShader(pr, s);
+  }
+  gl.bindAttribLocation(pr, 0, 'p'); gl.bindAttribLocation(pr, 1, 'c');
+  gl.linkProgram(pr); gl.useProgram(pr);
+  const uR = gl.getUniformLocation(pr, 'R');
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.enableVertexAttribArray(0); gl.enableVertexAttribArray(1);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 24, 0); gl.vertexAttribPointer(1, 4, gl.FLOAT, false, 24, 8);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  const LN = new Float32Array(N * K * 12), TR = new Float32Array((N * 2 + 200) * 36);
+  let nl = 0, nt = 0;
+  const vtx = (A, i, x, y, c) => { A[i] = x; A[i + 1] = y; A[i + 2] = c[0]; A[i + 3] = c[1]; A[i + 4] = c[2]; A[i + 5] = c[3]; };
+  const line = (ax, ay, bx, by, c) => { vtx(LN, nl, ax, ay, c); vtx(LN, nl + 6, bx, by, c); nl += 12; };
+  const seg = (ax, ay, bx, by, w, c) => {  // a thick segment as two triangles
+    let nx = ay - by, ny = bx - ax; const l = Math.hypot(nx, ny) + 1e-6; nx *= w / 2 / l; ny *= w / 2 / l;
+    vtx(TR, nt, ax + nx, ay + ny, c); vtx(TR, nt + 6, ax - nx, ay - ny, c); vtx(TR, nt + 12, bx + nx, by + ny, c);
+    vtx(TR, nt + 18, ax - nx, ay - ny, c); vtx(TR, nt + 24, bx - nx, by - ny, c); vtx(TR, nt + 30, bx + nx, by + ny, c);
+    nt += 36;
+  };
+  const ring = (x, y, r, w, c) => { for (let a = 0; a < 8; a++) seg(x + r * Math.cos(a * 0.785), y + r * Math.sin(a * 0.785), x + r * Math.cos(a * 0.785 + 0.8), y + r * Math.sin(a * 0.785 + 0.8), w, c); };
+  const FIL = [0.886, 0.667, 0.361, 0.13], DARK = [0.086, 0.106, 0.129, 1], LIT = [0.878, 0.643, 0.325, 1], GOLD = [0.945, 0.761, 0.49, 1];
+
+  let W = 0, H = 0;
+  function layout() {
+    W = cv.width = rc.width = innerWidth; H = cv.height = rc.height = innerHeight;
+    gl.viewport(0, 0, W, H);
+    // reed bed on the horizon, drawn once
+    const r = rc.getContext('2d'), s0 = seed;
+    seed = 99;
+    r.beginPath(); r.moveTo(0, H);
+    for (let x = 0; x <= W + 8; x += 6) r.lineTo(x, H * (0.9 - 0.012 * Math.sin(x / 140) - 0.018 * rnd() * rnd()));
+    r.lineTo(W, H); r.closePath(); r.fillStyle = '#141a20'; r.fill();
+    seed = s0;
+  }
+  layout();
+  addEventListener('resize', layout);
+
+  let done = 0;
+  for (; done < 90; done++) step(done * DT);  // the flock is already wheeling on the first frame
+
+  const cam = [0, 0, 0];
+  let spread = 8, t = 0, last = 0;
+  const sx = new Float32Array(N), sy = new Float32Array(N), ss = new Float32Array(N), hx = new Float32Array(N), hy = new Float32Array(N);
+
+  function frame(ms) {
+    const dt = Math.min(0.5, last ? (ms - last) / 1000 : 0);
+    last = ms;
+    t += dt * (reduce ? 0.15 : 1);
+    const target = 90 + Math.floor(t * 60);
+    for (let n = 0; done < target && n < 4; n++, done++) step(done * DT);
+    const ts = done * DT;
+
+    // camera: follow the flock, widen a little as it spreads, orbit slowly
+    let rms = 0;
+    for (let i = 0; i < N; i++) {
+      const dx = P[i * 3] - cen[0], dy = P[i * 3 + 1] - cen[1], dz = P[i * 3 + 2] - cen[2];
+      rms += (dx * dx + dy * dy + dz * dz) / N;
+    }
+    spread += (Math.sqrt(rms) - spread) * 0.03;
+    for (let a = 0; a < 3; a++) cam[a] += (cen[a] - cam[a]) * 0.05;
+    const D = 30 + 2.1 * spread, F = H * 1.4, yaw = 0.5 + 0.06 * ts, cy = Math.cos(yaw), syw = Math.sin(yaw);
+    const cp = Math.cos(0.22), sp = Math.sin(0.22), ox = W / 2, oy = H * 0.46;
+    const proj = (x, y, z, out) => {
+      x -= cam[0]; y -= cam[1]; z -= cam[2];
+      const rx = x * cy - z * syw, rz = x * syw + z * cy;
+      const ry = y * cp - rz * sp, zz = y * sp + rz * cp + D, s = F / zz;
+      out[0] = ox + rx * s; out[1] = oy - ry * s; out[2] = s;
+    };
+
+    const q = [0, 0, 0];
+    for (let i = 0; i < N; i++) {
+      const o = i * 3;
+      proj(P[o], P[o + 1], P[o + 2], q); sx[i] = q[0]; sy[i] = q[1]; ss[i] = q[2];
+      proj(P[o] + V[o] * 0.05, P[o + 1] + V[o + 1] * 0.05, P[o + 2] + V[o + 2] * 0.05, q);
+      const dx = q[0] - sx[i], dy = q[1] - sy[i], l = Math.hypot(dx, dy) + 1e-3;
+      hx[i] = dx / l; hy[i] = dy / l;
+    }
+
+    nl = nt = 0;
+    // the seven links of every bird
+    for (let i = 0; i < N; i++) for (let k = 0; k < K; k++) { const j = NB[i * K + k]; line(sx[i], sy[i], sx[j], sy[j], FIL); }
+    // starlings: wing chevrons, flapping; birds caught in a hard turn catch the low sun
+    const lw = Math.max(1.6, H / 420);
+    for (let i = 0; i < N; i++) {
+      const s = ss[i], w = 0.75 * s * (0.55 + 0.45 * Math.abs(Math.sin(PH[i] + 17 * ts))), b = 0.3 * s;
+      const c = TURN[i] > 11 ? LIT : DARK, x = sx[i], y = sy[i], fx = hx[i], fy = hy[i];
+      const bx = x + fx * b * 0.6, by = y + fy * b * 0.6;
+      seg(x - fy * w - fx * b, y + fx * w - fy * b, bx, by, lw, c);
+      seg(bx, by, x + fy * w - fx * b, y - fx * w - fy * b, lw, c);
+    }
+    // one bird's seven links, drawn bright: their length changes, their number never does
+    const fw = Math.max(1.3, H / 560);
+    for (let k = 0; k < K; k++) { const j = NB[k]; seg(sx[0], sy[0], sx[j], sy[j], fw, GOLD); ring(sx[j], sy[j], 4, fw, GOLD); }
+    ring(sx[0], sy[0], 7, fw, GOLD);
+    if (falcon) {
+      const h = [0, 0, 0];  // screen heading from a point a little further along its path
+      proj(falcon[0], falcon[1], falcon[2], q);
+      proj(falcon[0] + 1, falcon[1] - 1 / 6, falcon[2] + 5 / 24, h);
+      const s = q[2] * 1.6, dx = h[0] - q[0], dy = h[1] - q[1], l = Math.hypot(dx, dy) + 1e-6, fx = dx / l, fy = dy / l, X = q[0], Y = q[1];
+      const k = [0.059, 0.071, 0.086, 1];
+      seg(X - fx * s * 0.4, Y - fy * s * 0.4, X + fx * s * 1.2, Y + fy * s * 1.2, s * 0.35, k);
+      seg(X - fy * s, Y + fx * s, X + fx * s * 0.3, Y + fy * s * 0.3, s * 0.3, k);
+      seg(X + fy * s, Y - fx * s, X + fx * s * 0.3, Y + fy * s * 0.3, s * 0.3, k);
+    }
+
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform2f(uR, W, H);
+    gl.bufferData(gl.ARRAY_BUFFER, LN.subarray(0, nl), gl.STREAM_DRAW); gl.drawArrays(gl.LINES, 0, nl / 6);
+    gl.bufferData(gl.ARRAY_BUFFER, TR.subarray(0, nt), gl.STREAM_DRAW); gl.drawArrays(gl.TRIANGLES, 0, nt / 6);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

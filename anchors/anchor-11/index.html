@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse Relief</title>
+<style>
+html,body{margin:0;height:100%;background:#e6dcc6;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh;touch-action:none;cursor:grab}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+// ---- data: 80 successive pulses of PSR B1919+21 (CP 1919), approximate digitisation of
+// Harold Craft's 1970 thesis figure; 150 samples each, base62 levels q, intensity = 80.36 (q/61)^2 - 6.05
+const PU = 'GFGGGHGHHHHHHHHHHGGGFFGHHHGHIHHHHHFEGIIHHIJJKKLLKJJIHHHIJKLMOOQRSUUVVVVVUTSRQQQRRQRSTTTTUUUUUTRQQPONMLKKJIHGGGGGHHHHHHHHGHHGGGGGGGGGGHHGGHHHHHHHGHGGGGGGGGGGGGGGGGGGGGGGGGGGHHGGHGHHHHIIJJIIIIJKKKMNPSTUVVWWWWWWWWVVVUTSSTSSRRQPONNNNNNNNNNOOOPPPPPQQRRRRRQQOMMMLJJJHHIIHGGGGGHHHHHHHHHHHHGFGHGGHGGGHGGGGFGHFFGHHHHHHIHGHIIHGFFGGHHGHHHGHGGGHHHHHHHIJJKLLMNOOPPPPSUXYadedbYWUUTTUUUWXXXYYYXWUSRQPPONMMMMMMMMNNMKLMKKKKJIGGGGHHGGGGGGGGGGGGGGGGGGGGGHGGGHHHGHGHIIGGFGHHHHGGGGHHHHGHGGHHHGGHHGGGGGGGGIJIHHHIJKKKKMMNOOOPQRSTWZbehhfecaXVTSSRRRRSUWWSRQQPPQQSTTSRPOMLLLLLLKKKJJIHHHGGGGGGGGHHHHHGIIIHHHHGFFFGHHHGGGHGGHGFGHFFFFFFFFFFFFFGFFGFFFFFGFGGGGGGGHHIHGHIIIIIIJJLLMNOPQRSUVWVUTRQPOONMMLLMNNONOPQQRRQQQPONMMLLMMMMNMLKKKKKJIIIIIGFFGGGGGHHHHGHIHIIHHHHHHHHHHHHGFGHHGGGGGGGFFFFEEEEFGGGGGGGGGHHHHHHGHHIJJKKKKKKKJJJKKKLMNOPQRRSSSSSSSSSTVXYYYYXWVUTSRRRRRSSSSSSTUUWXYZZZYWUSONNOMLKKJJIIHGIIHGFGHHFFGHHHHGFFHHHHHHHHHHHHHHGGGGGGGGGHGGGGGGGGGGGGHHHHGHHHHHHHHHHHHHHIIIJKKLLMOPRUXYYXWVTSQPMLJHHJLORRPPNMMNNNMKNOMMMNOOPRRSSTUUVVVTRPPONNMLKIHIIIHHJIHGGGGFGGGGGGGGGGGGGGGGGGGGGGGGGFGIGFGFFHIHEFGGGGGHGGGGHGHHHHHHHHHHJJJJKKKJKLMMMNPRSVWYabdfijkjhfdbYXWWWWWWWWVVUTTTTTSSRRQQPPONOONNMLKJJJJJJJJIHHIIIHHGGGGGGGGGGGGGFGHHHHHHHHGHHHHGGGGGFHGGGGGGGGGGGGGGGGGGGGGGGGGGGHHHJIHHHHJJJJJJJJJKLNPQRSSTUUVWWXXUSQOQRTUVWWWWVUTSRQPNMJHEA27CEHJJJJJJJJJJJJJJIHIIHGGHGHHHGHHHHHHHHGGGGHHGHIIIIHHHGGGGFGGGGFGGGHHHHHHHHHHHFGIIHGGGGGHHHIIJIJJHJKKKKLKKMNPRTUVWVVVVWYaceeeedddcaZYXXXXXXXYaZaaaYYXXWWWWVTSRPPPPONKJJKKJJJHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGIGHHHHHHHGGGGGFFGHIHIHIHIHHHHHHGHIIHIIIIJJJJJJJJKLLNPSVWYcfggfeefijhfbZYXXXXYZZZZYXUTTTTUTSRQQQQRSTUVWYZYXVVTSRPONMLKJJIGGGGGGGGGGGHGGGGHHHHHGIIHGHHHGGGGFEGGGGHHHHHHHHHHHHHHHHHHHHHHIJJJIHIJJIJJJJJJKLNOOOPSTVYabbbbcccdeffffdcbZXWWWXXXYYXXVUSRQRRSSTTTTTTTTTSSSSRQQPPPONMLKIGGGGGGGGGGGGGGGHGGGGGGGGGGGHHHGGGHGHGGGGGHHHHGHHGGGGGGGFGGGGHGGHHGGGHIJIHIIHIJJKLLLMMMMNOPQSVYZZZbcddddcbaZXXXWVVUVWWYacfgffedbZXVTSRQPNLKKKKKJJJJJJKJIHGHHHGGHHHFHHGGGGHHHHHHHHHHGFGGGGHGGHGGHHGGHHHGHGGGFFGHHHHHHHHHHHGHHIKJJJJJJJJKLMNNOOPPQQQQQRQQRUWXYZabbaZYWWWWWWWWWWWVVUTVWXXYZZZYWVTRQPNNMLIIJKKKJJIHGIIHHHGHHHGGHGGGGGGFEGHGGHHHGGGGHGGEGGGFGGGGGGGGGGHHHGGGGGGHHIHHHHIIJJJJLLLLMOQRUWZbbbbbaaaaaZZXXXXYYYZaaZYXWWVUTTSRQQQQQRSUUWXZbccaZYXWUSQPONMLKKJJIHIHGGHHGGHHGHHHHHHGFFGHHHHHHHHHGFFGHHGGGGGFFFGHHHHIHHHHHHHGGGHHHHIIIHIJJKIJLMNOPRTUUVVXYZabcfiigedcbaaZZYYYXXWWVVVUUUTTTTTTSRRRRSSRRQRRQPPPPPOONLKIHGHHHHHHHHHHHHHGHHGGHGHGGGGGGGFGGGGFGHHHGHGGHHHHHHHHHHHHHHHHHHHHHGGIHGGHHJJIIIJJKLMNMMLLLMMMNNOQRTWbdeeedbaYYYXXXXXXYZabaaaaZZZZZXVUSRPNNNNOMLKLLKJJIHGGGGHHHHGGHGFGHHHHHHHHGHHHGGHGGGGGGHHHGGFGGGGHHHHHHHHHHHHHHHHHHHHHHHIIHHHIJIIKLKKKKKLMNOPQRTUWZbbbbbaaZYYXVUTSSQRRSSTWYYYXWVVWYZZYXWVVVVURQPPNMLLKKKJJIHHHHHGGGGGGGGGGGGGGGGGGGGFEGGGGGGGGFFFFFFFFFGFFGGGGHHGGFFEEEEEFGHIIIJIJJJJIIJKLNQTUVXYabcdeeedccccccddefghijjkkkgdbZYXVTRRSTTUWXXVUSRRSTUUTQNKKKKJIIIIHHHIHHHHHHHHHHHHHHHHHHHHGGGGGHGGGGFEFGHFFFFFFFFFFFFFGFGGGGHHHHGFGGGHIHHHIJKJJKKLMMMNOPRSVYbdhhhgfedbaYWVTSRRSTTSRQQQQRRSSSTTTTTTTTUVVWUSSRRRRQPOMMLKJJJIIIHGHGHHHHHHGFGHHHHGGHHHHHHGGGGFGGGGHGGGFEDEEFFGGGGHHHHHHHHHGGGGFHIIIKKKKKKLKKLLKLMNOQRTUWYadhklnpnkifcZXXWWVUSRRSSSRPOOOOOPPOOOOOOONOOLJIJJJIHHHIIIHHIIHHGHGHHGGGGEFGGGGGGGHHHHGFGHHHHHHGGFFGFFFGHHHGGHIHFFFFFFFGGFFGGFGGGGGFHHHJJJJJJJIJIIIIIIIIIIJLMOPQSTUVWZeeedccbabcddbZYXWVUTSSPOOOOOONNMMLLKJKKKKJJJIHHHIIIIIIIHHGEGHHGGGGGGGGGGFFFFGGHHGGGGGGGGGFGGFFGFFFFGGHHHIHGIJKJIIJJJKKKLLLMNOOOPPPQQQQSTVXadghilmmmljhfdcaZYXXWWWWVUTTSRRQQQQPPPPPPPPPPONMLJIIIHHHHHHHHHHHIGHHHHJIHHGHGGHIHGHHGHHHHGFDCIHHGGGGGGHIIHHHHHGGGGFFFEEFFFGJKKJIIKLMMLMMOPRTUYabcddegghgfedaZaaadfdcbaZZYXXWWVVWWWXXXXXXYYYYYXWWVVVVUSRQONMLLLKKJIHHHGGGHHHHHHHHHHHHHHHHHGGHHHGHHGGGFGGGHHHHHGGGGFFGGGGGGGHHHIJJJIIIIJJJJJKKLMNOPQRSVVVVVXYabcddddddddeeeeeedcaaaaaaZYWUUUUTTSSSRRQQPPOONMLMLKKKKKKIGHIIHHHHHHHHHHGGHHHGGGGGHHHGHGHHHHHHHGGHHHHHHHHGGGGGGGFFGGGFFGGGGGHHHHIJJJKKJKLMNPQSUWXYZZabbcdfgjlnoonlhfeddddccbaaZZZacfhiihfdaYVUTSQOLIIIJJIJIIIHIHHGGGHIHHHHHHHHHGGGGGGGGGGGGGHHHGGHHHIFFFFFFFEEFGGGGFEGIIHHHGGHHIJJIHHJJJJKLLNNPRSSTVXZbdeddbZWWVUTTUUVVWWXXWWWVVVUTRRSRQQRRSRRSSSTSRRTVUUTSPNNMLKKKJIHHHHHHGHHHGHHGHHHHHGGGFFGHHGHHHHHHHHGHEFFGFGGGHHHHGHHHHHHHHHHGGGGGHHIJKKKKKKKKKMNQSUYdhkqvzzyuqnkgdaYXWWXYabccdcaYXWUUTSSSSSRRRSSTUVVXXXWWUTRQPOONLKKKJIHHHGGGGHHHHHGGGHHHHHHHHHHHHHHHHHHHGHFFFFFFFGGGGGGGGHIIHHHHHHHGGHHHHIGHHHIIIKKLNNNOQRSUWXZcfgihgedbaYXXXXXWWVUVVVUUUUUVVWXWVTSSRQPOOOOPPPOMMLLLLLKKJJIIIHHHHHHHHGGGGHHGGGGHHHHHHHHHGHGHHHGHGGGGFFGGGHHHHHHHHHHGGHHHHHHHHHHHIIJJJJJJJKLMMNNNOOOPRSVXabceimppolifdaZYXXXXWWWVVUTSRQPOOOOOONNNNMMMLKKJJJJIHHHHHHHHHHGGHHHHHGHGHGGHGHGHGHGHGHHHGHHHHHFFFGHHGFFFGGGGGGGFFFFGGGGGGGHHHHIIIIJKKLLMMLLMOQQRSSTTUUVVWWXXYZaabaaZZZYWWVWWWWXYZabbbaaacddcaXSQOONMLLKLLLKJIIIIHHHHGGGGGGHHHHGHHHHHHHGHHHHHHGHIHIHHEEFFFGGGGFGGGGGGGGGGGGGGGHHHHIIIIIJJJJJKLNPSVYacgikjhfdcaZaabbaabcdeeeeeeedbZYWXWVUTUUTTUWYYZbbaZXWUSRPONNNLKJJJJIHHHGHHHHGHHHHHHHHHHFHIHHHGGHHGGGGHHHEEEEFFFGGGGGGGGGGGGGGHHIIIHGGHIIJJKKKKLLMNPRTVXXXXZaZZZaaabbbaaaZZZZYYYXXXXWVUUUVVVUTTTSSSSTTUUUTRRRQOOOONMJKLKJJJHGHHHHHHHHFFGHHHHHHHHHHHHHHHHHHHHHGGGGGGGGGHHHHHGGGFFFGHHGGHHHHHHHGHHHIIGHIJKKKLMNOOPPQRSTUWXZabdefffeecbZXWVVVVUUTRSSTTSRRQQQQQQQQONNMMLKKJIIHIHIIHHIHHHHHHHGGHHHHGHGGGGGGGGGGGHHGHHHHHHHFFFFGFEDEFFGGHGHHHIIGFGFFGFGFFEEEGIJJKKKKLLMNPQRSTVVVVVVVVVVVWXYaeghgedcaXWWVUUTTSSSTUUUUUUUVVTSRPOMLKKKKKKKLKJJIIHHIIIIIHGGIIHGGGGGGGGGGGHHHHHHHHHHHHFFGGGGGGHHHHGFGHHHGGGHIIIHHFGHHIIIJKJKKKKLMNPQTUWXaZYXYabbaZZaaaZZZXVTRRQQQPPPOOOOOPQQRSSTUVWXXXXXXVTSRQPONMLKJJJJIJIIHHGGHHGGGHHHHGHGGGGGGFHIHHHGGGGGGGGGGGHHHGGGGFFFFFFFFGIIIHIJIHIJIJKJJJKKKKNOPQTVWWWWXXYYYXXWVUUUUUUVVVVVVUTUTTSRRQPOPPPQRRSSSSSSSSRRQPONMLKJIIIIIHIHHHIHGHGGGGFFGGHGFFGFHHHHHHHHHHHHHHGGGGHGGFGGFHHHHHHHIHGFFGGGGGGGGHIIIIIJJJJKKLLMNOPQRSTUVWXYZbdgijkkjgecZXWVUUTSRQQQQQQQQQQQPPOONNMLKKJKJJIIIJJIIIHHHHGGHHGHHGGGHGGGGGGGGGGGGGGGHHHHIHGFFFFFFFFFFFFFFFGGGGFFGGHIHIIJJKKKKJLKJJJKKKLKLNOQRSTUVWVVVUUTUUVWXXYZZZZYWVVUUTSSRRRRSUVVWXXYZaZYWUSRQOMMMLKKKJHHHHGHHHHIHHHHHGGGGGHHGHGFGGHHHIHHHGGGGFGGGGGGGGGFGGGGGHHGGHGFHHJIIHHGGHHGHGHIIJKKKKMNOPRTUVWWXWWWVVUUUTSQPPOOOPQQQRRRRRRRQQQQQQRRRRQRQPQRPNMLKJJJJIIHHHIHHHHHHHHHHHHGFGGHHGFFGIIIIHHGGGGGHHHHFFFGHHHGGGGGGFFGFGGGGGHHHHGHIIHHIJIIJKKKLMNOQRSSSTUVVWWWXXXXYYXYXYYYZZaaZXWVUUTSSRRQQQQQQPQQQQPPPPOONMMLLLKKJIIIIHIIIIHHIIHFGHHHHHHGFGGGGGGFFGHGGHHGGGHHGHGGGGFFFFFGFGGGGGHGHHHHIHHHHHHIJKKJKKKLLMNOQTUWYabcefgiijjiihhgfdcbaZYWVWWVVVVVUUTTTSSRRQQPONNMMMLLLLLKKKJJIHGHHHHHHHHHHHHHHHHHHHHHHGHGGGGHGGGGGGGGHHGGGGGGGHIHHGGEGGGGFFGFFFFGIHHIIIIIIIJJJJJKLORUVXYZaabbaaaaaabbccccbbaZYXXWWVVWWWXZbbbbbbaaYXVTSRPOMKKKKJJIIJIIIHHHHHHHHHGFEFGHFGGGGHHFGGHHHHHHHHHHHHHHHHHHHHHHHGFFFGHHHHHHHGGGGGGHIIIIJJKKKLLMNPQRUXadgijkllkjhfdcbaZYXWWWWXYXWUTSQQPPOOOOOOPRRSSTTUUUUTSRPNMMLKKKJJJJIIHGGGGGGHGGGGGGGHFGGGGGHIHHGHHGGGFFGGGGGGGGGGGGGHHGGGGGGGHHHGHHHIIJKKKLLLLMOOOQRRSTVYbfinsvyzxuqmifdaZYXWVUSRRSRQPOMLLLKKLLMPSTVWXXWVTSSRQPONNMLKKKKJIJIHHGHHHHHHHHHHHGGHGHHHHHHHHHGGHGHIGGHGHGGFEFGHHHHGGGHGGGGGGGGFFGGGHJJKKKLLLLLLNPPRSUWXYabbccccddddcbaZYXXWVUUTTTTTTTTSSSSSSSRRQQPPOONNMMLLLLLKKKKJIIHHHIIIIIHGFFGGFGGGHHHHHGHHHHHHHHHHHGFGGHHHGGHGGGGFGIIHHHHGGGHGGGGGFGGHIIJJKKKKKMNNNNNNOPQQSTUUUUUUUUUVWXYYYYYXWWWXYZaabcdedbaZYXWVTSQPMLLKJJJJJJJHHHHHHHHIGHIIHHHGFFFGHHGGGFFFFHHHHGFFGHHHGGFFFFFEFEFFFGGGHHGFGFFFFFFFFHHHIJIIJJLLLLMNOPRVWWVUUTSSRSTUWXYYYYXWVUTSRQPONLKKJJJIIHIHHIIJKLMNNMMMMMLLLKKKKKKKJIHHHHHGGHGHHHHHHGHGHGGHHHGGHHHHGGGGGHGFFFGGFGHGGGGFFFFFFFGGGGGGGIJJJJKKKKKKLMNOPRSTVWZcegikmmmmljigfdbaZYYXWXXXXXYXWVVUUTTTTTTUUUVVWWVTTUTSRQPONMLKKJIGGGGGGGGGGGHHHHHHHHHHHHHHHHHHHHHHHHHGGGGGFFGHGGGGGGGIHHGGGFHIIIIHHIIIHHGHJJKLLLLNOOOPPQQSSTTSRRQPONNOPQQRRRRRSSRSRQPONLKKLNPPQQRRRRRQPPNMLKKJJIJKKJJJIHHHGHGGGGGGGHIHGGGHHHGGGGIIHHGGGHHHGHHGGGGFFGGHGGGGGFFFFFFFFEEEEGIJIIIJJJJJJJKKLMOPQRSSTUVVWXXXXYZbfjnrtvvroliedbaaaaaaZZZZaaaaaabbaZWSQPONLKJJJJJJIIHIHGHHHHHHHHHHGGGGGGGHIIHHGGGGGGHHHHHHHHHHHGHHHHGGFFGHHGGGGFFFFGHHHGFHJJJKLKKKLLNPRUWadfkprttrpmjgffffffgffeeedcaaZZZZZZZXWVUTSSSTTUUUVWXWVUSPPOLLJJIIIHHHGHIIHHHHHHHHHHHHHHHHHHGHGHGHHHHGGGHHHHHHGFGGHHHGGGGGGGGGGHIIHHHHHIJJIIKKKLMNOOPQRSTUUWXYZabefhhgffeeeeddcaaYYXWWWWWWWWWWWXXXXXWVUVVUUUTSSSRPOONMLKJIHHGHHHHGHHGHHGGGGGGGHHIHHHHHHHHGHHHGFFFGGGGGGGGGGGGGHGGHHHHHGGGFGHHIJJKLKKKKLLMMNOQRSTUVXZZZbcefhjkkkihfcbaZYZYWVVVVVVVVVWWWWWWVUTRQOONNMKJIJJJJIIIHHIHHIHGGHHHHHHGGFFFFGGHHHHHGGHHGHHGFEDGGGGGGGHGGFFGHHHGGGGFFFGFHHHIIHIJKKLLLLLMMNQSUWacefecaZXVUTTTUWYZbdeeeedcbZYYZbdggihgfeeeeedbZWUTTRRPNNNMLKJIIIHHHJIHGHGGGGGFGHHHHHHHHHHHHHIHGGGHHHHHHGGGGGHHHHGFGGGGGGGGGGGIIIHIHHHIIIJJKKKKKKLMMOPSUWXbccbaZYXXWWWWWVWVWWWWWVUUTSSRRRQQQRSTVWXXXXYXXXXXXXVSSSRQPNMLKKJIIHGGHHHHHHHHHHHHHHHHHHGHHHGHGHGGHHHFFGGGGGGGFFFGGGGGGGFFGIIIIHHHHHIJJJIKJKKKKKLMMNOQTUWYZYXYZbcccbbbaaaZZYXWVUTSSSRRSSSSSSSSSRRQQRRSSSSSSRPPOMKKKJJJJIHGHHHHHHHHHGHHHGHHHHGHGHGHHHGGGHGGHGGGGHGFFGGGGGGFFGHGGGGGFFGHHHHHIIIHIIJJKKKKKLLMMMNOQSTUVWYZZabcdffghgeedaXVUSSRRRRSRRSSRQQPPOOOOOONMLLKKJJIIIIIIIHHHGGGHHHHHHHHHHGGFFGHHHHHGEEFHHHHHHHGGGFFFFFEFFFFEEEFFFFFFFGHHHHIIHHIIIIIKJJJKLMNOPTUVWWVWWVVVUUUUVWXZacddeedbbaZXWVUTTTTTSRRRQPNNOOPPPONMMMNNMLKKJJJJIHGHHHHHHGGGGHHHHHHHHGGHGGHHHHHHHHHHFFFFFFFGGFFEEEEFFGGGGGFFGHHFEFFGHIJIJJJJJJJKMORTUUXacdcbZXWVUUUVVVVWXZZbbaYXVUTRRRSRQQQPOOPRSSSTTUUTSRQPONNNMLKJIIHHHHHHHHHGHHHHHHHHHHHHHHHHHHHHHGGGFFGGGHGFFFFFFFFGFFFFGGHGGGGGGFFGHIHHHIIIIGHJKLLLMMNPQRTVXZabdeedcbaZZYXVVUTSSSSSSSSSRRQQPOOOPPPPPOOOONNONNMLKKJJIIHHHHHHHHHHGGGGGHHIIHIHGGHHIIIHGHGGHIIIFFGFFGHHHGGGGGHGGGFFGGFFGHHHGGGHHIIIJJJHIJJKLMOPPQPQQQRRRRTUWXXXYZaaZXXXXWWWVVVUUTUUSSSRQPPOOOOOOOOONMKKKKKJIIIHHHHHHGHHHHGGGGGFGGGGGGHHHGGIIHHHHGHIIIEEFGFFEFFGGFEGGGFFFFFFFEFFFEFGIHGFFFGHIJJKLLMMNORSTUWYZaZZZZYXXVUTRPNNNNNOONNLKKKLLMNNNOOPPPPOOPPPQQPONNMLKJIIIJKKJIIHHIIIHGGGHHHGHHHGHHHHHHHHGGGHHHHHFGGGGHGGGGGGFFGGGGGHGHGFFHGGGHHHHIJIHGGIIJKLLMNOQTUVXZacefghgecaZZYYYYXXWWVUTSSSQPPQQQQQPQRRRPPOPPPPOONNMMLKKJJJIHHHHHHIHGHGHGGHHHGHHHHIIHHHHGGHGFGHGEGGFFGFFFFGFFFFGGFGGGGGGGFFFFFHGFFHIHHHHIIIIJJJJJJLMNPQTUVWYZbbccefedccbZXWVVVUTSSRRQQQPPOOOOOPONNMLLLLKIHHIIHHHHGHHHHGHGHHHGHHHGHHHGHHHHHHHHHHHHHHHHHHEFFEFFFGGFEEFFFEFFFGFEFFFGGGGGFFHGGHIIIJJKMOQSVWYZYXXWWVVVUUTTTSRQPOOOONMMLKKLLKKKKMMMMMNOOOOPQQPOONMMLKJJJIIHHHGGHGGGHHGGHHHHHHHHHHHHHHHHHHHHHHGGHHHHGGFFGGGGFEFGGHGGGGGGHGHHGHGGGGGHGHIJIHIIIJLMNNOOOQRSTTUUVZZZZYYXWWUTSRQPOOOONNNNNOOOOONNNOOPQRRSRPOONMMLKKJJKJIIIIIHGGGHGFGHHHGGGHHGGGHHHHHHHGGHHHHHHHGGGFGFFGGGHHGGGFGGGGGGGGGGGFFFGHHHHHHHHHIIIJKLMNOPQSTUUUVXYZceffgfbYXVTSRQQQPOOONNNNNNOOOONNNNOPPOONMLLMMMLKJIHGGHGGHHGHGGGGGGGHHHHHHHGHHHGGFFGGHHHIIIHGGGFGGFFFFFFGGGHGGGGGGFGGGGGGHHHGGGGHIIJIIKKLMOPQQRSSSSSSSSTTTTSSRQQPOMMLKJJIIIIIIHHHHHIIIIIIHHHHHHGGGGGHHHHHHHHHHGHHGHHHGGGGGGHHHGIIHHHHHHHHHHHHHHHHGGGGHIHHHHGGGGFFFFGGGGGGGGFGGFFGHIJIIIIJJJKJLOPRUVWXXXXWWXYYZZaabcccaaZZYYYYYYYYYYYYXWWUUUTTTTTTUUSSSRRRQPONMLKIIIIIJHHGHGHHHHGGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHGGFFFGFGGGGGGFFGFFGGGGGFEEEGGGIIIIIJKKKLMOPQSTVXYabcddedcbaaZaababaaZYXWVVUUTSSSRQQPPOOOONNOOOONMMLLLLJJIIIIGGGFGHHHHHHHGGHHHHHHHGFFFFGHHHHHHHHHHHHHHHHGGGFFFGGGGHHGFGGGHHHGGGHHHHHIIJJKKKLMOOOPQQRRRRRRSUVXYaceeedcbaZYWWVVVVVVWXYZZaaaabbaXWUSQPNMKJJIIHGGIHGHHHHHGHHHHHHGHHGHHGGGHHHGGHHHHHHHHHHHHHGHHHIIHGFFGIHHHHHIHGGGFGFGFFGHHGHHGHHIJKLMNPRTWZbcddeffdcbZYWVUTTSRRRQPPPOONNMMMMMNNOOPPPPPOOPPPPPONMLKKKKJIHHHHHGGGGHHHGHGGGGGGGGHHGGGGHGHHHGGHGHHHHGGGHHHGHHHHGGGGHHGGHGHHGFFFGGHHHHGHHIIIJKLMPQSUVVUUTTUVYbefgfdbZYXVUUTTTTTTSSRQQQPPPQQQPPQQRRRRQQPQRQQPPONNNLKKJJIHHHHHHHHHHHHIHHGHHHHGGGGHHGHHHHHHHHGGGHGGHGGGFFGHGGGGGGGGGHGFFGFGGGFFFFFFGIIIJJIJKKLLMMLMLLLMNNPPQRSTUVUTSRQQPPOOOOOOOOOOOOOPOPPPPOONMMMLLKKLKJJJIIHHIIHHHHHHHHHHHHGGGGGGGGHHHGHHHHHGGGHGFIHHGIHHHHHGGGGFGHHHGGGGGGGHGGGHGHIHHIHHHIJKLNQSVYbefhhhhgfecaZYXWVUUUUVXYYXVTSSRRRRRRSUUUVWXZaaaYVTRQONMMLKKJJHHHHHHGHGHHHHHGGHHHGHGHGGHGGHGHHHHHHHHHGHHGGHGGHIHHHGGGGGGGGGGGHHGGHGHHFGGGIJJKKJJJLLMOQTXafiorrqpnkgebYXWVUUTTTSSSQQPOOOONNNNNOPQRRRSRRQQPPPPOONNNLKJJIIIHGGGHHGGHHHHHHHHHHHHHHHHHHHHHHHGGGGGHGGHIIGGGGGFGGGGGGGHHGGHHIJJHIIIIHIJIKKKKKKLMOPPRTVWXXXXYaccdfeecaZYXWVUUTSSRRPPPOPPPPPPQQPPOPPOOOOOOOONMLKKJIHHHHHHHGGGHGFGHHFEFFGGHHHHGGGHGHGGGGGGHHHHHGHHGGEFGHGGHGHHGGHHHGGGGGFEEEFGHIHHHGGIJJJJKKLLMNQQRSTUUVVWWWWWWWWWWWVVUTSQQPPPPOOOOOONNNNNNNNNNNMMMLKJIIIIIHHGGGGHGGHHGGHHHHHHHHHHHHHHHHGGGGFGGGFFHGGGGGGFFFEEFFFGGHHHHHHGGHHHHHGHGJKKKKKKKKJKMNPQTWYacbaaaaccaaZZYYYYYZYXWVUUTSSSSTSRRQQPPQQRSTUVXZbaZWRPOMLLKJJJIIIHHHHHHHGGGGFHHGGGHHHHHHHHGGHHHHHHHH';
+const AL = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', NP = 80, NS = 150;
+const DA = Float32Array.from(PU, (c) => 80.36 * (AL.indexOf(c) / 61) ** 2 - 6.05);
+const F0 = 0.7477741603725, P = 1 / F0, DM = 12.444, KD = 4.148808e3; // ATNF: spin frequency, dispersion measure
+const pv = (n, u) => { if (u < 0 || u >= 1) return 0; const x = u * (NS - 1), i = x | 0, f = x - i, r = (n % NP) * NS; return DA[r + i] * (1 - f) + DA[r + Math.min(i + 1, NS - 1)] * f; };
+const sm = (a, b, x) => { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+const mix = (a, b, x) => a + (b - a) * x;
+const hh = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const nz = (x) => { const i = Math.floor(x), f = x - i; return mix(hh(i), hh(i + 1), f * f * (3 - 2 * f)); };
+const n2 = (x, y) => { const i = Math.floor(x), j = Math.floor(y), f = x - i, g = y - j, u = f * f * (3 - 2 * f), v = g * g * (3 - 2 * g), k = i + j * 57.3;
+  return mix(mix(hh(k), hh(k + 1), u), mix(hh(k + 57.3), hh(k + 58.3), u), v); };
+const INK = [36, 34, 31], VER = [181, 64, 31], GOLD = [176, 138, 62], SEP = [140, 122, 91], PAP = [230, 220, 198];
+const rgba = (c, a = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`;
+const lerpC = (a, b, x) => a.map((v, i) => mix(v, b[i], x));
+const SERIF = 'Georgia,"Times New Roman",serif';
+
+const cv = document.getElementById('c'), cx = cv.getContext('2d');
+const mq = matchMedia('(prefers-reduced-motion: reduce)');
+let T = 0, last = -1, W = 0, H = 0, paper = null, yawOff = 0, drag = null;
+cv.addEventListener('pointerdown', (e) => { drag = e.clientX; });
+addEventListener('pointermove', (e) => { if (drag !== null) { yawOff = Math.max(-.6, Math.min(.6, yawOff + (e.clientX - drag) * .004)); drag = e.clientX; } });
+addEventListener('pointerup', () => { drag = null; });
+
+// parchment: fibre, foxing and a soft vignette, rendered once per size
+function makePaper() {
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'), im = g.createImageData(W, H), d = im.data;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const u = x / W - .5, v = y / H - .5, vig = 1 - .5 * (u * u + v * v);
+    const fib = n2(x * .9, y * .06) * .45 + n2(x * .02, y * .02) * .6 + hh(x * 1.31 + y * 7.77) * .3;
+    const fox = sm(.7, .9, n2(x * .006 + 4, y * .006 + 9) * .6 + n2(x * .03, y * .03) * .4);
+    const k = (.94 + .035 * fib - .05 * fox) * vig, i = (y * W + x) * 4;
+    d[i] = PAP[0] * k + 4 * fox; d[i + 1] = PAP[1] * k; d[i + 2] = PAP[2] * k - 6 * fox; d[i + 3] = 255;
+  }
+  g.putImageData(im, 0, 0);
+  return c;
+}
+
+const caption = (t) => [
+  ['I', 'Chart record', `period ${P.toFixed(6)} s`, 1 - sm(4.6, 5.4, t)],
+  ['II', 'Dispersion', `DM ${DM} pc cm⁻³   delay ∝ ν⁻²`, sm(4.8, 5.6, t) * (1 - sm(9.6, 10.4, t))],
+  ['III', 'Eighty successive pulses', 'sub-pulses drift across the window', sm(9.8, 10.6, t) * (1 - sm(14.4, 15.2, t))],
+  ['IV', 'Relief', 'one rotation every 1.337 s, eighty times', sm(14.6, 15.4, t)],
+];
+
+// ---- I. chart record: fixed paper, the pen sweeps once across 5 s ----
+const C1 = { x0: 110, x1: 1170, y0: 220, yb: 500, pps: 212 };
+function chart(t, a) {
+  const { x0, x1, y0, yb, pps } = C1;
+  cx.lineWidth = .6;
+  for (let k = 0; k <= 25; k++) { const x = x0 + k * .2 * pps; cx.strokeStyle = rgba(SEP, a * (k % 5 ? .22 : .5)); cx.beginPath(); cx.moveTo(x, y0); cx.lineTo(x, yb + 30); cx.stroke(); }
+  for (let k = 0; k <= 15; k++) { const y = y0 + k * 20; cx.strokeStyle = rgba(SEP, a * (k % 5 ? .18 : .4)); cx.beginPath(); cx.moveTo(x0, y); cx.lineTo(x1, y); cx.stroke(); }
+  cx.fillStyle = rgba(SEP, a * .9); cx.font = `12px ${SERIF}`; cx.textAlign = 'center';
+  for (let k = 0; k <= 5; k++) cx.fillText(k + (k ? '' : ' s'), x0 + k * pps, yb + 48);
+  const tp = Math.min(t, 4.99), xp = x0 + tp * pps, tn = (n) => .35 + n * P;
+  const val = (s) => { let v = 2.4 * (nz(s * 38) - .5) + 1.3 * (nz(s * 160 + 7) - .5); for (let n = 0; n < 4; n++) v += pv(n, (s - tn(n)) / .09); return v; };
+  cx.strokeStyle = rgba(INK, a * .92); cx.lineWidth = 1.15; cx.lineJoin = 'round'; cx.beginPath();
+  for (let x = x0; x <= xp; x += .5) { const y = yb - val((x - x0) / pps) * 4.8; x === x0 ? cx.moveTo(x, y) : cx.lineTo(x, y); }
+  cx.stroke();
+  // pen arm and nib
+  const yn = yb - val(tp) * 4.8;
+  cx.strokeStyle = rgba(INK, a * .35); cx.lineWidth = 1; cx.beginPath(); cx.moveTo(xp, yn); cx.lineTo(xp + 60, yn - 70); cx.stroke();
+  cx.fillStyle = rgba(VER, a); cx.beginPath(); cx.arc(xp, yn, 3.2, 0, 7); cx.fill();
+  // dimension lines between successive spikes
+  cx.strokeStyle = cx.fillStyle = rgba(VER, a); cx.lineWidth = .9; cx.font = `italic 13px ${SERIF}`;
+  for (let n = 0; n < 3; n++) {
+    const xa = x0 + (tn(n) + .045) * pps, xb = x0 + (tn(n + 1) + .045) * pps, k = sm(tn(n + 1) + .1, tn(n + 1) + .6, tp) * a;
+    if (k <= 0) continue;
+    cx.globalAlpha = k; const y = y0 + 18;
+    cx.beginPath(); cx.moveTo(xa, y - 6); cx.lineTo(xa, y + 6); cx.moveTo(xb, y - 6); cx.lineTo(xb, y + 6); cx.moveTo(xa, y); cx.lineTo(xb, y); cx.stroke();
+    cx.fillText('1.337 s', (xa + xb) / 2, y - 7); cx.globalAlpha = 1;
+  }
+}
+
+// ---- II. dispersion: channels log-spaced 1414 -> 81.5 MHz; arrival delay KD DM f^-2 ----
+const NC = 30, FH = 1414, FL = 81.5, C2 = { x0: 170, x1: 1170, y0: 205, y1: 545, pps: 106 };
+const fq = (k) => Math.exp(mix(Math.log(FH), Math.log(FL), k / (NC - 1)));
+const dly = (f) => KD * DM * (f ** -2 - FH ** -2);
+function disp(t, a) {
+  const { x0, x1, y0, y1, pps } = C2, dd = 1 - sm(8.4, 9.7, t), tn = (n) => .3 + n * P;
+  const ych = (k) => y0 + k * (y1 - y0) / (NC - 1);
+  // axis furniture
+  cx.strokeStyle = rgba(SEP, a * .55); cx.lineWidth = .7; cx.beginPath(); cx.moveTo(x0, y1 + 22); cx.lineTo(x1, y1 + 22);
+  for (let s = 0; s <= 9; s++) { cx.moveTo(x0 + s * pps, y1 + 22); cx.lineTo(x0 + s * pps, y1 + 28); }
+  cx.stroke();
+  cx.fillStyle = rgba(SEP, a * .9); cx.font = `12px ${SERIF}`; cx.textAlign = 'center';
+  for (let s = 0; s <= 9; s++) cx.fillText(s + (s ? '' : ' s'), x0 + s * pps, y1 + 44);
+  cx.textAlign = 'right';
+  for (const f of [1414, 611, 430, 318, 151, 81.5]) {
+    const y = y0 + (y1 - y0) * Math.log(FH / f) / Math.log(FH / FL);
+    cx.fillText(f + (f === 1414 ? ' MHz' : ''), x0 - 14, y + 4);
+    cx.beginPath(); cx.moveTo(x0 - 8, y); cx.lineTo(x0 - 2, y); cx.stroke();
+  }
+  // channels drawn bottom to top so higher frequencies sit behind lower ones
+  for (let k = NC - 1; k >= 0; k--) {
+    const f = fq(k), y = ych(k), ka = a * sm(5 + k * .055, 5.5 + k * .055, t);
+    if (ka <= 0) continue;
+    const off = dly(f) * dd, wd = .09 * (1 + .6 * (FL / f));
+    const v = (s) => { let r = 1.1 * (nz(s * 30 + k * 17) - .5); for (let n = 0; n < 8; n++) { const u = (s - tn(n) - off) / wd; if (u > -.01 && u < 1.01) r += pv(n + k, u) * (.45 + .55 * hh(n * 13 + k)); } return r; };
+    cx.beginPath(); cx.moveTo(x0, y);
+    for (let x = x0; x <= x1; x += 1) cx.lineTo(x, y - Math.max(-2, v((x - x0) / pps)) * .5);
+    cx.lineTo(x1, y + 3); cx.lineTo(x0, y + 3); cx.closePath();
+    cx.fillStyle = rgba(PAP, ka * .96); cx.fill();
+    cx.strokeStyle = rgba(INK, ka * .85); cx.lineWidth = .8; cx.stroke();
+  }
+  // the nu^-2 law drawn through each pulse
+  const kd = a * sm(6.6, 7.6, t);
+  if (kd > 0) {
+    cx.strokeStyle = rgba(VER, kd * .9); cx.lineWidth = 1.2; cx.beginPath();
+    const kmax = (NC - 1) * sm(6.6, 8, t);
+    for (let n = 0; n < 8; n++) for (let k = 0; k <= kmax; k += .25) {
+      const x = x0 + (tn(n) + .045 + dly(fq(k)) * dd) * pps;
+      if (x > x1) break;
+      k ? cx.lineTo(x, ych(k) - 8) : cx.moveTo(x, ych(k) - 8);
+    }
+    cx.stroke();
+    const xa = x0 + (tn(0) + .045) * pps, xb = xa + dly(FL) * dd * pps, yl = y1 + 8;
+    cx.globalAlpha = kd * (1 - sm(8.4, 8.8, t)); cx.fillStyle = rgba(VER);
+    cx.beginPath(); cx.moveTo(xa, yl); cx.lineTo(xb, yl); cx.stroke();
+    cx.textAlign = 'center'; cx.font = `italic 13px ${SERIF}`; cx.fillText(`${dly(FL).toFixed(2)} s later at 81.5 MHz`, (xa + xb) / 2, yl - 6);
+    cx.globalAlpha = 1;
+  }
+}
+
+// ---- III/IV. eighty pulses as a hidden-line stack that turns into a gilded relief ----
+const XW = 1, ZW = .95, HY = .0062, STEP = 2, SEG = 6, NB = 8;
+const LX = -.42, LY = .8, LZ = -.43;
+function relief(t, a) {
+  const g = sm(14.6, 18.2, t);
+  const yaw = .62 * sm(13.6, 21, t) + yawOff, pit = mix(mix(1.02, .5, sm(10, 13.5, t)), .34, sm(14.6, 20, t));
+  const Dd = mix(mix(3.4, 3.0, sm(10, 13.5, t)), 3.05, sm(14.6, 20, t)), Fc = 980;
+  const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pit), sp = Math.sin(pit);
+  const pr = (x, y, z) => { const xr = x * cy + z * sy, zr = -x * sy + z * cy, dp = Dd + zr * cp - y * sp; return [640 + Fc * xr / dp, 372 - Fc * (y * cp + zr * sp) / dp]; };
+  const X = (i) => (i / (NS - 1) - .5) * 2 * XW, Z = (r) => (.5 - r / (NP - 1)) * 2 * ZW;
+  const hv = (r, i) => Math.max(DA[r * NS + i], -1.5) * HY;
+  const shades = [];
+  for (let b = 0; b < NB; b++) shades.push(lerpC(PAP, lerpC([70, 44, 16], [252, 220, 146], (b / (NB - 1)) ** 1.15), g));
+  const inkC = lerpC(INK, [40, 26, 10], g), lw = mix(1.05, .7, g);
+  for (let r = 0; r < NP; r++) {
+    const z = Z(r), ridge = [], base = [];
+    for (let i = 0; i < NS; i += STEP) { ridge.push(pr(X(i), hv(r, i), z)); base.push(pr(X(i), -.02, z)); }
+    const paths = Array.from({ length: NB }, () => new Path2D());
+    for (let s = 0; s < ridge.length - 1; s += SEG) {
+      const e = Math.min(s + SEG, ridge.length - 1), i = Math.min((s + SEG / 2) * STEP, NS - 2);
+      const dx = (hv(r, i + 1) - hv(r, i)) / (2 * XW / (NS - 1)), dz = r < NP - 1 ? (hv(r, i) - hv(r + 1, i)) / (2 * ZW / (NP - 1)) : 0;
+      const sx = dx * .45, sz = dz * .45, nl = Math.hypot(sx, 1, sz), lam = Math.max(0, (-sx * LX + LY - sz * LZ) / nl);
+      const p = paths[Math.max(0, Math.min(NB - 1, ((lam - .35) * 1.6 * NB) | 0))];
+      p.moveTo(...ridge[s]); for (let j = s + 1; j <= e; j++) p.lineTo(...ridge[j]); p.lineTo(...base[e]); p.lineTo(...base[s]); p.closePath();
+    }
+    for (let b = 0; b < NB; b++) { cx.fillStyle = rgba(shades[b], a); cx.fill(paths[b]); }
+    cx.strokeStyle = rgba(inkC, a * .92); cx.lineWidth = lw; cx.beginPath();
+    ridge.forEach((q, j) => (j ? cx.lineTo(...q) : cx.moveTo(...q))); cx.stroke();
+    // drifting sub-pulse crests picked out in gold
+    const kg = a * (1 - g) * sm(10.4, 11.6, t);
+    if (kg > 0) {
+      cx.strokeStyle = rgba(GOLD, kg); cx.lineWidth = 2; cx.beginPath();
+      for (let j = 1, on = 0; j < ridge.length; j++) { const hi = DA[r * NS + j * STEP] > 16; if (hi) { on ? cx.lineTo(...ridge[j]) : cx.moveTo(...ridge[j - 1]); } on = hi; }
+      cx.stroke();
+    }
+  }
+  // plinth: front face and engraved ticks
+  const f0 = pr(-XW, -.02, Z(NP - 1)), f1 = pr(XW, -.02, Z(NP - 1)), f2 = pr(XW, -.16, Z(NP - 1)), f3 = pr(-XW, -.16, Z(NP - 1));
+  const s0 = pr(XW, -.02, Z(0)), s1 = pr(XW, -.16, Z(0));
+  cx.fillStyle = rgba(lerpC([196, 186, 164], [92, 64, 28], g), a);
+  cx.beginPath(); cx.moveTo(...f1); cx.lineTo(...s0); cx.lineTo(...s1); cx.lineTo(...f2); cx.closePath(); cx.fill();
+  cx.fillStyle = rgba(lerpC([214, 204, 182], [128, 92, 42], g), a);
+  cx.beginPath(); cx.moveTo(...f0); cx.lineTo(...f1); cx.lineTo(...f2); cx.lineTo(...f3); cx.closePath(); cx.fill();
+  cx.strokeStyle = rgba(inkC, a * .7); cx.lineWidth = .8; cx.stroke();
+  cx.beginPath();
+  for (let i = 0; i < NS; i += 5) { const p = pr(X(i), -.02, Z(NP - 1)), q = pr(X(i), i % 25 ? -.05 : -.08, Z(NP - 1)); cx.moveTo(...p); cx.lineTo(...q); }
+  cx.stroke();
+  cx.fillStyle = rgba(inkC, a * .75); cx.font = `11px ${SERIF}`; cx.textAlign = 'right';
+  for (const r of [0, 19, 39, 59, 79]) { const p = pr(-XW - .05, 0, Z(r)); cx.fillText(String(r + 1), p[0], p[1] + 4); }
+}
+
+function frame(ms) {
+  requestAnimationFrame(frame);
+  const red = mq.matches;
+  T += last < 0 ? 0 : Math.min((ms - last) / 1000, .5) * (red ? .2 : 1);
+  last = ms;
+  const w = innerWidth, h = innerHeight;
+  if (w !== W || h !== H) { W = cv.width = w; H = cv.height = h; paper = makePaper(); }
+  cx.setTransform(1, 0, 0, 1, 0, 0); cx.drawImage(paper, 0, 0);
+  const s = Math.min(W / 1280, H / 720);
+  cx.setTransform(s, 0, 0, s, (W - 1280 * s) / 2, (H - 720 * s) / 2);
+  const t = T, c = caption(t);
+  if (c[0][3] > 0) chart(t, c[0][3]);
+  if (c[1][3] > 0) disp(t, c[1][3]);
+  if (t > 9.8) relief(t, sm(9.8, 10.8, t));
+  // plate heading
+  cx.textAlign = 'left'; cx.fillStyle = rgba(INK, .85); cx.font = `15px ${SERIF}`; cx.letterSpacing = '4px';
+  cx.fillText('PSR B1919+21', 64, 74);
+  cx.letterSpacing = '1px'; cx.font = `11px ${SERIF}`; cx.fillStyle = rgba(SEP, .95);
+  cx.fillText('CP 1919  ·  CAMBRIDGE 1967', 64, 94);
+  for (const [n, a, b, k] of c) {
+    if (k <= 0) continue;
+    cx.globalAlpha = k; cx.fillStyle = rgba(INK, .8); cx.font = `italic 15px ${SERIF}`; cx.letterSpacing = '0px';
+    cx.fillText(`${n}.  ${a}`, 64, 128); cx.fillStyle = rgba(SEP); cx.font = `12px ${SERIF}`; cx.fillText(b, 64, 148);
+  }
+  cx.globalAlpha = 1; cx.letterSpacing = '0px';
+  cx.strokeStyle = rgba(SEP, .5); cx.lineWidth = .7; cx.strokeRect(40, 40, 1200, 640);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

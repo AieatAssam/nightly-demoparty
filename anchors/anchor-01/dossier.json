@@ -1,0 +1,69 @@
+{
+  "topic": "Sand on a bowed plate gathers on the lines that do not move: Chladni's nodal figures map where a standing wave is still.",
+  "domain": "chladni-plate-nodal-lines",
+  "wildcard_chosen": true,
+  "summary": "Ernst Chladni bowed sand-covered metal plates and recorded the figures the sand settled into. The sand is thrown off the vibrating regions and comes to rest along nodal lines, where the plate stays still. Each resonant mode has its own figure, and higher modes have more nodal lines. Explaining the figures took a Paris Academy prize contest, which Sophie Germain won in 1816. Today the patterns are computed directly from the plate equation with finite elements.",
+  "facts": [
+    {
+      "claim": "Chladni first published his technique in 1787 in the book Entdeckungen über die Theorie des Klanges (Discoveries in the Theory of Sound).",
+      "source_url": "https://en.wikipedia.org/wiki/Ernst_Chladni",
+      "source_title": "Ernst Chladni"
+    },
+    {
+      "claim": "The technique was to draw a bow over a metal plate whose surface was lightly covered with sand; the plate vibrates and the sand settles into a pattern.",
+      "source_url": "https://en.wikipedia.org/wiki/Ernst_Chladni",
+      "source_title": "Ernst Chladni"
+    },
+    {
+      "claim": "Chladni's law relates a circular plate's mode frequency to its m diametric and n radial nodal lines as f = C(m + 2n)^p, with p roughly 2 for flat circular plates.",
+      "source_url": "https://en.wikipedia.org/wiki/Chladni%27s_law",
+      "source_title": "Chladni's law"
+    },
+    {
+      "claim": "After Chladni demonstrated vibrating plates in Paris in 1808, the Institut de France set a prize for a mathematical theory of elastic surfaces that agreed with the experiments.",
+      "source_url": "https://mathshistory.st-andrews.ac.uk/Biographies/Germain/",
+      "source_title": "Sophie Germain - Biography (MacTutor History of Mathematics)"
+    },
+    {
+      "claim": "On 8 January 1816 Sophie Germain became the first woman to win a prize from the Paris Academy of Sciences, for her work on the vibration of elastic surfaces.",
+      "source_url": "https://en.wikipedia.org/wiki/Sophie_Germain",
+      "source_title": "Sophie Germain"
+    },
+    {
+      "claim": "Lagrange, a judge of the contest, corrected Germain's first entry and proposed an equation; she later showed that it reproduced Chladni's patterns in several cases.",
+      "source_url": "https://mathshistory.st-andrews.ac.uk/Biographies/Germain/",
+      "source_title": "Sophie Germain - Biography (MacTutor History of Mathematics)"
+    },
+    {
+      "claim": "Chladni patterns of arbitrary two-dimensional membranes can be computed with the finite element method, as in the NumChladni teaching tool.",
+      "source_url": "https://arxiv.org/abs/1308.5523",
+      "source_title": "Numerical Chladni figures (arXiv:1308.5523)"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Degenerate mode pair on a square plate",
+      "description": "On a square plate the modes (n, m) and (m, n) share a frequency. The plate's displacement is a mix of the two, roughly cos(n pi x)cos(m pi y) + s cos(m pi x)cos(n pi y), and the nodal lines are where that sum is zero. Changing the mixing weight s reshapes the figure without changing the pitch.",
+      "render_or_sonify_hint": "Draw the zero set of the summed mode as contour bands on a square; animate the mixing weight to show one figure turning into another."
+    },
+    {
+      "name": "More nodal lines at higher modes",
+      "description": "Higher resonant modes divide the plate into more cells, so the figures grow denser as the driving frequency climbs, following Chladni's law for circular plates.",
+      "render_or_sonify_hint": "Step through a ladder of mode pairs so the contour count increases over time."
+    },
+    {
+      "name": "Sand migration to the nodes",
+      "description": "Grains on vibrating areas are thrown up and land a little further on, so they drift until they reach a line that does not move and stay there.",
+      "render_or_sonify_hint": "Particles that jitter in proportion to local amplitude and settle where amplitude is zero."
+    }
+  ],
+  "open_questions": [
+    "How closely does the simple product-of-cosines approximation match a real free-edged square plate at high modes?",
+    "Why did Germain's prize-winning theory still leave the boundary conditions disputed for decades?"
+  ],
+  "surprise": {
+    "score": 68,
+    "justification": "Most people have seen the figures, fewer know that the sand marks stillness rather than motion, or that explaining them launched a prize that a self-taught woman won."
+  },
+  "dataset": null
+}

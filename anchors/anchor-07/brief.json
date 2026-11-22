@@ -1,0 +1,59 @@
+{
+  "title": "Kiss Precise",
+  "concept": "The (-1, 2, 2, 3) Apollonian gasket unfolds circle by circle in order of curvature, computed per pixel by folding and inverting a strip of equal circles, then dives into its own foam.",
+  "mechanism_embodied": {
+    "mechanism_name": "Inversion folding in a strip model",
+    "how_visualised": "Each pixel is mapped into the strip, folded and inverted until it lands in a base circle; the moves are replayed backwards to get that circle's exact centre and integer curvature, which sets its colour, its rings and when it appears."
+  },
+  "discarded_obvious_idea": "Recursively drawing circles from a Descartes queue on a 2D canvas: easy, but it cannot zoom deep or anti-alias exactly within 4 KB.",
+  "compo": "4k-shader",
+  "constraint_honoured": null,
+  "techniques": [
+    "iterated circle inversion in a fragment shader",
+    "exact curvature recovery by word replay",
+    "analytic pixel-width antialiasing",
+    "cosine palette",
+    "fullscreen triangle via gl_VertexID"
+  ],
+  "novel_technique": "exact curvature recovery by word replay",
+  "technique_family": "inversive-geometry",
+  "palette": [
+    "#e9dfcc",
+    "#ede3cf",
+    "#9c6b6e",
+    "#d38a4f",
+    "#c9a85a",
+    "#5f8a85",
+    "#4d3629"
+  ],
+  "motion_sound_plan": "Silent. Circles appear in order of curvature at an accelerating rate; from 9 s the view rotates and zooms toward the boundary, then pulls back while the colour drains to a pale wash.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 3,
+      "description": "Inside the outer circle of curvature -1, the two circles of curvature 2 appear, then the 3s."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 3,
+      "t_end_s": 9,
+      "description": "Gaps fill in curvature order, 6, 11, 14, 15 and on; larger circles carry concentric rings spaced by their curvature."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 9,
+      "t_end_s": 15,
+      "description": "The view turns and dives toward the boundary into ever smaller foam."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "It pulls back to the whole gasket as colour drains, leaving the rings and outlines."
+    }
+  ],
+  "memorable_moment": "The dive into the foam, where each tiny circle's colour still follows its exact integer curvature.",
+  "self_declared_risk": "Pixels at the deepest foam can exhaust the iteration limit and show as dust instead of circles.",
+  "liner_note": "Descartes' theorem ties the curvatures of four mutually tangent circles together; start from -1, 2, 2 and 3 and every circle in the packing has a whole-number curvature. This shader never draws a circle. It inverts each pixel into a strip of equal circles between two lines, folds and inverts until the point lands in a known circle, then replays those moves backwards to recover the circle's exact size. Circles appear in order of curvature, and curvature also sets each one's colour and ring spacing. The title is from Frederick Soddy's 1936 poem about the theorem."
+}

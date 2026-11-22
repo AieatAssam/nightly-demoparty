@@ -1,0 +1,41 @@
+<!doctype html><meta charset=utf-8><title>Kiss Precise</title><style>body{margin:0;background:#e9dfcc;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style><canvas id=c></canvas><script>
+// Strip model of the (-1,2,2,3) integral Apollonian gasket: circles at (m,1/2), r=1/2, between
+// the lines y=0 and y=1. Inversion in K (centre (1/2,0), r^2=1/4) fixes both lines and maps y=1
+// onto the gap circle, so folding x, folding y and inverting in K walks a point into C=(0,1/2).
+// The stored word is replayed backwards on C to get that circle's exact screen centre and
+// curvature (Descartes: -1,2,2,3,6,11,14,15...). Circles appear in curvature order.
+const F=`#version 300 es
+precision highp float;uniform vec2 R;uniform float T;out vec4 o;
+float S(float a,float b,float x){return smoothstep(a,b,x);}
+vec3 P(float t){return vec3(.66,.56,.44)+vec3(.17,.11,.06)*cos(6.283*(t+vec3(0,.25,.5)));}
+void main(){
+float z0=exp(2.*S(9.,15.,T)-1.85*S(15.,20.,T)),a=.06*T+.4*S(9.,20.,T),K=.25,px=2.2/R.y/z0,A[60];
+vec2 w=(2.*gl_FragCoord.xy-R)/R.y*1.1,O=vec2(0,.5),Q=vec2(.5,0),e;
+w=vec2(.52,.34)*S(9.,15.,T)*(1.-.9*S(15.,20.,T))+mat2(cos(a),sin(a),-sin(a),cos(a))*w/z0;
+float q=dot(w,w),n=0.,b,f,g=1.,r=.5;vec2 z=O+.5*w/q,C=vec2(0,sign(z.y)*.5);int N=0,i;
+if(z.y>0.&&z.y<1.){C=O;N=-1;for(i=0;i<60;i++){f=floor(z.x+.5);z.x-=f;b=0.;
+if(z.x<0.){z.x=-z.x;b=1.;}if(z.y>.5){z.y=1.-z.y;b+=2.;}
+A[i]=f*8.+b;if(length(z-O)<.5){N=i;break;}if(length(z-vec2(.5,.125))<.125){N=i;C=vec2(.5,.125);r=.125;break;}
+e=z-Q;g=dot(e,e);if(g>K)break;z=Q+K*e/g;n++;A[i]+=4.;}
+for(i=N;i>=0;i--){b=mod(A[i],8.);f=(A[i]-b)/8.;
+if(b>3.){e=C-Q;g=dot(e,e)-r*r;C=Q+K*e/g;r*=K/abs(g);b-=4.;}
+if(b>1.){C.y=1.-C.y;b-=2.;}if(b>0.)C.x=-C.x;C.x+=f;}
+e=C-O;g=dot(e,e)-r*r;C=.5*e/g;r*=.5/abs(g);}
+float k=round(sign(g)/r),E=2.4*exp(.5*max(T-1.5,0.)),V=exp(.7*max(T-14.5,0.))-.8,D=r-length(w-C),h=length(w-C)/r;
+vec3 p=vec3(.93,.89,.81),c=P(fract(k*.618)+.06*log2(abs(k))),u=vec3((w-C)/r,sqrt(max(0.,1.-h*h)));
+c*=(.77+.27*dot(u,normalize(vec3(-.4,.5,.8))))*(1.-.045*min(n,8.));
+c=mix(c,p,.4*S(px,0.,abs(fract(h*k+.5)-.5)*r/k)*S(4.,9.,r/k/px)*step(0.,k));
+c=mix(mix(p,c,.3),c,S(V,1.4*V,k));
+c=mix(vec3(.3,.21,.16),c,S(.4*px,1.4*px,D));
+c=mix(p,c,S(.6*px,2.*px,r)*S(E,.75*E,k));
+if(k<0.){c=p*(.97-.04*h);c=mix(c*.45,c,S(.5*px,1.5*px,-D));}
+if(N<0)c=mix(p*(1.-.012*n),vec3(.3,.22,.18),S(30.,60.,n));
+o=vec4(c*(1.-.12*dot(w,w)*.2),1);}`;
+const g=c.getContext('webgl2'),pr=g.createProgram(),rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+for(const[y,s]of[[35633,'#version 300 es\nvoid main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}'],[35632,F]]){const h=g.createShader(y);g.shaderSource(h,s);g.compileShader(h);g.attachShader(pr,h)}
+g.linkProgram(pr);g.useProgram(pr);
+let t=0,l=0;
+requestAnimationFrame(function f(ms){t+=Math.min(.5,(ms-(l||ms))/1e3)*(rm?.15:1);l=ms;
+const W=innerWidth,H=innerHeight;if(c.width!=W||c.height!=H){c.width=W;c.height=H;g.viewport(0,0,W,H)}
+g.uniform2f(g.getUniformLocation(pr,'R'),W,H);g.uniform1f(g.getUniformLocation(pr,'T'),t);g.drawArrays(4,0,3);requestAnimationFrame(f)})
+</script>

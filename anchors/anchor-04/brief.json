@@ -1,0 +1,25 @@
+{
+  "title": "Breath at 3,400 Metres",
+  "concept": "Sixty-seven years of monthly Mauna Loa CO2 wound into a spiral, one turn per year, so the May peak and autumn dip line up across decades while the turns spread apart as the rise speeds up.",
+  "mechanism_embodied": {
+    "mechanism_name": "Northern Hemisphere seasonal drawdown",
+    "how_visualised": "Months sit at fixed angles and radius follows concentration, with each year's swing around its moving-average trend drawn three times larger. Every turn bulges toward May and pulls in toward September and October, so the whole spiral sits off-centre toward spring. A side chart shows the selected year's months against its own mean."
+  },
+  "discarded_obvious_idea": "A straight-line Keeling Curve redrawn left to right was discarded: it is the most reproduced chart in climate science, and the sawtooth reads as noise on the slope instead of a yearly breath.",
+  "compo": "data-sculpture",
+  "constraint_honoured": null,
+  "techniques": ["polar time spiral", "centred moving-average detrend", "exaggerated seasonal residual", "focus-year wash"],
+  "novel_technique": "exaggerated seasonal residual",
+  "technique_family": "radial data plot",
+  "palette": ["#f3ecdd", "#2b2622", "#b7852f", "#ddd2bd", "#8a8075", "#b9ae9f"],
+  "motion_sound_plan": "No sound. From 0.4 to 16 seconds the spiral is drawn from March 1958 to December 2024 with an ease in and out, an ochre wash marking the newest years. Afterwards the wash glides back through the decades and returns, and the year, mean, swing and side chart follow it. Under prefers-reduced-motion the full spiral is shown at once and only the wash moves, slowly.",
+  "storyboard": [
+    { "beat": 1, "t_start_s": 0, "t_end_s": 5, "description": "Grid rings from 320 to 420 ppm and month spokes; the first years wind tightly near the centre, 1959 to the mid 1960s." },
+    { "beat": 2, "t_start_s": 5, "t_end_s": 10, "description": "The 1970s and 1980s add closely spaced turns; the side chart shows each year's May high and autumn low." },
+    { "beat": 3, "t_start_s": 10, "t_end_s": 15, "description": "From the 1990s the turns spread wider and darken toward ink as the yearly rise grows." },
+    { "beat": 4, "t_start_s": 15, "t_end_s": 20, "description": "The spiral is complete to 2024; the ochre wash slides back into earlier decades so their swing can be compared." }
+  ],
+  "memorable_moment": "The finished spiral sitting visibly off-centre toward May, every year leaning the same way.",
+  "self_declared_risk": "The three-times seasonal exaggeration has to be read from the caption, and overlapping turns can thicken into a dark band in the last decades.",
+  "liner_note": "Monthly carbon dioxide at Mauna Loa, March 1958 to December 2024, from NOAA's record begun by Charles David Keeling. One turn of the spiral is one year, with each month at a fixed angle, and distance from the centre is concentration. Each year's swing around its 12-month moving average is drawn three times larger. The turns lean toward May, the usual peak, and pull in toward September and October, when northern plants have drawn the air down. The spacing widens outward because the yearly rise grew from 0.88 ppm in the 1960s to 2.58 ppm over the last decade."
+}

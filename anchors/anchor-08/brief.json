@@ -1,0 +1,59 @@
+{
+  "title": "Endless Stair",
+  "concept": "A Shepard-Risset glissando of nine octave-spaced sines under a Gaussian loudness bell, seen as a log spiral that turns one revolution per octave so the endless rise becomes an endless zoom.",
+  "mechanism_embodied": {
+    "mechanism_name": "Octave-spaced partial hand-off",
+    "how_visualised": "Nine copper beads ride a log spiral outward, one turn per octave; their size and level follow the Gaussian bell, so the outermost fades as a newborn bead appears at the centre. The spectral ribbon below shows the same hand-off on a log-frequency axis."
+  },
+  "discarded_obvious_idea": "A barber-pole stripe animation next to the sound: it shows that something loops but not why, with no partials and no loudness envelope.",
+  "compo": "audiovisual",
+  "constraint_honoured": null,
+  "techniques": [
+    "octave-spaced sine bank",
+    "Gaussian log-frequency envelope",
+    "WebAudio parameter automation",
+    "log-polar fragment shader",
+    "tanh soft limiter",
+    "gesture-gated AudioContext"
+  ],
+  "novel_technique": "octave-spaced sine bank",
+  "technique_family": "audio-synthesis",
+  "palette": [
+    "#1d2b45",
+    "#26395d",
+    "#0e1524",
+    "#efe3c8",
+    "#c98a4b",
+    "#e7b984"
+  ],
+  "motion_sound_plan": "Sound starts on the first click or key press and never before. Nine sines from 27.5 Hz, an octave apart, rise at 0.2 octave per second under a Gaussian bell over log-frequency, through a gentle delay, compressor and soft limiter. Visually, the spiral counter-turns with the pitch so the rise reads as an endless zoom.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "A Shepard scale: twelve semitone steps, the spiral jumping one tick per step."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 11,
+      "description": "The steps melt into Risset's continuous glide; the spiral zooms without end."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 11,
+      "t_end_s": 16,
+      "description": "The spiral stops turning, and the beads are seen riding outward along it, fading at the rim and born at the centre."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 16,
+      "t_end_s": 20,
+      "description": "The loudness bell widens on the ring and the ribbon, so the partials at the edges come forward and the seam starts to show."
+    }
+  ],
+  "memorable_moment": "The moment the spiral stops and the endless zoom is revealed as beads quietly handing off at the rim and the centre.",
+  "self_declared_risk": "On small laptop speakers the lowest partials vanish and the bell sounds lopsided, weakening the illusion.",
+  "liner_note": "Roger Shepard found that sine waves spaced an octave apart, with the lowest and highest faded out, seem to rise forever when shifted up together: after an octave the sound is the same as at the start. Jean-Claude Risset made the steps into a continuous glide. Here, nine sines from 27.5 Hz rise at a fifth of an octave per second under a fixed Gaussian loudness bell. The picture is the same model: a log spiral with one turn per octave, so a full turn equals a zoom by two. Click or press a key for sound."
+}

@@ -1,0 +1,54 @@
+{
+  "title": "Nodal Lines",
+  "concept": "A square plate whose sand lines reshape as two equal-pitch modes trade weight, stepping up through four mode pairs.",
+  "mechanism_embodied": {
+    "mechanism_name": "Degenerate mode pair on a square plate",
+    "how_visualised": "The shader evaluates cos(n pi x)cos(m pi y) + s cos(m pi x)cos(n pi y) on a square and paints a sand-coloured band where the value is near zero. The weight s drifts continuously, and every five seconds the mode pair crossfades to the next of (1,3), (2,5), (3,7), (4,9)."
+  },
+  "discarded_obvious_idea": "A particle simulation of sand bouncing on a plate was discarded: it needs thousands of particles, does not fit 4 KB comfortably, and the result is grainy noise before it settles.",
+  "compo": "4k-shader",
+  "constraint_honoured": null,
+  "techniques": [
+    "fragment shader zero-set contour",
+    "fwidth antialiased isoline",
+    "mode-pair crossfade"
+  ],
+  "novel_technique": "mode-pair crossfade",
+  "technique_family": "analytic field contouring",
+  "palette": [
+    "#26282a",
+    "#454749",
+    "#a8a38c",
+    "#5c5e61"
+  ],
+  "motion_sound_plan": "No sound. The mixing weight oscillates slowly so the lines keep moving; the mode pair advances on a fixed five-second step with a one-second crossfade. Under prefers-reduced-motion the clock runs at one fifth speed.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Mode pair (1,3): a few broad sand loops on a grey plate, slowly bending as the weight drifts."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Crossfade to (2,5): the loops split into a denser lattice of rounded cells."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Crossfade to (3,7): more cells, lines pinch into X-shaped crossings."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "(4,9): the densest figure, still drifting, held to the end."
+    }
+  ],
+  "memorable_moment": "The moment a set of loops pinches into crossing lines as the weight passes through zero.",
+  "self_declared_risk": "In the densest mode pairs the fwidth-based line width may shimmer or alias on the software renderer as the weight drifts.",
+  "liner_note": "Chladni bowed sand-covered plates in 1787 and drew where the sand came to rest. The sand gathers on nodal lines, the parts of the plate that do not move. On a square plate two modes can share a pitch, and the figure you see depends on how they mix. This piece draws the zero line of that mix, cos(n pi x)cos(m pi y) plus a weighted swap of n and m, and slowly changes the weight. Every five seconds it moves to a higher mode pair, so the lines multiply. Explaining these figures was the subject of the Paris Academy prize that Sophie Germain won in 1816."
+}

@@ -138,3 +138,31 @@ Rejected outright (the canonical CSP blocks most of these at runtime too; the li
 - CSS `url()` hidden with CSS escapes (`\75rl(`), `image-set()` with non-`data:`/`blob:` strings, and any non-safe candidate in a `srcset`.
 
 `fetch` is flagged only as a global (`fetch(`, `window.fetch`, `self.fetch`, `globalThis.fetch`), and neither `fetch` nor `import` is flagged as a method (`o.fetch`) or an object key (`{ import: 1 }`). The `hello-world-plasma` slop rule matches both `sin(` and `Math.sin(`.
+
+## Milestone 2 (helper library, anchors and reconciliation)
+
+### Codex CLI unavailable; reassigned to Opus
+
+- **What failed.** `/opt/homebrew/Caskroom/codex/0.171.0/bin/codex` carries the macOS `com.apple.quarantine` attribute and never returned. `codex --version` timed out at 5 s and again at 15 s. `codex exec -m gpt-6.2-sol` timed out at 20 s on Attempt 1 and on Attempt 2. The T3 Code Codex app-server also timed out.
+- **Quarantine was never bypassed.** We did not strip the attribute or approve the binary on the user's behalf.
+- **Reassignment.** Under the stall and unavailability policy, three Codex jobs went to dedicated fresh Opus threads: the third anchor rating (`opus-rater-3-adversarial`, briefed to rate adversarially), the adversarial second opinions on prompts and workflows, and the README pipeline diagram. SPEC Stage 7 asks for "one Codex CLI consultation" per anchor; for Milestone 2 that consultation is this adversarial Opus rating, and `anchors/scores.json` says so in `codex_fallback_note`.
+
+### Minified helper library (`lib/min/*.js`)
+
+- Builders paste from `lib/min/*.js`, not `lib/*.js`, so that combined helpers fit inside small budgets such as `16k-demo`. The readable source in `lib/*.js` stays the reference.
+- `LIB_MANIFEST_WRITE=1 npx vitest run tests/lib.test.ts` regenerates `lib/min/*.js` with esbuild and rewrites the measured fields of `lib/manifest.json`. Each file is minified as a classic script with `export` stripped, so esbuild shortens locals but keeps every top-level name, and one `export{...}` list re-exports the same names. ESM-mode minification would rename the exports to single letters that collide when several files are pasted into one piece.
+
+### WebGPU never runs inside the Stage 6 gates
+
+- `harness/gates.ts` serves each piece from `http://piece.local/index.html` (`PIECE_ORIGIN`). That is not a secure context, so `navigator.gpu` is undefined and every gate run exercises the WebGL2 fallback path of `lib/webgpu.js`.
+- A builder who uses `lib/webgpu.js` must therefore supply a faithful WebGL2 fallback with the same visuals and the same strobe behaviour. The gates, including strobe and novelty B, only ever measure the fallback.
+
+### Anchor scores (`anchors/scores.json`)
+
+- **Raters.** Three blind ratings per anchor: `opus-rater-1`, `opus-rater-2` and `opus-rater-3-adversarial` (the Codex fallback above). Each criterion score cites a screenshot observation.
+- **Agreement within 15 points.** For the 10 anchors whose three totals were at most 15 points apart (spreads 0 to 9), the agreed score is the median of the three ratings on each criterion. The agreed total is the sum of those medians, so it can differ from the median total. anchor-10 comes out at 87 even though every rater gave 86.
+- **Gaps over 15, reconciled by discussion.** Two anchors went over the limit: anchor-04 (Breath at 3,400 Metres; R1 62, R2 55, R3 46; spread 16) and anchor-07 (Kiss Precise; R1 83, R2 65, R3 71; spread 18). Neither was averaged. One reconciliation thread weighed each rater's written criterion argument against the three screenshots, `brief.json` and `dossier.json`, and settled each criterion separately. This was a written reconciliation, not a live exchange between raters; the full argument for each criterion is stored in `reconciliation_notes`.
+  - **anchor-04 agreed at 53** (13/10/15/9/6, shelved). The mechanism the brief names, seasonal drawdown, is not visible in the spiral: no turn leans toward May. The widening of the turns shows only the long-term rise. The on-screen sparkline is enough to keep mechanism above R3's 11.
+  - **anchor-07 agreed at 72** (15/18/20/12/7, exactly at `publish_min`). The curvature-ordered reveal and the ring count growing with curvature are both visible on screen, and the shader work fits in 3.1 KB. Against that: the gasket is a famous form, the strip inversion itself is never shown, the dive reaches only about 1.15x zoom by 20 s, and the 20 s frame is cropped where the storyboard promises a pull back. This is the set's threshold anchor.
+- **The range falls short of SPEC.** Agreed totals run from 35 (anchor-02) to 87 (anchor-10): 5 publish (72 and up), 3 B-sides (60 to 71) and 4 shelved. SPEC Stage 7 asks anchors to span 30 to 95, so nothing below 35 or above 87 calibrates the extremes yet. This is a known gap for Milestone 4 jury calibration (`harness/calibrate-jury.ts`): either add a sub-35 anchor and a 90-plus anchor, or have the calibration treat anything above 87 as an extrapolation.
+- **anchor-10 was re-gated after the ratings.** Its stray `window.__dbg` global was removed and the gates re-run at `timingScale` 1. The piece shrank from 11,781 to 11,739 bytes and still passes. The removed line only assigned a debug global and drew nothing. The re-run overwrote the three anchor-10 screenshots, so the stored rater evidence describes the earlier screenshots.

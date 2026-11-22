@@ -1,0 +1,59 @@
+{
+  "topic": "Two pendulum clocks hung from one support drift into swinging in exact opposition, a phase-locking Huygens called an odd kind of sympathy.",
+  "domain": "huygens-clock-synchrony",
+  "wildcard_chosen": true,
+  "summary": "In 1665 Christiaan Huygens noticed that two of his pendulum clocks, mounted on the same support, kept falling into step with their pendulums swinging in opposite directions, even when disturbed. The support itself carries the coupling: when the pendulums swing together they shake it and lose energy, when they swing in opposition their pushes cancel and it stays still. Modern models reproduce the anti-phase state, show that in-phase locking can coexist with it, and find that the locked period differs from either clock's own.",
+  "facts": [
+    {
+      "claim": "Huygens observed that two of his pendulum clocks mounted next to each other on the same support often became synchronized, swinging in opposite directions; he reported it by letter to the Royal Society, whose minutes call it an odd kind of sympathy.",
+      "source_url": "https://en.wikipedia.org/wiki/Christiaan_Huygens",
+      "source_title": "Christiaan Huygens"
+    },
+    {
+      "claim": "In 1665 Huygens reported the synchronization of two pendulum clocks hanging in his workshop; afterwards the clocks swung at exactly the same frequency and 180 degrees out of phase.",
+      "source_url": "https://arxiv.org/abs/0804.3162",
+      "source_title": "On the problem of synchronization of identical dynamical systems: The Huygens's clocks (arXiv:0804.3162)"
+    },
+    {
+      "claim": "In Dilão's model exact anti-phase and in-phase synchronized states can coexist in phase space, and the period of the synchronized clocks differs from the natural period of either clock.",
+      "source_url": "https://arxiv.org/abs/0804.3162",
+      "source_title": "On the problem of synchronization of identical dynamical systems: The Huygens's clocks (arXiv:0804.3162)"
+    },
+    {
+      "claim": "Oliveira and Melo note that clocks hanging from a wall are a different problem from clocks on a movable base, and present a model of phase-opposition synchronization that their experiment confirmed.",
+      "source_url": "https://www.nature.com/articles/srep11548",
+      "source_title": "Huygens synchronization of two clocks | Scientific Reports"
+    },
+    {
+      "claim": "Huygens, the inventor of the pendulum clock, is often credited as the first to document injection locking: two clocks that normally kept slightly different time became perfectly synchronized when hung from a common beam.",
+      "source_url": "https://en.wikipedia.org/wiki/Injection_locking",
+      "source_title": "Injection locking"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Beam-mediated anti-phase locking",
+      "description": "Each swinging pendulum pushes sideways on its support. If both swing together the pushes add, the beam sways and its damping drains energy from that motion. If they swing in opposition the pushes cancel, the beam stays still and nothing is lost, so the anti-phase motion is the one that survives.",
+      "render_or_sonify_hint": "Two pendulums on a sprung, damped beam; show the beam swaying while they are in step and going still once they oppose, with the phase difference plotted over time."
+    },
+    {
+      "name": "Escapement amplitude regulation",
+      "description": "A clock's escapement gives the pendulum a small push each swing, holding its amplitude near a fixed value so that coupling changes phase rather than letting the swing die.",
+      "render_or_sonify_hint": "Amplitude that recovers to the same arc after a disturbance."
+    },
+    {
+      "name": "Frequency pulling between mismatched clocks",
+      "description": "Two clocks with slightly different natural rates settle on one shared rate when coupled, different from either clock's own.",
+      "render_or_sonify_hint": "Two ticks drifting apart and then holding a fixed offset."
+    }
+  ],
+  "open_questions": [
+    "How much does the mass of the support change whether in-phase or anti-phase locking wins?",
+    "Did Huygens's clocks lock through the beam's sway or through vibrations of the wall and the chairs they rested on?"
+  ],
+  "surprise": {
+    "score": 76,
+    "justification": "Few people expect inanimate clocks to settle into opposite swings, or that the stillness of the support is the signature of the locked state."
+  },
+  "dataset": null
+}

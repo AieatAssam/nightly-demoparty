@@ -1,0 +1,64 @@
+{
+  "topic": "The seven TRAPPIST-1 planets orbit at frequencies close to 24:15:9:6:4:3:2, a chain of three-body Laplace resonances that makes the whole system a single slow rhythm.",
+  "domain": "trappist-1-resonant-chain",
+  "wildcard_chosen": true,
+  "summary": "TRAPPIST-1 is a cool red dwarf with seven Earth-sized planets, all found by their transits. Neighbouring period ratios are close to 8:5, 5:3, 3:2, 3:2, 4:3 and 3:2, and each set of three neighbours obeys a Laplace relation in which a weighted sum of their orbital longitudes stays nearly fixed. Scaled so planet h is 2, the orbital frequencies are almost exactly 24, 15, 9, 6, 4, 3 and 2. The chain links all seven planets and is thought to record their inward migration in the birth disk.",
+  "facts": [
+    {
+      "claim": "TRAPPIST-1 is an ultracool red dwarf of spectral type M8V about 40 light-years from the Sun.",
+      "source_url": "https://en.wikipedia.org/wiki/TRAPPIST-1",
+      "source_title": "TRAPPIST-1"
+    },
+    {
+      "claim": "Gillon and colleagues reported in 2017 that seven temperate Earth-sized planets transit the star.",
+      "source_url": "https://www.nature.com/articles/nature21360",
+      "source_title": "Gillon et al., Seven temperate terrestrial planets around the nearby ultracool dwarf star TRAPPIST-1 (Nature 2017)"
+    },
+    {
+      "claim": "Luger and colleagues measured the outer planet h's period of about 18.77 days with K2 and showed the seven planets form a chain of three-body Laplace resonances.",
+      "source_url": "https://arxiv.org/abs/1703.04166",
+      "source_title": "Luger et al., A seven-planet resonant chain in TRAPPIST-1 (arXiv:1703.04166)"
+    },
+    {
+      "claim": "Refined periods are 1.5108, 2.4219, 4.0492, 6.1010, 9.2075, 12.3524 and 18.7729 days for planets b to h.",
+      "source_url": "https://doi.org/10.3847/PSJ/abd022",
+      "source_title": "Agol et al., Refining the transit-timing and photometric analysis of TRAPPIST-1 (PSJ 2021)"
+    },
+    {
+      "claim": "Adjacent period ratios are close to 8:5, 5:3, 3:2, 3:2, 4:3 and 3:2 going outward from b to h.",
+      "source_url": "https://en.wikipedia.org/wiki/TRAPPIST-1",
+      "source_title": "TRAPPIST-1"
+    },
+    {
+      "claim": "The planets' masses were measured from transit-timing variations, the small shifts in transit times caused by their mutual pulls.",
+      "source_url": "https://doi.org/10.3847/PSJ/abd022",
+      "source_title": "Agol et al., Refining the transit-timing and photometric analysis of TRAPPIST-1 (PSJ 2021)"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Three-body Laplace resonance chain",
+      "description": "With orbital frequencies 24, 15, 9, 6, 4, 3, 2, combinations such as 2 lambda_b - 5 lambda_c + 3 lambda_d and lambda_f - 2 lambda_g + lambda_h have zero net rate, so the angles stay nearly fixed and the whole configuration repeats after h completes two orbits.",
+      "render_or_sonify_hint": "Tune each planet's tone to its frequency ratio and sound it on every transit, so the resonance is heard as a polyrhythm that repeats as a whole."
+    },
+    {
+      "name": "Synodic rose of a planet pair",
+      "description": "The chord joining two planets, drawn at regular intervals, traces a rose whose symmetry is set by the frequency difference divided by its common factor with the pair: three lobes for b and c, seven for d and h.",
+      "render_or_sonify_hint": "Draw chords between pairs sampled back through time, fading with age."
+    },
+    {
+      "name": "Conjunctions passing down the chain",
+      "description": "Neighbouring planets line up with the star at their synodic frequency; b and c meet about every 4 days, and conjunctions propagate outward along the chain.",
+      "render_or_sonify_hint": "A gold ray and dyad at each neighbour conjunction, with a tidal ring from the star."
+    }
+  ],
+  "open_questions": [
+    "How did the chain survive the star's early activity and the dispersal of its disk without breaking?",
+    "Do the planets keep thick atmospheres despite the strong flares of their star?"
+  ],
+  "surprise": {
+    "score": 74,
+    "justification": "Seven planets locked into one integer ratio chain is rare, and the ratios are simple enough to play as a chord."
+  },
+  "dataset": null
+}

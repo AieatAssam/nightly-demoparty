@@ -1,0 +1,78 @@
+{
+  "topic": "A Jacquard punched card is one row of a binary lift matrix, so twill, satin and even Pascal's triangle mod 2 are just orders of cards",
+  "domain": "Twill weave drafts",
+  "wildcard_chosen": false,
+  "summary": "On a Jacquard loom each punched card decides, for one pass of the weft, which warp ends are lifted. A weave is therefore a binary matrix read one row per card. Twill shifts the lifted ends by a fixed step each row, satin by a larger move number so floats never touch, and a point draw mirrors the threading into herringbone. Any binary row sequence can be woven, including the rows of Pascal's triangle mod 2, which Lucas's theorem reduces to a bitwise test.",
+  "facts": [
+    {
+      "claim": "Joseph Marie Jacquard patented his loom attachment in 1804; it read a chain of punched cards to control the weave.",
+      "source_url": "https://en.wikipedia.org/wiki/Jacquard_machine",
+      "source_title": "Jacquard machine"
+    },
+    {
+      "claim": "A woven silk portrait of Jacquard made in 1839 needed 24,000 punched cards. Charles Babbage owned a copy, and it inspired his use of punched cards in the Analytical Engine.",
+      "source_url": "https://en.wikipedia.org/wiki/Jacquard_machine",
+      "source_title": "Jacquard machine"
+    },
+    {
+      "claim": "Designs were painted on squared paper and turned into holes punched in cards. The cards were laced together and fed through one by one, each controlling which warp threads were raised.",
+      "source_url": "https://www.scienceandindustrymuseum.org.uk/objects-and-stories/jacquard-loom",
+      "source_title": "Jacquard loom, Science and Industry Museum"
+    },
+    {
+      "claim": "Ada Lovelace wrote that the Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.",
+      "source_url": "https://www.fourmilab.ch/babbage/sketch.html",
+      "source_title": "Sketch of the Analytical Engine, with notes by Ada Lovelace"
+    },
+    {
+      "claim": "Twill makes diagonal ribs by offsetting the interlacing by a step from one weft row to the next.",
+      "source_url": "https://en.wikipedia.org/wiki/Twill",
+      "source_title": "Twill"
+    },
+    {
+      "claim": "In satin, four or more weft yarns float over a warp yarn or the reverse; a 5-harness satin goes over four and under one.",
+      "source_url": "https://en.wikipedia.org/wiki/Satin",
+      "source_title": "Satin"
+    },
+    {
+      "claim": "Herringbone is a broken twill whose diagonal reverses at regular intervals, giving a zigzag of V shapes.",
+      "source_url": "https://en.wikipedia.org/wiki/Herringbone_pattern",
+      "source_title": "Herringbone pattern"
+    },
+    {
+      "claim": "By Lucas's theorem, the binomial coefficient C(n, k) is odd exactly when every binary digit of k is at most the matching digit of n.",
+      "source_url": "https://en.wikipedia.org/wiki/Lucas%27s_theorem",
+      "source_title": "Lucas's theorem"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Card row as binary lift mask",
+      "description": "Each card is one row of a binary matrix: a hole lifts that warp end so it floats over the weft, no hole leaves the weft on top.",
+      "render_or_sonify_hint": "Draw each cell as a vertical bar (warp float) or horizontal bar (weft float), with the punched cards for the next picks shown beneath the cloth."
+    },
+    {
+      "name": "Twill step offset",
+      "description": "Shifting the lift mask by one end per row turns a single float into a diagonal rib.",
+      "render_or_sonify_hint": "Show 2/2 and 3/1 twills side by side so the step reads as a diagonal."
+    },
+    {
+      "name": "Satin move number",
+      "description": "A satin of n ends lifts one end per row and moves it by a number coprime to n, so binding points never touch and the face looks smooth.",
+      "render_or_sonify_hint": "Weave 5-end and 8-end satins and swap warp and weft faces inside a figure to make damask."
+    },
+    {
+      "name": "Pascal's triangle mod 2 as a card chain",
+      "description": "The test (k AND n) == k gives row n of Pascal's triangle mod 2 directly, which can be punched as cards.",
+      "render_or_sonify_hint": "Weave the Sierpinski pattern as warp-faced satin on a weft-faced ground."
+    }
+  ],
+  "open_questions": [
+    "How many distinct cards does a periodic damask need compared with a figured portrait, and how much does reuse shorten the chain?",
+    "Did any historical weaver punch an arithmetic pattern such as Pascal's triangle on purpose?"
+  ],
+  "surprise": {
+    "score": 61,
+    "justification": "The link from Jacquard to Babbage is well known, but that a satin damask of Pascal's triangle is one bitwise test per card is not."
+  }
+}

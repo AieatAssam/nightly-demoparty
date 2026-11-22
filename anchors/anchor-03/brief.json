@@ -1,0 +1,56 @@
+{
+  "title": "One Beam, Two Clocks",
+  "concept": "Two driven pendulums on a sprung, damped beam start nearly in step and drift into opposite swings while a chart records their phase difference; a drag knocks either out of step.",
+  "mechanism_embodied": {
+    "mechanism_name": "Beam-mediated anti-phase locking",
+    "how_visualised": "A linearised model couples two pendulums to a beam on springs with damping. The beam visibly sways while the bobs move together and stops once they oppose. A strip chart along the bottom plots the phase difference over the last 20 seconds as it climbs toward 180 degrees."
+  },
+  "discarded_obvious_idea": "A row of many metronomes falling into step was discarded: it is the familiar video, it shows in-phase locking rather than Huygens's anti-phase observation, and the beam's role is lost in the crowd.",
+  "compo": "interactive-toy",
+  "constraint_honoured": null,
+  "techniques": [
+    "coupled oscillator integration",
+    "van der Pol escapement drive",
+    "phase difference strip chart",
+    "pointer drag perturbation"
+  ],
+  "novel_technique": "van der Pol escapement drive",
+  "technique_family": "physical simulation",
+  "palette": [
+    "#1f252b",
+    "#5b6670",
+    "#9aa4ad",
+    "#d4a03c",
+    "#c9d0d6"
+  ],
+  "motion_sound_plan": "No sound. The model is stepped at 240 Hz from the frame clock. The pendulums swing continuously; the beam's sway fades as they lock. Dragging a bob holds it at the pointer angle and releases it on pointer up; space nudges the left pendulum and r resets. Under prefers-reduced-motion the simulation runs at one tenth speed.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "The clocks start about 40 degrees apart; the beam sways under the springs as the bobs swing almost together."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "The chart line climbs past 90 degrees; the readout says drifting."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "The swings turn toward opposition and the beam's sway shrinks."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Near 180 degrees: the bobs swing in mirror image, the beam is almost still, the readout says anti-phase."
+    }
+  ],
+  "memorable_moment": "The beam going still once the two bobs swing in mirror image.",
+  "self_declared_risk": "The beam's sway is only a few pixels at this scale, so the coupling may be missed without the chart.",
+  "liner_note": "In 1665 Christiaan Huygens saw two of his pendulum clocks, hung from the same support, fall into swinging in opposite directions. The Royal Society minutes call it an odd kind of sympathy. Here two driven pendulums hang from a beam held by springs and a damper. While they swing together their pushes add, the beam sways and the damper takes energy from that motion. Swinging in opposition, their pushes cancel and the beam stays still, so that state survives. The chart plots the phase difference climbing toward 180 degrees. Drag a bob to knock it out of step and watch it come back."
+}

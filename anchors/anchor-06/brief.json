@@ -1,0 +1,59 @@
+{
+  "title": "Seven Neighbours",
+  "concept": "A starling murmuration in which every bird follows exactly its seven nearest neighbours by rank, drawn as filaments that stretch but never break as the flock expands, scatters from a falcon and re-forms.",
+  "mechanism_embodied": {
+    "mechanism_name": "Seven-neighbour topological links",
+    "how_visualised": "Each bird's seven nearest neighbours are found every step and drawn as faint ochre filaments. One bird's seven links are drawn bright with rings on its neighbours; when the flock swells they lengthen but stay seven."
+  },
+  "discarded_obvious_idea": "Classic metric-radius boids with a big swarm: it is the standard screensaver and it misses the measured fact that starlings count neighbours, not distance.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "k-nearest topological neighbour search",
+    "fixed-step flocking simulation",
+    "3D perspective projection",
+    "WebGL2 line and triangle batches",
+    "seeded mulberry32 PRNG"
+  ],
+  "novel_technique": "k-nearest topological neighbour search",
+  "technique_family": "agent-flocking",
+  "palette": [
+    "#1f2731",
+    "#4d5a68",
+    "#8c7a62",
+    "#c8934c",
+    "#161b21",
+    "#e0a453",
+    "#f1c27d"
+  ],
+  "motion_sound_plan": "Silent. 620 birds at 11 m/s with flapping wing chevrons; the camera follows the flock, widens as it spreads and orbits slowly. A falcon crosses once, and birds in hard turns light up warm.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 4.5,
+      "description": "A compact flock wheels above the reed bed; every bird already carries its seven filaments."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 4.5,
+      "t_end_s": 10,
+      "description": "Personal space grows and the flock swells to several times its volume, held together because each bird still has seven links."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "A falcon cuts through; the escape turn passes bird to bird as a band of warm-lit wings."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "The threat passes, spacing shrinks and the flock re-forms into one dense ball."
+    }
+  ],
+  "memorable_moment": "One bird's seven bright links stretching across a swollen flock without losing a single neighbour.",
+  "self_declared_risk": "Seven filaments per bird can turn into a grey mesh when the flock is dense, hiding the individual links.",
+  "liner_note": "In 2008 Ballerini and colleagues reconstructed starling flocks in 3D and found that each bird reacts to about six or seven nearest neighbours by rank, not to every bird within a fixed distance. This piece simulates 620 birds that each follow exactly seven neighbours, drawn as faint filaments, with one bird's seven drawn bright. When the flock swells, the links lengthen but stay seven, so the flock does not break apart. When a falcon passes, the escape turn travels through those links, shown as birds lit by the low sun. Later work found such turns cross a flock with little loss."
+}

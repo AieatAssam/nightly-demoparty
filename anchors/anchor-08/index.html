@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Endless Stair</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#1d2b45}
+canvas{position:fixed;inset:0;display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<canvas id="o"></canvas>
+<script>
+// Shepard-Risset glissando. Nine sine partials an octave apart rise together at 0.2 octave per second.
+// Their loudness follows one fixed Gaussian bell over log-frequency, so the top partial fades out as a
+// new one fades in at the bottom and the ear never finds the seam. The picture is the same model:
+// a log spiral turns once per octave, so octaves line up on one ray, and turning the spiral by a full
+// turn is the same as zooming it by two. The bell is the glowing ring and the ribbon below.
+(() => {
+  const cv = document.getElementById('c');
+  const gl = cv.getContext('webgl2'), g = document.getElementById('o').getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FMIN = 27.5, OCT = 5, VOL = 0.11, TAU = Math.PI * 2;
+  const sm = (a, b, x) => { const u = Math.min(1, Math.max(0, (x - a) / (b - a))); return u * u * (3 - 2 * u); };
+
+  // Piece time to pitch time: twelve semitone steps first (a Shepard scale), then a smooth glide.
+  const P = (t) => {
+    if (t >= 5) return t;
+    const s = t * 12 / 5, m = Math.floor(s);
+    return (m + sm(0, 0.072, s - m)) * 5 / 12;
+  };
+  const sigma = (t) => 1.2 + 1.4 * sm(16, 19, t) * (1 - sm(23, 28, t));
+  // loudness of a partial at octave position p in [0, 9]
+  const amp = (p, t) => {
+    if (p <= 0 || p >= 9) return 0;
+    const s = sigma(t), d = p - 4.5;
+    return Math.exp(-d * d / (2 * s * s)) * Math.sin(Math.PI * p / 9);
+  };
+  // partial j is born at the bottom at pitch time 5j and leaves the top 45 s later
+  const pos = (j, t) => (P(t) - OCT * j) / OCT;
+
+  // dry + ping-pong delay -> compressor -> tanh limiter (peak <= 0.9), adapted from lib/synth.js
+  function bus(ctx) {
+    const gain = (v) => { const n = ctx.createGain(); n.gain.value = v; return n; };
+    const input = gain(1), sum = gain(1), w = gain(0.18), fb = gain(0.3), dl = ctx.createDelay(2), dr = ctx.createDelay(2), mg = ctx.createChannelMerger(2);
+    const comp = ctx.createDynamicsCompressor(), lim = ctx.createWaveShaper(), curve = new Float32Array(1024);
+    for (let i = 0; i < 1024; i++) curve[i] = 0.9 * Math.tanh(2 * (i / 511.5 - 1));
+    lim.curve = curve;
+    comp.threshold.value = -18; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.2;
+    dl.delayTime.value = 0.37; dr.delayTime.value = 0.37;
+    input.connect(sum); input.connect(w).connect(dl).connect(dr).connect(fb).connect(dl);
+    dl.connect(mg, 0, 0); dr.connect(mg, 0, 1); mg.connect(sum);
+    sum.connect(comp).connect(lim).connect(ctx.destination);
+    return input;
+  }
+
+  // Schedule every partial whose first sound falls in [t0, t1). Audio time = base + piece time.
+  // T0 is when this session's sound began, so partials already mid-flight join there with a fade-in.
+  function play(ctx, out, t0, t1, base, T0) {
+    for (let j = Math.floor((t0 - 45) / OCT); OCT * j < t1; j++) {
+      const birth = OCT * j, start = Math.max(birth, T0), end = birth + 45;
+      if (start < t0 || start >= t1 || start >= end) continue;
+      const o = ctx.createOscillator(), a = ctx.createGain(), f = (pt) => FMIN * 2 ** ((pt - birth) / OCT);
+      const fr = o.frequency;
+      fr.setValueAtTime(f(P(start)), base + start);
+      for (let m = 0; m < 12; m++) {
+        const s = m * 5 / 12;
+        if (s <= start) continue;
+        fr.setValueAtTime(f(m * 5 / 12), base + s);
+        fr.exponentialRampToValueAtTime(f((m + 1) * 5 / 12), base + s + 0.03);
+      }
+      fr.setValueAtTime(f(Math.max(5, P(start))), base + Math.max(5, start));
+      fr.exponentialRampToValueAtTime(f(end), base + end);
+      a.gain.setValueAtTime(0, base + start);
+      for (let t = start + 0.05; t < end; t += 0.05)
+        a.gain.linearRampToValueAtTime(VOL * amp(pos(j, t), t) * Math.min(1, (t - T0) / 0.5), base + t);
+      o.connect(a).connect(out);
+      o.start(base + start); o.stop(base + end);
+    }
+  }
+
+  window.__demopartyAudioProbe = async (ctx) => play(ctx, bus(ctx), 0, ctx.length / ctx.sampleRate, 0, 0);
+
+  // Live sound starts only on a click or key press, joining the piece where the picture is.
+  let ac = null, base = 0;
+  const go = () => {
+    if (ac) return void ac.resume();
+    ac = new AudioContext();
+    base = ac.currentTime - t;
+    const T0 = t + 0.1, out = bus(ac);
+    let done = T0 + 2;
+    play(ac, out, T0, done, base, T0);
+    setInterval(() => { const t1 = ac.currentTime - base + 2; if (t1 > done) { play(ac, out, done, t1, base, T0); done = t1; } }, 250);
+  };
+  addEventListener('pointerdown', go);
+  addEventListener('keydown', go);
+
+  // Log-polar field: octave position p = ln(r/Rmin)/L, and u = p minus the turn of the angle, so
+  // u is a whole number exactly on the spiral and a half on its half-turn copy.
+  const FS = `#version 300 es
+precision highp float;uniform vec4 A,B;uniform float k;out vec4 o;
+void main(){
+vec2 q=vec2(gl_FragCoord.x,B.y-gl_FragCoord.y)-A.xy;float r=max(length(q),1e-3),p=log(r/A.z)/A.w;
+float u=p-(atan(q.y,q.x)-B.z+1.5708)/6.2832,w=fract(u+.5)-.5,gu=length(vec2(1./(A.w*r),.159/r));
+vec3 c=mix(vec3(.114,.169,.271),vec3(.149,.224,.365),smoothstep(-gu,gu,.25-abs(fract(u+.25)-.5)));
+float s=p-w,e=abs(fract(s*12.+.5)-.5)/12.*6.2832*r,dr=abs(w)*A.w*r,
+ tk=smoothstep(1.2*k,.4*k,e)*step(dr,(abs(fract(s+.5)-.5)<.04?.12:.05)*r),
+ ln=max(smoothstep(1.2*k,0.,abs(w)/gu),tk);
+float d=p-4.5,G=p>0.&&p<9.?exp(-d*d/(2.*B.w*B.w))*sin(3.1416*p/9.):0.;
+c=mix(c,vec3(.937,.89,.784),.2*G);c=mix(c,vec3(.937,.89,.784),.38*ln);
+o=vec4(c,1);}`;
+  const pr = gl.createProgram();
+  for (const [ty, src] of [[gl.VERTEX_SHADER, '#version 300 es\nvoid main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}'], [gl.FRAGMENT_SHADER, FS]]) {
+    const sh = gl.createShader(ty); gl.shaderSource(sh, src); gl.compileShader(sh); gl.attachShader(pr, sh);
+  }
+  gl.linkProgram(pr); gl.useProgram(pr);
+  const uA = gl.getUniformLocation(pr, 'A'), uB = gl.getUniformLocation(pr, 'B'), uK = gl.getUniformLocation(pr, 'k');
+
+  let W = 0, H = 0;
+  const layout = () => { W = cv.width = g.canvas.width = innerWidth; H = cv.height = g.canvas.height = innerHeight; gl.viewport(0, 0, W, H); };
+  layout();
+  addEventListener('resize', layout);
+
+  let t = 0, last = 0, rot = 0, prevP = 0;
+  function frame(ms) {
+    const dt = Math.min(0.5, last ? (ms - last) / 1000 : 0);
+    last = ms;
+    t = ac && !reduce && ac.state === 'running' ? ac.currentTime - base : t + dt * (reduce ? 0.15 : 1);
+    const pt = P(t), dP = pt - prevP;
+    prevP = pt;
+    // the spiral counter-turns with the pitch (an endless zoom), stops in the third part, then resumes; with reduced motion it holds still
+    const spin = reduce ? 0 : 1 - sm(11, 12.5, t) + sm(22, 24, t);
+    rot += -TAU * dP / OCT * spin + 0.12 * dt * (reduce ? 0.15 : 1);
+
+    const k = H / 720, cx = W * 0.5, cy = H * 0.42, Rmin = 4 * k, Rmax = Math.hypot(W, H) * 0.62, L = Math.log(Rmax / Rmin) / 9;
+    const rad = (p) => Rmin * Math.exp(L * p);
+    const ang = (p) => rot - Math.PI / 2 + TAU * p;
+    const pt2 = (p) => { const r = rad(p), a = ang(p); return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+
+    // spiral band, spiral line, semitone ticks and the loudness ring: one shader pass
+    gl.uniform4f(uA, cx, cy, Rmin, L); gl.uniform4f(uB, W, H, rot, sigma(t)); gl.uniform1f(uK, k);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    g.clearRect(0, 0, W, H);
+
+    // the partials: copper beads with a trail along the spiral, sized by loudness
+    const live = [];
+    for (let j = Math.floor((pt - 45) / OCT); OCT * j <= pt; j++) { const p = pos(j, t); if (p > 0 && p < 9) live.push(p); }
+    g.lineCap = 'round';
+    for (const p of live) {
+      const a = amp(p, t);
+      g.beginPath();
+      for (let q = Math.max(0, p - 0.3); q <= p; q += 0.01) { const [x, y] = pt2(q); g.lineTo(x, y); }
+      g.strokeStyle = `rgba(201,138,75,${(0.25 + 0.6 * a).toFixed(3)})`; g.lineWidth = (1.5 + 5 * a) * k; g.stroke();
+      const [x, y] = pt2(p), r = (2.5 + 13 * a) * k;
+      g.beginPath(); g.arc(x, y, r * 2.2, 0, TAU); g.fillStyle = `rgba(201,138,75,${(0.18 * a).toFixed(3)})`; g.fill();
+      g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = '#c98a4b'; g.fill();
+      g.beginPath(); g.arc(x - r * 0.3, y - r * 0.3, r * 0.35, 0, TAU); g.fillStyle = 'rgba(239,227,200,0.7)'; g.fill();
+    }
+
+    // the spectral ribbon: log-frequency across, loudness up
+    const x0 = W * 0.08, x1 = W * 0.92, yb = H * 0.95, hh = H * 0.13, X = (p) => x0 + (x1 - x0) * p / 9;
+    g.fillStyle = 'rgba(14,21,36,0.72)'; g.fillRect(x0 - 12 * k, yb - hh - 14 * k, x1 - x0 + 24 * k, hh + 22 * k);
+    g.beginPath(); g.moveTo(x0, yb);
+    for (let p = 0; p <= 9; p += 0.05) g.lineTo(X(p), yb - hh * amp(p, t));
+    g.lineTo(x1, yb); g.closePath();
+    g.fillStyle = 'rgba(239,227,200,0.14)'; g.fill();
+    g.strokeStyle = 'rgba(239,227,200,0.8)'; g.lineWidth = 1.3 * k; g.stroke();
+    g.beginPath();
+    for (let o = 0; o <= 9; o++) { g.moveTo(X(o), yb); g.lineTo(X(o), yb + 5 * k); }
+    g.strokeStyle = 'rgba(239,227,200,0.5)'; g.lineWidth = 1; g.stroke();
+    for (const p of live) {
+      const a = amp(p, t);
+      g.beginPath(); g.moveTo(X(p), yb); g.lineTo(X(p), yb - hh * a);
+      g.strokeStyle = '#c98a4b'; g.lineWidth = 3 * k; g.stroke();
+      g.beginPath(); g.arc(X(p), yb - hh * a, (2 + 3 * a) * k, 0, TAU); g.fillStyle = '#e7b984'; g.fill();
+    }
+    g.font = `${Math.round(11 * k)}px Georgia, serif`;
+    g.fillStyle = 'rgba(239,227,200,0.6)';
+    g.textAlign = 'left'; g.fillText('27.5 Hz', x0, yb - hh - 2 * k);
+    g.textAlign = 'right'; g.fillText('14 kHz', x1, yb - hh - 2 * k);
+    if (!ac) { g.textAlign = 'center'; g.fillText('click or press a key for sound', W / 2, H * 0.985); }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

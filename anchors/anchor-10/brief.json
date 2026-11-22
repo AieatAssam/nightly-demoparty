@@ -1,0 +1,59 @@
+{
+  "title": "Winfree Rotors",
+  "concept": "A backlit petri dish runs a live Oregonator: three pacemakers send rings that collide and annihilate, scratches break them, and the broken ends curl into a mosaic of spirals.",
+  "mechanism_embodied": {
+    "mechanism_name": "Broken wave ends curling into spiral rotors",
+    "how_visualised": "A two-variable Oregonator with a light-induced bromide term is integrated on a 384 by 384 float texture inside a circular no-flux dish. Scripted scratches between 7 and 11 s erase short segments of the rings; the open ends wind into counter-rotating spiral pairs that keep firing after the pacemakers stop. Dragging the pointer scratches the medium live."
+  },
+  "discarded_obvious_idea": "A Gray-Scott reaction-diffusion texture was discarded: its spots and worms are a different chemistry, it is the most familiar look in the genre, and it never shows a wave breaking into a rotor.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "float ping-pong reaction-diffusion",
+    "photosensitive Oregonator integration",
+    "sub-stepped stiff reaction kinetics",
+    "no-flux circular boundary",
+    "gradient-normal liquid shading",
+    "thin-film iridescence"
+  ],
+  "novel_technique": "photosensitive Oregonator integration",
+  "technique_family": "GPU excitable-medium simulation",
+  "palette": [
+    "#1f2b54",
+    "#4d8576",
+    "#80381f",
+    "#d9c9a8",
+    "#f8eccf",
+    "#94502a"
+  ],
+  "motion_sound_plan": "No sound. The simulation runs at 180 steps per second of piece time, capped per frame. Pacemakers fire until about 9 s; scripted scratches cut the rings from 7.4 to 10.9 s; afterwards the spirals sustain themselves and the stain shifts from indigo and madder toward copper and ivory. Pointer drags scratch the medium. Under prefers-reduced-motion the clock runs at one fifth speed.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Three pacemakers ignite in a parchment-lit dish and send out indigo target rings with ivory leading edges."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Ring systems collide and annihilate along cusped seams; rings tear on pale inhibiting beads, and scratches cut them."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "The cut ends wind into counter-rotating spiral pairs that take over from the silent pacemakers."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "A mature spiral mosaic fills the dish as the stain turns copper and ivory with a faint thin-film sheen."
+    }
+  ],
+  "memorable_moment": "The moment a scratched ring's two loose ends hook around and start turning, and the dish begins pacing itself.",
+  "self_declared_risk": "If the device lacks float render targets the waves may fail to propagate; spiral counts also vary with frame pacing on slow renderers.",
+  "liner_note": "In 1951 Boris Belousov found a reaction that oscillates, and journals refused it. In a thin unstirred layer it is an excitable medium: a trigger sends out a ring of oxidation, the medium behind it rests, and two waves that meet destroy each other. Cut a wave and its ends cannot close; they curl into a pair of spirals that fire forever, as Winfree showed in 1972. This dish runs the Oregonator model live on the GPU. Scratches cut the rings, and the spirals take over. Drag to scratch it yourself."
+}

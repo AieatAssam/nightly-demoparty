@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Twice as Often</title>
+<style>
+html,body{margin:0;height:100%;background:#1d2230;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<canvas id="c" role="img" aria-label="Kinetic type about word statistics in the Voynich manuscript."></canvas>
+<script>
+(() => {
+  const cv = document.getElementById('c');
+  const ctx = cv.getContext('2d');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BG = '#1d2230', VELLUM = '#e8dcc0', RUST = '#c0643a', DIM = 'rgba(232,220,192,0.16)';
+  const SERIF = 'Georgia, "Times New Roman", serif';
+  const MONO = 'ui-monospace, Menlo, Consolas, monospace';
+
+  const BEATS = [
+    { head: '38,000 words', sub: 'about 9,000 of them different, on some 240 pages', band: 'BEINECKE MS 408' },
+    { head: '1 / rank', sub: 'the commonest word turns up twice as often as the second, three times the third', band: 'ZIPF' },
+    { head: "easy to guess", sub: 'the next glyph is unusually predictable, unlike every comparison text', band: 'CONDITIONAL ENTROPY' },
+    { head: '1404 to 1438', sub: 'the parchment’s radiocarbon date; the words still cluster by section', band: 'UNREAD' },
+  ];
+
+  let W, H;
+  function layout() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  layout();
+  addEventListener('resize', layout);
+
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
+
+  // A strip of repeated text scrolling sideways.
+  function band(str, y, size, speed, t, alpha) {
+    ctx.font = `${size}px ${MONO}`;
+    ctx.fillStyle = `rgba(232,220,192,${0.16 * alpha})`;
+    const unit = `${str}  ·  `;
+    const w = ctx.measureText(unit).width;
+    let x = -((t * speed) % w) - w;
+    if (speed < 0) x = ((t * -speed) % w) - w * 2;
+    ctx.textAlign = 'left';
+    for (; x < W + w; x += w) ctx.fillText(unit, x, y);
+  }
+
+  function zipf(t, a) {
+    // Three words sized 1, 1/2 and 1/3.
+    const labels = ['first', 'second', 'third'];
+    const base = Math.min(W * 0.11, 140);
+    let x = W * 0.12;
+    labels.forEach((s, i) => {
+      const k = ease((t - 0.4 - i * 0.6) / 0.8);
+      ctx.font = `${base / (i + 1)}px ${SERIF}`;
+      ctx.fillStyle = i ? `rgba(232,220,192,${a * k})` : `rgba(192,100,58,${a * k})`;
+      ctx.textAlign = 'left';
+      ctx.fillText(s, x, H * 0.45 + (1 - k) * 30);
+      x += ctx.measureText(s).width + 36;
+    });
+  }
+
+  function draw(t) {
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+    const i = Math.min(3, Math.floor(t / 5));
+    const local = t - i * 5;
+    // Fade in over the first second of a beat and out over the last 0.6 s (the last beat holds).
+    const a = (i ? ease(local / 1) : 1) * (i < 3 ? 1 - ease((local - 4.4) / 0.6) : 1);
+    const b = BEATS[i];
+
+    band(BEATS.map((x) => x.band).join('  ·  '), H * 0.14, 15, 38, t, 1);
+    band(b.band, H * 0.9, 42, -26, t, a);
+
+    if (i === 1) zipf(local, a);
+
+    const drift = (Math.min(local, 8) * 14) | 0;
+    ctx.textAlign = 'left';
+    ctx.font = `${Math.min(W * 0.085, 104)}px ${SERIF}`;
+    ctx.fillStyle = `rgba(232,220,192,${a})`;
+    const slide = i ? (1 - ease(local / 1.2)) * 80 : 0;
+    ctx.fillText(b.head, W * 0.12 + slide - drift, i === 1 ? H * 0.66 : H * 0.5);
+
+    ctx.font = `${Math.min(W * 0.022, 26)}px ${SERIF}`;
+    ctx.fillStyle = `rgba(232,220,192,${0.75 * a})`;
+    ctx.fillText(b.sub, W * 0.12 + slide * 0.5 - drift * 0.5, (i === 1 ? H * 0.66 : H * 0.5) + 56);
+
+    ctx.font = `13px ${MONO}`;
+    ctx.fillStyle = RUST;
+    ctx.fillText(`${i + 1} / 4`, W * 0.12, H * 0.25);
+    ctx.fillStyle = DIM;
+    ctx.fillRect(W * 0.12 + 50, H * 0.25 - 5, (W * 0.76 - 50) * clamp(t / 20), 2);
+  }
+
+  let t = 0, last = -1;
+  function frame(ms) {
+    requestAnimationFrame(frame);
+    if (last >= 0) t += Math.min((ms - last) / 1000, 0.25) * (reduced ? 0.2 : 1);
+    last = ms;
+    draw(t);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

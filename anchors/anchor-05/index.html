@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Card Chain Sampler</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#161513}
+canvas{display:block;width:100vw;height:100vh;image-rendering:pixelated}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+// A Jacquard loom weaving a sampler, one pick per punched card. Every card row is a binary mask:
+// a hole lifts that warp end, so the end floats over the weft (vertical bar); no hole leaves the weft
+// on top (horizontal bar). Each cell covers exactly half its area in linen either way, so the cloth
+// keeps an even tone and the weave shows only through thread direction, as real damask does.
+// Exactly two colours. Every mark is an integer-aligned fillRect: no strokes, arcs, text or alpha.
+(() => {
+  const INK = '#161513', LINEN = '#efe8d8';
+  const cv = document.getElementById('c');
+  const g = cv.getContext('2d', { alpha: false });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mod = (a, n) => ((a % n) + n) % n;
+  let W = 0, H = 0, S = 10, E = 0, R = 0, x0 = 0, y0 = 0, b1 = 0, b2 = 0, b3 = 0, built = 0;
+  // Finished rows never change, so each is drawn once into a ring buffer of R rows and blitted
+  // at whole-pixel offsets (an exact copy: still two colours).
+  const buf = document.createElement('canvas'), bg = buf.getContext('2d', { alpha: false });
+
+  function layout() {
+    W = cv.width = innerWidth;
+    H = cv.height = innerHeight;
+    S = Math.max(6, Math.round(Math.min(W / 106, H / 60)));
+    E = Math.floor((W - 4 * S) / S / 2) * 2;      // even number of warp ends
+    R = Math.floor(H / S);
+    x0 = Math.floor((W - E * S) / 2 / S) * S;     // keep the cell grid on whole cells
+    y0 = Math.floor((H - R * S) / 2);
+    b1 = Math.round(R * 0.2); b2 = Math.round(R * 0.38); b3 = Math.round(R * 0.55);
+    buf.width = W; buf.height = R * S; built = 0;
+  }
+  layout();
+  addEventListener('resize', layout);
+
+  // The card for pick i: 1 = hole = warp end j lifted.
+  function lift(i, j) {
+    if (j < 2 || j >= E - 2 || i === b1 || i === b2 || i === b3) return (i + j) & 1; // selvedges, section rows
+    if (i < b1) {
+      if (i < b1 * 0.4) return (i + j) & 1;                          // plain weave 1/1
+      return mod(j - i, 4) < 2 ? 1 : 0;                              // 2/2 twill, step 1
+    }
+    if (i < b2) {
+      const m = mod(j, 16), jj = m < 8 ? m : 15 - m;                 // point draw: herringbone
+      if (i < (b1 + b2) / 2) return mod(j - i, 4) !== 0 ? 1 : 0;     // 3/1 warp twill
+      return mod(jj - i, 4) < 2 ? 1 : 0;
+    }
+    if (i < b3) {
+      const h = Math.floor((b3 - b2) * 0.35);
+      if (i <= b2 + h) return mod(2 * j - i, 5) === 0 ? 0 : 1;      // 5-end warp satin, move 2
+      // 8-end satin, move 3, warp-faced inside lozenges and weft-faced outside: a damask diaper
+      const ci = (b2 + h + b3) / 2, ri = (b3 - b2 - h) / 2 - 0.5;
+      const inFig = Math.abs(mod(j - E / 2 + 15, 30) - 15) / 3 + Math.abs(i - ci) < ri;
+      const pt = mod(3 * j - i, 8) === 0;
+      return inFig ? (pt ? 0 : 1) : (pt ? 1 : 0);
+    }
+    // Lucas damask: row n of Pascal's triangle mod 2, C(n, k) odd exactly when (k & n) == k.
+    const n = mod(i - b3, 32), cj = E / 2, u = j - cj + n;
+    let odd = false;
+    if (u >= 0 && u <= 2 * n + 1) { const k = u >> 1; odd = (k & n) === k; }
+    const pt = mod(3 * j - i, 8) === 0;
+    return odd ? (pt ? 0 : 1) : (pt ? 1 : 0);
+  }
+
+  function cell(c, i, j, y) {
+    const x = x0 + j * S, a = Math.round(S * 0.25), w = S - 2 * a;
+    if (lift(i, j)) c.fillRect(x + a, y, w, S);      // warp float: vertical
+    else c.fillRect(x, y + a, S, w);                 // weft float: horizontal
+  }
+
+  let t = 0, last = 0;
+  function frame(ms) {
+    const dt = Math.min(0.5, last ? (ms - last) / 1000 : 0);
+    last = ms;
+    t += dt * (reduce ? 0.15 : 1);
+    const rate = (R - 5) / 20.2;                     // picks per second: the sampler fills by 20 s
+    const done = t * rate, N = Math.floor(done), p = done - N;
+    const top = Math.max(0, N + 5 - R);              // after the sampler fills, take up whole rows
+    g.fillStyle = INK;
+    g.fillRect(0, 0, W, H);
+    g.fillStyle = LINEN;
+    // woven cloth
+    for (built = Math.max(built, N - R); built < N; built++) {
+      const y = (built % R) * S;
+      bg.fillStyle = INK; bg.fillRect(0, y, W, S);
+      bg.fillStyle = LINEN;
+      for (let j = 0; j < E; j++) cell(bg, built, j, y);
+    }
+    const n = N - top, a = top % R, first = Math.min(n, R - a);
+    if (first > 0) g.drawImage(buf, 0, a * S, W, first * S, 0, y0, W, first * S);
+    if (n > first) g.drawImage(buf, 0, 0, W, (n - first) * S, 0, y0 + first * S, W, (n - first) * S);
+    // the pick in progress: the weft runs across with the shuttle, alternating direction
+    const yf = y0 + (N - top) * S, reach = Math.floor(p * 1.25 * E), dir = N & 1;
+    for (let j = 0; j < E; j++) {
+      const jj = dir ? E - 1 - j : j;
+      if (j < reach) cell(g, N, jj, yf);
+      else if (lift(N, jj)) g.fillRect(x0 + jj * S + Math.round(S * 0.3), yf, S - 2 * Math.round(S * 0.3), S);
+      else g.fillRect(x0 + jj * S + Math.round(S * 0.4), yf, S - 2 * Math.round(S * 0.4), S);
+    }
+    const sj = Math.min(E, reach), sx = x0 + (dir ? E - sj : sj) * S - (dir ? 3 * S : 0);
+    if (reach < E) g.fillRect(Math.max(x0 - 3 * S, Math.min(x0 + E * S, sx)), yf + Math.round(S * 0.25), 3 * S, S - 2 * Math.round(S * 0.25));
+    // the next four cards in the chain, punched with their masks
+    for (let k = 1; k <= 4; k++) {
+      const y = yf + k * S;
+      if (y >= H) break;
+      g.fillRect(x0 - S, y, (E + 2) * S, S - 1);
+      g.fillStyle = INK;
+      const h = Math.max(2, Math.round(S * 0.6)), o = (S - 1 - h) >> 1;
+      for (let j = 0; j < E; j++) if (lift(N + k, j)) g.fillRect(x0 + j * S + o, y + o, h, h);
+      g.fillRect(x0 - S + o, y + o, h, h);            // lacing holes at both card ends
+      g.fillRect(x0 + E * S + o, y + o, h, h);
+      g.fillStyle = LINEN;
+    }
+    // bare warp below the cards
+    const yw = yf + 5 * S, lw = Math.max(1, Math.round(S * 0.2));
+    if (yw < H) for (let j = 0; j < E; j++) g.fillRect(x0 + j * S + ((S - lw) >> 1), yw, lw, H - yw);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

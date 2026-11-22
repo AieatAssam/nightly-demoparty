@@ -1,0 +1,59 @@
+{
+  "title": "Laplace Chain",
+  "concept": "The TRAPPIST-1 planets ring their own frequency ratios at every transit while their pairwise chords engrave resonance roses, building from b and c to a seven-body mandala.",
+  "mechanism_embodied": {
+    "mechanism_name": "Three-body Laplace resonance chain",
+    "how_visualised": "Orbital longitudes advance at exactly 24, 15, 9, 6, 4, 3 and 2 units, so every three-body Laplace angle is constant. Each planet plays an FM tone at that ratio times 27.5 Hz whenever it crosses in front of the star; neighbours ring a dyad at conjunction. The same longitudes drive chords that trace three-lobed, two-lobed and seven-lobed roses."
+  },
+  "discarded_obvious_idea": "A photoreal space flyby with textured planets on black was discarded: it shows the planets as places, while the subject is their timing, which is best seen as geometry and heard as rhythm.",
+  "compo": "audiovisual",
+  "constraint_honoured": null,
+  "techniques": [
+    "analytic event scheduling from orbital phase",
+    "resonance-ratio FM tuning",
+    "synodic chord roses",
+    "limb-darkened granulated star shader",
+    "terminator-lit planet discs",
+    "tidal ring field"
+  ],
+  "novel_technique": "analytic event scheduling from orbital phase",
+  "technique_family": "orbital sonification",
+  "palette": [
+    "#120708",
+    "#4c0906",
+    "#d2462a",
+    "#b8693d",
+    "#c9a45c",
+    "#e8dfcc"
+  ],
+  "motion_sound_plan": "Sound starts only after a tap or key press and joins the piece clock where it is. A low pad on h and g sustains under transit tones: each planet sounds its ratio times 27.5 Hz as it crosses the star, neighbours ring a dyad at conjunction, and the full seven-note chord sounds at the 12.5 s alignment. The limiter keeps peaks under 0.9. Under prefers-reduced-motion the clock runs at one fifth speed, roses are dimmed and grain is frozen.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Close on the crimson star: b and c circle in 8:5, their chords drawing a three-lobed rose, with a gold ray and tidal ring at each conjunction."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "d, e, f, g and h wake in turn as the view opens out, each adding an orbit, a rose and a lower tone."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "The chain sweeps into near-alignment at 12.5 s: conjunction rays fire in a cascade from b outward and the full chord sounds."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "The camera pulls back to face-on and gold seven- and thirteen-lobed roses join the copper ones in a mandala."
+    }
+  ],
+  "memorable_moment": "The alignment at 12.5 s, when the rays fire outward planet by planet and the seven tones stack into one chord.",
+  "self_declared_risk": "Thousands of canvas strokes per frame may slow weak devices, and the seven-tone chord can sound dense on small speakers.",
+  "liner_note": "TRAPPIST-1, a cool red dwarf 40 light-years away, has seven Earth-sized planets. Their orbital frequencies are almost exactly 24, 15, 9, 6, 4, 3 and 2, a chain of Laplace resonances in which each trio's longitudes keep a fixed balance. Here each planet sounds its own ratio over a 27.5 Hz base every time it crosses the star, which is how the planets were found. Neighbours ring together when they line up. Chords between pairs, drawn back through time, engrave the roses of the resonance. Tap or press a key for sound."
+}

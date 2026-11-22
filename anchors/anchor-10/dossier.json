@@ -1,0 +1,69 @@
+{
+  "topic": "In a thin layer of Belousov-Zhabotinsky reagent, a broken chemical wave does not heal: its free ends curl into a pair of rotating spirals that keep firing forever.",
+  "domain": "belousov-zhabotinsky-excitable-media",
+  "wildcard_chosen": true,
+  "summary": "The Belousov-Zhabotinsky reaction is a chemical oscillator. In an unstirred thin layer it behaves as an excitable medium: a disturbance sends out a ring of oxidation that travels at fixed speed, and the medium behind it is briefly refractory. Colliding waves annihilate instead of passing through each other. If a wave is cut, its open ends cannot close and they wind into spiral rotors, which become self-sustaining pacemakers. The Oregonator model reproduces this with an activator and a recovering catalyst.",
+  "facts": [
+    {
+      "claim": "Boris Belousov observed the oscillating reaction in the early 1950s, and his manuscript reporting it was rejected because reviewers thought it impossible.",
+      "source_url": "https://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction",
+      "source_title": "Belousov-Zhabotinsky reaction"
+    },
+    {
+      "claim": "Anatol Zhabotinsky took up the reaction as a graduate student in the early 1960s and established its oscillating behaviour.",
+      "source_url": "https://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction",
+      "source_title": "Belousov-Zhabotinsky reaction"
+    },
+    {
+      "claim": "With the ferroin catalyst the solution swings between red (reduced iron) and blue (oxidised iron), so waves of oxidation are visible as blue bands.",
+      "source_url": "https://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction",
+      "source_title": "Belousov-Zhabotinsky reaction"
+    },
+    {
+      "claim": "Arthur Winfree reported spiral waves of chemical activity in thin layers of the reagent in Science in 1972.",
+      "source_url": "https://www.science.org/doi/10.1126/science.175.4022.634",
+      "source_title": "Winfree, Spiral waves of chemical activity (Science 175, 1972)"
+    },
+    {
+      "claim": "The Oregonator was devised by Field and Noyes in 1974 at the University of Oregon as a reduced model of the Field-Koros-Noyes (FKN) mechanism of the reaction.",
+      "source_url": "http://www.scholarpedia.org/article/Oregonator",
+      "source_title": "Oregonator (Scholarpedia)"
+    },
+    {
+      "claim": "In the Oregonator, HBrO2 (X) is the activator species and the oxidised catalyst (Z), whose reduction releases bromide, is the inhibitor species.",
+      "source_url": "http://www.scholarpedia.org/article/Oregonator",
+      "source_title": "Oregonator (Scholarpedia)"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Broken wave ends curling into spiral rotors",
+      "description": "A cut wave has two free ends. The ends advance more slowly than the flat front and wind around the refractory core behind them, forming a counter-rotating pair of spirals that become permanent pacemakers.",
+      "render_or_sonify_hint": "Erase a short segment of a travelling ring in an Oregonator simulation and let the ends wind up."
+    },
+    {
+      "name": "Target rings from pacemakers",
+      "description": "A local trigger fires repeatedly, sending concentric rings of oxidation outward at a fixed speed.",
+      "render_or_sonify_hint": "Periodic stimuli at a few points in the dish."
+    },
+    {
+      "name": "Annihilation of colliding waves",
+      "description": "Two waves meeting head-on both stop, because each runs into the refractory tail of the other.",
+      "render_or_sonify_hint": "Overlapping ring systems whose fronts cancel along cusped seams."
+    },
+    {
+      "name": "Light-inhibited propagation",
+      "description": "In the ruthenium-catalysed variant light produces bromide, so illuminated regions inhibit waves; uneven light makes waves slow or fail.",
+      "render_or_sonify_hint": "A spatially varying inhibitor field with a few strongly inhibited spots acting as obstacles."
+    }
+  ],
+  "open_questions": [
+    "How does a spiral's core meander in three dimensions when the layer is thick enough for scroll waves?",
+    "Why do some spirals drift toward obstacles and anchor there while others wander freely?"
+  ],
+  "surprise": {
+    "score": 70,
+    "justification": "A reaction once rejected as impossible draws the same spirals seen in heart arrhythmias and slime moulds, and a single scratch is enough to start one."
+  },
+  "dataset": null
+}

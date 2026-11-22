@@ -1,0 +1,59 @@
+{
+  "title": "Pulse Relief",
+  "concept": "An archival plate in four states: a pen chart of 1.337 s spikes, a nu^-2 dispersion waterfall that straightens, eighty real pulses as a hidden-line stack, and the stack turned into a gilded relief.",
+  "mechanism_embodied": {
+    "mechanism_name": "Cold-plasma dispersion delay",
+    "how_visualised": "Thirty log-spaced channels from 1414 to 81.5 MHz each carry the same pulses, shifted by 4148.808 x 12.444 / f^2 seconds, so every pulse lies on a vermilion nu^-2 curve and the 81.5 MHz arrival trails by 7.77 s. The delay is then scaled to zero and the curves straighten into aligned pulses before the stack of 80 successive pulses takes over."
+  },
+  "discarded_obvious_idea": "The white-on-black stacked-lines album cover was discarded: it shows only the stack, as a logo, and hides both the dispersion sweep and the drifting sub-pulses that the data actually records.",
+  "compo": "data-sculpture",
+  "constraint_honoured": null,
+  "techniques": [
+    "base62 companded data inlining",
+    "dispersion waterfall with dedispersion",
+    "painter-ordered hidden-line curtains",
+    "slope-bucketed relief shading",
+    "baked parchment texture",
+    "pen-sweep chart record"
+  ],
+  "novel_technique": "slope-bucketed relief shading",
+  "technique_family": "Canvas2D data engraving",
+  "palette": [
+    "#e6dcc6",
+    "#24221f",
+    "#8c7a5b",
+    "#b5401f",
+    "#b08a3e",
+    "#fcdc92"
+  ],
+  "motion_sound_plan": "No sound. The chart paper stays fixed while the pen sweeps one 5 s record. The dispersion channels fade in top to bottom, the nu^-2 curves draw on, then the delay is removed. From 10 s the stack of 80 pulses tilts into view; from 15 s it is gilded and the camera orbits, still turning at 20 s. Dragging turns the relief. Under prefers-reduced-motion the clock runs at one fifth speed.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Parchment chart: a graphite pen sweeps right, leaving spikes every 1.337 s marked by vermilion dimension lines."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Thirty frequency channels fill in; vermilion nu^-2 curves trace each pulse down the band, then the delay is removed and the pulses align."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Eighty successive pulses as a hidden-line stack in carbon ink, sub-pulse crests picked out in gold where they drift."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "The stack is gilded into a relief on a bronze plinth with engraved ticks, and the camera orbits low around it."
+    }
+  ],
+  "memorable_moment": "The moment the curved dispersion fan snaps straight, showing that seconds of smear were one pulse all along.",
+  "self_declared_risk": "The pulse data is an approximate digitisation of a printed figure, so fine noise between sub-pulses is partly the tracer's hand.",
+  "liner_note": "PSR B1919+21 was the first pulsar, found by Jocelyn Bell Burnell in 1967. It turns once every 1.337 s. Free electrons between us and the star slow low radio frequencies, so each pulse sweeps down the band; at 81.5 MHz it arrives 7.77 s late, over five rotations. The waterfall here uses the catalogued dispersion measure, then removes the delay. The stack is eighty real successive pulses, digitised from Harold Craft's 1970 thesis plot. Inside each pulse, sub-pulses drift across the window from turn to turn. The last view gilds them into a relief."
+}
