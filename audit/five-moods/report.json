@@ -1,0 +1,1561 @@
+{
+  "test": "SPEC Stage 2 acceptance: 5 moods, same dossier, same compo",
+  "ran_at": "2026-11-22T18:54:10.459Z",
+  "claude_cli": "2.1.330 (Claude Code)",
+  "reproduce": "npx tsx harness/five-moods-test.ts all",
+  "fixed_inputs": {
+    "dossier": "audit/five-moods/dossier.json (hand-authored for this test from verified pages, not Stage 1 output)",
+    "dossier_topic": "Behind a blunt body, wind sheds vortices alternately from each side at a frequency fixed by the Strouhal number, about 0.2, from a 1.5 km island down to a singing wire",
+    "dossier_domain": "von-karman-vortex-street",
+    "dossier_sha256": "9dbed0f72e7e54963ed8ff0e11548df27987c50ce1855270e56f68ebb4d6681d",
+    "compo": "simulation",
+    "size_budget_bytes": 24576,
+    "plan_date": "2026-11-23",
+    "plan_seed": "five-moods",
+    "mood_timestamp": "2026-11-22T00:00:00.000Z",
+    "ledger": "empty (ledger/ledger.jsonl has 0 lines), so boredom_force_unused_30d and the bans constrain nothing here",
+    "prompt_sha256": {
+      "brief": "0e0c566ef24fd891801be860ad303cb3dfeab8b02479c3c10c18ae70c032225d",
+      "build": "2a667b91c4d79d038a3d069de60d8bcc923cc46f12776e3b21b0b2b0194dd36e"
+    },
+    "stage_models": {
+      "brief": "claude --model haiku --max-turns 6 (up to 3 tries with validation errors fed back)",
+      "build": "claude --model haiku --max-turns 30, attempt 2 haiku with exact gate failures, attempt 3 claude --model opus --effort low",
+      "gate": "runHardGates timingScale 1; decision gate serialised, final gate rerun sequentially with no other load",
+      "judge": "claude --model haiku --effort high --max-turns 4 --tools Read,Write --permission-mode bypassPermissions, fresh dir with only the 5 strips"
+    }
+  },
+  "mapping_separability_note": "With the thirds cutpoints, tempo is high for 4 of 5 presets (only melancholic is low) and scale is measured for 3. Bored vs curious vs frustrated rest mainly on palette level, risk budget and shrink_scope.",
+  "pieces": [
+    {
+      "preset": "euphoric-high-arousal",
+      "blind_letter": "E",
+      "mood_levels": {
+        "pad": {
+          "pleasure": 0.85,
+          "arousal": 0.88,
+          "dominance": 0.75
+        },
+        "tempo": "high",
+        "palette": "warm-consonant",
+        "scale": "assertive",
+        "risk": "experimental",
+        "boredom_force_unused_30d": false,
+        "shrink_scope": false
+      },
+      "brief": {
+        "title": "Alternating Vortices Behind a Blunt Body",
+        "concept": "Clockwise rust and counterclockwise ochre vortices shed alternately off the edges of a blunt cylinder, drifting downwind as a staggered street of dye.",
+        "mechanism": "Alternating vortex shedding",
+        "technique_family": "simulation",
+        "techniques": [
+          "ping-pong dye advection through a point-vortex street",
+          "alternating vorticity-sign dye injection at two shear layers",
+          "Domain warping (noise-field)",
+          "Strouhal-rate shedding clock driven by flow speed"
+        ],
+        "novel_technique": "Domain warping (noise-field)",
+        "palette": [
+          "#efe4cc",
+          "#c8962e",
+          "#9a4a22",
+          "#c2412d"
+        ],
+        "motion_sound_plan": "Mood applied: high tempo (dense dye field, five cuts, 120 BPM visual shedding pulse), warm-consonant palette (cream ground, ochre and rust, mirror symmetry about the stream axis with a half-period offset between rows), assertive framing (cylinder fills the frame, push-in between beats), experimental technique risk (ping-pong dye simulation). No sound: requires_audio is false. Constraint: none. Domain warping keeps the dye filaments rolling; seeded PRNG only.",
+        "brief_tries": [
+          {
+            "try": 1,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 3,
+            "cost_usd": 0.013367410000000001,
+            "duration_s": 38,
+            "emdashes_replaced": 0,
+            "errors": []
+          }
+        ]
+      },
+      "build": {
+        "attempts": [
+          {
+            "attempt": 1,
+            "model": "haiku",
+            "effort": null,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 15,
+            "cost_usd": 0.7988260249999999,
+            "duration_s": 871,
+            "bash_calls": 4,
+            "bash_only_gate_command": true,
+            "emdashes_replaced": 0,
+            "bytes": 7901,
+            "gate_passed": true,
+            "failures": [],
+            "frame_diff_mean": 9.6842
+          }
+        ],
+        "final_model": "haiku",
+        "final_effort": null,
+        "attempts_used": 1,
+        "cost_usd": 0.7988
+      },
+      "gates": {
+        "passed": true,
+        "failures": [],
+        "byte_size": 7901,
+        "size_budget_bytes": 24576,
+        "motion": {
+          "frame_diff_mean": 9.6975,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 37.6328,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "luminance_variance": {
+          "t2": 3351.5434,
+          "t8": 527.2289,
+          "t20": 517.2667,
+          "floor": 12,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 3,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.3,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 12.4728,
+          "reduced_motion": 3.6235,
+          "ratio": 0.2905
+        },
+        "console_errors": 0,
+        "network_requests": 0,
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        }
+      },
+      "visual_signature": {
+        "mean_colour": {
+          "t2": {
+            "hex": "#d7ba9a",
+            "luma": 190.2617
+          },
+          "t8": {
+            "hex": "#eadbbf",
+            "luma": 220.1594
+          },
+          "t20": {
+            "hex": "#ebdcc2",
+            "luma": 221.2492
+          }
+        },
+        "dominant_bins": [
+          {
+            "hex": "#e0e0e0",
+            "share": 0.7617
+          },
+          {
+            "hex": "#e0e0a0",
+            "share": 0.074
+          },
+          {
+            "hex": "#a06020",
+            "share": 0.0508
+          },
+          {
+            "hex": "#e0a060",
+            "share": 0.0429
+          }
+        ],
+        "colour_bins_over_1pct": 7,
+        "luminance_variance": {
+          "t2": 3351.5434,
+          "t8": 527.2289,
+          "t20": 517.2667,
+          "floor": 12,
+          "passed": true
+        },
+        "frame_diff_mean": 9.6975,
+        "development_diff_t2_t20": 37.6328,
+        "per_shot_colour_bins": [
+          9,
+          4,
+          4
+        ]
+      },
+      "mood_label_leak_scan": {
+        "hits": 0,
+        "samples": [],
+        "preset_name_in_source": false,
+        "canvas_text_literals": []
+      }
+    },
+    {
+      "preset": "melancholic-low-arousal",
+      "blind_letter": "A",
+      "mood_levels": {
+        "pad": {
+          "pleasure": -0.65,
+          "arousal": -0.75,
+          "dominance": -0.55
+        },
+        "tempo": "low",
+        "palette": "cool-dissonant",
+        "scale": "intimate",
+        "risk": "conservative",
+        "boredom_force_unused_30d": false,
+        "shrink_scope": false
+      },
+      "brief": {
+        "title": "Shedding in Turn: A Street Behind a Small Disc",
+        "concept": "Clockwise rust cores and counterclockwise pale cores shed in turn from a small disc in a steady wind, drifting downstream as a staggered von Karman street.",
+        "mechanism": "Alternating vortex shedding",
+        "technique_family": "simulation",
+        "techniques": [
+          "point-vortex street with alternating signs",
+          "tracer particles advected by vortex velocity field",
+          "Domain warping (noise-field)"
+        ],
+        "novel_technique": "Domain warping (noise-field)",
+        "palette": [
+          "#5f6f78",
+          "#8b9a94",
+          "#c9d2cc",
+          "#b8552e"
+        ],
+        "motion_sound_plan": "Mood settings: low tempo (slow drift, about 40 sparse tracers), cool-dissonant palette (blue-grey ground, pale green-grey mids, one rust accent, asymmetric street), intimate framing (small disc with wide margins, low contrast, slow camera drift), conservative risk (2D canvas point vortices; the warp only tints dye edges), zero hard cuts. No audio. Cores release every 2.5 D/U so the rate follows St near 0.2. Use seeded noise from lib/noise, never Math.random.",
+        "brief_tries": [
+          {
+            "try": 1,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 3,
+            "cost_usd": 0.015605839999999998,
+            "duration_s": 52,
+            "emdashes_replaced": 0,
+            "errors": []
+          }
+        ]
+      },
+      "build": {
+        "attempts": [
+          {
+            "attempt": 1,
+            "model": "haiku",
+            "effort": null,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 13,
+            "cost_usd": 0.13748581,
+            "duration_s": 734,
+            "bash_calls": 4,
+            "bash_only_gate_command": true,
+            "emdashes_replaced": 0,
+            "bytes": 5376,
+            "gate_passed": true,
+            "failures": [],
+            "frame_diff_mean": 1.643
+          }
+        ],
+        "final_model": "haiku",
+        "final_effort": null,
+        "attempts_used": 1,
+        "cost_usd": 0.1375
+      },
+      "gates": {
+        "passed": true,
+        "failures": [],
+        "byte_size": 5376,
+        "size_budget_bytes": 24576,
+        "motion": {
+          "frame_diff_mean": 1.5777,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 5.9583,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "luminance_variance": {
+          "t2": 306.3234,
+          "t8": 256.0953,
+          "t20": 263.079,
+          "floor": 12,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 50,
+          "p90": 66.7,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 1.8393,
+          "reduced_motion": 0.4132,
+          "ratio": 0.2247
+        },
+        "console_errors": 0,
+        "network_requests": 0,
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        }
+      },
+      "visual_signature": {
+        "mean_colour": {
+          "t2": {
+            "hex": "#707e7e",
+            "luma": 122.7206
+          },
+          "t8": {
+            "hex": "#727f80",
+            "luma": 124.2586
+          },
+          "t20": {
+            "hex": "#727f80",
+            "luma": 124.5304
+          }
+        },
+        "dominant_bins": [
+          {
+            "hex": "#606060",
+            "share": 0.495
+          },
+          {
+            "hex": "#60a0a0",
+            "share": 0.2402
+          },
+          {
+            "hex": "#a0a0a0",
+            "share": 0.2046
+          },
+          {
+            "hex": "#6060a0",
+            "share": 0.034
+          }
+        ],
+        "colour_bins_over_1pct": 5,
+        "luminance_variance": {
+          "t2": 306.3234,
+          "t8": 256.0953,
+          "t20": 263.079,
+          "floor": 12,
+          "passed": true
+        },
+        "frame_diff_mean": 1.5777,
+        "development_diff_t2_t20": 5.9583,
+        "per_shot_colour_bins": [
+          5,
+          5,
+          5
+        ]
+      },
+      "mood_label_leak_scan": {
+        "hits": 0,
+        "samples": [],
+        "preset_name_in_source": false,
+        "canvas_text_literals": []
+      }
+    },
+    {
+      "preset": "bored-restless",
+      "blind_letter": "D",
+      "mood_levels": {
+        "pad": {
+          "pleasure": -0.25,
+          "arousal": 0.45,
+          "dominance": 0.2
+        },
+        "tempo": "high",
+        "palette": "balanced",
+        "scale": "measured",
+        "risk": "conservative",
+        "boredom_force_unused_30d": true,
+        "shrink_scope": false
+      },
+      "brief": {
+        "title": "Alternating Shedding Behind a Bluff Body",
+        "concept": "Tracer dots drift past a bluff disk and roll into clockwise and counterclockwise cores that leave the two sides in turn, forming a staggered street whose shedding rate follows a Strouhal ratio near 0.2.",
+        "mechanism": "Alternating vortex shedding",
+        "technique_family": "simulation",
+        "techniques": [
+          "analytic point-vortex street advecting tracer particles",
+          "vorticity-signed two-tone tracer colouring",
+          "Strouhal-scaled shedding period per obstacle",
+          "Domain warping (noise-field)"
+        ],
+        "novel_technique": "Domain warping (noise-field)",
+        "palette": [
+          "#efe6d2",
+          "#5f7d96",
+          "#d89a3c",
+          "#c4553a",
+          "#4a5563"
+        ],
+        "motion_sound_plan": "High tempo, balanced palette, measured camera, conservative risk. Dense field of about 2400 tracers, four scene changes (three beat cuts plus a hard cut at 12.5 s), one slow pull-back, amber and slate on cream with a vermilion accent, partial symmetry. Silent piece with no audio; the shedding period sets a visual rhythm near 120 BPM. Constraint: none.",
+        "brief_tries": [
+          {
+            "try": 1,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 3,
+            "cost_usd": 0.01441975,
+            "duration_s": 46,
+            "emdashes_replaced": 0,
+            "errors": []
+          }
+        ]
+      },
+      "build": {
+        "attempts": [
+          {
+            "attempt": 1,
+            "model": "haiku",
+            "effort": null,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 8,
+            "cost_usd": 0.13612100000000002,
+            "duration_s": 723,
+            "bash_calls": 2,
+            "bash_only_gate_command": true,
+            "emdashes_replaced": 0,
+            "bytes": 5548,
+            "gate_passed": true,
+            "failures": [],
+            "frame_diff_mean": 0.982
+          }
+        ],
+        "final_model": "haiku",
+        "final_effort": null,
+        "attempts_used": 1,
+        "cost_usd": 0.1361
+      },
+      "gates": {
+        "passed": true,
+        "failures": [],
+        "byte_size": 5548,
+        "size_budget_bytes": 24576,
+        "motion": {
+          "frame_diff_mean": 0.9639,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 3.9661,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "luminance_variance": {
+          "t2": 334.6097,
+          "t8": 173.5983,
+          "t20": 193.1746,
+          "floor": 12,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 33.3,
+          "p90": 33.4,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 1.5951,
+          "reduced_motion": 0.5662,
+          "ratio": 0.355
+        },
+        "console_errors": 0,
+        "network_requests": 0,
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        }
+      },
+      "visual_signature": {
+        "mean_colour": {
+          "t2": {
+            "hex": "#ece3d0",
+            "luma": 227.9417
+          },
+          "t8": {
+            "hex": "#ede4d1",
+            "luma": 228.9283
+          },
+          "t20": {
+            "hex": "#ede4d0",
+            "luma": 228.7016
+          }
+        },
+        "dominant_bins": [
+          {
+            "hex": "#e0e0e0",
+            "share": 0.9814
+          },
+          {
+            "hex": "#606060",
+            "share": 0.0098
+          },
+          {
+            "hex": "#e0e0a0",
+            "share": 0.0035
+          },
+          {
+            "hex": "#a0a0a0",
+            "share": 0.0022
+          }
+        ],
+        "colour_bins_over_1pct": 1,
+        "luminance_variance": {
+          "t2": 334.6097,
+          "t8": 173.5983,
+          "t20": 193.1746,
+          "floor": 12,
+          "passed": true
+        },
+        "frame_diff_mean": 0.9639,
+        "development_diff_t2_t20": 3.9661,
+        "per_shot_colour_bins": [
+          2,
+          1,
+          1
+        ]
+      },
+      "mood_label_leak_scan": {
+        "hits": 0,
+        "samples": [],
+        "preset_name_in_source": false,
+        "canvas_text_literals": [
+          "VON KARMAN STREET - St 0.20 - alternating shedding"
+        ]
+      }
+    },
+    {
+      "preset": "frustrated-tight-polish",
+      "blind_letter": "B",
+      "mood_levels": {
+        "pad": {
+          "pleasure": -0.5,
+          "arousal": 0.35,
+          "dominance": -0.2
+        },
+        "tempo": "high",
+        "palette": "cool-dissonant",
+        "scale": "measured",
+        "risk": "conservative",
+        "boredom_force_unused_30d": false,
+        "shrink_scope": true
+      },
+      "brief": {
+        "title": "Alternating Shedding Behind a Blunt Disc",
+        "concept": "Behind a 1.5 km island a steady wind peels clockwise and counterclockwise vortices off alternating edges, and here a blunt disc sheds one vortex from each side in turn so the staggered street drifts downwind.",
+        "mechanism": "Alternating vortex shedding",
+        "technique_family": "simulation",
+        "techniques": [
+          "alternating discrete vortex shedding from two shear layers",
+          "Strouhal-timed release, T = D / (0.2 U)",
+          "vorticity-sign two-tone colouring",
+          "Domain warping (noise-field)"
+        ],
+        "novel_technique": "Domain warping (noise-field)",
+        "palette": [
+          "#8f9c9e",
+          "#5b6e75",
+          "#2e3d45",
+          "#c8442a"
+        ],
+        "motion_sound_plan": "Mood applied: high tempo (four speed settings, about 1400 tracers), cool-dissonant palette (grey-green ground, slate, one vermilion accent, asymmetric disc at left third), measured framing (one slow pull-back in beats 3 and 4), conservative risk (2D canvas, one noise pass), shrink scope (4 techniques, one rendering idea, high polish weight: speed ramps over 1 s at each beat start, no artefacts). Shedding alternates top and bottom every T/2; seeded lib/noise.js PRNG only. No audio, no input.",
+        "brief_tries": [
+          {
+            "try": 1,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 3,
+            "cost_usd": 0.01628753,
+            "duration_s": 57,
+            "emdashes_replaced": 0,
+            "errors": []
+          }
+        ]
+      },
+      "build": {
+        "attempts": [
+          {
+            "attempt": 1,
+            "model": "haiku",
+            "effort": null,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 21,
+            "cost_usd": 1.037009035,
+            "duration_s": 633,
+            "bash_calls": 7,
+            "bash_only_gate_command": true,
+            "emdashes_replaced": 0,
+            "bytes": 5741,
+            "gate_passed": true,
+            "failures": [],
+            "frame_diff_mean": 1.8716
+          }
+        ],
+        "final_model": "haiku",
+        "final_effort": null,
+        "attempts_used": 1,
+        "cost_usd": 1.037
+      },
+      "gates": {
+        "passed": true,
+        "failures": [],
+        "byte_size": 5741,
+        "size_budget_bytes": 24576,
+        "motion": {
+          "frame_diff_mean": 1.8799,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 2.9764,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "luminance_variance": {
+          "t2": 66.9425,
+          "t8": 71.8058,
+          "t20": 111.2509,
+          "floor": 12,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 100,
+          "p90": 133.31,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 1.4537,
+          "reduced_motion": 1.1212,
+          "ratio": 0.7713
+        },
+        "console_errors": 0,
+        "network_requests": 0,
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        }
+      },
+      "visual_signature": {
+        "mean_colour": {
+          "t2": {
+            "hex": "#8e9b9d",
+            "luma": 152.3771
+          },
+          "t8": {
+            "hex": "#8e9b9d",
+            "luma": 152.2079
+          },
+          "t20": {
+            "hex": "#8d9a9c",
+            "luma": 151.2859
+          }
+        },
+        "dominant_bins": [
+          {
+            "hex": "#a0a0a0",
+            "share": 0.9719
+          },
+          {
+            "hex": "#606060",
+            "share": 0.0149
+          },
+          {
+            "hex": "#60a0a0",
+            "share": 0.0044
+          },
+          {
+            "hex": "#a06060",
+            "share": 0.003
+          }
+        ],
+        "colour_bins_over_1pct": 2,
+        "luminance_variance": {
+          "t2": 66.9425,
+          "t8": 71.8058,
+          "t20": 111.2509,
+          "floor": 12,
+          "passed": true
+        },
+        "frame_diff_mean": 1.8799,
+        "development_diff_t2_t20": 2.9764,
+        "per_shot_colour_bins": [
+          1,
+          1,
+          2
+        ]
+      },
+      "mood_label_leak_scan": {
+        "hits": 0,
+        "samples": [],
+        "preset_name_in_source": false,
+        "canvas_text_literals": [
+          "St 0.2   T = D / (0.2 U)"
+        ]
+      }
+    },
+    {
+      "preset": "curious-experimental",
+      "blind_letter": "C",
+      "mood_levels": {
+        "pad": {
+          "pleasure": 0.55,
+          "arousal": 0.55,
+          "dominance": 0.15
+        },
+        "tempo": "high",
+        "palette": "warm-consonant",
+        "scale": "measured",
+        "risk": "experimental",
+        "boredom_force_unused_30d": false,
+        "shrink_scope": false
+      },
+      "brief": {
+        "title": "Alternating Shedding: A Dye Street Behind a Disc",
+        "concept": "A dye-tracer stream past a round obstacle sheds ochre and rust vortices from alternating edges into a staggered street, with the shedding rate set by a Strouhal number near 0.2.",
+        "mechanism": "Alternating vortex shedding",
+        "technique_family": "simulation",
+        "techniques": [
+          "stable-fluids grid solver with solid disc mask",
+          "vorticity-signed dye advection",
+          "alternating shedding from two shear layers"
+        ],
+        "novel_technique": "vorticity-signed dye advection",
+        "palette": [
+          "#EDE3CC",
+          "#C9893A",
+          "#9C4A2A",
+          "#5E6B73",
+          "#3A3430"
+        ],
+        "motion_sound_plan": "Mood: high tempo (dense dye field of about 2000 tracer particles, hard cuts at 5, 10 and 15 s), warm-consonant palette (cream, ochre, rust, mirrored about the wake axis), measured framing (one slow dolly-out in beat 3). Experimental technical risk: a stable-fluids solver on a 256 by 128 grid with the disc as a solid mask. No audio, constraint null, stay under 24 KB. Visuals change only at beat boundaries.",
+        "brief_tries": [
+          {
+            "try": 1,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 3,
+            "cost_usd": 0.01299429,
+            "duration_s": 38,
+            "emdashes_replaced": 0,
+            "errors": []
+          }
+        ]
+      },
+      "build": {
+        "attempts": [
+          {
+            "attempt": 1,
+            "model": "haiku",
+            "effort": null,
+            "exit": 0,
+            "subtype": "success",
+            "api_turns": 11,
+            "cost_usd": 1.5831618650000001,
+            "duration_s": 559,
+            "bash_calls": 3,
+            "bash_only_gate_command": true,
+            "emdashes_replaced": 0,
+            "bytes": 7690,
+            "gate_passed": true,
+            "failures": [],
+            "frame_diff_mean": 1.8362
+          }
+        ],
+        "final_model": "haiku",
+        "final_effort": null,
+        "attempts_used": 1,
+        "cost_usd": 1.5832
+      },
+      "gates": {
+        "passed": true,
+        "failures": [],
+        "byte_size": 7690,
+        "size_budget_bytes": 24576,
+        "motion": {
+          "frame_diff_mean": 1.7717,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 10.2938,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "luminance_variance": {
+          "t2": 757.9566,
+          "t8": 312.1736,
+          "t20": 170.4374,
+          "floor": 12,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 16.7,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 2.6124,
+          "reduced_motion": 0.28,
+          "ratio": 0.1072
+        },
+        "console_errors": 0,
+        "network_requests": 0,
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        }
+      },
+      "visual_signature": {
+        "mean_colour": {
+          "t2": {
+            "hex": "#e2d4bc",
+            "luma": 213.2876
+          },
+          "t8": {
+            "hex": "#e5d9c1",
+            "luma": 217.8296
+          },
+          "t20": {
+            "hex": "#e6dbc4",
+            "luma": 219.5642
+          }
+        },
+        "dominant_bins": [
+          {
+            "hex": "#e0e0e0",
+            "share": 0.8038
+          },
+          {
+            "hex": "#e0e0a0",
+            "share": 0.155
+          },
+          {
+            "hex": "#e0a060",
+            "share": 0.0115
+          },
+          {
+            "hex": "#e0a0a0",
+            "share": 0.0093
+          }
+        ],
+        "colour_bins_over_1pct": 3,
+        "luminance_variance": {
+          "t2": 757.9566,
+          "t8": 312.1736,
+          "t20": 170.4374,
+          "floor": 12,
+          "passed": true
+        },
+        "frame_diff_mean": 1.7717,
+        "development_diff_t2_t20": 10.2938,
+        "per_shot_colour_bins": [
+          6,
+          4,
+          2
+        ]
+      },
+      "mood_label_leak_scan": {
+        "hits": 0,
+        "samples": [],
+        "preset_name_in_source": false,
+        "canvas_text_literals": []
+      }
+    }
+  ],
+  "all_gates_passed": true,
+  "pairwise_distinctness": {
+    "metric_note": "histogram_l1 is histogramDistanceL1 (total variation, 0..1) on the 3-shot 64-bin colour histogram from gates.json; dhash_hamming is hammingDistanceHex on the 64-bit dHash per matching shot.",
+    "novelty_b_thresholds": {
+      "histogram_min_distance": 0.18,
+      "phash_min_hamming": 10
+    },
+    "pairs": [
+      {
+        "a": "euphoric-high-arousal",
+        "b": "melancholic-low-arousal",
+        "histogram_l1": 0.9964,
+        "dhash_hamming": {
+          "t2": 39,
+          "t8": 31,
+          "t20": 34,
+          "mean": 34.6667,
+          "min": 31
+        }
+      },
+      {
+        "a": "euphoric-high-arousal",
+        "b": "bored-restless",
+        "histogram_l1": 0.2329,
+        "dhash_hamming": {
+          "t2": 44,
+          "t8": 34,
+          "t20": 28,
+          "mean": 35.3333,
+          "min": 28
+        }
+      },
+      {
+        "a": "euphoric-high-arousal",
+        "b": "frustrated-tight-polish",
+        "histogram_l1": 0.995,
+        "dhash_hamming": {
+          "t2": 33,
+          "t8": 34,
+          "t20": 32,
+          "mean": 33,
+          "min": 32
+        }
+      },
+      {
+        "a": "euphoric-high-arousal",
+        "b": "curious-experimental",
+        "histogram_l1": 0.1333,
+        "dhash_hamming": {
+          "t2": 32,
+          "t8": 34,
+          "t20": 33,
+          "mean": 33,
+          "min": 32
+        }
+      },
+      {
+        "a": "melancholic-low-arousal",
+        "b": "bored-restless",
+        "histogram_l1": 0.9846,
+        "dhash_hamming": {
+          "t2": 37,
+          "t8": 31,
+          "t20": 28,
+          "mean": 32,
+          "min": 28
+        }
+      },
+      {
+        "a": "melancholic-low-arousal",
+        "b": "frustrated-tight-polish",
+        "histogram_l1": 0.7744,
+        "dhash_hamming": {
+          "t2": 42,
+          "t8": 31,
+          "t20": 36,
+          "mean": 36.3333,
+          "min": 31
+        }
+      },
+      {
+        "a": "melancholic-low-arousal",
+        "b": "curious-experimental",
+        "histogram_l1": 0.9945,
+        "dhash_hamming": {
+          "t2": 17,
+          "t8": 19,
+          "t20": 13,
+          "mean": 16.3333,
+          "min": 13
+        }
+      },
+      {
+        "a": "bored-restless",
+        "b": "frustrated-tight-polish",
+        "histogram_l1": 0.9871,
+        "dhash_hamming": {
+          "t2": 31,
+          "t8": 32,
+          "t20": 28,
+          "mean": 30.3333,
+          "min": 28
+        }
+      },
+      {
+        "a": "bored-restless",
+        "b": "curious-experimental",
+        "histogram_l1": 0.189,
+        "dhash_hamming": {
+          "t2": 36,
+          "t8": 26,
+          "t20": 31,
+          "mean": 31,
+          "min": 26
+        }
+      },
+      {
+        "a": "frustrated-tight-polish",
+        "b": "curious-experimental",
+        "histogram_l1": 0.9942,
+        "dhash_hamming": {
+          "t2": 39,
+          "t8": 30,
+          "t20": 35,
+          "mean": 34.6667,
+          "min": 30
+        }
+      }
+    ],
+    "summary": {
+      "histogram_l1_min": 0.1333,
+      "histogram_l1_mean": 0.7281,
+      "dhash_min_over_pairs": 13,
+      "dhash_mean_over_pairs": 31.6667,
+      "pairs_clearing_histogram_threshold": 9,
+      "pairs_clearing_dhash_threshold_on_every_shot": 10,
+      "pairs_total": 10
+    }
+  },
+  "build_independence": {
+    "note": "Builder Read calls were not logged, so independence is checked on the output: share of non-trivial lines (over 20 chars) shared between pieces and with any anchor.",
+    "pairwise_line_overlap": {
+      "pairs": [
+        {
+          "a": "euphoric-high-arousal",
+          "b": "melancholic-low-arousal",
+          "shared_line_share": 0.0159
+        },
+        {
+          "a": "euphoric-high-arousal",
+          "b": "bored-restless",
+          "shared_line_share": 0.0159
+        },
+        {
+          "a": "euphoric-high-arousal",
+          "b": "frustrated-tight-polish",
+          "shared_line_share": 0.0167
+        },
+        {
+          "a": "euphoric-high-arousal",
+          "b": "curious-experimental",
+          "shared_line_share": 0.0952
+        },
+        {
+          "a": "melancholic-low-arousal",
+          "b": "bored-restless",
+          "shared_line_share": 0.0714
+        },
+        {
+          "a": "melancholic-low-arousal",
+          "b": "frustrated-tight-polish",
+          "shared_line_share": 0.1167
+        },
+        {
+          "a": "melancholic-low-arousal",
+          "b": "curious-experimental",
+          "shared_line_share": 0.0143
+        },
+        {
+          "a": "bored-restless",
+          "b": "frustrated-tight-polish",
+          "shared_line_share": 0.0833
+        },
+        {
+          "a": "bored-restless",
+          "b": "curious-experimental",
+          "shared_line_share": 0.0127
+        },
+        {
+          "a": "frustrated-tight-polish",
+          "b": "curious-experimental",
+          "shared_line_share": 0.0167
+        }
+      ],
+      "max_share_with_any_anchor": {
+        "euphoric-high-arousal": 0.0794,
+        "melancholic-low-arousal": 0.0968,
+        "bored-restless": 0.0968,
+        "frustrated-tight-polish": 0.0968,
+        "curious-experimental": 0.0506
+      }
+    }
+  },
+  "blind_jury": {
+    "shuffle_seed": "five-moods-blind-v1",
+    "true_mapping": {
+      "A": "melancholic-low-arousal",
+      "B": "frustrated-tight-polish",
+      "C": "curious-experimental",
+      "D": "bored-restless",
+      "E": "euphoric-high-arousal"
+    },
+    "judge_inputs": "piece-A..E contact strips (t = 2, 8, 20 s) and the 5 preset creative-parameter descriptions; pixels+motion also gets frame_diff_mean and development_diff_t2_t20. No titles, briefs or preset-to-piece hints.",
+    "chance_baseline": {
+      "expected_correct": 1,
+      "p_at_least_3_correct": 0.0917,
+      "p_all_5_correct": 0.0083
+    },
+    "headline_metric": "mean correct matches of 5 over all valid samples, per condition (fixed before running)",
+    "conditions": [
+      {
+        "condition": "pixels+motion",
+        "samples": [
+          {
+            "sample": 1,
+            "valid": true,
+            "correct": 5,
+            "per_piece": [
+              {
+                "letter": "A",
+                "truth": "melancholic-low-arousal",
+                "judged": "melancholic-low-arousal",
+                "correct": true
+              },
+              {
+                "letter": "B",
+                "truth": "frustrated-tight-polish",
+                "judged": "frustrated-tight-polish",
+                "correct": true
+              },
+              {
+                "letter": "C",
+                "truth": "curious-experimental",
+                "judged": "curious-experimental",
+                "correct": true
+              },
+              {
+                "letter": "D",
+                "truth": "bored-restless",
+                "judged": "bored-restless",
+                "correct": true
+              },
+              {
+                "letter": "E",
+                "truth": "euphoric-high-arousal",
+                "judged": "euphoric-high-arousal",
+                "correct": true
+              }
+            ],
+            "pieces": {
+              "A": {
+                "visual_description": "Cool blue-grey slate ground with soft vertical banding. Very sparse: a few thin grey streak lines and small flecks, plus one small pale cylinder with a single rust-orange dot beside it. Subject is small with wide empty margins, low contrast, drifting to the left-centre. By 20 s the subject has shrunk and the streaks have thinned; the scene is nearly static with light drift. Visible blocky compression in the background.",
+                "differs_from_others": "B: A is sparse and low-density; B has thousands of speckles and a dense burst by 20 s. C: A is cool slate; C is an all-warm cream/rust palette. D: A is a cool ground with a single small subject; D is a warm cream ground with a dark disk and many speckles. E: A is low-contrast and sparse; E has a bold, high-contrast rust disk that fills the frame and a dense, fast-changing street."
+              },
+              "B": {
+                "visual_description": "Flat cool grey-green ground with fine dark speckles across the whole frame. A large dark slate disk on the left, with a row of red-orange vortex rings trailing right and fading grey rings behind them. At 20 s the speckle field has become a dense, asymmetric cloud and the rings cluster in a burst around the disk. Clean, artifact-free rendering with one idea (rings plus particles) and one sharp warm accent.",
+                "differs_from_others": "A: B is dense and high-tempo; A is sparse and drifting. C: B is cool grey-green with one red accent; C is an all-warm cream/rust palette with a fluid dye wake. D: B has a cool ground and red rings; D is a warm cream ground with a slate disk and a speckle field. E: B is a mid-sized, asymmetric, measured composition; E is a warm, high-contrast, bold framing with mirrored street."
+              },
+              "C": {
+                "visual_description": "Warm cream ground with rust-brown and amber dye that reads as smooth, continuous advection. At 2 s a small dark disk sits at the left with a mirrored pair of recirculation bubbles, rust above and amber below. By 8 s and 20 s the wake breaks into an alternating vortex street of soft blobs receding to the right. Medium framing, moderate contrast, measured scale. The palette is entirely warm, and the wake is near-symmetric about the horizontal axis.",
+                "differs_from_others": "A: C is warm and fairly dense in development; A is cool, sparse and nearly static. B: C is all-warm with fluid dye; B is cool grey-green with a discrete ring-and-particle rendering. D: C shows continuous dye smoke with a mirrored wake; D has a dark slate disk and a speckle field on cream. E: C is medium-scale and moderate-contrast with a soft, dye-like street; E is an assertive, high-contrast crisp street with the disk filling the frame at 2 s."
+              },
+              "D": {
+                "visual_description": "Warm cream ground with mixed accents: a cool dark slate-blue disk, grey-blue speckles, and amber and red points. At 2 s the disk is medium-sized on the left with sparse flecks around it. By 8 s the disk has shrunk and moved, which reads as one deliberate camera move. By 20 s the speckle field has spread into a loose, partly symmetric cloud across the right half. Measured scale and moderate contrast. Overall motion is slow, with few pixels changing between frames.",
+                "differs_from_others": "A: D has a warm ground with a mixed cool/warm speckle field; A is a cool ground with sparse streaks. B: D is warm cream with a slate disk; B is a cool grey-green ground with rings. C: D uses a point-cloud rendering and a mixed palette; C is an all-warm dye wake with a mirrored twin bubble. E: D is measured and sparse with a slow camera; E is bold, assertive, high-contrast, with a fast, strongly changing street."
+              },
+              "E": {
+                "visual_description": "Cream ground with a bold rust-red disk that fills most of the frame at 2 s, with an amber swirl at the lower right. By 8 s and 20 s the camera has pulled out to a crisp, stylised alternating vortex street of rust and amber ribbons, mirrored about the horizontal axis and running across the full width. High contrast, saturated warm accents, and a dense, strongly developing scene. Composition is radial-to-linear and bold.",
+                "differs_from_others": "A: E is high-contrast, dense and fast-changing; A is low-contrast, sparse and nearly static. B: E is warm and bold with a mirrored street; B is cool grey-green with a speckle field. C: E is crisp and high-contrast with a strong camera move; C is medium-scale dye smoke with moderate contrast. D: E has strong, fast development and a bold framing; D is slow, measured and sparse."
+              }
+            },
+            "evidence": {
+              "A": "Cool slate ground, tens of thin streaks and flecks, a small pale subject with wide margins, low contrast, one rust-orange accent, and little change from 2 s to 20 s (frame_diff 1.58, development 5.96). Matches low tempo, sparse, cool-dissonant, intimate.",
+              "B": "Cool grey-green ground with one red accent row of rings, a dense speckle field that becomes an asymmetric cloud at 20 s, and one clean rendering idea on an artifact-free ground (frame_diff 1.88, development 2.98). Matches high density, cool-dissonant palette, asymmetric composition, and shrink-scope polish.",
+              "C": "All-warm cream/rust/amber palette, with a mirrored twin recirculation bubble at 2 s that breaks into an alternating street by 20 s. Smooth dye advection suggests the riskier fluid technique (development 10.29, frame_diff 1.77). Matches warm-consonant palette, measured framing, and experimental risk.",
+              "D": "Warm cream ground with a cool slate-blue disk, grey and amber speckles and red points: the only mixed palette. The disk shrinks from 2 s to 8 s (one deliberate camera move) and the speckle field spreads by 20 s. Point-cloud technique differs from C and E. Lowest frame_diff (0.96) is noted: few pixels change even with many small, fast speckles on a pale ground, and palette is the stronger constraint. Matches balanced palette, measured framing and forced technique family for bored-restless.",
+              "E": "At 2 s the rust disk fills the frame with high contrast; by 8 s and 20 s the camera has pulled out to a crisp, mirrored warm vortex street. frame_diff 9.70 and development 37.63 are an order of magnitude above the others, consistent with strong camera moves and high tempo. Matches assertive framing, warm-consonant symmetry and high arousal."
+            },
+            "reads_only_blind_dir": true,
+            "read_all_five_strips": true,
+            "cost_usd": 0.333,
+            "tries": 1
+          },
+          {
+            "sample": 2,
+            "valid": true,
+            "correct": 5,
+            "per_piece": [
+              {
+                "letter": "A",
+                "truth": "melancholic-low-arousal",
+                "judged": "melancholic-low-arousal",
+                "correct": true
+              },
+              {
+                "letter": "B",
+                "truth": "frustrated-tight-polish",
+                "judged": "frustrated-tight-polish",
+                "correct": true
+              },
+              {
+                "letter": "C",
+                "truth": "curious-experimental",
+                "judged": "curious-experimental",
+                "correct": true
+              },
+              {
+                "letter": "D",
+                "truth": "bored-restless",
+                "judged": "bored-restless",
+                "correct": true
+              },
+              {
+                "letter": "E",
+                "truth": "euphoric-high-arousal",
+                "judged": "euphoric-high-arousal",
+                "correct": true
+              }
+            ],
+            "pieces": {
+              "A": {
+                "visual_description": "Cool grey-green fog ground with soft, blocky (pixelated) low-contrast shading. One small pale disc on the left and a few small orange dots as the single warm accent. Sparse elements with thin faint streaks, small subject with wide margins. From 2 s to 20 s the disc and dots drift slightly and the streaks thin out; the scene stays essentially the same composition.",
+                "differs_from_others": "vs B: A is soft, murky and low contrast with a blocky background; B is crisp, flat slate with many thin rings and a dense dot field. vs C: A is cool grey-green with a tiny subject; C is warm cream/ochre with a large smoke-like wake. vs D: A is cool and grey-toned; D is cream with a larger dark disc and warm dots. vs E: A is calm, small and low-contrast; E is a huge rust disc with bold vortex street and very strong change over time."
+              },
+              "B": {
+                "visual_description": "Flat slate-grey ground with a fine speckle of dark dots across the whole frame. One large dark disc on the left and a row of red-orange rings (vortices) as the single warm accent, drawn as clean thin strokes. At 2 s the rings are a tidy trail; by 20 s a dense cluster of rings and dots fills the centre-left and spreads right, so the field gets much busier.",
+                "differs_from_others": "vs A: B is crisp, clean and dense with ring-shaped vortices; A is blurred, sparse and murky. vs C: B is cool slate with line-drawn rings; C is warm cream with soft fluid shading. vs D: B is cool grey with a dense, busy field; D is cream with sparse dots. vs E: B is restrained and small-scale; E is a bold, large, warm close-up with high contrast."
+              },
+              "C": {
+                "visual_description": "Warm cream/ochre background with soft, diffused, smoke-like wake fields in rust, brown and yellow around a dark disc. Shading is painterly and fluid, with streamlines faint in the ground. At 2 s a large close-up of the disc and wake; at 20 s the disc is smaller and the wake breaks into separated smoke blobs trailing right. Composition is asymmetric and the scale changes a lot between frames.",
+                "differs_from_others": "vs A: C is warm and fluid with large soft wakes; A is cool grey with tiny elements. vs B: C is smooth, diffuse and warm; B is crisp, cool and ring-based. vs D: C has a rich fluid smoke look with visible scale and framing changes; D is pale and sparse. vs E: C is softer, more diffuse and asymmetric; E is high contrast, large and regularly alternating."
+              },
+              "D": {
+                "visual_description": "Pale cream ground with light horizontal streak texture. A dark slate disc sits left, with a scatter of small warm orange and ochre dots in the field and a faint small text label at the bottom. Very little motion overall: the same sparse arrangement holds from 2 s to 20 s, with dots shifting slightly and a few faint changes in the distribution.",
+                "differs_from_others": "vs A: D is warm cream with a larger dark disc; A is cool grey with a faint blocky background. vs B: D is pale and sparse; B is cool, dense and ring-filled. vs C: D has a sparse dot cloud with no smoke wake; C has large, fluid warm wakes. vs E: D is quiet and small-scale; E is large, high-contrast and very active."
+              },
+              "E": {
+                "visual_description": "Warm cream ground with a large rust-red disc, nearly filling the frame at 2 s with a bold outline and high contrast. A rust and ochre vortex street trails right, with alternating swirls that become a regular, repeated pattern by 8 s and 20 s. The subject is big and the camera feels assertive; motion and change over time are the strongest of the five.",
+                "differs_from_others": "vs A: E is large, high contrast and very active; A is small, low-contrast and still. vs B: E is warm, bold and big-scale; B is cool and small-scale with thin rings. vs C: E has a crisp, regular, alternating vortex pattern and a close framing; C is soft, asymmetric and diffuse. vs D: E is dense in motion and high contrast; D is sparse and quiet."
+              }
+            },
+            "evidence": {
+              "A": "Cool grey-green ground with one orange accent and a small subject with margins; low contrast and soft blocky shading; moderate motion (frame_diff 1.58, t2-t20 diff 5.96) with a slow drift and gentle change, fitting low tempo and intimate framing.",
+              "B": "Clean, crisp, one rendering idea (rings and dots) on a cool slate ground with a single red-orange accent; dense field by 20 s (high tempo) with a tidy, polished look, consistent with shrink-scope polish on a cool-dissonant palette.",
+              "C": "Warm cream/ochre palette with a fluid, smoke-like wake that looks like an unfamiliar, experimental rendering; large change from 2 s to 20 s (t2-t20 diff 10.29) and mid-level frame motion (1.77), consistent with a curious, experimental piece with a warm palette.",
+              "D": "Balanced mix of a cream ground, a cool slate disc and warm dots, with a plain conservative dot technique; fits the balanced palette and conservative risk. Caveat: its motion is the lowest (frame_diff 0.96), which conflicts with the high tempo expected for bored-restless, so this is the least certain match.",
+              "E": "Largest motion by far (frame_diff 9.70, t2-t20 diff 37.63); a huge rust disc filling the frame with high contrast and a bold, regular warm vortex street, matching assertive framing, strong camera change and a warm palette at high arousal."
+            },
+            "reads_only_blind_dir": true,
+            "read_all_five_strips": true,
+            "cost_usd": 0.0107,
+            "tries": 1
+          },
+          {
+            "sample": 3,
+            "valid": true,
+            "correct": 5,
+            "per_piece": [
+              {
+                "letter": "A",
+                "truth": "melancholic-low-arousal",
+                "judged": "melancholic-low-arousal",
+                "correct": true
+              },
+              {
+                "letter": "B",
+                "truth": "frustrated-tight-polish",
+                "judged": "frustrated-tight-polish",
+                "correct": true
+              },
+              {
+                "letter": "C",
+                "truth": "curious-experimental",
+                "judged": "curious-experimental",
+                "correct": true
+              },
+              {
+                "letter": "D",
+                "truth": "bored-restless",
+                "judged": "bored-restless",
+                "correct": true
+              },
+              {
+                "letter": "E",
+                "truth": "euphoric-high-arousal",
+                "judged": "euphoric-high-arousal",
+                "correct": true
+              }
+            ],
+            "pieces": {
+              "A": {
+                "visual_description": "Green-grey slate ground with soft blocky tonal blotches and a faint horizontal glow. Sparse: a few tens of thin streamline flecks, one large pale-white disc at left-centre, a few small white dots and a single small orange accent. Low contrast, small subject with wide margins. From 2 s to 20 s the disc and dots drift slightly, the orange accent moves, and the background blotches shift, but the composition stays largely the same.",
+                "differs_from_others": "Versus B: A is green-grey with a pale disc and orange accent and sparse streaks, B is slate-blue with dark rings and a dense speckle field. Versus C: A has no dye-like vortex wake and no large rust/ochre smears; its elements are small and delicate. Versus D: A is cool and low-contrast, D is cream with a dark disc and warm dots. Versus E: A is calm and small-scale with no rust street and no subject filling the frame."
+              },
+              "B": {
+                "visual_description": "Flat slate blue-grey ground with fine grain speckle. A dark navy disc sits left-centre, with a trail of red and grey rings running rightward in a single row. At 2 s and 8 s the field is sparse (rings and speckles). At 20 s a dense cluster of rings and dots fills the mid-field and a small disc appears lower-left. A small monospace label sits top-left. Composition is asymmetric with one red accent.",
+                "differs_from_others": "Versus A: B is a clean graphic ring-and-dot system on a flat ground, with a dense burst late, while A is soft-blotched with streaks and dots. Versus C: B has no painterly smoke and no warm cream ground. Versus D: B is cool slate with one red accent, D is cream with mixed warm dots. Versus E: B is small-scale and cool, with no large subject and no warm vortex street."
+              },
+              "C": {
+                "visual_description": "Cream and ochre ground with soft dye-like smears. A dark slate disc sits at left. A rust and ochre vortex wake drifts rightward. At 2 s the disc is comparatively large with a rust smear above and gold below. At 8 s the wake is a shedding street of rounded eddies. At 20 s the disc is smaller and the alternating eddies detach and drift off to the right. Medium scale, moderate contrast, asymmetric shedding, and a real fluid-looking rendering.",
+                "differs_from_others": "Versus E: C is medium-scale with a wake that drifts apart, E has a subject filling the frame and a denser, more regular street. Versus D: C has a continuous smoky fluid rendering, D is sparse dots and a label. Versus A and B: C is warm and painterly, not cool or graphic. C's disc is the same dark slate family as D."
+              },
+              "D": {
+                "visual_description": "Cream ground with faint horizontal streak lines. A dark slate disc sits left-centre. Sparse scattered dots in orange, red, yellow-ochre and grey, each a few pixels. A monospace label reads 'VON KARMAN STREET - St 0.20 - alternating shedding' at bottom-left. At 2 s the dots cluster loosely; by 8 s the disc has moved slightly right; at 20 s a second small disc appears lower-middle with red specks. Very sparse and slow, with little change in the frame.",
+                "differs_from_others": "Versus A: D has a cream ground and warm dots where A is green-grey. Versus B: D is cream and balanced between warm dots and a slate disc where B is slate with one red accent. Versus C: D is sparse particles and a label, C is a continuous dye-like wake. Versus E: D is small and sparse with no large subject and no dense vortex street."
+              },
+              "E": {
+                "visual_description": "Warm cream ground. At 2 s a rust-red disc with a red rim fills much of the left half, with a rust smear top-right and an ochre curl bottom-right. Between 2 s and 8 s the camera pulls back sharply and the disc shrinks to mid-left. By 8 s and 20 s a regular, almost radially-mirrored street of rust and gold eddies runs across the frame. High contrast, dense vortex texture, and the largest change across the piece.",
+                "differs_from_others": "Versus C: E's subject fills the frame and cuts to a denser, more regular street, while C is medium-scale. Versus D: E is dense and high-contrast, D is sparse. Versus A and B: E is warm and bold, A and B are cool. E has the highest motion of all five."
+              }
+            },
+            "evidence": {
+              "A": "Green-grey cool ground, low contrast, sparse tens of elements, small pale disc with margins, a single orange accent. Slow drift: frame_diff_mean 1.58 and development_t2_t20 5.96, moderate and not dense. Fits cool-dissonant, intimate, low-arousal.",
+              "B": "Cool slate ground with one red accent and an asymmetric layout. Clean single rendering idea (rings and dots) with few techniques, matching shrink scope with polish. Dense burst at 20 s. frame_diff_mean 1.88, development_t2_t20 2.98.",
+              "C": "Warm cream and ochre palette with a painterly fluid wake and a medium-scale disc. Moderate contrast and one clear camera change. Experimental fluid look, with detaching eddies at 20 s. frame_diff_mean 1.77, development_t2_t20 10.29, moderate change. Fits warm-consonant, measured, experimental.",
+              "D": "Cream ground with mixed warm dots and a slate disc (balanced palette), partial asymmetry, measured scale, and a conservative label-and-particle rendering. Lowest frame_diff_mean at 0.96, which conflicts with the high-tempo prescription. Matched by elimination after the cool and warm pieces are fixed, with low confidence on this one.",
+              "E": "Assertive, high-contrast framing with the subject filling the frame at 2 s, then a strong camera pull-back and a dense mirrored-looking street. Warm palette with radial-like symmetry. Highest motion: frame_diff_mean 9.70 and development_t2_t20 37.63. Fits euphoric-high-arousal (assertive, high tempo, experimental). Curious-experimental (C) is measured, which separates them."
+            },
+            "reads_only_blind_dir": true,
+            "read_all_five_strips": true,
+            "cost_usd": 0.0103,
+            "tries": 1
+          }
+        ],
+        "headline_mean_correct_of_5": 5,
+        "headline_accuracy": 1,
+        "per_sample_correct": [
+          5,
+          5,
+          5
+        ]
+      },
+      {
+        "condition": "pixels-only",
+        "samples": [
+          {
+            "sample": 1,
+            "valid": true,
+            "correct": 3,
+            "per_piece": [
+              {
+                "letter": "A",
+                "truth": "melancholic-low-arousal",
+                "judged": "melancholic-low-arousal",
+                "correct": true
+              },
+              {
+                "letter": "B",
+                "truth": "frustrated-tight-polish",
+                "judged": "frustrated-tight-polish",
+                "correct": true
+              },
+              {
+                "letter": "C",
+                "truth": "curious-experimental",
+                "judged": "bored-restless",
+                "correct": false
+              },
+              {
+                "letter": "D",
+                "truth": "bored-restless",
+                "judged": "curious-experimental",
+                "correct": false
+              },
+              {
+                "letter": "E",
+                "truth": "euphoric-high-arousal",
+                "judged": "euphoric-high-arousal",
+                "correct": true
+              }
+            ],
+            "pieces": {
+              "A": {
+                "visual_description": "Cool blue-grey, blurred ground with a soft light band across the middle. Very sparse: a few dozen small elements, one large pale grey sphere at left-centre and small grey-white dots, with a single small orange-red accent. Thin faint streaks trail the dots. Low contrast and small subject with wide margins. Between 2 s and 20 s the ground turns blocky and pixelated, the elements drift slightly and shrink, and the scene stays almost static in composition.",
+                "differs_from_others": "B is also cool but has a dense field of hundreds of dots and rings; A is sparse and blurred. C and D are warm cream with fluid smoke wakes; A has no fluid wake and a grey ground. E is warm rust and cream with a large saturated disk; A is cool and low-contrast with a small subject."
+              },
+              "B": {
+                "visual_description": "Flat grey-teal ground covered in fine dark speckle. A large dark slate disk sits left of centre, with a shedding trail of orange-red and grey-blue rings receding to the right. The composition is asymmetric and the palette austere, with one sharp orange accent. By 20 s the field becomes dense: a crowded cluster of rings and hundreds of dots fills the middle and right, and a small dark disk appears lower left.",
+                "differs_from_others": "A is cool but sparse and blurred, with no rings; B is dense and crisp. C, D and E have warm cream grounds with smooth fluid wakes; B has a flat grey ground and discrete ring particles instead of continuous smoke. B is the only piece with a dense, high-count element field and an asymmetric cool palette."
+              },
+              "C": {
+                "visual_description": "Cream and ochre ground with a dark slate obstacle and a diffuse rust and amber smoke wake. At 2 s the obstacle is large, with the wake trailing right. At 8 s swirling rust and ochre vortices shed downstream. At 20 s the obstacle is smaller and the street stretches across the frame in faded, soft, rust-tinted vortices. The mix of a cool slate body with warm wake gives a balanced palette, with partial symmetry about the wake axis.",
+                "differs_from_others": "A has a grey ground and no wake. B is cool grey with rings. D is warm and strictly mirrored, with crisp alternating vortices. E uses a rust-filled disk with a red ring, a clear saturated street and assertive framing. C's slate obstacle plus warm wake makes it a mixed, measured composition with a soft, diffuse wake."
+              },
+              "D": {
+                "visual_description": "Warm cream ground with a rust-red ringed disk. At 2 s the disk is large and surrounded by rust and ochre smoke. At 8 s and 20 s a regular, mirrored Karman street of alternating rust and ochre vortices trails to the right, with the wake symmetric top and bottom. The palette is consonant and warm, with medium scale and a single camera pull-back between frames.",
+                "differs_from_others": "A and B are cool grey; A is sparse and blurred and B uses rings and dots. C is warm but has a dark slate obstacle and an asymmetric, diffuse wake. E is also warm with a red-ringed disk, but its disk fills the frame and its street is more energetic. D is the most regular and mirrored warm composition with a medium-scale framing."
+              },
+              "E": {
+                "visual_description": "Cream ground with a large, saturated rust disk with a red outline and a soft radial gradient. At 2 s the disk fills much of the left side, with an ochre swirl in the lower right. At 8 s and 20 s the disk is smaller and a bold, alternating street of rust and ochre vortices spans the frame, with a strong pan from the close-up. High contrast, warm palette, subject dominant in the first frame and a sweeping camera move.",
+                "differs_from_others": "A is cool, sparse and low contrast. B is cool grey with dense rings. C has a dark slate obstacle, a diffuse smoke wake and a balanced palette. D is also warm and mirrored, but its disk is medium-sized and its framing measured. E is the only piece where a saturated warm disk fills the frame and the camera makes a strong move."
+              }
+            },
+            "evidence": {
+              "A": "Sparse field of a few dozen small elements (low tempo) on a blurred cool grey ground with one small orange accent, a small subject with wide margins, low contrast, and a near-still camera from 2 s to 20 s. Matches intimate framing, cool-dissonant palette with one sharp accent, and slow contemplative tempo.",
+              "B": "Austere cool grey-teal ground with one sharp orange-red accent and an asymmetric arrangement of a dark disk and shedding rings. The field becomes densely populated by 20 s. Matches the cool-dissonant palette with one accent and the frustrated-tight-polish single-idea, clean-polish approach.",
+              "C": "Mixed palette: warm cream, rust and ochre wake against a dark slate obstacle, giving balanced warm/cool contrast with partial symmetry. Medium framing with a diffuse wake that grows into a longer street by 20 s, consistent with a measured camera move and a conservative, reliably-executed smoke technique.",
+              "D": "Warm cream ground with rust and ochre vortices in a regular, mirrored top-and-bottom Karman street, a medium-sized rust-ringed disk, and consonant warm colour. Matches the warm-consonant palette with mirrored symmetry and measured framing, and the experimental wake technique.",
+              "E": "Large saturated rust disk with red outline filling the frame at 2 s, then a bold, high-contrast alternating vortex street spanning the frame by 20 s after a strong pan. Warm consonant palette with assertive, subject-filling framing and an energetic camera move, matching euphoric-high-arousal."
+            },
+            "reads_only_blind_dir": true,
+            "read_all_five_strips": true,
+            "cost_usd": 0.0084,
+            "tries": 1
+          },
+          {
+            "sample": 2,
+            "valid": true,
+            "correct": 5,
+            "per_piece": [
+              {
+                "letter": "A",
+                "truth": "melancholic-low-arousal",
+                "judged": "melancholic-low-arousal",
+                "correct": true
+              },
+              {
+                "letter": "B",
+                "truth": "frustrated-tight-polish",
+                "judged": "frustrated-tight-polish",
+                "correct": true
+              },
+              {
+                "letter": "C",
+                "truth": "curious-experimental",
+                "judged": "curious-experimental",
+                "correct": true
+              },
+              {
+                "letter": "D",
+                "truth": "bored-restless",
+                "judged": "bored-restless",
+                "correct": true
+              },
+              {
+                "letter": "E",
+                "truth": "euphoric-high-arousal",
+                "judged": "euphoric-high-arousal",
+                "correct": true
+              }
+            ],
+            "pieces": {
+              "A": {
+                "visual_description": "Cool grey-slate ground with soft, low-contrast blocky tonal patches. A sparse field of a few dozen tiny white and grey dots plus thin faint streaks, one large pale sphere at left and one small rust-orange accent dot. Small subject with generous margins. Between 2 s and 20 s the field stays sparse and drifts slightly; the subject shrinks and the orange accent moves along the centre line, with no new scene. Asymmetric and quiet.",
+                "differs_from_others": "vs B: A is far sparser, with fewer than 40 elements and no dense cluster by 20 s; B's ground is a flatter blue-grey with dark rings and speckles. vs C and D: A is cool grey-slate, not cream, and has no dye plume or dot cloud. vs E: A has no warm dominant palette, no alternating vortex street, and a much smaller, softer subject."
+              },
+              "B": {
+                "visual_description": "Flat blue-grey ground with a fine speckle of dark grey dots. A dark slate disc at left and a trail of small orange-red vortex rings along a diagonal line, with a few grey rings. Asymmetric, with one sharp warm accent (the orange rings) against cool grounds. At 2 s and 8 s the field is sparse and rings are spread out. At 20 s there is a sudden dense cluster of rings and dots around the centre-left, so the piece changes scene and gets busy.",
+                "differs_from_others": "vs A: B has a flatter, more saturated ground, far more elements, and a hard density jump at 20 s where A stays sparse. vs C, D and E: B is cool blue-grey and not cream, and its elements are discrete rings and dots rather than dye plumes, a continuous wake, or a centred symmetric street."
+              },
+              "C": {
+                "visual_description": "Warm cream ground with faint horizontal striping. A large dark slate cylinder at left with rust and ochre dye plumes that mirror each other above and below the centre line. A fluid wake forms behind it. By 20 s a stretch of small alternating vortices trails off to the right, and the frame is medium-scale with margin around the subject.",
+                "differs_from_others": "vs A and B: C is warm cream, not cool slate or blue-grey. vs D: C has continuous dye-advection plumes, not scattered dots and labelled text. vs E: C's subject is a dark cylinder with a horizontal wake; E's is a rust sphere with a regular, centred vortex street. C is also more open and less assertive in framing."
+              },
+              "D": {
+                "visual_description": "Cream ground with a dark slate sphere offset to the left and a scatter of small ochre, grey and rust dots. A thin monospaced caption sits at bottom-left. Sparse at 2 s and 8 s, with dots gathered into a loose cloud around the sphere and along the right by 20 s. Partial, open composition with a mix of warm and cool tones and no clear mirror symmetry.",
+                "differs_from_others": "vs A and B: D's ground is warm cream, not cool grey or blue-grey. vs C: D is built from scattered particles and a caption rather than a continuous fluid wake. vs E: D has no large centred subject, no regular alternating street, and its warm and cool colours are mixed rather than all warm."
+              },
+              "E": {
+                "visual_description": "Warm cream ground with a large rust-red sphere with a red rim, filling much of the frame at 2 s. A regular alternating vortex street of rust and ochre swirls runs across the right side at 8 s and 20 s, with near-mirror symmetry about the centre line. The subject shrinks in later frames, but the warm, regular, bold structure stays. The palette is warm-consonant and the framing is assertive.",
+                "differs_from_others": "vs A and B: E is warm rust and ochre on cream, not cool grey. vs C: E's subject is a large centred rust sphere with a regular, symmetric alternating street, and its framing is much bolder. vs D: E has one dominant warm subject and a continuous vortex pattern instead of scattered mixed-tone dots."
+              }
+            },
+            "evidence": {
+              "A": "Cool grey-slate ground with a sparse field of a few dozen dots, one pale sphere and a single orange accent. Low contrast, a small subject with margins, and a slow change from 2 s to 20 s with no cut. This fits the sparse, intimate, cool-dissonant low-tempo profile.",
+              "B": "Cool blue-grey ground with one sharp orange accent (vortex rings), an asymmetric slate disc and a clean set of few techniques (rings, dots, one disc). It stays measured until a sudden dense cluster at 20 s. This fits cool-dissonant, one-accent palette with a conservative, polished rendering idea.",
+              "C": "Warm cream ground with rust and ochre dye plumes mirrored about the centre line, a medium-scale dark cylinder and a fluid wake. The continuous advection technique fits an experimental main technique. Medium framing and moderate contrast fit the measured camera.",
+              "D": "Cream ground mixed with a dark slate sphere, ochre and grey dots and a caption, all offset and partially open. Sparse at 2 s and 8 s, then a loose cloud at 20 s. The warm-cool mix and partial symmetry fit the balanced palette, and the dot-field activity fits a high-tempo, restless piece.",
+              "E": "Rust-red sphere filling much of the frame at 2 s with high-contrast warm colour, then a regular, near-mirror alternating vortex street on cream. This fits an assertive subject-fills-frame framing with warm-consonant, symmetric harmony and bold camera movement."
+            },
+            "reads_only_blind_dir": true,
+            "read_all_five_strips": true,
+            "cost_usd": 0.0174,
+            "tries": 1
+          },
+          {
+            "sample": 3,
+            "valid": true,
+            "correct": 5,
+            "per_piece": [
+              {
+                "letter": "A",
+                "truth": "melancholic-low-arousal",
+                "judged": "melancholic-low-arousal",
+                "correct": true
+              },
+              {
+                "letter": "B",
+                "truth": "frustrated-tight-polish",
+                "judged": "frustrated-tight-polish",
+                "correct": true
+              },
+              {
+                "letter": "C",
+                "truth": "curious-experimental",
+                "judged": "curious-experimental",
+                "correct": true
+              },
+              {
+                "letter": "D",
+                "truth": "bored-restless",
+                "judged": "bored-restless",
+                "correct": true
+              },
+              {
+                "letter": "E",
+                "truth": "euphoric-high-arousal",
+                "judged": "euphoric-high-arousal",
+                "correct": true
+              }
+            ],
+            "pieces": {
+              "A": {
+                "visual_description": "Cool grey-green ground with soft blocky low-contrast texture. Very sparse elements: a few small pale discs and tiny orange dots drifting along a horizontal band, with faint thin streak lines. Small subject with wide margins. At 2 s two discs and an orange dot sit left of centre; by 8 s the field is nearly the same but the discs are closer together; at 20 s the elements are smaller and spread into a row across the centre. Camera appears to drift slowly, so the scene reads as still and quiet.",
+                "differs_from_others": "vs B: A is a soft, blurred, low-contrast grey-green field with a handful of elements; B is a flat slate ground with many crisp rings and dense dots. vs C: A is cool and sparse; C is warm beige with a large dark disk and dye-like smoke. vs D: A is cool with almost no particles; D is cream with dense mixed dots. vs E: A is cool, dim and small-scale with no large subject; E is warm rust with a large disk that fills the frame."
+              },
+              "B": {
+                "visual_description": "Flat cool slate-grey ground with fine dark speckle. One dark slate disk on the left, and a single sharp red-orange accent colour on rings. Asymmetric: a line of hollow red rings and fainter grey rings runs rightward from the disk. At 2 s and 8 s the layout is calm, with a few rings and dots. At 20 s the field densifies sharply: a cluster of many red and grey rings and dots fills the centre and the disk shifts left. Scale is medium with clean graphic shapes.",
+                "differs_from_others": "vs A: B has many crisp graphic rings and dense speckle on a flat slate ground; A is a soft blurred field with few elements. vs C: B is cool grey with red rings and no smoke or vortex rendering; C is warm beige with dye-like flow. vs D: B has a cool grey ground and one red accent; D is cream with mixed warm and cool dots. vs E: B is cool and graphic; E is warm and fluid with a large disk."
+              },
+              "C": {
+                "visual_description": "Warm cream and beige ground with faint horizontal streamlines. A dark disk at left with brown, ochre and rust dye-like smoke trailing downstream. The smoke rolls up into a Kármán-style alternating vortex street by 20 s, with fading, drifting streaks. Medium-scale subject, moderate contrast, a clear measured layout. Palette is almost entirely warm, with little cool contrast.",
+                "differs_from_others": "vs A: C is warm and shows a dye-like flow with a larger disk; A is cool grey-green and sparse. vs B: C is warm beige with smooth smoke; B is cool grey with hard rings and dots. vs D: C has a single disk and continuous smoke; D has many scattered dots on the same cream ground. vs E: C is lighter and more streamlined with a smaller disk; E is saturated rust with bold vortex swirls and a much larger subject."
+              },
+              "D": {
+                "visual_description": "Cream ground with a tiny label line in the bottom left. Scattered small dots in mixed warm orange, ochre and cool grey-slate, across the whole frame. A dark slate disk shifts position between frames. At 2 s the dots are sparse and the disk is large and left; at 8 s more dots and a smaller disk; at 20 s the dots form a dense cloud on the right and the disk is small and lower right. Open, neutral layout with no symmetry.",
+                "differs_from_others": "vs A: D has many more particles on a cream ground; A is cool, sparse and blurred. vs B: D is cream with mixed warm and cool dots; B is cool slate with red rings and a single accent. vs C: D is particle-based with scattered dots and no smoke; C has a continuous dye-like flow and a vortex street. vs E: D is light and speckled with small elements; E is a saturated warm swirl with a large central disk."
+              },
+              "E": {
+                "visual_description": "Warm cream ground with a saturated rust-red disk and ochre-gold swirling vortices. At 2 s the disk is very large and fills much of the left frame with a bright red outline. At 8 s the camera has pulled back: a regular, alternating, symmetric-looking vortex street of rust and gold curls trails to the right. At 20 s the street is wide, evenly repeated, and the disk is smaller. Strong contrast and bold framing that changes sharply between frames.",
+                "differs_from_others": "vs A: E is warm, saturated and large-scale; A is cool, dim and small. vs B: E is warm fluid swirls with a large disk; B is cool and graphic with rings. vs C: E has bolder, more saturated swirls and a much larger subject that fills the frame, with a stronger camera move; C is lighter and more gradual. vs D: E has a bold large subject and continuous swirls; D is light with scattered small dots."
+              }
+            },
+            "evidence": {
+              "A": "Cool grey-green ground, only a handful of small elements across all three frames, soft low-contrast blocky texture, small subject with wide margins, and a slow drift. Matches intimate framing with sparse elements and a still or drifting camera.",
+              "B": "Cool slate-grey ground with one sharp red accent on the rings, asymmetric layout, and a clean, few-technique rendering. The field densifies sharply at 20 s. Matches cool-dissonant with one accent and shrink-scope clean polish.",
+              "C": "Warm beige and ochre palette with a single medium disk and a dye-like smoke flow that develops into a vortex street. Measured framing and moderate contrast fit curious-experimental: warm palette and an experimental technique.",
+              "D": "Mixed warm orange and cool slate dots on cream, open unsymmetrical layout, and dense particle clouds at 20 s with a moving disk. Matches balanced palette, high density, and frequent change for bored-restless.",
+              "E": "Disk fills most of the frame at 2 s, then the camera pulls back to a wide symmetric-looking vortex street. Warm saturated rust and gold with high contrast and strong camera moves. Matches assertive framing and warm-consonant palette for euphoric-high-arousal."
+            },
+            "reads_only_blind_dir": true,
+            "read_all_five_strips": true,
+            "cost_usd": 0.008,
+            "tries": 1
+          }
+        ],
+        "headline_mean_correct_of_5": 4.3333,
+        "headline_accuracy": 0.8667,
+        "per_sample_correct": [
+          3,
+          5,
+          5
+        ]
+      }
+    ]
+  }
+}

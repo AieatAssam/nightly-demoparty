@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-11-22T00:00:00.000Z",
+  "preset_override": "curious-experimental",
+  "dominant_emotions": [
+    {
+      "label": "interest",
+      "intensity": 0.95
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.6
+    },
+    {
+      "label": "hope",
+      "intensity": 0.5
+    },
+    {
+      "label": "joy",
+      "intensity": 0.4
+    }
+  ],
+  "pad": {
+    "pleasure": 0.55,
+    "arousal": 0.55,
+    "dominance": 0.15
+  },
+  "neurochemistry": {
+    "dopamine": 0.8,
+    "noradrenaline": 0.6,
+    "serotonin": 0.55,
+    "cortisol": 0.15,
+    "oxytocin": 0.45,
+    "opioids": 0.6
+  },
+  "drives": {
+    "novelty": 0.85,
+    "social": 0.35,
+    "fatigue": 0.1
+  },
+  "derived_signals": {
+    "interest": 0.95,
+    "boredom": 0.05,
+    "frustration": 0.05
+  },
+  "likes": [],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.775,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.55,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "measured",
+      "value": 0.15,
+      "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.95,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.05,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

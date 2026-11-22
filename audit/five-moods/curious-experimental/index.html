@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Alternating Shedding</title>
+<style>*{margin:0}html,body{height:100%;background:#EDE3CC;overflow:hidden}canvas{width:100vw;height:100vh;display:block}</style>
+</head><body><canvas id="c"></canvas>
+<script type="module">
+const GL_HEAD=`#version 300 es
+precision highp float;precision highp int;precision highp sampler2D;
+uniform float u_time,u_reduced;uniform vec2 u_res,u_mouse;uniform vec4 u_audio;out vec4 o;
+`,GL_VS=`#version 300 es
+void main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}`;function glProgram(e,n,u=GL_VS){const i=e.createProgram();for(const[a,o]of[[e.VERTEX_SHADER,u],[e.FRAGMENT_SHADER,n]]){const t=e.createShader(a);if(e.shaderSource(t,o),e.compileShader(t),!e.getShaderParameter(t,e.COMPILE_STATUS))throw Error("GLSL compile failed: "+e.getShaderInfoLog(t));e.attachShader(i,t)}if(e.linkProgram(i),!e.getProgramParameter(i,e.LINK_STATUS))throw Error("GLSL link failed: "+e.getProgramInfoLog(i));return i}function glSetter(e,n){const u={[e.FLOAT]:"uniform1fv",[e.FLOAT_VEC2]:"uniform2fv",[e.FLOAT_VEC3]:"uniform3fv",[e.FLOAT_VEC4]:"uniform4fv",[e.INT]:"uniform1iv",[e.SAMPLER_2D]:"uniform1iv"},i={};for(let a=e.getProgramParameter(n,e.ACTIVE_UNIFORMS);a--;){const o=e.getActiveUniform(n,a);i[o.name.replace("[0]","")]=[e.getUniformLocation(n,o.name),u[o.type]]}return(a,o)=>{const t=i[a];t&&t[1]&&e[t[1]](t[0],typeof o=="number"?[o]:o)}}const glDraw=(e,n=null,u=e.drawingBufferWidth,i=e.drawingBufferHeight)=>{e.bindFramebuffer(e.FRAMEBUFFER,n),e.viewport(0,0,u,i),e.drawArrays(e.TRIANGLES,0,3)};function glStart(e,n,{scale:u=1,dprMax:i=1,reduce:a=.2,frame:o}={}){const t=e.getContext("webgl2",{antialias:!1});if(!t)throw Error("WebGL2 unavailable");const m=glProgram(t,n.startsWith("#version")?n:GL_HEAD+n),s=matchMedia("(prefers-reduced-motion: reduce)"),r={kind:"webgl2",gl:t,prog:m,set:glSetter(t,m),time:0,reduced:!1,mouse:[.5,.5],audio:[0,0,0,0],raf:0};e.addEventListener("pointermove",c=>{const f=e.getBoundingClientRect();r.mouse=[(c.clientX-f.left)/f.width,1-(c.clientY-f.top)/f.height]});let E=-1;const _=c=>{r.raf=requestAnimationFrame(_);const f=Math.min(devicePixelRatio,i)*u,d=Math.max(1,e.clientWidth*f|0),T=Math.max(1,e.clientHeight*f|0);(e.width!==d||e.height!==T)&&(e.width=d,e.height=T),r.reduced=s.matches,r.time+=E<0?0:Math.min((c-E)/1e3,.5)*(r.reduced?a:1),E=c,o&&o(r),t.useProgram(m),r.set("u_time",r.time),r.set("u_reduced",r.reduced?1:0),r.set("u_res",[d,T]),r.set("u_mouse",r.mouse),r.set("u_audio",r.audio),glDraw(t)};return r.raf=requestAnimationFrame(_),r.stop=()=>cancelAnimationFrame(r.raf),r}function createPingPong(e,n,u){const i=!!e.getExtension("EXT_color_buffer_float"),a=()=>{const t=e.createTexture(),m=e.createFramebuffer();e.bindTexture(e.TEXTURE_2D,t),e.texImage2D(e.TEXTURE_2D,0,i?e.RGBA16F:e.RGBA8,n,u,0,e.RGBA,i?e.HALF_FLOAT:e.UNSIGNED_BYTE,null);for(const[s,r]of[[e.TEXTURE_MIN_FILTER,e.LINEAR],[e.TEXTURE_MAG_FILTER,e.LINEAR],[e.TEXTURE_WRAP_S,e.REPEAT],[e.TEXTURE_WRAP_T,e.REPEAT]])e.texParameteri(e.TEXTURE_2D,s,r);return e.bindFramebuffer(e.FRAMEBUFFER,m),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,t,0),{tex:t,fb:m}},o={w:n,h:u,float:i,a:a(),b:a(),swap:()=>{[o.a,o.b]=[o.b,o.a]}};return e.bindFramebuffer(e.FRAMEBUFFER,null),o}
+
+// Stable-fluids solver on a 256x128 grid. Channels: r,g = velocity (cells per step), b = pressure, a = signed dye.
+const W = 256, H = 128, SPS = 24, CAP = 6, J = 12;
+
+const SIM = `uniform sampler2D S;uniform float M,U,K;
+const vec2 N=vec2(256.,128.),C=vec2(48.,63.5);
+const float R=6.,E=.1;
+vec4 F(vec2 p){return texelFetch(S,ivec2(clamp(p,vec2(0.),N-1.)),0);}
+float sol(vec2 p){return step(length(p+.5-C),R);}
+float cu(vec2 p){return .5*(F(p+vec2(1,0)).g-F(p-vec2(1,0)).g-F(p+vec2(0,1)).r+F(p-vec2(0,1)).r);}
+float st(float y){return mod(floor(y/6.),2.)<1.?.12:-.12;}
+float pq(vec2 p,vec2 d,float c){vec2 q=p+d;return sol(q)>.5?c:F(q).b;}
+void main(){
+  vec2 p=floor(gl_FragCoord.xy);
+  vec4 s=F(p);
+  if(M<.5){
+    if(sol(p)>.5){o=vec4(0.,0.,0.,0.);return;}
+    o=vec4(U,0.,0.,st(p.y+.5));return;
+  }
+  if(M<1.5){
+    if(sol(p)>.5){o=vec4(0.,0.,s.b,0.);return;}
+    vec2 q=clamp(p+.5-s.rg,vec2(.5),N-.5)/N;
+    vec4 a=textureLod(S,q,0.);
+    vec2 v=a.rg;float d=a.a;
+    vec2 g=.5*vec2(abs(cu(p+vec2(1,0)))-abs(cu(p-vec2(1,0))),abs(cu(p+vec2(0,1)))-abs(cu(p-vec2(0,1))));
+    vec2 nn=g/(length(g)+1e-3);
+    vec2 dc=p+.5-C;float r=length(dc);
+    if(r>R+3.&&p.x>4.)v+=E*vec2(nn.y,-nn.x)*cu(p);
+    if(abs(abs(dc.y)-R)<2.&&dc.x>-1.&&dc.x<R+2.){float c=cu(p);if(abs(c)>.005)d=mix(d,sign(c),.6);}
+    d*=.9985;
+    if(K>0.&&abs(p.x-(C.x+R+3.))<3.&&abs(p.y-(C.y-R*.6))<2.)v.y-=K;
+    if(p.x<1.5){v=vec2(U,0.);d=st(p.y+.5);}
+    if(p.y<.5||p.y>N.y-1.5)v.y=0.;
+    float m=length(v);if(m>3.)v*=3./m;
+    o=vec4(v,s.b,d);return;
+  }
+  if(M<2.5){
+    if(sol(p)>.5){o=s;return;}
+    float dv=.5*(F(p+vec2(1,0)).r-F(p-vec2(1,0)).r+F(p+vec2(0,1)).g-F(p-vec2(0,1)).g);
+    float n=(pq(p,vec2(-1,0),s.b)+pq(p,vec2(1,0),s.b)+pq(p,vec2(0,-1),s.b)+pq(p,vec2(0,1),s.b)-dv)*.25;
+    o=vec4(s.rg,p.x>N.x-1.5?0.:n,s.a);return;
+  }
+  if(sol(p)>.5){o=vec4(0.,0.,s.b,s.a);return;}
+  vec2 gp=.5*vec2(pq(p,vec2(1,0),s.b)-pq(p,vec2(-1,0),s.b),pq(p,vec2(0,1),s.b)-pq(p,vec2(0,-1),s.b));
+  vec2 v=s.rg-gp;
+  if(p.x<1.5)v=vec2(U,0.);
+  if(p.y<.5||p.y>N.y-1.5)v.y=0.;
+  o=vec4(v,s.b,s.a);
+}`;
+
+const RENDER = `uniform sampler2D S;uniform vec4 V;
+const vec3 CR=vec3(.929,.890,.800),CO=vec3(.788,.537,.227),CU=vec3(.612,.290,.165),SL=vec3(.369,.420,.451),GR=vec3(.227,.204,.188);
+const vec2 N=vec2(256.,128.),C=vec2(48.,63.5);
+const float R=6.;
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 p=V.xy+uv*V.zw;
+  vec3 col=CR;
+  if(p.x>0.&&p.y>0.&&p.x<N.x&&p.y<N.y){
+    float d=textureLod(S,p/N,0.).a;
+    col=mix(CR,d>0.?CO:CU,smoothstep(.03,.6,abs(d))*.9);
+  }
+  vec2 q=p-C;float dd=length(q)-R;
+  float w=fwidth(dd)+1e-4;
+  float rim=1.-smoothstep(0.,.9,abs(dd-.3));
+  col=mix(col,SL,rim*.5);
+  float m=smoothstep(w,-w,dd);
+  col=mix(col,GR,m);
+  float gr=fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))));
+  col+=(gr-.5)*.03*(1.-u_reduced);
+  col*=1.-.12*dot(uv-.5,uv-.5);
+  o=vec4(col,1.);
+}`;
+
+const sm = (a, b, x) => { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+// Inflow speed (cells per step): slow eddies, then shedding, then faster street.
+const U = t => 0.9 + 0.7 * sm(4, 9, t) + 0.6 * sm(10, 14, t);
+// Camera window in cells: tight on the disc, then dolly out.
+const view = t => {
+  const w = 110 + 70 * sm(6, 8, t) + 76 * sm(10, 15, t);
+  const cx = 60 + 30 * sm(6, 9, t) + 38 * sm(10, 15, t);
+  const h = w * 9 / 16;
+  return [cx - w / 2, 64 - h / 2, w, h];
+};
+
+let gl, sim, setS, pp, steps = 0;
+const pass = (m, u, k) => {
+  gl.useProgram(sim); setS('M', m); setS('U', u); setS('K', k);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+  glDraw(gl, pp.b.fb, W, H); pp.swap();
+};
+const step = t => {
+  const u = U(t);
+  pass(1, u, t >= 3.5 && t < 3.5 + 1 / SPS ? 0.3 : 0);
+  for (let j = 0; j < J; j++) pass(2, u, 0);
+  pass(3, u, 0);
+};
+
+glStart(document.getElementById('c'), RENDER, { scale: 0.5, frame(h) {
+  if (!sim) {
+    gl = h.gl;
+    sim = glProgram(gl, GL_HEAD + SIM); setS = glSetter(gl, sim);
+    gl.useProgram(sim); setS('S', 0);
+    pp = createPingPong(gl, W, H);
+    pass(0, U(0), 0);
+    for (let i = 0; i < 30; i++) step(0);
+  }
+  for (let n = Math.min(CAP, Math.floor(h.time * SPS) - steps); n > 0; n--) { steps++; step(steps / SPS); }
+  gl.useProgram(h.prog); h.set('V', view(h.time));
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+} });
+</script>
+</body></html>

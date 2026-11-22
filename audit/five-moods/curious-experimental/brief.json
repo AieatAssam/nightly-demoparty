@@ -1,0 +1,55 @@
+{
+  "title": "Alternating Shedding: A Dye Street Behind a Disc",
+  "concept": "A dye-tracer stream past a round obstacle sheds ochre and rust vortices from alternating edges into a staggered street, with the shedding rate set by a Strouhal number near 0.2.",
+  "mechanism_embodied": {
+    "mechanism_name": "Alternating vortex shedding",
+    "how_visualised": "Each vortex is a region of the simulated flow whose dye is coloured by spin sign: ochre for clockwise, rust for counterclockwise. The disc sheds from its upper and lower shear layers in turn, so each new vortex lands on the opposite side of the street from the last. The viewer sees alternating colours forming a staggered double row that drifts downstream. As inflow speed ramps up, the interval between shedding events shortens, so more vortices appear per second."
+  },
+  "discarded_obvious_idea": "Obvious: sine-wave ribbons drawn behind a circle, the wake faked with curves. Rejected: no fluid sits behind it, and it hides the alternating shedding rule.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "stable-fluids grid solver with solid disc mask",
+    "vorticity-signed dye advection",
+    "alternating shedding from two shear layers"
+  ],
+  "novel_technique": "vorticity-signed dye advection",
+  "technique_family": "simulation",
+  "palette": [
+    "#EDE3CC",
+    "#C9893A",
+    "#9C4A2A",
+    "#5E6B73",
+    "#3A3430"
+  ],
+  "motion_sound_plan": "Mood: high tempo (dense dye field of about 2000 tracer particles, hard cuts at 5, 10 and 15 s), warm-consonant palette (cream, ochre, rust, mirrored about the wake axis), measured framing (one slow dolly-out in beat 3). Experimental technical risk: a stable-fluids solver on a 256 by 128 grid with the disc as a solid mask. No audio, constraint null, stay under 24 KB. Visuals change only at beat boundaries.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Cream ground, dark graphite disc at centre-left. Ochre and rust dye enters from the left edge and splits around the disc into two steady eddies behind it. Tight framing on the disc with wide ground margins. Structured by 2 s."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Inflow speed ramps up and the eddy behind the disc breaks. The upper shear layer releases an ochre vortex, then the lower releases a rust one, alternating. Mid-scale view with four or five vortices drifting right in a staggered double row, filling about half the frame at 8 s."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Peak richness: about twelve vortices fill the frame as a staggered street with cores tinted ochre and rust and edges fraying into fine filaments. One slow dolly-out from the disc reveals the full length of the street."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Settled wide composition: the staggered street spans the full width. Vortex cores lighten toward pale cream holes as they fade downstream, and the disc is small at the left. Camera holds still at the end."
+    }
+  ],
+  "memorable_moment": "A staggered double row of ochre and rust vortices, one tone shed from each side in turn, drifting across the cream ground.",
+  "self_declared_risk": "The solver may smear the dye or fail to form a clean street at 256 by 128 cells, so the alternating rows blur into one tone. Fallback: lower the ramp rate and fix the inflow speed.",
+  "liner_note": "Vincenc Strouhal, a Czech physicist, experimented in 1878 with wires that sang in the wind. For a cylinder his Strouhal number stays between 0.18 and 0.22 across Reynolds numbers from 100 to 100,000. Here a flow of tracer dye passes a round obstacle, and each vortex is coloured ochre or rust by its spin. Clockwise vortices leave one edge and counterclockwise ones leave the other, in turn, forming a staggered double row. The rows drift downstream as the stream speeds up."
+}

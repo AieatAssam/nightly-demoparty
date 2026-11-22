@@ -1,0 +1,77 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Alternating Vortices</title>
+<style>*{margin:0}html,body{background:#efe4cc;height:100%}canvas{width:100vw;height:100vh;display:block}</style>
+</head><body><canvas id="c"></canvas>
+<script type="module">
+const GL_HEAD=`#version 300 es
+precision highp float;precision highp int;precision highp sampler2D;
+uniform float u_time,u_reduced;uniform vec2 u_res,u_mouse;uniform vec4 u_audio;out vec4 o;
+`,GL_VS=`#version 300 es
+void main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}`;function glProgram(e,n,u=GL_VS){const i=e.createProgram();for(const[a,o]of[[e.VERTEX_SHADER,u],[e.FRAGMENT_SHADER,n]]){const t=e.createShader(a);if(e.shaderSource(t,o),e.compileShader(t),!e.getShaderParameter(t,e.COMPILE_STATUS))throw Error("GLSL compile failed: "+e.getShaderInfoLog(t));e.attachShader(i,t)}if(e.linkProgram(i),!e.getProgramParameter(i,e.LINK_STATUS))throw Error("GLSL link failed: "+e.getProgramInfoLog(i));return i}function glSetter(e,n){const u={[e.FLOAT]:"uniform1fv",[e.FLOAT_VEC2]:"uniform2fv",[e.FLOAT_VEC3]:"uniform3fv",[e.FLOAT_VEC4]:"uniform4fv",[e.INT]:"uniform1iv",[e.SAMPLER_2D]:"uniform1iv"},i={};for(let a=e.getProgramParameter(n,e.ACTIVE_UNIFORMS);a--;){const o=e.getActiveUniform(n,a);i[o.name.replace("[0]","")]=[e.getUniformLocation(n,o.name),u[o.type]]}return(a,o)=>{const t=i[a];t&&t[1]&&e[t[1]](t[0],typeof o=="number"?[o]:o)}}const glDraw=(e,n=null,u=e.drawingBufferWidth,i=e.drawingBufferHeight)=>{e.bindFramebuffer(e.FRAMEBUFFER,n),e.viewport(0,0,u,i),e.drawArrays(e.TRIANGLES,0,3)};function glStart(e,n,{scale:u=1,dprMax:i=1,reduce:a=.2,frame:o}={}){const t=e.getContext("webgl2",{antialias:!1});if(!t)throw Error("WebGL2 unavailable");const m=glProgram(t,n.startsWith("#version")?n:GL_HEAD+n),s=matchMedia("(prefers-reduced-motion: reduce)"),r={kind:"webgl2",gl:t,prog:m,set:glSetter(t,m),time:0,reduced:!1,mouse:[.5,.5],audio:[0,0,0,0],raf:0};e.addEventListener("pointermove",c=>{const f=e.getBoundingClientRect();r.mouse=[(c.clientX-f.left)/f.width,1-(c.clientY-f.top)/f.height]});let E=-1;const _=c=>{r.raf=requestAnimationFrame(_);const f=Math.min(devicePixelRatio,i)*u,d=Math.max(1,e.clientWidth*f|0),T=Math.max(1,e.clientHeight*f|0);(e.width!==d||e.height!==T)&&(e.width=d,e.height=T),r.reduced=s.matches,r.time+=E<0?0:Math.min((c-E)/1e3,.5)*(r.reduced?a:1),E=c,o&&o(r),t.useProgram(m),r.set("u_time",r.time),r.set("u_reduced",r.reduced?1:0),r.set("u_res",[d,T]),r.set("u_mouse",r.mouse),r.set("u_audio",r.audio),glDraw(t)};return r.raf=requestAnimationFrame(_),r.stop=()=>cancelAnimationFrame(r.raf),r}function createPingPong(e,n,u){const i=!!e.getExtension("EXT_color_buffer_float"),a=()=>{const t=e.createTexture(),m=e.createFramebuffer();e.bindTexture(e.TEXTURE_2D,t),e.texImage2D(e.TEXTURE_2D,0,i?e.RGBA16F:e.RGBA8,n,u,0,e.RGBA,i?e.HALF_FLOAT:e.UNSIGNED_BYTE,null);for(const[s,r]of[[e.TEXTURE_MIN_FILTER,e.LINEAR],[e.TEXTURE_MAG_FILTER,e.LINEAR],[e.TEXTURE_WRAP_S,e.REPEAT],[e.TEXTURE_WRAP_T,e.REPEAT]])e.texParameteri(e.TEXTURE_2D,s,r);return e.bindFramebuffer(e.FRAMEBUFFER,m),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,t,0),{tex:t,fb:m}},o={w:n,h:u,float:i,a:a(),b:a(),swap:()=>{[o.a,o.b]=[o.b,o.a]}};return e.bindFramebuffer(e.FRAMEBUFFER,null),o}export{GL_HEAD,glProgram,glSetter,glDraw,glStart,createPingPong};
+const clamp01=t=>t<0?0:t>1?1:t,lerp=(t,n,c)=>t+(n-t)*c,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),quintic=t=>(t=clamp01(t),t*t*t*(t*(t*6-15)+10)),cubicInOut=t=>(t=clamp01(t),t<.5?4*t*t*t:1-(-2*t+2)**3/2),expoOut=t=>(t=clamp01(t),t===1?1:1-2**(-10*t)),backOut=(t,n=1.70158)=>(t=clamp01(t)-1,1+t*t*((n+1)*t+n)),elasticOut=t=>(t=clamp01(t),t===0||t===1?t:2**(-10*t)*Math.sin((t*10-.75)*(2*Math.PI/3))+1),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),CUTS=[0,5,10,15,20],act=(t,n=CUTS)=>{let c=0;for(;c<n.length-2&&t>=n[c+1];)c++;return{i:c,p:clamp01((t-n[c])/(n[c+1]-n[c]))}},acts=(t,n=CUTS,c=1)=>{const e=o=>o===0?1:o===n.length-1?0:smooth((t-n[o])/c+.5);return n.slice(0,-1).map((o,s)=>e(s)-e(s+1))},storyClock=({reduce:t=.2,cuts:n=CUTS}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r,...act(e,n)}}};export{clamp01,lerp,smooth,quintic,cubicInOut,expoOut,backOut,elasticOut,beat,CUTS,act,acts,storyClock};
+
+// Von Karman street: analytic alternating point vortices advect a ping-pong dye field.
+// Dye is injected only at the two shear layers; R = rust (clockwise, top), G = ochre (counterclockwise, bottom).
+const SIM_W = 512, SIM_H = 256, SPS = 30, CAP = 8;
+const SIM = GL_HEAD + `uniform sampler2D S;uniform float T,W;
+float h2(vec2 p){uvec2 q=uvec2(ivec2(floor(p))+65536);uint h=(q.x*1664525u)^(q.y*1013904223u);h^=h>>13u;h*=1274126177u;h^=h>>16u;return float(h)*2.3283064e-10;}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(h2(i),h2(i+vec2(1,0)),u.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),u.x),u.y);}
+vec2 vort(vec2 p){vec2 v=vec2(0.);float n0=floor(T);
+for(int m=0;m<10;m++){float n=n0-float(m);if(n<0.)continue;
+float a=T-n,s=mod(n,2.)<.5?1.:-1.;vec2 c=vec2(.2+2.4*a,s*1.1),d=p-c;
+v+=-s*4.*exp(-.18*a)/6.2832*vec2(-d.y,d.x)/(dot(d,d)+.06);}
+return v;}
+void main(){
+vec2 uv=gl_FragCoord.xy/vec2(textureSize(S,0)),p=vec2(-8.,-8.)+uv*vec2(32.,16.);
+if(length(p)<1.02){o=vec4(0.);return;}
+vec2 wq=vec2(vn(p*.35+vec2(0.,.1*T)),vn(p*.35+vec2(5.2,1.3+.1*T)));
+vec2 v=vec2(2.4,0.)+vort(p)+(wq-.5)*1.1;
+vec2 q=(p-v/30.-vec2(-8.,-8.))/vec2(32.,16.);
+float mk=step(0.,q.x)*step(q.x,1.)*step(0.,q.y)*step(q.y,1.);
+vec2 dye=textureLod(S,clamp(q,0.,1.),0.).rg*mk*.999;
+float gt=.5+.5*cos(3.14159*T),gb=.5-.5*cos(3.14159*T),inj=(14.+10.*W)/30.;
+vec2 a1=p-vec2(.25,1.12),a2=p-vec2(.25,-1.12);
+dye.x+=inj*gt*exp(-dot(a1,a1)/.05);
+dye.y+=inj*gb*exp(-dot(a2,a2)/.05);
+o=vec4(min(dye,vec2(1.5)),0.,1.);}`;
+
+const RENDER = `uniform sampler2D S;uniform float CX,HH;
+float h2(vec2 p){uvec2 q=uvec2(p);uint h=(q.x*1664525u)^(q.y*1013904223u);h^=h>>13u;h*=1274126177u;return float(h>>9u)*1.1920929e-7;}
+void main(){
+vec2 uv=gl_FragCoord.xy/u_res,w=vec2(CX,0.)+(uv-.5)*vec2(2.*HH*u_res.x/u_res.y,2.*HH);
+vec2 su=(w-vec2(-8.,-8.))/vec2(32.,16.),px=vec2(2./512.,2./256.);
+float mk=step(0.,su.x)*step(su.x,1.)*step(0.,su.y)*step(su.y,1.);
+vec2 d=texture(S,clamp(su,0.,1.)).rg*mk;
+float hl=dot(texture(S,clamp(su-vec2(px.x,0.),0.,1.)).rg,vec2(1.)),hr=dot(texture(S,clamp(su+vec2(px.x,0.),0.,1.)).rg,vec2(1.)),hd=dot(texture(S,clamp(su-vec2(0.,px.y),0.,1.)).rg,vec2(1.)),hu=dot(texture(S,clamp(su+vec2(0.,px.y),0.,1.)).rg,vec2(1.));
+float sh=dot(normalize(vec3((hl-hr)*6.,(hd-hu)*6.,1.)),normalize(vec3(-.5,.6,.7)));
+vec2 k=1.-exp(-d*2.2);
+vec3 c=vec3(.937,.894,.8);
+c=mix(c,vec3(.604,.29,.133),k.x);
+c=mix(c,vec3(.784,.588,.18),k.y);
+c*=mix(1.,.9+.2*sh,clamp(k.x+k.y,0.,1.)*.8);
+c*=.985+.03*h2(gl_FragCoord.xy);
+float r=length(w),aa=fwidth(r),cy=1.-smoothstep(1.-aa,1.+aa,r);
+c=mix(c,vec3(.604,.29,.133)*(.82+.18*(1.-r)),cy);
+c=mix(c,vec3(.761,.255,.176),cy*smoothstep(.9,.92,r));
+o=vec4(c,1.);}`;
+
+const cv = document.getElementById('c');
+let sim, setS, pp, steps = 0;
+const st = glStart(cv, RENDER, { frame(st) {
+  const gl = st.gl;
+  if (!pp) { sim = glProgram(gl, SIM); setS = glSetter(gl, sim); pp = createPingPong(gl, SIM_W, SIM_H); }
+  gl.useProgram(sim); gl.activeTexture(gl.TEXTURE0);
+  for (let n = Math.min(CAP, Math.floor(st.time * SPS) - steps); n > 0; n--) {
+    steps++; const tt = steps / SPS;
+    gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+    setS('S', 0); setS('T', tt); setS('W', acts(tt)[2]);
+    glDraw(gl, pp.b.fb, SIM_W, SIM_H); pp.swap();
+  }
+  const w = acts(st.time);
+  gl.useProgram(st.prog); gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+  st.set('S', 0);
+  st.set('CX', w[1] * 7 + w[2] * 2 + w[3] * 3.6);
+  st.set('HH', w[0] * 1.6 + w[1] * 6 + w[2] * 2.2 + w[3] * 6);
+} });
+</script>
+</body></html>

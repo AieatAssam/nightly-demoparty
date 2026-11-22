@@ -1,0 +1,55 @@
+{
+  "title": "Alternating Vortices Behind a Blunt Body",
+  "concept": "Clockwise rust and counterclockwise ochre vortices shed alternately off the edges of a blunt cylinder, drifting downwind as a staggered street of dye.",
+  "mechanism_embodied": {
+    "mechanism_name": "Alternating vortex shedding",
+    "how_visualised": "Dye is injected only at the two shear layers of a fixed cylinder, so each vortex that rolls up is dye released from one side. The flow is an analytic point-vortex street advected on a ping-pong dye field. Vortex sign sets rust or ochre, so the two rows alternate in two tones as they drift downwind."
+  },
+  "discarded_obvious_idea": "Obvious: a swirling particle field with curl noise flowing around a rock. Rejected: it is noise-driven, has no shedding rule, and hides the alternation that sets the frequency.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "ping-pong dye advection through a point-vortex street",
+    "alternating vorticity-sign dye injection at two shear layers",
+    "Domain warping (noise-field)",
+    "Strouhal-rate shedding clock driven by flow speed"
+  ],
+  "novel_technique": "Domain warping (noise-field)",
+  "technique_family": "simulation",
+  "palette": [
+    "#efe4cc",
+    "#c8962e",
+    "#9a4a22",
+    "#c2412d"
+  ],
+  "motion_sound_plan": "Mood applied: high tempo (dense dye field, five cuts, 120 BPM visual shedding pulse), warm-consonant palette (cream ground, ochre and rust, mirror symmetry about the stream axis with a half-period offset between rows), assertive framing (cylinder fills the frame, push-in between beats), experimental technique risk (ping-pong dye simulation). No sound: requires_audio is false. Constraint: none. Domain warping keeps the dye filaments rolling; seeded PRNG only.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Uniform cream ground with a rust-edged cylinder filling the centre third. Dye is injected at both shear layers. By 2 s one clockwise rust blob and one ochre blob have been released, already offset in a staggered pair behind the cylinder."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Cuts at 5 s and 7.5 s widen the view to show the street forming. Alternating rust and ochre vortices drift right, each row half a period offset. At 8 s six vortices are visible, their edges warped into rolling filaments."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Climax: flow speed rises and the shedding pulses at 120 BPM. Cuts at 10 s and 12.5 s push in on the cylinder, filling the frame with densely packed rust and ochre cores that roll off each edge in turn."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Cut at 15 s, then a slow pull back to the full frame. The cylinder sits in the left third and the street of rust and ochre vortices drifts across the cream ground, cores fading toward the right edge. The 20 s frame keeps the alternating rows visible."
+    }
+  ],
+  "memorable_moment": "A staggered row of rust and ochre vortex cores rolls off a cylinder, alternating side by side as the flow speed rises.",
+  "self_declared_risk": "The ping-pong dye simulation may smear to a uniform wash or drop frames, and the vortex alternation could read as random swirl unless the phase offset between rows stays clear.",
+  "liner_note": "Vincenc Strouhal, a Czech physicist, experimented with wires that sang in the wind in 1878. For a cylinder the Strouhal number stays between 0.18 and 0.22 across Reynolds numbers from 100 to 100,000. Behind a blunt body each side releases vortices in turn, clockwise on one edge and counterclockwise on the other, forming a staggered double row that drifts downstream. On screen, rust dye marks the clockwise vortices and ochre marks the counterclockwise ones, so the two rows read as two tones. Raising the flow speed doubles the shedding rate, and the street breaks into a frayed wake before the camera pulls back."
+}

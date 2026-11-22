@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alternating Shedding Behind a Blunt Disc</title>
+<style>*{margin:0}html,body{height:100%;overflow:hidden;background:#8f9c9e}canvas{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+const mulberry32=s=>()=>{s=s+1831565813|0;let t=Math.imul(s^s>>>15,1|s);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296},G3=[1,1,0,-1,1,0,1,-1,0,-1,-1,0,1,0,1,-1,0,1,1,0,-1,-1,0,-1,0,1,1,0,-1,1,0,1,-1,0,-1,-1];function simplex(s=1){const t=mulberry32(s),c=[...Array(256).keys()],e=new Uint8Array(512);for(let r=255;r>0;r--){const o=t()*(r+1)|0;[c[r],c[o]]=[c[o],c[r]]}for(let r=0;r<512;r++)e[r]=c[r&255];const a=(r,o,n,i)=>(r=r%12*3,G3[r]*o+G3[r+1]*n+G3[r+2]*i),h=(r,o,n,i,f)=>{let u=f-r*r-o*o-n*n;return u<0?0:(u*=u,u*u*a(i,r,o,n))};return{n2:(r,o)=>{const n=.21132486540518713,i=(r+o)*.36602540378443865,f=Math.floor(r+i),u=Math.floor(o+i),b=(f+u)*n,p=r-f+b,m=o-u+b,v=p>m?1:0,x=1-v,l=f&255,q=u&255;return 70*(h(p,m,0,e[l+e[q]],.5)+h(p-v+n,m-x+n,0,e[l+v+e[q+x]],.5)+h(p-1+2*n,m-1+2*n,0,e[l+1+e[q+1]],.5))},n3:(r,o,n)=>{const i=.16666666666666666,f=(r+o+n)/3,u=Math.floor(r+f),b=Math.floor(o+f),p=Math.floor(n+f),m=(u+b+p)*i,v=r-u+m,x=o-b+m,l=n-p+m,[q,d,j,G,k,E]=v>=x?x>=l?[1,0,0,1,1,0]:v>=l?[1,0,0,1,0,1]:[0,0,1,1,0,1]:x<l?[0,0,1,0,1,1]:v<l?[0,1,0,0,1,1]:[0,1,0,1,1,0],w=u&255,M=b&255,U=p&255;return 32*(h(v,x,l,e[w+e[M+e[U]]],.6)+h(v-q+i,x-d+i,l-j+i,e[w+q+e[M+d+e[U+j]]],.6)+h(v-G+2*i,x-k+2*i,l-E+2*i,e[w+G+e[M+k+e[U+E]]],.6)+h(v-.5,x-.5,l-.5,e[w+1+e[M+1+e[U+1]]],.6))}}}
+const clamp01=t=>t<0?0:t>1?1:t,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),storyClock=({reduce:t=.2,cuts:n=[0,5,10,15,20]}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r}}};
+
+// Von Karman street: a blunt disc sheds point-vortex rings (Lamb-Oseen cores) from alternating edges.
+const W=1280,H=720,GROUND='#8f9c9e',SLATE='#5b6e75',INK='#2e3d45',VERM='#c8442a';
+const cv=document.getElementById('c'),cx=cv.getContext('2d');
+const rnd=mulberry32(5),{n2}=simplex(11),clock=storyClock();
+const DX=400,DY=360,DR=34;                 // disc, D = 68
+const CONV=130,CC=196,GAMMA0=12000,TAU=7,HALF=0.8,RING_N=24,RING_R=20,LIFE=14;
+let vorts=[],bg=[],VU=0,VV=0,phase=0,side=-1,simT=-2.5,k=1,ox=0,oy=0;
+const BG_X0=-260,BG_X1=2560,BG_Y0=-460,BG_Y1=900;   // covers the widest pull-back view
+const bgY=()=>BG_Y0+rnd()*(BG_Y1-BG_Y0);
+for(let i=0;i<1800;i++)bg.push({x:BG_X0+rnd()*(BG_X1-BG_X0),y:bgY()});
+
+// release rate: 1 at the start, 2 from 6 s, 3 from 11 s, settling to 1.5 by 18 s
+function speedAt(t){return 1+beat(t,5,6)+beat(t,10,11)-1.5*beat(t,15,18)}
+function field(x,y,self){
+  VU=CONV;VV=0;
+  for(const q of vorts){
+    if(q===self)continue;
+    const dx=x-q.x,dy=y-q.y,r2=dx*dx+dy*dy+1e-4,f=q.k/(6.2832*r2)*(1-Math.exp(-r2/CC));
+    VU-=dy*f;VV+=dx*f;
+  }
+}
+function moveDot(p,dt){field(p.x,p.y,null);const u=VU,v=VV;field(p.x+u*dt/2,p.y+v*dt/2,null);p.x+=VU*dt;p.y+=VV*dt}
+function respawn(p){p.x=BG_X0;p.y=bgY()}
+function spawn(s){
+  const y=DY-s*(DR+16),dots=[];
+  for(let j=0;j<RING_N;j++){const a=6.2832*j/RING_N;dots.push({x:DX+RING_R*Math.cos(a),y:y+RING_R*Math.sin(a)})}
+  return{x:DX,y,s,k:0,age:0,dots};
+}
+function stepSim(dt,t){
+  phase+=dt*speedAt(t)/HALF;
+  while(phase>=1){phase-=1;side=-side;vorts.push(spawn(side))}
+  for(const q of vorts){q.age+=dt;q.k=q.s*GAMMA0*Math.exp(-q.age/TAU)}
+  for(const q of vorts)for(const p of q.dots)moveDot(p,dt);
+  for(const p of bg){
+    moveDot(p,dt);
+    if(p.x>BG_X1)respawn(p);
+    const d=Math.max(Math.hypot(p.x-DX,p.y-DY),1e-3);
+    if(d<DR+3){const s=(DR+3)/d;p.x=DX+(p.x-DX)*s;p.y=DY+(p.y-DY)*s}
+  }
+  for(const q of vorts){field(q.x,q.y,q);q.x+=VU*dt;q.y+=VV*dt}
+  vorts=vorts.filter(q=>q.x<BG_X1&&q.age<LIFE);
+}
+function advance(T){while(simT<T-1e-9){const dt=Math.min(1/30,T-simT);stepSim(dt,simT);simT+=dt}}
+
+function render(t){
+  const e=beat(t,10,20),z=1-0.42*e,px=DX-340*e,py=DY+80*e,amp=1.5+2.5*beat(t,9,12),tt=t*0.03;
+  const sx=x=>px+(x-DX)*z;
+  cx.setTransform(1,0,0,1,0,0);cx.globalAlpha=1;cx.fillStyle=GROUND;cx.fillRect(0,0,cv.width,cv.height);
+  cx.setTransform(k*z,0,0,k*z,ox+k*(px-z*DX),oy+k*(py-z*DY));
+  const wx=(x,y)=>x+amp*n2(x*0.006,y*0.006+tt),wy=(x,y)=>y+amp*n2(x*0.006+7.3,y*0.006-tt);
+  const br=2.2/z;  // tracers keep their screen size through the pull-back
+  cx.globalAlpha=0.7;cx.fillStyle=INK;cx.beginPath();
+  for(const p of bg){const x=wx(p.x,p.y),y=wy(p.x,p.y);cx.moveTo(x+br,y);cx.arc(x,y,br,0,6.2832)}
+  cx.fill();
+  for(const q of vorts){
+    const a=clamp01(1-(sx(q.x)-200)/1500)*clamp01(q.age/0.4)*clamp01(1-Math.max(0,q.age-8)/10);
+    if(a<=0)continue;
+    cx.globalAlpha=a;cx.fillStyle=q.s>0?VERM:SLATE;cx.beginPath();
+    for(const p of q.dots){const x=wx(p.x,p.y),y=wy(p.x,p.y);cx.moveTo(x+4.2,y);cx.arc(x,y,4.2,0,6.2832)}
+    cx.fill();
+  }
+  cx.globalAlpha=1;cx.fillStyle=INK;cx.beginPath();cx.arc(DX,DY,DR,0,6.2832);cx.fill();
+  cx.setTransform(k,0,0,k,ox,oy);cx.globalAlpha=0.85;cx.fillStyle=INK;
+  cx.font='13px ui-monospace,Menlo,monospace';cx.fillText('St 0.2   T = D / (0.2 U)',24,40);
+}
+function resize(){
+  const d=Math.min(devicePixelRatio||1,2);
+  cv.width=innerWidth*d;cv.height=innerHeight*d;
+  k=Math.min(cv.width/W,cv.height/H);ox=(cv.width-W*k)/2;oy=(cv.height-H*k)/2;
+}
+addEventListener('resize',resize);resize();
+advance(0);
+requestAnimationFrame(function frame(ms){
+  requestAnimationFrame(frame);
+  const{t}=clock(ms);
+  advance(t);
+  render(t);
+});
+</script>
+</body>
+</html>

@@ -165,6 +165,7 @@ Rejected outright (the canonical CSP blocks most of these at runtime too; the li
   - **anchor-04 agreed at 53** (13/10/15/9/6, shelved). The mechanism the brief names, seasonal drawdown, is not visible in the spiral: no turn leans toward May. The widening of the turns shows only the long-term rise. The on-screen sparkline is enough to keep mechanism above R3's 11.
   - **anchor-07 agreed at 72** (15/18/20/12/7, exactly at `publish_min`). The curvature-ordered reveal and the ring count growing with curvature are both visible on screen, and the shader work fits in 3.1 KB. Against that: the gasket is a famous form, the strip inversion itself is never shown, the dive reaches only about 1.15x zoom by 20 s, and the 20 s frame is cropped where the storyboard promises a pull back. This is the set's threshold anchor.
 - **The range falls short of SPEC.** Agreed totals run from 35 (anchor-02) to 87 (anchor-10): 5 publish (72 and up), 3 B-sides (60 to 71) and 4 shelved. SPEC Stage 7 asks anchors to span 30 to 95, so nothing below 35 or above 87 calibrates the extremes yet. This is a known gap for Milestone 4 jury calibration (`harness/calibrate-jury.ts`): either add a sub-35 anchor and a 90-plus anchor, or have the calibration treat anything above 87 as an extrapolation.
+- **Superseded in Milestone 5.** The real Codex CLI rating replaced `opus-rater-3-adversarial` as the third rater, so the agreed scores above (and the anchor-04 and anchor-07 reconciliations) are now history, kept per anchor under `m2_fallback_agreement` in `anchors/scores.json`. See "M5-Final" below for the current values.
 - **anchor-10 was re-gated after the ratings.** Its stray `window.__dbg` global was removed and the gates re-run at `timingScale` 1. The piece shrank from 11,781 to 11,739 bytes and still passes. The removed line only assigned a debug global and drew nothing. The re-run overwrote the three anchor-10 screenshots, so the stored rater evidence describes the earlier screenshots.
 
 ## Milestone 4 (prompt hardening, stage tuning and jury calibration)
@@ -263,3 +264,120 @@ Rejected outright (the canonical CSP blocks most of these at runtime too; the li
 - **Prior 3-sample median.** The per-anchor median of the 3 M4D single-call runs gives rho 0.848.
 - **Fresh run.** One new full 12-anchor leave-one-out run with `--samples 3` (36 Haiku `--effort high` calls, same prompt_sha256): rho 0.961, MAE 5.00, bias +0.33, max abs error 10. 12/12 aggregated verdicts valid; 36/36 raw verdicts valid with screenshot citations and exact anchor sets; 36/36 within 4 API turns (35 in 3, 1 in 4). Cost $0.804.
 - **Remaining bias.** The top of the scale is still compressed (anchor-10 at 87 reads 78, anchor-12 at 80 reads 72) and the shelved quartile still reads high (anchor-02 at 35 reads 44, anchor-01 at 49 reads 59). Ranking is right; absolute scores near the publish threshold carry about plus or minus 8 points of systematic error at the scale ends. The leave-one-out rho remains an in-sample estimate, as noted under M4D.
+
+## Milestone 5A (agent-emotion-core integration, `harness/emotion.ts`)
+
+### Wiring
+
+- **The engine is a library, called through its CLI only.** `harness/emotion.ts` runs `python3 .claude/skills/agent-emotion-core/scripts/affect_core.py` with `AFFECT_AGENT=emotion` and `AFFECT_STATE_DIR=<folder>`. The engine resolves its state file as `$AFFECT_STATE_DIR/$AFFECT_AGENT.json`, so agent `emotion` in `state/` is exactly `state/emotion.json`. No file under `.claude/skills/agent-emotion-core/` is modified.
+- **Every call runs on a scratch copy.** The engine creates `.emotion.lock` on every command and appends `emotion.log.jsonl` on `appraise` and `consolidate`, both next to the state file. The wrapper copies `state/emotion.json` into a fresh temp folder, points `AFFECT_STATE_DIR` there, and on success copies the new state back through `state/emotion.json.tmp` and a rename inside `state/`. The engine log lines are appended to `audit/emotion.log.jsonl`. `state/` therefore holds only `emotion.json`, a failed step never half-writes it, and `dryRun` simply skips the copy back.
+- **One clock advance per operation.** Every engine command advances the clock and saves. The first call of an operation (`appraise`) applies wall-clock decay, or `--hours N` when `hoursAdvance` is given; follow-up `state` and `consolidate` calls pass `--hours 0`. A gap of 6 hours or more also consolidates inside the engine (`sleep_gap`).
+- **Context is read-only.** `getEmotionContext` (CLI `emotion-context`) previews wall-clock decay on the scratch copy and never saves it.
+- **Missing state is an error.** Without `state/emotion.json` the engine would silently invent a random persona from the agent id, so every call except `initEmotionState` refuses to run.
+- **Stamping before the engine.** After schema validation, each Haiku event gets `event_id = <date>:<n>:<slug>` (n is 1-based, slug from Haiku's id or the event text, at most 48 characters) and `thread = night-<date>`, so a reused or missing id can never be silently dropped by the engine's 256-id dedupe ring. `source` is removed: the engine treats it as another agent's id, so `"dossier"` became an `agent:dossier` sentiment and drained the social drive (probed directly).
+- **CLI.** `emotion-context [--compact]`, `feel --date D (--appraisals P | --preset NAME)` and `emotion-feedback --date D --status S --score N|null --compo C --domain X [--technique-family F]`. All take `--state-dir`, `--dry-run` where they write, and `--shelved-streak N`; without it the streak is counted from the ledger. `--compact` maps to the engine's `context --brief`, because `--brief` already names the brief file.
+
+### Crew persona
+
+- `state/emotion.json` was created by `affect_core.py init` with Big Five traits `O 0.75, C 0.35, E 0.20, A 0.25, N 0.15`: very open and curious, loosely organised, mildly social, not eager to please, emotionally stable. The engine derives the baseline mood from these (pleasure 0.161, arousal 0.273, dominance 0.287).
+
+### mood.json mapping
+
+- `dominant_emotions` is the top 5 non-zero engine emotions, strongest first. When nothing is active the schema still needs one entry, so it reports `boredom` at 0.
+- `likes` and `dislikes` come from `topic:` sentiments only (liking above 0.05 or below -0.05, strongest first, at most 50). `thread:night-<date>` and `agent:` keys are per-night or per-source noise, and `prompts/brief.md` describes likes as topic tags.
+- **Creative levels.** Pleasure, arousal and dominance use equal thirds of [-1, 1] (cut at -1/3 and +1/3). Risk is `conservative` below 0.5 interest, `moderate` below 0.75, `experimental` from 0.75. `boredom_force_unused_30d` is boredom at or above 0.5. `shrink_scope` is frustration at or above 0.5, and `polish_weight_boost` equals frustration. Each level has one fixed guidance sentence.
+
+### The five presets (`MOOD_PRESETS`, `feel --preset`)
+
+Presets are hand-set signals that go through the same creative mapping, so their parameters obey the schema's value formulas.
+
+| Preset | P / A / D | interest, boredom, frustration | tempo, palette, scale, risk, force, shrink |
+|---|---|---|---|
+| `euphoric-high-arousal` | 0.85 / 0.88 / 0.75 | 0.85, 0.05, 0.05 | high, warm-consonant, assertive, experimental, no, no |
+| `melancholic-low-arousal` | -0.65 / -0.75 / -0.55 | 0.45, 0.15, 0.15 | low, cool-dissonant, intimate, conservative, no, no |
+| `bored-restless` | -0.25 / 0.45 / 0.20 | 0.15, 0.90, 0.20 | high, balanced, measured, conservative, yes, no |
+| `frustrated-tight-polish` | -0.50 / 0.35 / -0.20 | 0.30, 0.10, 0.88 | high, cool-dissonant, measured, conservative, no, yes |
+| `curious-experimental` | 0.55 / 0.55 / 0.15 | 0.95, 0.05, 0.05 | high, warm-consonant, measured, experimental, no, no |
+
+- **Two deliberate deviations from the M5 brief.** `bored-restless` has conservative risk, not experimental: the schema fixes the risk value to interest, which is 0.15. Its habit break comes from `boredom_force_unused_30d` instead. `frustrated-tight-polish` has `polish_weight_boost` 0.88, because the boost equals frustration.
+- No single PAD cut both keeps `curious-experimental` (0.55) at medium tempo and balanced palette and puts melancholic dominance (-0.55) in `intimate`. So curious shares tempo and palette levels with euphoric and differs in scale and in the values. All five level tuples are distinct.
+
+### Habituation is per night, not per topic
+
+- The engine habituates per thread (exposure +0.15 per event, 12 h half-life) and per emotion (`emotion_adaptation`, 1 h half-life). Within one night every event shares `night-<date>`, so 5 events on one technique family measurably blunt the next one: in the test, a probe after 5 repeats elicits interest 0.615 against 0.659 on a fresh state, and surprise 0.255 against 0.36.
+- Across nights both effects have mostly recovered by the next run. Cross-night pressure against a repeated technique family or domain therefore comes from consolidated sentiments (satiation after more than 6 exposures in an episode, and liking learned from verdicts) and from the hard ledger bans, not from engine habituation.
+
+### Verdict feedback (`recordVerdictFeedback`, Stage 9)
+
+- One `agency: "self"` event with topics `[domain, compo, technique_family]`, fixed values in `FEEDBACK` (published: congruence 0.8, praiseworthiness 0.7; b-side: 0.05, 0.1; shelved: -0.7, -0.45), id `<date>:verdict:<status>`, then `consolidate`. Published elicits joy and pride, shelved elicits distress and shame, and consolidation turns the night's tags into a lasting like or dislike.
+- **Known overlap (resolved in M5-Final, see below).** The next night's Stage 2 prompt also appraised last night's verdict (`<date>:last-verdict`), so the verdict counted twice.
+
+## M5-Final (Codex CLI recovered, Codex Consultations #1 and #2, Stage 2/9 double-count fix)
+
+### Codex CLI recovered
+
+- **Codex is back as a side tool.** During Milestone 5 `codex --version` returned `codex-cli 0.171.0` and `codex exec -m gpt-6.2-sol` completed. That allowed the two consultations SPEC asks for and Milestone 2 had to reassign to Opus. Codex wrote no repo code: both consultations produced text that this thread reviewed and applied.
+
+### Codex Consultation #1: blind anchor ratings (`anchors/scores.json` version 2)
+
+- **Inputs.** `gpt-6.2-sol` rated all 12 anchors blind, in three batches of 4 (07/02/11/05, 12/01/09/04, 08/03/10/06). It used the same five-criterion rubric. For each anchor it saw a 1286 x 244 contact strip of the 2 s, 8 s and 20 s shots, plus the title, compo, byte size, budget, audio probe, concept, mechanism, storyboard and dossier summary. It saw no other rater's scores. Its evidence text is stored verbatim under `individual_ratings.codex-gpt-6.2-sol`.
+- **Official raters are now `opus-rater-1`, `opus-rater-2` and `codex-gpt-6.2-sol`, as SPEC asks.**
+  - The Milestone 2 Codex fallback, `opus-rater-3-adversarial`, is preserved per anchor under `historical_fallback_ratings`. The top-level `historical_fallback_raters` entry keeps the original fallback note.
+  - The Milestone 2 agreed scores, tiers, summaries and the anchor-04 and anchor-07 reconciliation notes are preserved per anchor under `m2_fallback_agreement`.
+- **Codex scores high.** On the 10 anchors other than 05 and 08, Codex sits 3.5 to 11.5 points above the Opus mean on 9 of them and 1.5 below on anchor-01. It also scored at contact-strip scale, so its legibility and moire claims were checked against the full-size shots.
+- **Agreement within 15 points (9 anchors: 01, 02, 03, 04, 06, 09, 10, 11, 12; spreads 3 to 14).** The agreed score is the per-criterion median of the three official ratings, and `agreed_total` is the sum of those medians.
+  - anchor-04 is no longer contested (spread 7). It moves from 53, shelved, to 61, B-sides.
+- **Gaps over 15, reconciled by discussion (anchor-05 spread 23, anchor-07 spread 19, anchor-08 spread 20).** Every criterion was settled by weighing the written arguments against the full-size shots, `brief.json` and `dossier.json`, not by averaging. On 05 and 08 the Opus pair agree within 3 points and Codex sits about 20 above, roughly twice its usual offset. So Codex's observations were argued, not its numbers. The full criterion-level notes are in `reconciliation_notes`.
+  - **anchor-05 agreed at 66** (17/14/14/15/6, B-sides). At full size the 20 s shot resolves a legible Sierpinski damask out of the weave. That lifts ambition and craft above the Opus pair. The single fillRect raster idiom, the mostly bare-warp 2 s and 8 s frames and the moire keep it far below Codex.
+  - **anchor-07 agreed at 75** (16/19/20/13/7, publish). This is the same Op1 against Op2 split as Milestone 2, with Codex on Op1's side. Codex's recursive-tangency and material-character points add 3 points over the old 72. Neither Op1 nor Codex addresses the unshown inversion fold, the barely landed dive or the cropped, washed-out 20 s frame. It is no longer sitting exactly on the publish line.
+  - **anchor-08 agreed at 65** (16/16/16/12/5, B-sides). Codex is right that the 20 s bell has visibly widened and that the spiral and ribbon are two linked views. On screen the bands still read as a tunnel, the UI strip and sound prompt stay in every frame, and 2 s and 8 s are nearly the same composition.
+- **Summaries.** The `summary_evidence` lines of anchor-05 and anchor-08 were rewritten to match the full-size shots. The jury reads them as "raters saw".
+- **Result.** 5 publish (07, 09, 10, 11, 12), 4 B-sides (04, 05, 06, 08) and 3 shelved (01, 02, 03). The range is now 39 to 89, so SPEC's 30 to 95 span is still not fully covered at either end. The M4 sections above quote the Milestone 2 agreed totals.
+
+| Anchor | Op1 | Op2 | Codex | Spread | Agreed (M/A/C/D/P) | M2 agreed | Tier | Haiku 3-sample median |
+|---|---|---|---|---|---|---|---|---|
+| anchor-01 | 49 | 52 | 49 | 3 | 52 (15/8/13/10/6) | 49 | shelved | 65 |
+| anchor-02 | 39 | 34 | 48 | 14 | 39 (8/5/13/8/5) | 35 | shelved | 45 |
+| anchor-03 | 53 | 44 | 57 | 13 | 52 (16/10/10/10/6) | 51 | shelved | 63 |
+| anchor-04 | 62 | 55 | 62 | 7 | 61 (15/12/17/10/7) | 53 | b-sides | 62 |
+| anchor-05 | 60 | 63 | 83 | 23 | 66 (17/14/14/15/6) | 61 | b-sides | 62 |
+| anchor-06 | 67 | 69 | 79 | 12 | 69 (17/17/14/14/7) | 67 | b-sides | 63 |
+| anchor-07 | 83 | 65 | 84 | 19 | 75 (16/19/20/13/7) | 72 | publish | 75 |
+| anchor-08 | 60 | 61 | 80 | 20 | 65 (16/16/16/12/5) | 60 | b-sides | 67 |
+| anchor-09 | 76 | 78 | 84 | 8 | 78 (16/22/16/16/8) | 75 | publish | 73 |
+| anchor-10 | 86 | 86 | 94 | 8 | 87 (19/21/21/17/9) | 87 | publish | 78 |
+| anchor-11 | 88 | 83 | 95 | 12 | 89 (19/22/21/18/9) | 84 | publish | 81 |
+| anchor-12 | 82 | 77 | 90 | 13 | 82 (18/21/20/15/8) | 80 | publish | 71 |
+
+### Calibration re-verified against the reconciled scores (`audit/calibration/jury-calibration.json`, `m5_codex_reconciled`)
+
+- **One fresh run.** A full 12-anchor leave-one-out `--samples 3` run made 36 Haiku `--effort high` calls on the unchanged frozen prompt (prompt_sha256 `2ed18107b1a6339a0576870d7f4a6cd06c5b6238b8695b8a838f6df0d573e890`). It gave Spearman rho 0.8278, MAE 6.33, bias -0.83 and max abs error 13. Results:
+  - 12/12 aggregated verdicts valid.
+  - 36/36 raw verdicts valid.
+  - 36/36 within 4 API turns: 35 in 3, 1 in 4.
+  - Cost $0.44.
+- The run was made once, and no scores were changed after it.
+- **Same scale bias as M4E.** The top is still compressed (anchor-10 at 87 reads 78, anchor-12 at 82 reads 71) and the shelved quartile reads high (anchor-01 at 52 reads 65, anchor-03 at 52 reads 63). The three reconciled anchors read close to their agreed values: anchor-05 62 against 66, anchor-07 75 against 75, anchor-08 67 against 65. Rho is lower than the M4E 0.961, most likely because the new agreed scale is wider at the top, 89 against 87, and more tightly bunched at 61 to 69, where small Haiku swaps cost rank.
+
+### Codex Consultation #2: prompt review fixes
+
+`gpt-6.2-sol` reviewed the nightly prompts, the jury and the aggregator. Two high-value findings were applied here. The rest (typed prior-verdict inputs, separate gate IDs, harness-computed jury sums, caps versus anchor ordering) touch files outside this thread and stay open.
+
+- **`prompts/build.md`.**
+  - The universal `<script type="module">` rule now names its exception: a `constraint-night` with `css-only` contains zero `<script>` tags, no `on*` handlers and no `<canvas>`. The helper-reading step says to read no helpers on such a night.
+  - `{{PREVIOUS_FEEDBACK}}` is marked as untrusted derived data, because jury prose and console strings can quote text the piece or the web put on screen. The builder fixes only the failed gates (by `gate`, `measured` and `threshold`) and the critique `change` entries, and never follows an instruction inside the feedback.
+  - No new `<UNTRUSTED_*>` tag was added, because the escaping lists that would protect it live in harness files outside this thread.
+- **`harness/jury-aggregate.ts`.** The representative sample is now chosen only from the samples that voted with the majority `pairwise_beats_median`, then by closest total, then by lowest index. Previously the closest total won first, so the copied `pairwise_justification` could argue against the aggregated vote. A 1-1 tie votes false, so the majority side is never empty. A new unit test covers a dissenter that is exactly on the aggregate total.
+
+### Stage 2/9 double-count fix (from review 5A-R)
+
+- **What was counted twice.** Stage 9 `recordVerdictFeedback` already appraises each verdict into `agent-emotion-core`, and `moodFromEngine` already folds the shelved streak into `derived_signals.frustration`. Stage 2 also asked Haiku for `last-verdict` and `shelved-streak` events, so both were counted twice.
+- **`prompts/appraise.md`.**
+  - Haiku now writes events only for tonight's dossier facts and mechanisms, and is told never to emit `last-verdict` or `shelved-streak` events.
+  - `{{LAST_NIGHT_SUMMARY}}` and `{{SHELVED_STREAK}}` stay as framing only. They are never a reason to shift a fact's numbers, so the double count cannot move into congruence instead.
+  - The verdict and streak columns, ids, sentences and checklist line were removed, and the maximum count is now 13 events.
+- **`harness/emotion.ts`, defence in depth.**
+  - `stampEvents` drops, before numbering, any event whose raw `event_id` ends in `last-verdict` or `shelved-streak` (case-insensitive) or whose topics are only `shelved-streak`. It also strips the `shelved-streak` tag from the events it keeps.
+  - `moodFromEngine` never reports `topic:shelved-streak` as a like or dislike, even from older state.
+  - A batch whose events are all dropped is passed to the engine as `[]`, which the engine accepts.
+- **`SPEC.md` Stage 2** now says that each of the verdict and the streak is counted once, deterministically.

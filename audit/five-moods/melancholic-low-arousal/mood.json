@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-11-22T00:00:00.000Z",
+  "preset_override": "melancholic-low-arousal",
+  "dominant_emotions": [
+    {
+      "label": "disappointment",
+      "intensity": 0.6
+    },
+    {
+      "label": "distress",
+      "intensity": 0.5
+    },
+    {
+      "label": "interest",
+      "intensity": 0.45
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.15
+    }
+  ],
+  "pad": {
+    "pleasure": -0.65,
+    "arousal": -0.75,
+    "dominance": -0.55
+  },
+  "neurochemistry": {
+    "dopamine": 0.25,
+    "noradrenaline": 0.15,
+    "serotonin": 0.3,
+    "cortisol": 0.3,
+    "oxytocin": 0.35,
+    "opioids": 0.3
+  },
+  "drives": {
+    "novelty": 0.25,
+    "social": 0.6,
+    "fatigue": 0.6
+  },
+  "derived_signals": {
+    "interest": 0.45,
+    "boredom": 0.15,
+    "frustration": 0.15
+  },
+  "likes": [],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "low",
+      "value": 0.125,
+      "guidance": "Slow, contemplative tempo: sparse elements, few long eased transitions, unhurried sound."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "cool-dissonant",
+      "value": -0.65,
+      "guidance": "Cool, austere palette with one sharp accent, asymmetric composition and dissonant harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "intimate",
+      "value": -0.55,
+      "guidance": "Intimate, delicate framing: small subject with margins, low contrast, a still or drifting camera."
+    },
+    "technical_risk_budget": {
+      "level": "conservative",
+      "value": 0.45,
+      "guidance": "Conservative risk: build on a technique the crew can execute reliably."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.15,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

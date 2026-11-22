@@ -9,6 +9,10 @@
 //   usage    [--file P] [--end D] [--metric tokens|cost_usd]
 //   validate <schema> <file.json|file.jsonl> [verdict flags for schema verdict]
 //   aggregate-jury <v1.json> <v2.json> <v3.json> [--out P] [verdict flags]   (Stage 7 per-criterion median of N samples)
+//   emotion-context  [--compact] [--state-dir D]   (Stage 2 {{EMOTION_CONTEXT}}; read-only)
+//   feel             --date D (--appraisals P | --preset NAME) [--shelved-streak N | --ledger P] [--hours N] [--dry-run] [--out P] [--state-dir D]
+//   emotion-feedback --date D --status published|b-side|shelved --score N|null --compo C --domain X [--technique-family F]
+//                    [--shelved-streak N | --ledger P] [--dry-run] [--state-dir D]   (Stage 9)
 // Verdict flags (validate verdict, decide, aggregate-jury): [--archive-empty | --no-archive-empty | --ledger P [--date D]]
 //   [--expected-anchors a,b,c,d] [--no-require-screenshot-ref]. Screenshot refs are required by default here.
 import { readFileSync, writeFileSync } from "node:fs";
@@ -24,11 +28,12 @@ import { buildPlan } from "./plan.js";
 import { publishNight } from "./publish.js";
 import type { PublishInput } from "./publish.js";
 import { aggregateJuryVerdicts } from "./jury-aggregate.js";
+import { applyAppraisalsToEngine, buildPresetMood, getEmotionContext, recordVerdictFeedback, shelvedStreakBefore } from "./emotion.js";
 import { assertSchema, validateBriefStrict, validateDossierStrict, validateSchema, validateVerdictStrict } from "./schema.js";
 import type { VerdictStrictOptions } from "./schema.js";
 import { computeUsageAlerts, readUsage } from "./usage.js";
 import { COMPO_IDS, SCHEMA_NAMES } from "./types.js";
-import type { Brief, CompoId, Dossier, Mood, Plan, SchemaName, Verdict } from "./types.js";
+import type { Appraisals, Brief, CompoId, Dossier, Mood, NightStatus, Plan, SchemaName, Verdict } from "./types.js";
 
 class UsageError extends Error {}
 
@@ -113,10 +118,21 @@ export async function main(argv: string[]): Promise<number> {
       "archive-empty": { type: "boolean" },
       "expected-anchors": { type: "string" },
       "require-screenshot-ref": { type: "boolean" },
+      compact: { type: "boolean" },
+      "state-dir": { type: "string" },
+      appraisals: { type: "string" },
+      preset: { type: "string" },
+      "shelved-streak": { type: "string" },
+      hours: { type: "string" },
+      status: { type: "string" },
+      score: { type: "string" },
+      "technique-family": { type: "string" },
     },
   });
   const repoRoot = o["repo-root"] ? resolve(o["repo-root"]) : findRepoRoot();
   const ledgerPath = o.ledger ?? join(repoRoot, "ledger", "ledger.jsonl");
+  const engine = { repoRoot, ...(o["state-dir"] !== undefined ? { stateDir: resolve(o["state-dir"]) } : {}) };
+  const streak = (date: string): number => int(o["shelved-streak"], "shelved-streak") ?? shelvedStreakBefore(readLedger(ledgerPath, repoRoot), date);
 
   switch (cmd) {
     case "plan": {
@@ -286,8 +302,53 @@ export async function main(argv: string[]): Promise<number> {
       out(v);
       return 0;
     }
+    case "emotion-context": {
+      out({ context: getEmotionContext({ ...engine, brief: o.compact ?? false }) });
+      return 0;
+    }
+    case "feel": {
+      const date = need(o.date, "date");
+      if (!o.appraisals === !o.preset) throw new UsageError("feel needs exactly one of --appraisals or --preset");
+      const hours = o.hours === undefined ? undefined : Number(o.hours);
+      if (hours !== undefined && !(Number.isFinite(hours) && hours >= 0)) throw new UsageError("--hours must be a number >= 0");
+      const mood = o.preset
+        ? buildPresetMood(o.preset, undefined, repoRoot)
+        : applyAppraisalsToEngine({
+            ...engine,
+            appraisals: readJson(o.appraisals!) as Appraisals,
+            date,
+            shelvedStreak: streak(date),
+            dryRun: o["dry-run"] ?? false,
+            ...(hours !== undefined ? { hoursAdvance: hours } : {}),
+          });
+      if (o.out) writeFileSync(o.out, `${JSON.stringify(mood, null, 2)}\n`);
+      out(mood);
+      return 0;
+    }
+    case "emotion-feedback": {
+      const date = need(o.date, "date");
+      const status = need(o.status, "status");
+      if (!["published", "b-side", "shelved"].includes(status)) throw new UsageError("--status must be published, b-side or shelved");
+      const score = need(o.score, "score") === "null" ? null : int(o.score, "score")!;
+      out(
+        recordVerdictFeedback({
+          ...engine,
+          date,
+          status: status as NightStatus,
+          score,
+          compo: need(o.compo, "compo"),
+          domain: need(o.domain, "domain"),
+          techniqueFamily: o["technique-family"] ?? null,
+          shelvedStreak: streak(date),
+          dryRun: o["dry-run"] ?? false,
+        }),
+      );
+      return 0;
+    }
     default:
-      throw new UsageError(`unknown command '${cmd ?? ""}' (plan, novelty, lint, gate, decide, ratchet, publish, usage, validate, aggregate-jury)`);
+      throw new UsageError(
+        `unknown command '${cmd ?? ""}' (plan, novelty, lint, gate, decide, ratchet, publish, usage, validate, aggregate-jury, emotion-context, feel, emotion-feedback)`,
+      );
   }
 }
 

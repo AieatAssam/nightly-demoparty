@@ -1,0 +1,56 @@
+{
+  "title": "Alternating Shedding Behind a Bluff Body",
+  "concept": "Tracer dots drift past a bluff disk and roll into clockwise and counterclockwise cores that leave the two sides in turn, forming a staggered street whose shedding rate follows a Strouhal ratio near 0.2.",
+  "mechanism_embodied": {
+    "mechanism_name": "Alternating vortex shedding",
+    "how_visualised": "About 2400 tracer dots are advected by a point-vortex street shed from a disk: each shear layer releases a core in turn, amber for clockwise and slate for counterclockwise, so the two staggered rows alternate in tone. Dots caught in a core circle it and leave along its spiral, and a row of 6 to 8 cores stays visible downstream."
+  },
+  "discarded_obvious_idea": "Obvious: a row of swirl sprites drifting right behind a circle. Rejected: fake sprites hide the flow and the Strouhal rule; tracers must be integrated through the summed vortex field.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "analytic point-vortex street advecting tracer particles",
+    "vorticity-signed two-tone tracer colouring",
+    "Strouhal-scaled shedding period per obstacle",
+    "Domain warping (noise-field)"
+  ],
+  "novel_technique": "Domain warping (noise-field)",
+  "technique_family": "simulation",
+  "palette": [
+    "#efe6d2",
+    "#5f7d96",
+    "#d89a3c",
+    "#c4553a",
+    "#4a5563"
+  ],
+  "motion_sound_plan": "High tempo, balanced palette, measured camera, conservative risk. Dense field of about 2400 tracers, four scene changes (three beat cuts plus a hard cut at 12.5 s), one slow pull-back, amber and slate on cream with a vermilion accent, partial symmetry. Silent piece with no audio; the shedding period sets a visual rhythm near 120 BPM. Constraint: none.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Cream ground with a graphite disk at the left third. About 2400 faint tracer dots stream left to right. Two small cores already sit behind the disk, amber above and slate below, staggered."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Shedding runs at the Strouhal period: cores detach alternately, amber then slate, and drift right. Six to eight staggered cores fill the middle band. Camera pulls back slowly so the street spans two thirds of the width. Tracers spiral into each core."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "A second, smaller disk enters the lower frame and sheds a faster street with tighter core spacing. Hard cut at 12.5 s to a closer view of both streets. Domain-warped dye edges wobble the cores slightly. Vermilion marks the centre of the strongest cores."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Camera settles at full width. Cores weaken with distance and open into pale gaps, leaving five staggered cores fading toward the right edge. The disk and the lower street hold in the final frame, asymmetric and quiet."
+    }
+  ],
+  "memorable_moment": "Amber and slate cores leave the disk in turn, each tracer ring spinning up as the next core forms half a period later.",
+  "self_declared_risk": "The point-vortex street may read as scripted swirls rather than a flow, and tracer density may fall too low by t = 20 s. Mitigate by integrating tracers through the summed field every frame.",
+  "liner_note": "In 1878 Vincenc Strouhal experimented with singing wires, and for a cylinder the Strouhal number stays between 0.18 and 0.22 for Reynolds numbers from 100 to 100,000. Behind a bluff body the shear layers roll up in turn: one side releases a clockwise core, and half a period later the other releases a counterclockwise one. On screen, about 2400 tracer dots circle each core as it forms, amber for clockwise and slate for counterclockwise, so the two staggered rows alternate in tone. A second, smaller disk sheds faster, so its street ticks at a higher rate."
+}

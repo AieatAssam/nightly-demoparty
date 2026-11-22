@@ -1,0 +1,79 @@
+{
+  "topic": "Behind a blunt body, wind sheds vortices alternately from each side at a frequency fixed by the Strouhal number, about 0.2, from a 1.5 km island down to a singing wire",
+  "domain": "von-karman-vortex-street",
+  "wildcard_chosen": false,
+  "summary": "When a steady flow passes a bluff obstacle such as a cylinder, an island or a wire, the wake becomes unstable and rolls up into vortices that leave the two sides in turn, clockwise on one edge and counterclockwise on the other. The result is a staggered double row called a von Karman vortex street. Its shedding frequency follows f = St x U / D with St close to 0.2 over a huge range of Reynolds numbers, so the same pattern appears in lab tanks, in cloud decks behind islands hundreds of kilometres long, and as the hum of power lines.",
+  "facts": [
+    {
+      "claim": "A vortex street forms only within a range of flow speeds, specified by the Reynolds number, typically above a limiting value of about 90; the Reynolds number is the ratio of inertial to viscous forces in the flow.",
+      "source_url": "https://en.wikipedia.org/wiki/K%C3%A1rm%C3%A1n_vortex_street",
+      "source_title": "Karman vortex street (Wikipedia)"
+    },
+    {
+      "claim": "For a cylinder the Strouhal number St = f D / V varies only between 0.18 and 0.22 over four orders of magnitude in Reynolds number, from 100 to 100,000.",
+      "source_url": "https://en.wikipedia.org/wiki/Vortex_shedding",
+      "source_title": "Vortex shedding (Wikipedia)"
+    },
+    {
+      "claim": "The Strouhal number is named after Vincenc Strouhal, a Czech physicist who experimented in 1878 with wires experiencing vortex shedding and singing in the wind.",
+      "source_url": "https://en.wikipedia.org/wiki/Strouhal_number",
+      "source_title": "Strouhal number (Wikipedia)"
+    },
+    {
+      "claim": "Behind Alejandro Selkirk Island, about 1.5 km in diameter, a steady wind sheds clockwise vortices off the eastern edge and counterclockwise vortices off the western edge; they grow as they drift hundreds of kilometres downwind, a street 10,000 times longer than lab streets.",
+      "source_url": "https://science.nasa.gov/earth/earth-observatory/landsat-7-reveals-large-scale-fractal-motion-of-clouds-625/",
+      "source_title": "Landsat 7 Reveals Large-scale Fractal Motion of Clouds (NASA Earth Observatory)"
+    },
+    {
+      "claim": "MISR images from June 6, 2001 show a vortex pattern continuing for over 300 km south of Jan Mayen island, with cloud-clearing at the vortex centres until the sixteenth hole closes.",
+      "source_url": "https://science.nasa.gov/earth/earth-observatory/a-vortex-street-in-the-arctic-2270/",
+      "source_title": "A Vortex Street in the Arctic (NASA Earth Observatory)"
+    },
+    {
+      "claim": "In air moving over a cylinder the Aeolian tone has frequency St x V / D with St about 0.2, so each doubling of wind speed raises the tone by an octave, up to a six octave swing in gusty wind.",
+      "source_url": "https://en.wikipedia.org/wiki/Aeolian_sound",
+      "source_title": "Aeolian sound (Wikipedia)"
+    },
+    {
+      "claim": "Tall steel chimneys and masts are fitted with helical strakes to break up shedding; their effectiveness against vortex induced vibration was found in 1957 by Christopher Scruton and D. E. J. Walshe at the National Physical Laboratory.",
+      "source_url": "https://en.wikipedia.org/wiki/Vortex_shedding",
+      "source_title": "Vortex shedding (Wikipedia)"
+    },
+    {
+      "claim": "The Reynolds number compares inertial forces to viscous forces in a flow, so the same flow pattern recurs whenever velocity times length divided by kinematic viscosity matches.",
+      "source_url": "https://www.grc.nasa.gov/www/k-12/airplane/reynolds.html",
+      "source_title": "Reynolds Number (NASA Glenn Research Center)"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "Alternating vortex shedding",
+      "description": "The two shear layers leaving a bluff body roll up in turn: one side releases a clockwise vortex, then the other releases a counterclockwise one, half a period later, forming a staggered double row that drifts downstream.",
+      "render_or_sonify_hint": "Tracer particles or dye advected by a small 2D flow past an obstacle; colour by vorticity sign so the two rows alternate in two tones."
+    },
+    {
+      "name": "Strouhal frequency scaling",
+      "description": "Shedding frequency f equals St x U / D with St near 0.2, so doubling flow speed doubles the shedding rate, and a smaller obstacle sheds faster at the same speed.",
+      "render_or_sonify_hint": "Several obstacles of different diameters in one stream shed at visibly different rates; a tone per obstacle at f, one octave up for each doubling of speed."
+    },
+    {
+      "name": "Reynolds number regime change",
+      "description": "At low Reynolds number the wake stays as two steady bound eddies; above roughly 90 the wake starts to oscillate and shed a regular street; at much higher values the street breaks into turbulence.",
+      "render_or_sonify_hint": "Ramp the flow speed over time so the wake moves from a calm closed bubble, to a regular street, to a frayed turbulent wake."
+    },
+    {
+      "name": "Island cloud street growth",
+      "description": "Behind an island the vortices are carried hundreds of kilometres downwind and grow as they drift, opening clear holes in the stratocumulus deck at their centres.",
+      "render_or_sonify_hint": "A top-down cloud deck with an island obstacle; vortex cores clear holes that widen and fade with downstream distance."
+    }
+  ],
+  "open_questions": [
+    "Why does the Strouhal number stay so close to 0.2 across four orders of magnitude of Reynolds number?",
+    "How far downstream does an atmospheric street keep its regular spacing before mixing erases it?"
+  ],
+  "surprise": {
+    "score": 68,
+    "justification": "Most people know eddies form behind rocks, but few know the shedding rate obeys one nearly constant ratio that links a humming power line to a 300 km cloud pattern behind an Arctic volcano."
+  },
+  "dataset": null
+}

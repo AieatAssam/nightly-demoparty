@@ -1,0 +1,54 @@
+{
+  "title": "Shedding in Turn: A Street Behind a Small Disc",
+  "concept": "Clockwise rust cores and counterclockwise pale cores shed in turn from a small disc in a steady wind, drifting downstream as a staggered von Karman street.",
+  "mechanism_embodied": {
+    "mechanism_name": "Alternating vortex shedding",
+    "how_visualised": "Forty tracer dots are advected by the summed velocity of signed point vortices. A core is released from the top or bottom edge of a small disc in turn, every 2.5 D/U of simulated time, so the shedding rate follows a Strouhal number of 0.2. Rust cores turn clockwise, pale cores counterclockwise. Tracers circle each core and trace the staggered double row as it drifts."
+  },
+  "discarded_obvious_idea": "Obvious: a swirl of smoke spiralling off a rock in one looping curl. Rejected: a looping curl hides the alternation between the two edges and the shedding rate, so the build releases alternating signed cores instead.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "point-vortex street with alternating signs",
+    "tracer particles advected by vortex velocity field",
+    "Domain warping (noise-field)"
+  ],
+  "novel_technique": "Domain warping (noise-field)",
+  "technique_family": "simulation",
+  "palette": [
+    "#5f6f78",
+    "#8b9a94",
+    "#c9d2cc",
+    "#b8552e"
+  ],
+  "motion_sound_plan": "Mood settings: low tempo (slow drift, about 40 sparse tracers), cool-dissonant palette (blue-grey ground, pale green-grey mids, one rust accent, asymmetric street), intimate framing (small disc with wide margins, low contrast, slow camera drift), conservative risk (2D canvas point vortices; the warp only tints dye edges), zero hard cuts. No audio. Cores release every 2.5 D/U so the rate follows St near 0.2. Use seeded noise from lib/noise, never Math.random.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Still slate-blue ground, one small disc left of centre with wide margins. Forty pale tracer dots drift in from the left. At 2 s the first two cores, one rust and one pale, roll off the disc's top and bottom edges."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Cores release alternately from top and bottom every 2.5 D/U. The street lengthens rightward in a staggered double row, about six cores visible. Camera drifts slowly right. Domain warp begins folding dye edges. At 8 s the frame is mid-scale."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Peak: the row fills the frame width and cores swell as they drift. Pale rings of tracer dust circle each core. Domain warp at amplitude 4 bends the dye boundaries into slow folds. Camera pulls back to show the whole street; contrast stays low."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Settled widest frame: the street fills the right two thirds, the disc small on the left with margins. Newest cores fade at the right edge. The 20 s frame shows a sparse, wide street, distinct in scale from the 2 s frame."
+    }
+  ],
+  "memorable_moment": "A single row of rust and pale cores rolling off the top and bottom of one small disc, staggered down a long street of tracer dust.",
+  "self_declared_risk": "Point vortices can drift into each other or the disc and blow up; clamp core separation and softening radius. The warp could hide the alternation, so keep amplitude near 4.",
+  "liner_note": "Czech physicist Vincenc Strouhal experimented in 1878 with wires that shed vortices and sang in the wind. For a cylinder, the Strouhal number stays between 0.18 and 0.22 across Reynolds numbers from 100 to 100,000. Behind the obstacle, vortices shed clockwise off one edge and counterclockwise off the other, forming a staggered double row that drifts downstream. On screen each shed core is a disc: rust for clockwise, pale green-grey for counterclockwise, released alternately from the top and bottom of the obstacle. Tracer dust circles each core. The row lengthens while the camera drifts, so the frame at twenty seconds differs from the frame at two."
+}

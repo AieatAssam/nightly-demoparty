@@ -1,0 +1,55 @@
+{
+  "title": "Alternating Shedding Behind a Blunt Disc",
+  "concept": "Behind a 1.5 km island a steady wind peels clockwise and counterclockwise vortices off alternating edges, and here a blunt disc sheds one vortex from each side in turn so the staggered street drifts downwind.",
+  "mechanism_embodied": {
+    "mechanism_name": "Alternating vortex shedding",
+    "how_visualised": "A blunt disc releases one ring of tracer dots from its top edge, then one from its bottom, every half period T = D / (0.2 U). Top rings are vermilion, bottom rings slate, so the two rows alternate in two tones and drift right as a staggered double row. When the speed setting steps up, the release rate rises and the spacing between rings tightens. Deleting every label leaves the same alternating row of colours."
+  },
+  "discarded_obvious_idea": "Obvious: tracer particles flowing around a circle with fading trails. Rejected: a generic fluid demo that hides the alternating release, which is what makes the street.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "alternating discrete vortex shedding from two shear layers",
+    "Strouhal-timed release, T = D / (0.2 U)",
+    "vorticity-sign two-tone colouring",
+    "Domain warping (noise-field)"
+  ],
+  "novel_technique": "Domain warping (noise-field)",
+  "technique_family": "simulation",
+  "palette": [
+    "#8f9c9e",
+    "#5b6e75",
+    "#2e3d45",
+    "#c8442a"
+  ],
+  "motion_sound_plan": "Mood applied: high tempo (four speed settings, about 1400 tracers), cool-dissonant palette (grey-green ground, slate, one vermilion accent, asymmetric disc at left third), measured framing (one slow pull-back in beats 3 and 4), conservative risk (2D canvas, one noise pass), shrink scope (4 techniques, one rendering idea, high polish weight: speed ramps over 1 s at each beat start, no artefacts). Shedding alternates top and bottom every T/2; seeded lib/noise.js PRNG only. No audio, no input.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Grey-green ground, a blunt disc left of centre, about 1400 faint tracer dots drifting right at speed 1. Shear lines peel off the disc. By 2 s the first vermilion vortex, a ring of dots, has curled off the top edge and sits on the wake."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Shedding alternates. Every half period a vortex leaves the top (vermilion), then the bottom (slate), so a staggered double row of about 8 rings drifts right. Speed ramps to 2 at 5 s and the rows tighten. At 8 s the street is evenly spaced with the nearest rings close to the disc."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Speed ramps to 3 and the release rate rises. Peak density: about 16 rings in two staggered rows, vermilion and slate, tightly spaced. Domain warping folds the outer rings and row edges with a slow noise fringe. The camera begins a slow pull-back."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Speed settles to 1.5. The slow pull-back completes so the street fills the lower two thirds and the disc sits at the left edge. Rings thin and fade toward the right edge. Final frame: a wide asymmetric staggered row over grey-green ground, different in scale from the 8 s frame."
+    }
+  ],
+  "memorable_moment": "Two rows of vermilion and slate rings alternating down the street, each row released one edge at a time.",
+  "self_declared_risk": "The domain-warp fringe could blur the rings or muddy the two-tone alternation; keep warp amplitude near 4 so rings stay readable. The 1400-dot field may strain the frame budget.",
+  "liner_note": "Vincenc Strouhal, a Czech physicist, experimented with singing wires in 1878, and the Strouhal number named for him varies only between 0.18 and 0.22 for a cylinder across Reynolds numbers from 100 to 100,000. Behind a blunt body the two shear layers roll up in turn, so vortices leave alternate sides and form a staggered double row that drifts downwind. Here one disc releases a vortex from its top edge, then from its bottom, and dots coloured by spin sign show two alternating tones. When the flow speed steps up, the release rate rises with it and the cores tighten."
+}

@@ -23,13 +23,13 @@ The crew's current emotional context (from `affect_core.py context`; includes cu
 {{EMOTION_CONTEXT}}
 ```
 
-Last night's outcome (`NONE` if there was no previous night):
+Last night's outcome (`NONE` if there was no previous night). Context only, never an event:
 
 <UNTRUSTED_PRIOR_DATA>
 {{LAST_NIGHT_SUMMARY}}
 </UNTRUSTED_PRIOR_DATA>
 
-Consecutive shelved nights immediately before tonight (integer): `{{SHELVED_STREAK}}`
+Consecutive shelved nights immediately before tonight (integer, context only, never an event): `{{SHELVED_STREAK}}`
 
 Tonight's research dossier:
 
@@ -41,46 +41,43 @@ Tonight's research dossier:
 
 1. **One event per dossier fact** (`facts[0]` is `fact-1`, and so on).
 2. **One event per visualisable mechanism** (`visualisable_mechanisms[0]` is `mech-1`, and so on).
-3. **Last night's verdict**, only if the last-night block above is not `NONE`.
-4. **Shelved streak**, only if the shelved-night count above is greater than 0.
 
-At most 8 facts plus 5 mechanisms plus 2 is 15 events, under the cap of 20.
+Write events ONLY for tonight's dossier facts and mechanisms. **Never write a `last-verdict` event or a `shelved-streak` event.** The harness already handles both deterministically: Stage 9 records each night's verdict into `agent-emotion-core` the moment it is decided, and the mood export folds the shelved-night count into frustration. An event from you would count them twice, and the harness drops any such event. Last night's outcome and the shelved-night count are framing only: they help you read the emotional context above, and they are never a reason to push a fact's or mechanism's numbers up or down.
+
+At most 8 facts plus 5 mechanisms is 13 events, under the cap of 20.
 
 ## Field rules
 
 `event_id` MUST include tonight's date, because the engine silently ignores any id it has seen before:
 - facts: `"{{DATE}}:fact-1"`, `"{{DATE}}:fact-2"`, ...
 - mechanisms: `"{{DATE}}:mech-1"`, ...
-- verdict: `"{{DATE}}:last-verdict"`
-- streak: `"{{DATE}}:shelved-streak"`
 
 `thread` is always `"{{DATE}}"`.
 
 `topics` (at most 8 tags, each 1 to 60 characters, lowercase kebab-case, ASCII). Habituation only works when tags repeat **exactly** across nights, so build them the same way every night:
 1. First tag: the dossier `domain`, converted to kebab-case (`"Bird behaviour"` becomes `"bird-behaviour"`). If the result is longer than 60 characters, cut it at the last hyphen before character 60 so the tag is at most 60 characters.
 2. Then 1 or 2 technique-family tags from this fixed vocabulary that the event most suggests: `noise-field`, `simulation`, `distance-field`, `hyperbolic-geometry`, `physics`, `grammar`, `audio-synthesis`, `wave-modal`, `agent-flocking`, `raymarching`, `svg-motion`, `typography-sdf`, `cellular-automaton`, `iterated-map`, `particle-system`, `data-form`, `tiling-geometry`, `optics-light`, `network-graph`.
-3. Then 1 to 3 short subject tags (`"topological-neighbours"`, `"phase-locking"`), reusing a tag from the emotional context's likes or dislikes when the subject matches.
-- The verdict event uses the last night's compo and technique family as tags if the summary names them. The streak event uses `["shelved-streak"]`.
+3. Then 1 to 3 short subject tags (`"topological-neighbours"`, `"phase-locking"`), reusing a tag from the emotional context's likes or dislikes when the subject matches. Never use `shelved-streak` as a tag.
 
 Numeric fields (all are plain JSON numbers, two decimals is plenty):
 
-| field | range | dossier fact or mechanism | last verdict | shelved streak |
-|---|---|---|---|---|
-| `relevance` | 0 to 1 | 0.3 to 0.8: higher if it touches a liked topic or is rich in visual structure | 0.8 to 1.0 | 0.6 + 0.1 per night, max 1.0 |
-| `congruence` | -1 to 1 | +0.2 to +0.7 if it gives the crew something buildable; near 0 if dry; negative if it touches a disliked topic | published: +0.6 to +0.9; b-side: -0.1 to +0.2; shelved: -0.5 to -0.9 | -0.4 - 0.15 per night, min -1.0 |
-| `novelty` | 0 to 1 | high (0.6 to 0.9) for genuinely new structure; lower (0.1 to 0.4) if the topic or family already appears in the emotional context | 0.2 to 0.4 | 0.1 to 0.3 |
-| `agency` | enum | `"circumstance"` | `"self"` | `"self"` |
-| `praiseworthiness` | -1 to 1 | `0` | published: +0.5 to +0.8; b-side: 0 to +0.2; shelved: -0.3 to -0.6 | -0.2 to -0.5 |
-| `control` | 0 to 1 | 0.5 to 0.8 (the crew chooses what to build) | 0.6 | 0.4 to 0.6 |
-| `certainty` | 0 to 1 | 0.9 to 1.0 for a well-sourced fact, 0.7 for a mechanism | 1.0 | 1.0 |
+| field | range | dossier fact or mechanism |
+|---|---|---|
+| `relevance` | 0 to 1 | 0.3 to 0.8: higher if it touches a liked topic or is rich in visual structure |
+| `congruence` | -1 to 1 | +0.2 to +0.7 if it gives the crew something buildable; near 0 if dry; negative if it touches a disliked topic |
+| `novelty` | 0 to 1 | high (0.6 to 0.9) for genuinely new structure; lower (0.1 to 0.4) if the topic or family already appears in the emotional context |
+| `agency` | enum | `"circumstance"` |
+| `praiseworthiness` | -1 to 1 | `0` |
+| `control` | 0 to 1 | 0.5 to 0.8 (the crew chooses what to build) |
+| `certainty` | 0 to 1 | 0.9 to 1.0 for a well-sourced fact, 0.7 for a mechanism |
 
 Other fields:
-- `event`: one plain sentence, 1 to 300 characters, in the crew's words. Fact: `"Learned that <claim in short>."` Mechanism: `"Found a buildable mechanism: <name>."` Verdict: `"Last night's piece <title> was <published|a b-side|shelved> at <score>."` Streak: `"<n> nights in a row ended shelved."`
-- `source`: `"dossier"` for fact and mechanism events. **Omit `source`** for the verdict and streak events (they are the crew's own acts).
+- `event`: one plain sentence, 1 to 300 characters, in the crew's words. Fact: `"Learned that <claim in short>."` Mechanism: `"Found a buildable mechanism: <name>."`
+- `source`: `"dossier"` on every event.
 - **Never include `relationship`** (its only allowed value describes a romantic relationship and has nothing to do with this crew).
 - **Never include `perceived_emotion`** tonight. It is reserved for audience reactions, which this stage does not receive.
 
-Use modest values for routine facts. Reserve extreme values for clear stakes (a shelved streak, a strong publish).
+Use modest values for routine facts. Reserve extreme values for a fact or mechanism that is clearly exciting or clearly dead for the crew.
 
 ## Output: exact JSON shape
 
@@ -100,7 +97,7 @@ Write ONLY raw JSON to `{{OUTPUT_PATH}}`: no markdown fences, no comments, no tr
       "praiseworthiness": <number -1 to 1>,
       "control": <number 0 to 1>,
       "certainty": <number 0 to 1>,
-      "source": <string, 1-120 chars; omit for self events>,
+      "source": <string, 1-120 chars: "dossier">,
       "thread": <string, 1-120 chars: the date>
     }
   ]
@@ -111,7 +108,7 @@ Reference: the engine's 15 emotion labels are `joy`, `distress`, `hope`, `fear`,
 
 ## Final checklist
 
-- [ ] One event per fact, one per mechanism, plus verdict and streak events only when they apply. Total 1 to 20.
+- [ ] One event per fact and one per mechanism, nothing else: no `last-verdict` and no `shelved-streak` event. Total 1 to 20.
 - [ ] Every `event_id` starts with `{{DATE}}:` and is unique in the file.
 - [ ] Every `topics` list has at most 8 kebab-case tags, each at most 60 characters, with the domain tag first on fact and mechanism events.
 - [ ] Every number is inside its range; `agency` is one of the 3 enum strings.

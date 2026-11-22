@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shedding in Turn</title>
+<style>*{margin:0}html,body{height:100%;overflow:hidden;background:#5f6f78}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+const clamp01=t=>t<0?0:t>1?1:t,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),storyClock=({reduce:t=.2,cuts:n=[0,5,10,15,20]}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r}}};
+
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const CX=280,CY=360,A=28,U=60,DELTA=0.3*56,DL2=DELTA*DELTA,G0=8450,DT_REL=2.5*56/60,MAXC=18;
+const RUST='#b8552e',PALE='#c9d2cc',GREY='#8b9a94',SLATE='#5f6f78';
+let W=1280,H=720,S=1,offX=0,offY=0;
+function resize(){cv.width=innerWidth;cv.height=innerHeight;S=Math.min(innerWidth/1280,innerHeight/720);offX=(innerWidth-1280*S)/2;offY=(innerHeight-720*S)/2}
+addEventListener('resize',resize);resize();
+
+const hs=(x,y)=>{let h=Math.imul(x|0,374761393)^Math.imul(y|0,668265263);h=Math.imul(h^h>>>13,1274126177);return((h^h>>>16)>>>0)/4294967296};
+const vn=(x,y)=>{const i=Math.floor(x),j=Math.floor(y),fx=x-i,fy=y-j,u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy);return(hs(i,j)*(1-u)+hs(i+1,j)*u)*(1-v)+(hs(i,j+1)*(1-u)+hs(i+1,j+1)*u)*v};
+const R=s=>()=>{s=s+1831565813|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const rnd=R(5);
+
+const tracers=[];
+for(let i=0;i<40;i++)tracers.push({x:-200+rnd()*1400,y:230+rnd()*260,tr:[],acc:0});
+let cores=[],nextId=0,side=0,ts=-2.5,nextRel=-2.5;
+
+function dbl(px,py){const x=px-CX,y=py-CY,r2=Math.max(x*x+y*y,A*A*0.5),r4=r2*r2,a2=A*A;return[U*(1-a2*(x*x-y*y)/r4),-U*2*a2*x*y/r4]}
+function ind(px,py,c,o){const dx=px-c.x,dy=py-c.y,k=c.G/(2*Math.PI*(dx*dx+dy*dy+DL2));o[0]+=-dy*k;o[1]+=dx*k}
+const tmp=[0,0];
+
+function step(h){
+  while(ts>=nextRel){
+    const top=side===0;
+    cores.push({x:CX+A*0.3,y:top?CY-A-2:CY+A+2,G:top?-G0:G0,born:nextRel,id:nextId++});
+    if(cores.length>MAXC)cores.shift();
+    side^=1;nextRel+=DT_REL;
+  }
+  for(const c of cores){
+    const [u,v]=dbl(c.x,c.y);tmp[0]=0;tmp[1]=0;
+    for(const o of cores)if(o!==c)ind(c.x,c.y,o,tmp);
+    c.x+=(u+tmp[0])*h;c.y+=(v+tmp[1])*h;
+  }
+  cores=cores.filter(c=>c.x<1380);
+  for(const p of tracers){
+    const [u,v]=dbl(p.x,p.y);tmp[0]=0;tmp[1]=0;
+    for(const c of cores)ind(p.x,p.y,c,tmp);
+    p.x+=(u+tmp[0])*h;p.y+=(v+tmp[1])*h;
+    const dx=p.x-CX,dy=p.y-CY,d=Math.hypot(dx,dy);
+    if(d<A+1){p.x=CX+dx/d*(A+1);p.y=CY+dy/d*(A+1)}
+    p.acc+=h;
+    if(p.acc>=0.08){p.acc=0;p.tr.push([p.x,p.y]);if(p.tr.length>14)p.tr.shift()}
+    if(p.x>1300){p.x=-20;p.y=230+rnd()*260;p.tr.length=0}
+  }
+}
+
+function camera(t){
+  const z=1+0.7*beat(t,8,13)-1.2*beat(t,14,19);
+  const pan=-30*beat(t,0,20);
+  return{z,pan}
+}
+
+function drawGround(){
+  const g=ctx.createLinearGradient(0,0,0,innerHeight);
+  g.addColorStop(0,SLATE);g.addColorStop(0.5,GREY);g.addColorStop(1,SLATE);
+  ctx.globalAlpha=1;ctx.fillStyle=g;ctx.fillRect(0,0,innerWidth,innerHeight);
+  const v=ctx.createRadialGradient(innerWidth/2,innerHeight/2,Math.min(innerWidth,innerHeight)*0.3,innerWidth/2,innerHeight/2,Math.max(innerWidth,innerHeight)*0.7);
+  v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,0.35)');
+  ctx.fillStyle=v;ctx.fillRect(0,0,innerWidth,innerHeight);
+  const cw=innerWidth/32,ch=innerHeight/18;
+  ctx.fillStyle=PALE;
+  for(let i=0;i<32;i++)for(let j=0;j<18;j++){
+    const n=vn(i*0.3+ts*0.35,j*0.3-ts*0.12);
+    ctx.globalAlpha=0.22*n*n;ctx.fillRect(i*cw,j*ch,cw,ch);
+  }
+  ctx.globalAlpha=1;
+}
+
+function draw(t){
+  ctx.setTransform(1,0,0,1,0,0);
+  drawGround();
+  const {z,pan}=camera(t);
+  ctx.setTransform(S*z,0,0,S*z,offX+S*(CX+pan-CX*z),offY+S*(CY-CY*z));
+  ctx.lineCap='round';
+  ctx.lineWidth=1;ctx.strokeStyle=PALE;
+  for(const p of tracers){
+    if(p.tr.length>1){
+      ctx.globalAlpha=0.3;ctx.beginPath();ctx.moveTo(p.tr[0][0],p.tr[0][1]);
+      for(const q of p.tr)ctx.lineTo(q[0],q[1]);ctx.stroke();
+    }
+    ctx.globalAlpha=0.9;ctx.fillStyle=PALE;ctx.beginPath();ctx.arc(p.x,p.y,2.4,0,6.2832);ctx.fill();
+  }
+  for(const c of cores){
+    const age=ts-c.born;
+    let a=Math.min(1,Math.max(0,age/0.6));
+    if(c.x>1000)a*=Math.max(0,(1380-c.x)/380);
+    if(a<=0)continue;
+    const r=Math.sqrt(64+26*Math.max(0,age));
+    ctx.beginPath();
+    for(let k=0;k<20;k++){
+      const th=k/20*6.2832,n=vn(Math.cos(th)*1.3+c.id*7.1,Math.sin(th)*1.3+ts*0.25),rr=r+(n-0.5)*8;
+      const px=c.x+rr*Math.cos(th),py=c.y+rr*Math.sin(th);
+      k?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
+    ctx.closePath();
+    const rust=c.G<0;
+    ctx.globalAlpha=a*(rust?0.9:0.85);ctx.fillStyle=rust?RUST:PALE;ctx.fill();
+    if(rust){ctx.globalAlpha=a*0.5;ctx.strokeStyle=PALE;ctx.stroke()}
+  }
+  ctx.globalAlpha=1;
+  ctx.beginPath();ctx.arc(CX,CY,A,0,6.2832);ctx.fillStyle=PALE;ctx.fill();
+  ctx.strokeStyle=SLATE;ctx.lineWidth=2;ctx.stroke();
+}
+
+const clock=storyClock({reduce:0.2});
+function frame(ms){
+  const {t}=clock(ms);
+  while(ts<t){const h=Math.min(0.025,t-ts);step(h);ts+=h}
+  draw(t);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

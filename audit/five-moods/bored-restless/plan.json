@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-23",
+  "compo": "simulation",
+  "size_budget_bytes": 24576,
+  "constraint": null,
+  "domain": "von-karman-vortex-street",
+  "wildcard": false,
+  "banned": {
+    "techniques": [],
+    "domains": [],
+    "palette_hexes": [],
+    "slop_patterns": [
+      "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+      "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+      "Matrix rain is on the permanent slop list.",
+      "Four-sine plasma boilerplate. Build a field with development instead.",
+      "Plain plasma: sine sums as the whole picture.",
+      "Plain starfield: points drifting toward the camera with no structure behind them.",
+      "Plain tunnel: concentric rings flying past with nothing else happening.",
+      "Matrix rain: falling glyph columns.",
+      "Mouse-following particles with no system behind them.",
+      "A single raymarched sphere or torus on a gradient.",
+      "Untouched Mandelbrot or Julia zoom.",
+      "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+      "Bloom or chromatic aberration used to hide an empty scene.",
+      "Math.random() noise as the main visual idea.",
+      "A loop with no development: the 20 s frame looks like the 2 s frame.",
+      "Title cards or captions doing the work the visuals should do.",
+      "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+    ]
+  },
+  "boredom_override": false,
+  "requires_audio": false,
+  "seed": "five-moods",
+  "dry_run": true,
+  "overrides": {
+    "domain": "von-karman-vortex-street",
+    "compo": "simulation",
+    "mood_preset": "bored-restless"
+  }
+}

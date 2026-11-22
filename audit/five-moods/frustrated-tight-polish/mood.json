@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-11-22T00:00:00.000Z",
+  "preset_override": "frustrated-tight-polish",
+  "dominant_emotions": [
+    {
+      "label": "distress",
+      "intensity": 0.65
+    },
+    {
+      "label": "disappointment",
+      "intensity": 0.55
+    },
+    {
+      "label": "anger",
+      "intensity": 0.4
+    },
+    {
+      "label": "interest",
+      "intensity": 0.3
+    }
+  ],
+  "pad": {
+    "pleasure": -0.5,
+    "arousal": 0.35,
+    "dominance": -0.2
+  },
+  "neurochemistry": {
+    "dopamine": 0.35,
+    "noradrenaline": 0.65,
+    "serotonin": 0.35,
+    "cortisol": 0.75,
+    "oxytocin": 0.35,
+    "opioids": 0.3
+  },
+  "drives": {
+    "novelty": 0.4,
+    "social": 0.3,
+    "fatigue": 0.5
+  },
+  "derived_signals": {
+    "interest": 0.3,
+    "boredom": 0.1,
+    "frustration": 0.88
+  },
+  "likes": [],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.675,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "cool-dissonant",
+      "value": -0.5,
+      "guidance": "Cool, austere palette with one sharp accent, asymmetric composition and dissonant harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "measured",
+      "value": -0.2,
+      "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+    },
+    "technical_risk_budget": {
+      "level": "conservative",
+      "value": 0.3,
+      "guidance": "Conservative risk: build on a technique the crew can execute reliably."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": true,
+      "polish_weight_boost": 0.88,
+      "guidance": "Shrink scope: one rendering idea and at most 4 techniques; spend the saved effort on clean, refined polish."
+    }
+  }
+}

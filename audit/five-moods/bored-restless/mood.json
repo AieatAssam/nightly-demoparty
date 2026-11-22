@@ -1,0 +1,67 @@
+{
+  "timestamp": "2026-11-22T00:00:00.000Z",
+  "preset_override": "bored-restless",
+  "dominant_emotions": [
+    {
+      "label": "boredom",
+      "intensity": 0.9
+    },
+    {
+      "label": "interest",
+      "intensity": 0.15
+    }
+  ],
+  "pad": {
+    "pleasure": -0.25,
+    "arousal": 0.45,
+    "dominance": 0.2
+  },
+  "neurochemistry": {
+    "dopamine": 0.3,
+    "noradrenaline": 0.6,
+    "serotonin": 0.45,
+    "cortisol": 0.35,
+    "oxytocin": 0.4,
+    "opioids": 0.4
+  },
+  "drives": {
+    "novelty": 0.95,
+    "social": 0.4,
+    "fatigue": 0.2
+  },
+  "derived_signals": {
+    "interest": 0.15,
+    "boredom": 0.9,
+    "frustration": 0.2
+  },
+  "likes": [],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.725,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "balanced",
+      "value": -0.25,
+      "guidance": "Mixed warm and cool palette, partial symmetry and open, neutral harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "measured",
+      "value": 0.2,
+      "guidance": "Measured framing: medium scale, moderate contrast and one deliberate camera move."
+    },
+    "technical_risk_budget": {
+      "level": "conservative",
+      "value": 0.15,
+      "guidance": "Conservative risk: build on a technique the crew can execute reliably."
+    },
+    "boredom_force_unused_30d": true,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.2,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

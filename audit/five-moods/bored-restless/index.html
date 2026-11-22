@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alternating Shedding Behind a Bluff Body</title>
+<style>*{margin:0}html,body{background:#efe6d2;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+// Point-vortex street shed from two bluff disks. Vortex positions are analytic in story time;
+// about 2400 tracers are advected through the summed field every step, so the cores are real flow.
+// Strouhal rule: shedding period T = D / (St * U), with St = 0.2.
+const c = document.getElementById('c'), g = c.getContext('2d');
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+const TAU = 6.283185307;
+const N = 2400, DT = 1 / 60;
+const ST = 0.2, U0 = 0.375, UC = 0.8 * U0, D1 = 0.12, D2 = 0.05;
+const AGE = 9, DEC = 6, RC2 = 0.0009;
+
+let s0 = 0x5eed1;
+const rng = () => { s0 = s0 + 0x6D2B79F5 | 0; let t = Math.imul(s0 ^ s0 >>> 15, 1 | s0); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+
+const bt = (t, a, b) => { const q = Math.min(1, Math.max(0, (t - a) / (b - a))); return q * q * (3 - 2 * q); };
+const hsh = n => Math.sin(n * 127.1 + 311.7) * 43758.5453 % 1;
+const nz = i => { const i0 = Math.floor(i), f = i - i0, u = f * f * (3 - 2 * f); return hsh(i0) + (hsh(i0 + 1) - hsh(i0)) * u; };
+
+// Two bluff bodies. Half period = D / (2 St U). Source 2 starts at 10.5 s and sheds faster.
+const SRC = [
+  { t0: -20, half: D1 / (2 * ST * U0), R: D1 / 2, G: 0.16, xf: 0.31, yy: 0.42, on: () => 1 },
+  { t0: 10.5, half: D2 / (2 * ST * U0), R: D2 / 2, G: 0.08, xf: 0.59, yy: 0.82, on: t => bt(t, 10.2, 11.5) }
+];
+
+let W, H, A, T = 0, simT = 0, last = 0;
+const PX = new Float32Array(N), PY = new Float32Array(N), PC = new Uint8Array(N);
+
+function resize() { W = c.width = innerWidth; H = c.height = innerHeight; A = W / H; }
+
+// Each shed core: side alternates (top clockwise = amber, bottom counterclockwise = slate).
+function vort(t) {
+  const out = [];
+  for (const s of SRC) {
+    const on = s.on(t);
+    if (on <= 0) continue;
+    const k1 = Math.floor((t - s.t0) / s.half), k0 = Math.max(0, Math.floor((t - AGE - s.t0) / s.half));
+    for (let k = k0; k <= k1; k++) {
+      const age = t - s.t0 - k * s.half;
+      if (age < 0 || age > AGE) continue;
+      const side = k & 1 ? 1 : -1;
+      const G = side * s.G * on * Math.exp(-age / DEC);
+      out.push({
+        x: s.xf * A + UC * age + 0.02 * nz(k * 0.7 + 3),
+        y: s.yy + side * s.R * 1.4 + 0.025 * nz(k * 0.9 + age * 0.4),
+        G, k: G / TAU, age
+      });
+    }
+  }
+  return out;
+}
+
+function step(dt, t) {
+  const V = vort(t);
+  const B = SRC.map(s => [s.xf * A, s.yy, s.R, s.on(t)]);
+  for (let i = 0; i < N; i++) {
+    let x = PX[i], y = PY[i];
+    let u = U0, v = 0.04 * nz(x * 3 + y * 2 + t * 0.25), best = 0, code = 0;
+    for (const q of V) {
+      const dx = x - q.x, dy = y - q.y, id = 1 / (dx * dx + dy * dy + RC2);
+      u -= q.k * dy * id;
+      v += q.k * dx * id;
+      const f = Math.abs(q.G) * id;
+      if (f > best) { best = f; code = q.G < 0 ? 1 : 2; }
+    }
+    PC[i] = best > 2.5 ? code : 0;
+    x += u * dt; y += v * dt;
+    let hit = x > A + 0.05 || y < -0.05 || y > 1.05;
+    for (const b of B) {
+      if (b[3] > 0.5) { const dx = x - b[0], dy = y - b[1]; if (dx * dx + dy * dy < b[2] * b[2] * 1.1) hit = true; }
+    }
+    if (hit) { x = -0.05 - rng() * 0.15; y = rng(); }
+    PX[i] = x; PY[i] = y;
+  }
+}
+
+// Camera: beat 1 frame, beat 2 slow pull-back, beat 3 hard cut to a closer view, beat 4 settle.
+function zoomAt(t) {
+  if (t < 5) return 1.5;
+  if (t < 10) return 1.5 - 0.78 * bt(t, 5, 10);
+  if (t < 12.5) return 0.72;
+  if (t < 15) return 1.35;
+  return 1.35 - 0.4 * bt(t, 15, 20);
+}
+
+function draw() {
+  const S = H * zoomAt(T);
+  const X = v => W / 2 + (v - A / 2) * S, Y = v => H / 2 + (v - 0.5) * S;
+  g.globalAlpha = 1; g.fillStyle = '#efe6d2'; g.fillRect(0, 0, W, H);
+  for (const s of SRC) {
+    const a = s.on(simT);
+    if (a > 0.01) { g.globalAlpha = a; g.fillStyle = '#4a5563'; g.beginPath(); g.arc(X(s.xf * A), Y(s.yy), s.R * S, 0, TAU); g.fill(); }
+  }
+  const P = [[0, '#4a5563', 0.3, 1.5], [1, '#d89a3c', 0.95, 2.2], [2, '#5f7d96', 0.9, 2.2]];
+  for (const [cd, col, al, sz] of P) {
+    g.fillStyle = col; g.globalAlpha = al;
+    for (let i = 0; i < N; i++) {
+      if (PC[i] !== cd) continue;
+      const px = X(PX[i]), py = Y(PY[i]);
+      if (px < -2 || px > W + 2 || py < -2 || py > H + 2) continue;
+      g.fillRect(px - sz / 2, py - sz / 2, sz, sz);
+    }
+  }
+  g.globalAlpha = 0.9; g.fillStyle = '#c4553a';
+  for (const q of vort(simT)) {
+    if (q.age < 2.2 && Math.abs(q.G) > 0.05) { g.beginPath(); g.arc(X(q.x), Y(q.y), 3, 0, TAU); g.fill(); }
+  }
+  g.globalAlpha = 1; g.fillStyle = '#4a5563';
+  g.font = '12px ui-monospace,Menlo,monospace';
+  g.fillText('VON KARMAN STREET - St 0.20 - alternating shedding', 20, H - 20);
+}
+
+function frame(ms) {
+  requestAnimationFrame(frame);
+  const dt = last ? Math.min(0.5, (ms - last) / 1000) : 0;
+  last = ms;
+  T += dt * (RM.matches ? 0.2 : 1);
+  let n = 0;
+  while (simT + DT <= T + 1e-9 && n < 10) { step(DT, simT); simT += DT; n++; }
+  draw();
+}
+
+resize();
+window.addEventListener('resize', resize);
+for (let i = 0; i < N; i++) { PX[i] = rng() * A; PY[i] = rng(); }
+// Pre-warm six seconds so beat 1 already has a street at story t = 0.
+for (let t = -6; t < -1e-9; t += 1 / 30) step(1 / 30, t);
+draw();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

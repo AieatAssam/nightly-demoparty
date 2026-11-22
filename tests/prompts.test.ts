@@ -136,11 +136,12 @@ describe('jury calibration helpers', () => {
   const ids = scores.anchors.map((a) => a.id);
 
   it('splits the 12 anchors into the 4 agreed-score quartiles', () => {
+    // M5 Codex-reconciled totals: 39 52 52 | 61 65 66 | 69 75 78 | 82 87 89 (01 and 03 tie at 52, id breaks it).
     expect(scoreQuartiles(scores).map((g) => g.map((a) => a.id))).toEqual([
       ['anchor-02', 'anchor-01', 'anchor-03'],
       ['anchor-04', 'anchor-08', 'anchor-05'],
       ['anchor-06', 'anchor-07', 'anchor-09'],
-      ['anchor-12', 'anchor-11', 'anchor-10'],
+      ['anchor-12', 'anchor-10', 'anchor-11'],
     ]);
   });
 
@@ -383,7 +384,18 @@ describe('aggregateJuryVerdicts (Stage 7 3-sample median)', () => {
     expect(validateVerdictStrict(r, REPO, { requireScreenshotRef: true }).ok).toBe(true);
   });
 
-  it('breaks representative ties by matching pairwise vote, then lowest index', () => {
+  it('copies pairwise_justification from a majority voter even when a dissenter is closest in total', () => {
+    // medians 15,18,20,12,7 = 72. D (72, exact) votes false; the majority votes true, so E (74) or F (75) must supply prose.
+    const D = v(15, 18, 20, 12, 7, false, 'D');
+    const E = v(16, 19, 20, 12, 7, true, 'E');
+    const F = v(14, 17, 21, 13, 10, true, 'F');
+    const r = aggregateJuryVerdicts([D, E, F]);
+    expect(r.total).toBe(72);
+    expect(r.pairwise_beats_median).toBe(true);
+    expect(r.pairwise_justification).toMatch(/^E:/);
+  });
+
+  it('picks the closest majority voter as representative, lowest index on ties', () => {
     // medians 15,18,20,12,7 = 72; P is 71 and Q is 73 (both 1 away), R is 74.
     const P = v(14, 18, 20, 12, 7, true, 'P');
     const R = v(15, 15, 25, 12, 7, false, 'R');

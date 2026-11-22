@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-11-22T00:00:00.000Z",
+  "preset_override": "euphoric-high-arousal",
+  "dominant_emotions": [
+    {
+      "label": "joy",
+      "intensity": 0.9
+    },
+    {
+      "label": "interest",
+      "intensity": 0.85
+    },
+    {
+      "label": "pride",
+      "intensity": 0.7
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.4
+    }
+  ],
+  "pad": {
+    "pleasure": 0.85,
+    "arousal": 0.88,
+    "dominance": 0.75
+  },
+  "neurochemistry": {
+    "dopamine": 0.9,
+    "noradrenaline": 0.8,
+    "serotonin": 0.65,
+    "cortisol": 0.1,
+    "oxytocin": 0.55,
+    "opioids": 0.8
+  },
+  "drives": {
+    "novelty": 0.3,
+    "social": 0.5,
+    "fatigue": 0.05
+  },
+  "derived_signals": {
+    "interest": 0.85,
+    "boredom": 0.05,
+    "frustration": 0.05
+  },
+  "likes": [],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.94,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.85,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "assertive",
+      "value": 0.75,
+      "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.85,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.05,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

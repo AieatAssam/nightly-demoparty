@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "rubric_max": {
     "mechanism": 20,
     "ambition": 25,
@@ -20,16 +20,27 @@
       "role": "independent-blind-2"
     },
     {
-      "id": "opus-rater-3-adversarial",
-      "model": "claude-opus-5-5",
-      "role": "adversarial-blind-3-codex-fallback"
+      "id": "codex-gpt-6.2-sol",
+      "model": "gpt-6.2-sol",
+      "tool": "codex-cli 0.171.0",
+      "role": "independent-blind-3-codex-consultation"
     }
   ],
-  "codex_fallback_note": "Codex CLI (/opt/homebrew/Caskroom/codex/0.171.0/bin/codex) timed out on --version (5s, 15s) and codex exec (20s x2) due to macOS com.apple.quarantine; reassigned per stall/unavailability policy to a third independent adversarial Opus thread (see DECISIONS.md).",
+  "codex_consultation_note": "Milestone 5 Codex Consultation #1: codex-cli 0.171.0 (codex exec -m gpt-6.2-sol) rated all 12 anchors blind in three batches of 4 (07/02/11/05, 12/01/09/04, 08/03/10/06), from a 1286 x 244 three-shot contact strip (the 2s, 8s and 20s screenshots side by side) plus each anchor's title, compo, byte size, budget, audio probe, concept, mechanism, storyboard and dossier summary, with the same five-criterion rubric and no other rater's scores. It replaces the Milestone 2 Codex fallback rater as the official third rating required by SPEC. Its evidence text is stored verbatim.",
+  "historical_fallback_raters": [
+    {
+      "id": "opus-rater-3-adversarial",
+      "model": "claude-opus-5-5",
+      "role": "adversarial-blind-3-codex-fallback",
+      "superseded_in": "Milestone 5",
+      "note": "Codex CLI (/opt/homebrew/Caskroom/codex/0.171.0/bin/codex) timed out on --version (5s, 15s) and codex exec (20s x2) due to macOS com.apple.quarantine; reassigned per stall/unavailability policy to a third independent adversarial Opus thread (see DECISIONS.md)."
+    }
+  ],
   "reconciliation_threshold_points": 15,
   "reconciled_anchors": [
-    "anchor-04",
-    "anchor-07"
+    "anchor-05",
+    "anchor-07",
+    "anchor-08"
   ],
   "stage8_tiers": {
     "publish_min": 72,
@@ -42,11 +53,11 @@
       "compo": "4k-shader",
       "byte_size": 1933,
       "size_budget_bytes": 4096,
-      "agreed_total": 49,
+      "agreed_total": 52,
       "agreed_scores": {
         "mechanism": 15,
         "ambition": 8,
-        "craft": 10,
+        "craft": 13,
         "distinctness": 10,
         "polish": 6
       },
@@ -91,6 +102,25 @@
             "polish": "There is a complexity ramp (2s chunky cross → 20s dense lattice), but each frame is a static tiling with no camera, light or framing change and no ending state."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 15,
+            "ambition": 8,
+            "craft": 13,
+            "distinctness": 7,
+            "polish": 6
+          },
+          "total": 49,
+          "evidence": {
+            "mechanism": "The zero bands progress from broad linked gaps to isolated loops and then to a tightly packed field of pinches and rounded cells, clearly showing the rise in spatial frequency.",
+            "ambition": "At 1,933 of 4,096 bytes, the shader shows a substantial increase in pattern density, with each shot using the same centered square and flat two-tone treatment.",
+            "craft": "The curved contours are clean, and the repeated cells hold their alignment even in the dense final frame. Thick junctions in the opening make some paths harder to follow.",
+            "distinctness": "The middle shot's alternation of closed islands and hourglass bends has character, within a familiar presentation of Chladni figures on a square plate.",
+            "polish": "The consistent frame and restrained palette keep attention on the pattern. Several of the thinnest final contours sit close to the gray plate in value."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 15,
@@ -108,6 +138,27 @@
             "polish": "Centred square with a letterbox; there is development (low mode at 2s → dense at 20s) and no glitches. The plate sits small and inert in the frame, with no start or end gesture."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 49,
+        "agreed_scores": {
+          "mechanism": 15,
+          "ambition": 8,
+          "craft": 10,
+          "distinctness": 10,
+          "polish": 6
+        },
+        "stage8_tier": "shelved",
+        "summary_evidence": "Flat analytic Chladni-style contour field: density visibly rises from broad cells at 2s to small loops at 20s, but it is one flat isoline formula with no material or lighting, using under half of its 4 KB budget.",
+        "spread": 3,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -116,17 +167,17 @@
       "compo": "kinetic-type",
       "byte_size": 4216,
       "size_budget_bytes": 12288,
-      "agreed_total": 35,
+      "agreed_total": 39,
       "agreed_scores": {
         "mechanism": 8,
-        "ambition": 4,
-        "craft": 11,
-        "distinctness": 7,
+        "ambition": 5,
+        "craft": 13,
+        "distinctness": 8,
         "polish": 5
       },
       "stage8_tier": "shelved",
       "summary_evidence": "Reads as a title-card slideshow; only the 8s first/second/third word sizes act out the 1/rank idea, the 2s and 20s beats are headline-and-subline cards.",
-      "spread": 5,
+      "spread": 14,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -165,6 +216,25 @@
             "polish": "Clean beat structure with a progressing rule, but it ends on another fact card (the radiocarbon date) with no visual resolution."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 9,
+            "ambition": 10,
+            "craft": 14,
+            "distinctness": 8,
+            "polish": 7
+          },
+          "total": 48,
+          "evidence": {
+            "mechanism": "The shrinking sizes of ‘first,’ ‘second,’ and ‘third’ at 08s convey inverse rank directly. The word-count and date shots present their findings as headline and caption.",
+            "ambition": "At 4,216 bytes of a 12,288-byte kinetic-type budget, the visible vocabulary is compact but narrow. The three sampled shots reuse a headline, a small subline, and repeating edge bands.",
+            "craft": "The cream serif headlines and rust accent establish a clear hierarchy, especially in the rank shot. The explanatory captions are very small at the supplied scale.",
+            "distinctness": "The repeating ‘BEINECKE MS 408’ and ‘UNREAD’ bands give the sequence a manuscript-specific identity, while the headline layouts follow a familiar editorial pattern.",
+            "polish": "The navy field, warm type, and fine rules hold the sequence together. The dark lettering in the edge bands is faint enough to read mostly as texture."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 7,
@@ -182,6 +252,27 @@
             "polish": "Slide pacing works (1/4 at 2s → 2/4 at 8s → 4/4 at 20s) with no glitches, but the progress-bar slideshow is itself the problem, and the end state is just another slide."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 35,
+        "agreed_scores": {
+          "mechanism": 8,
+          "ambition": 4,
+          "craft": 11,
+          "distinctness": 7,
+          "polish": 5
+        },
+        "stage8_tier": "shelved",
+        "summary_evidence": "Reads as a title-card slideshow; only the 8s first/second/third word sizes act out the 1/rank idea, the 2s and 20s beats are headline-and-subline cards.",
+        "spread": 5,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -190,17 +281,17 @@
       "compo": "interactive-toy",
       "byte_size": 7760,
       "size_budget_bytes": 24576,
-      "agreed_total": 51,
+      "agreed_total": 52,
       "agreed_scores": {
         "mechanism": 16,
-        "ambition": 9,
+        "ambition": 10,
         "craft": 10,
         "distinctness": 10,
         "polish": 6
       },
       "stage8_tier": "shelved",
       "summary_evidence": "Textbook classroom widget: the mechanism is legible but captions and a status label state the result instead of the image showing it.",
-      "spread": 9,
+      "spread": 13,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -239,6 +330,25 @@
             "polish": "The 2s→8s→20s phase climb gives a real arc, and the end state is clear. But framing is UI-centred, with large empty space between pendulums and chart, and the title/readout text does the storytelling."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 16,
+            "ambition": 11,
+            "craft": 13,
+            "distinctness": 10,
+            "polish": 7
+          },
+          "total": 57,
+          "evidence": {
+            "mechanism": "Both rods lean left at 2 seconds and nearly mirror each other at 20 seconds. The readout advances from 53° to 100° to 177°, and the chart climbs with it. The beam's changing motion is harder to judge from the stills.",
+            "ambition": "At 7,760 of 24,576 bytes, the interactive toy combines a sprung beam, two bobs, an on-screen drag prompt, and a rolling trace. All three shots use the same apparatus and framing.",
+            "craft": "Gold bobs separate cleanly from the charcoal background, and the springs and swing arcs establish the geometry. The fine hardware and low-contrast chart grid are easy to miss.",
+            "distinctness": "The shared sprung beam gives the familiar pendulum diagram a specific point of interest, and the final mirror pose is clear. The fixed apparatus-and-chart layout still reads as a classroom widget.",
+            "polish": "The gold trace matches the bobs, and the readout switches from drifting to anti-phase. The small labels and faint swing arcs lose legibility in the strip."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 14,
@@ -256,6 +366,27 @@
             "polish": "Clean framing and a coherent arc (Δφ 53°→100°→177°, the chart fills from right to left over 20s); the end state lands exactly on anti-phase. Heading, subtitle and readout are permanent chrome."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 51,
+        "agreed_scores": {
+          "mechanism": 16,
+          "ambition": 9,
+          "craft": 10,
+          "distinctness": 10,
+          "polish": 6
+        },
+        "stage8_tier": "shelved",
+        "summary_evidence": "Textbook classroom widget: the mechanism is legible but captions and a status label state the result instead of the image showing it.",
+        "spread": 9,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -264,28 +395,20 @@
       "compo": "data-sculpture",
       "byte_size": 15565,
       "size_budget_bytes": 32768,
-      "agreed_total": 53,
+      "agreed_total": 61,
       "agreed_scores": {
-        "mechanism": 13,
-        "ambition": 10,
-        "craft": 15,
-        "distinctness": 9,
-        "polish": 6
+        "mechanism": 15,
+        "ambition": 12,
+        "craft": 17,
+        "distinctness": 10,
+        "polish": 7
       },
-      "stage8_tier": "shelved",
+      "stage8_tier": "b-sides",
       "summary_evidence": "Tasteful cream editorial climate spiral; the widening of the turns shows the accelerating rise, but the promised x3 seasonal lean toward May cannot be seen in the spiral and is carried by the sparkline and caption.",
-      "spread": 16,
-      "reconciled": true,
-      "reconciliation_method": "criterion-level discussion of written arguments against screenshots, brief and dossier",
-      "reconciliation_notes": {
-        "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png, brief.json and dossier.json. It was not a live exchange between raters. Totals were R1 62, R2 55, R3 46 (spread 16).",
-        "mechanism": "13 (R1 15, R2 13, R3 11). The brief names the mechanism as Northern Hemisphere seasonal drawdown, and its memorable moment is the finished spiral leaning toward May. In all three screenshots the turns read as near-concentric 12-gons and no consistent lean is legible, so the named mechanism is not visible in the spiral. R1 partly credited the widening spacing, but that encodes the long-term rise, not the seasonal drawdown. Against R3: SPEC Stage 3 only requires the mechanism to be visible on screen, and the left sparkline (May high, autumn low, +4.5/-4.5) is on screen every frame, so carrying the idea in an inset chart deserves a smaller penalty than R3 applied. Settled at R2.",
-        "ambition": "10 (R1 12, R2 11, R3 8). 15.6 KB of 32 KB holds the real NOAA monthly series with a centred moving-average detrend, which is more than R3 credits. The rendering is still stroked polylines, a translucent wash and a sparkline, and the climate spiral is a well-known chart form, so it sits below R1 and R2.",
-        "craft": "15 (R1 17, R2 15, R3 13). The cream, ink and ochre palette and serif numerals are clean, as all three agree. The 20s shot confirms the deductions: the outer dark turns overrun the 420 ring into the D/J labels, the month turns are visibly polygonal, and the dense outer turns turn into a heavy dark band that swamps the ochre focus year. Settled at R2.",
-        "distinctness": "9 (R1 11, R2 10, R3 7). All three call it an editorial infographic in a well-known form, and its parchment-and-serif look overlaps other anchors in the set. Settled one below R2 because nothing in the frames separates it from a newspaper climate spiral.",
-        "polish": "6 (R1 7, R2 6, R3 7). The 1959 knot to full spiral build is clean, but the left third of the frame is a static text column at all three times, the 20s turns crowd the top month labels, and the end state is the wash sweeping back through the decades rather than a resolved image.",
-        "outcome": "Agreed 53, below the 60 B-sides line and inside the 50s chart-widget band; R1 62 over-credited the rise and the typography, R3 46 over-penalised the on-screen sparkline."
-      },
+      "spread": 7,
+      "reconciled": false,
+      "reconciliation_method": "median per criterion of the three blind ratings",
+      "reconciliation_notes": null,
       "individual_ratings": {
         "opus-rater-1": {
           "scores": {
@@ -321,6 +444,25 @@
             "polish": "Clear growth from a single 1959 ring (2s) through 1987 (8s) to the full spiral (20s), with the ochre wash gliding back to 1986. But almost half the frame is a static text column, and the end state is a finished chart rather than a resolved image."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 15,
+            "ambition": 12,
+            "craft": 17,
+            "distinctness": 10,
+            "polish": 8
+          },
+          "total": 62,
+          "evidence": {
+            "mechanism": "The month spokes align the recurring bulge and dip, the expanding coil shows the long-term rise, and the selected year's inset isolates its seasonal swing around the mean.",
+            "ambition": "At 15,565 of 32,768 bytes, the data sculpture builds from one small loop to a dense multidecade coil and links the ochre selection to a year readout and inset. All three shots use the same chart layout.",
+            "craft": "A faint radial grid leaves room for the data, and the ochre highlight stays visible as dark outer turns accumulate. The serif year display anchors the side column.",
+            "distinctness": "The return to an earlier highlighted year inside the completed spiral makes the selected seasonal shape easy to locate within the full record, using a familiar radial chart and inset pairing.",
+            "polish": "The ivory ground, ink traces and ochre selection form a coherent hierarchy. Month initials and fine scale labels are difficult to read in the strip."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 11,
@@ -338,6 +480,35 @@
             "polish": "Clean 2s start with a single 1959 ring. At 20s the outer turns overrun the 420 ring and crowd the D/J/F month labels at the top. The highlight shows 1987 at 8s and 1986 at 20s while the spiral is fully drawn, which looks like a highlight sweep with no clear end state."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 53,
+        "agreed_scores": {
+          "mechanism": 13,
+          "ambition": 10,
+          "craft": 15,
+          "distinctness": 9,
+          "polish": 6
+        },
+        "stage8_tier": "shelved",
+        "summary_evidence": "Tasteful cream editorial climate spiral; the widening of the turns shows the accelerating rise, but the promised x3 seasonal lean toward May cannot be seen in the spiral and is carried by the sparkline and caption.",
+        "spread": 16,
+        "reconciled": true,
+        "reconciliation_method": "criterion-level discussion of written arguments against screenshots, brief and dossier",
+        "reconciliation_notes": {
+          "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png, brief.json and dossier.json. It was not a live exchange between raters. Totals were R1 62, R2 55, R3 46 (spread 16).",
+          "mechanism": "13 (R1 15, R2 13, R3 11). The brief names the mechanism as Northern Hemisphere seasonal drawdown, and its memorable moment is the finished spiral leaning toward May. In all three screenshots the turns read as near-concentric 12-gons and no consistent lean is legible, so the named mechanism is not visible in the spiral. R1 partly credited the widening spacing, but that encodes the long-term rise, not the seasonal drawdown. Against R3: SPEC Stage 3 only requires the mechanism to be visible on screen, and the left sparkline (May high, autumn low, +4.5/-4.5) is on screen every frame, so carrying the idea in an inset chart deserves a smaller penalty than R3 applied. Settled at R2.",
+          "ambition": "10 (R1 12, R2 11, R3 8). 15.6 KB of 32 KB holds the real NOAA monthly series with a centred moving-average detrend, which is more than R3 credits. The rendering is still stroked polylines, a translucent wash and a sparkline, and the climate spiral is a well-known chart form, so it sits below R1 and R2.",
+          "craft": "15 (R1 17, R2 15, R3 13). The cream, ink and ochre palette and serif numerals are clean, as all three agree. The 20s shot confirms the deductions: the outer dark turns overrun the 420 ring into the D/J labels, the month turns are visibly polygonal, and the dense outer turns turn into a heavy dark band that swamps the ochre focus year. Settled at R2.",
+          "distinctness": "9 (R1 11, R2 10, R3 7). All three call it an editorial infographic in a well-known form, and its parchment-and-serif look overlaps other anchors in the set. Settled one below R2 because nothing in the frames separates it from a newspaper climate spiral.",
+          "polish": "6 (R1 7, R2 6, R3 7). The 1959 knot to full spiral build is clean, but the left third of the frame is a static text column at all three times, the 20s turns crowd the top month labels, and the end state is the wash sweeping back through the decades rather than a resolved image.",
+          "outcome": "Agreed 53, below the 60 B-sides line and inside the 50s chart-widget band; R1 62 over-credited the rise and the typography, R3 46 over-penalised the on-screen sparkline."
+        }
       }
     },
     {
@@ -346,20 +517,28 @@
       "compo": "constraint-night",
       "byte_size": 6389,
       "size_budget_bytes": 16384,
-      "agreed_total": 61,
+      "agreed_total": 66,
       "agreed_scores": {
         "mechanism": 17,
-        "ambition": 11,
-        "craft": 12,
+        "ambition": 14,
+        "craft": 14,
         "distinctness": 15,
         "polish": 6
       },
       "stage8_tier": "b-sides",
-      "summary_evidence": "Card-row weave mechanism is shown literally and legibly, but harsh moire makes the damask read as noise.",
-      "spread": 6,
-      "reconciled": false,
-      "reconciliation_method": "median per criterion of the three blind ratings",
-      "reconciliation_notes": null,
+      "summary_evidence": "Card-row weave mechanism is shown literally in strict two-colour bars, and the 20s frame resolves a Sierpinski damask out of the weave itself; the 2s and 8s frames are mostly bare warp threads and the dense hatching shimmers into moire.",
+      "spread": 23,
+      "reconciled": true,
+      "reconciliation_method": "criterion-level discussion of written arguments against screenshots, brief and dossier",
+      "reconciliation_notes": {
+        "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png at full 1280 x 720 resolution, brief.json and dossier.json. It was not a live exchange between raters. Codex rated from a downscaled three-shot contact strip (its own evidence says 'at contact-strip scale'), so its legibility and moire observations were checked against the full-size shots before they were weighed. On the 10 anchors other than 05 and 08 Codex sits 3.5 to 11.5 points above the Opus mean on 9 and 1.5 below on anchor-01. Here it sits 21.5 above an Opus pair that agrees within 3 points, about twice its usual offset, so its observations were argued, not its numbers. Totals were Op1 60, Op2 63, Codex 83 (spread 23).",
+        "mechanism": "17 (Op1 17, Op2 17, Codex 18). All three agree the card row to cloth row mapping is literal and legible: holes become vertical warp floats, blanks horizontal weft floats, and the next cards hang below the fell in every frame. Settled at the Opus pair: nothing in the shots goes beyond what both already credited.",
+        "ambition": "14 (Op1 11, Op2 13, Codex 21). Against the Opus pair: the full-size 20s shot shows a complete sampler, plain weave and twill at the top, herringbone reversals, then an inverted Sierpinski triangle of warp floats that the Lucas-theorem bitmask weaves row by row; that is more than 'only filling further'. Against Codex: it is one integer fillRect raster idiom in 6.4 KB of 16 KB with no second rendering mode, and the two-colour constraint is the compo's rule, not extra ambition. Settled one above Op2.",
+        "craft": "14 (Op1 12, Op2 12, Codex 21). Codex is right that the cell alignment is exact and the herringbone reversals stay sharp at 8s, and at full size the 20s triangle is legible, not noise, so Op1's 'hard to separate' overstates it. Against Codex: the high-frequency bars do shimmer into moire, the 2s frame is about 85 percent bare warp lines and the 8s frame about 55 percent, and the shuttle is never visible. Settled two above the Opus pair, far below Codex.",
+        "distinctness": "15 (Op1 15, Op2 15, Codex 16). Unanimous within a point: the only textile and binary-matrix piece in the set. Settled at the Opus pair.",
+        "polish": "6 (Op1 5, Op2 6, Codex 7). The fell line advances steadily and the 20s frame lands on the triangle, which is a real ending, but the cloth bleeds off the top edge with no margin and the first two shots are dominated by empty warp. Settled at Op2.",
+        "outcome": "Agreed 66, B-sides. The Opus pair (60, 63) under-read the 20s damask payoff at full size; Codex (83) scored the weave's logic and ignored the mostly empty early frames and the single raster idiom."
+      },
       "individual_ratings": {
         "opus-rater-1": {
           "scores": {
@@ -395,6 +574,25 @@
             "polish": "Cloth fills steadily (thin band at 2s, about a third at 8s, nearly full at 20s), a readable progress arc. But the early frames are mostly empty threads and there is no compositional framing or ending moment."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 18,
+            "ambition": 21,
+            "craft": 21,
+            "distinctness": 16,
+            "polish": 7
+          },
+          "total": 83,
+          "evidence": {
+            "mechanism": "The punched-looking band tracks the descending weave edge. Bare vertical warp lines below it become interlocking vertical and horizontal marks above it, making the row-by-row construction visible.",
+            "ambition": "At 6,389 bytes of a 16 KiB budget, the piece constructs a full sampler from repeated thread marks, progressing from small checks and diagonal reversals to a large triangular damask.",
+            "craft": "The tight cell alignment keeps the herringbone reversals sharp, and changes in thread direction let the large triangles emerge from the same two colors as the surrounding cloth.",
+            "distinctness": "The final Sierpinski-like motif appears as a change in the weave itself, with its edges built from alternating thread directions across successive rows.",
+            "polish": "The advancing weave edge stays easy to locate against the exposed warp. At contact-strip scale the punched-card marks are crowded together, making individual holes hard to distinguish."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 16,
@@ -412,6 +610,27 @@
             "polish": "Cloth grows downward from 2s to 20s as the fell line descends, which is a genuine progression. The opening is mostly empty and the end state is busy with no resolution; the shuttle and pick-in-progress are barely visible."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 61,
+        "agreed_scores": {
+          "mechanism": 17,
+          "ambition": 11,
+          "craft": 12,
+          "distinctness": 15,
+          "polish": 6
+        },
+        "stage8_tier": "b-sides",
+        "summary_evidence": "Card-row weave mechanism is shown literally and legibly, but harsh moire makes the damask read as noise.",
+        "spread": 6,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -420,17 +639,17 @@
       "compo": "simulation",
       "byte_size": 11540,
       "size_budget_bytes": 24576,
-      "agreed_total": 67,
+      "agreed_total": 69,
       "agreed_scores": {
         "mechanism": 17,
-        "ambition": 16,
+        "ambition": 17,
         "craft": 14,
-        "distinctness": 13,
+        "distinctness": 14,
         "polish": 7
       },
       "stage8_tier": "b-sides",
       "summary_evidence": "The seven-neighbour link rule is shown on screen; the birds are clunky and the sky is a plain blue-to-amber gradient. The falcon pass falls between screenshots and was not scored.",
-      "spread": 9,
+      "spread": 12,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -469,6 +688,25 @@
             "polish": "Clear compact (2s) → expanded (8s) → re-formed and tilted (20s) arc with camera widening. The falcon pass promised in the brief is not visible in any frame, and the end state looks much like the start."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 16,
+            "ambition": 21,
+            "craft": 19,
+            "distinctness": 16,
+            "polish": 7
+          },
+          "total": 79,
+          "evidence": {
+            "mechanism": "The compact flock opens into a broad mesh at 8 seconds and gathers again at 20 seconds. The highlighted bird's ochre spokes become easier to see in the expanded flock, though their exact count is hard to verify in the dense shots.",
+            "ambition": "At 11,540 of 24,576 bytes, the simulation draws a large flock and its link mesh through tight, expanded, and re-formed states. The supplied shots do not show the storyboarded falcon pass.",
+            "craft": "The cool sky and low amber horizon frame a strong change in flock silhouette. Individual wing marks and taut filaments read well in the expanded shot, while the dense clusters become visually tangled.",
+            "distinctness": "The ochre neighbour mesh exposes the structure inside the familiar murmuration silhouette. The expanded shot makes the connection between flock density and link length especially clear.",
+            "polish": "The dusk gradient and reed silhouette stay coherent across the three shots. The highlighted bird is easy to pick out in the open mesh but gets swallowed by overlapping marks when the flock tightens."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 16,
@@ -486,6 +724,27 @@
             "polish": "There is development (compact at 2s → expanded at 8s → re-formed and offset at 20s). The grid-like start at 2s gives away the initial lattice, and no predator or climax event appears."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 67,
+        "agreed_scores": {
+          "mechanism": 17,
+          "ambition": 16,
+          "craft": 14,
+          "distinctness": 13,
+          "polish": 7
+        },
+        "stage8_tier": "b-sides",
+        "summary_evidence": "The seven-neighbour link rule is shown on screen; the birds are clunky and the sky is a plain blue-to-amber gradient. The falcon pass falls between screenshots and was not scored.",
+        "spread": 9,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -494,27 +753,27 @@
       "compo": "4k-shader",
       "byte_size": 3119,
       "size_budget_bytes": 4096,
-      "agreed_total": 72,
+      "agreed_total": 75,
       "agreed_scores": {
-        "mechanism": 15,
-        "ambition": 18,
+        "mechanism": 16,
+        "ambition": 19,
         "craft": 20,
-        "distinctness": 12,
+        "distinctness": 13,
         "polish": 7
       },
       "stage8_tier": "publish",
       "summary_evidence": "Exact per-pixel inversion Apollonian gasket in 3.1 KB with a curvature-ordered reveal and ring counts that rise with curvature; the gasket is a famous form, the dive into the foam barely happens and the 20s frame is cropped and washed out.",
-      "spread": 18,
+      "spread": 19,
       "reconciled": true,
       "reconciliation_method": "criterion-level discussion of written arguments against screenshots, brief and dossier",
       "reconciliation_notes": {
-        "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png, brief.json and dossier.json. It was not a live exchange between raters. Totals were R1 83, R2 65, R3 71 (spread 18).",
-        "mechanism": "15 (R1 18, R2 12, R3 15). The curvature-ordered reveal is visible: at 2s only the two curvature-2 mauve discs are solid and the 3s are faint ghosts. The 8s shot confirms the ring encoding: the large mauve discs carry 1 ring, the orange discs 2, the small gold discs many, so integer curvature is readable on screen. Against R1: the brief names the mechanism as inversion folding in a strip model, and that fold is never shown, so the full-mechanism score is not earned. Against R2: the integer-curvature structure is the research content of the dossier and it is plainly embodied, so 12 under-credits it.",
-        "ambition": "18 (R1 21, R2 17, R3 17). Per-pixel iterated inversion with exact curvature recovery and analytic antialiasing in 3,119 of 4,096 bytes is real 4K technique, and the 8s and 20s frames show crisp tangencies down to dust-sized circles, which is one point above R2 and R3. It does not reach R1: inversion gaskets are a Shadertoy staple, and the promised dive into the foam, the stated memorable moment, appears as only about a 1.15x zoom by 20s.",
-        "craft": "20 (R1 22, R2 19, R3 19). The parchment ground, mauve, ochre, sage and terracotta discs with soft radial shading and fine engraved rings are among the most refined in the set, and edges stay clean at the smallest circles. The 20s drain to pale pastels is planned in the brief but still costs contrast, so it sits between R1 and the other two.",
-        "distinctness": "12 (R1 15, R2 10, R3 12). The Apollonian gasket is a famous fractal close to the untouched-known-fractal slop rule, and the centred circle on warm linen overlaps other anchors. The curvature-driven colour and ring engraving set it apart from a stock gasket, so it sits above R2. Settled at R3.",
-        "polish": "7 (R1 7, R2 7, R3 8). The 2s to 8s build is good. Storyboard beat 4 promises a pull back to the whole gasket, but the 20s frame is cropped at top and bottom and reads faded rather than resolved. R1 said it neither docked nor credited beats it could not see; the 20s frame itself is screenshot evidence under SPEC Stage 7, so the crop is docked.",
-        "outcome": "Agreed 72, exactly at the Stage 8 publish line (publish_min 72): a front-page piece with no margin. R1 83 credited the technique as if the dive had landed; R2 65 treated the invisible inversion as if the curvature encoding were invisible too. This makes it the set's threshold anchor for jury calibration."
+        "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png at full 1280 x 720 resolution, brief.json and dossier.json. It was not a live exchange between raters. Codex rated from a downscaled three-shot contact strip (its own evidence says 'at contact-strip scale'), so its legibility and moire observations were checked against the full-size shots before they were weighed. On the 10 anchors other than 05 and 08 Codex sits 3.5 to 11.5 points above the Opus mean on 9 and 1.5 below on anchor-01. Here Codex sits 10 above the Opus mean, its usual offset; the spread is mainly Op1 against Op2, the same split as the Milestone 2 reconciliation. Totals were Op1 83, Op2 65, Codex 84 (spread 19).",
+        "mechanism": "16 (Op1 18, Op2 12, Codex 19). This spread is the same Op1 versus Op2 split as the Milestone 2 reconciliation; Codex sides with Op1. Codex's evidence (tangent circles filling the gaps, recursion legible at 8s) is confirmed at full size, and the ring count rising with curvature is readable at 8s. But neither Codex nor Op1 addresses the mechanism the brief names, inversion folding in a strip model, which is never shown on screen. Settled one above the Milestone 2 value of 15 because the recursive tangency Codex cites is plainly embodied; below Op1 and Codex because the named fold is absent.",
+        "ambition": "19 (Op1 21, Op2 17, Codex 22). Per-pixel iterated inversion with exact curvature recovery and analytic antialiasing in 3,119 of 4,096 bytes is real 4K technique, and Codex is right that the sparse-seed to dense-packing progression is substantial at that size. Against Op1 and Codex: inversion gaskets are a Shadertoy staple and the promised dive into the foam reaches only about 1.15x zoom by 20s. Settled between the camps.",
+        "craft": "20 (Op1 22, Op2 19, Codex 21). The soft radial shading and fine engraved rings are among the most refined surfaces in the set. Codex itself notes that in the pale 20s shot the finest outlines become hard to read; at full size the 20s frame has drained to low-contrast pastels. Settled one below the median for that.",
+        "distinctness": "13 (Op1 15, Op2 10, Codex 14). The Apollonian gasket is a famous fractal close to the untouched-known-fractal slop rule, and a centred disc on a warm linen ground overlaps other anchors. Codex's point that the clay palette and ringed surfaces give it material character is fair and lifts it one above the Milestone 2 value of 12.",
+        "polish": "7 (Op1 7, Op2 7, Codex 8). The 2s to 8s build is clean, but storyboard beat 4 promises a pull back to the whole gasket and the 20s frame is cropped at top and bottom (Codex: 'the outer rim grazes the frame'). Settled at the Opus pair.",
+        "outcome": "Agreed 75, publish with a 3-point margin over publish_min 72. Op1 83 and Codex 84 credited the technique as if the dive and the fold had landed; Op2 65 treated the unshown inversion as if the curvature encoding were invisible too. It sits below anchor-09 (78) and above anchor-06 (69), which matches its place in the rank order."
       },
       "individual_ratings": {
         "opus-rater-1": {
@@ -551,6 +810,25 @@
             "polish": "Good build from 2 to dozens to hundreds of circles. The 20s 'dive into foam' is only a modest zoom and rotation, with the gasket cropped at top and bottom rather than a dive or a framed end state."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 19,
+            "ambition": 22,
+            "craft": 21,
+            "distinctness": 14,
+            "polish": 8
+          },
+          "total": 84,
+          "evidence": {
+            "mechanism": "Two equal circles touch inside the enclosing disk at 02s. By 08s, progressively smaller circles fill the gaps and remain visibly tangent, making the recursive packing legible.",
+            "ambition": "The progression from a sparse seed to a densely packed disk with curvature-dependent rings is substantial for a 3,119-byte shader in the 4 KiB compo.",
+            "craft": "Soft shading gives the largest disks volume, while fine concentric rings distinguish the ochre circles from the mauve ones and remain coherent across scales.",
+            "distinctness": "The clay-like palette and ringed surfaces give a familiar Apollonian gasket a recognizable material character.",
+            "polish": "The three shots share a restrained palette and a clear focal point. In the pale final shot, the outer rim grazes the frame and the finest outlines become hard to read."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 15,
@@ -568,6 +846,35 @@
             "polish": "Good 2s→8s build. At 20s the camera has barely moved, crops the gasket at top and bottom, and looks faded rather than resolved. No glitches."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 72,
+        "agreed_scores": {
+          "mechanism": 15,
+          "ambition": 18,
+          "craft": 20,
+          "distinctness": 12,
+          "polish": 7
+        },
+        "stage8_tier": "publish",
+        "summary_evidence": "Exact per-pixel inversion Apollonian gasket in 3.1 KB with a curvature-ordered reveal and ring counts that rise with curvature; the gasket is a famous form, the dive into the foam barely happens and the 20s frame is cropped and washed out.",
+        "spread": 18,
+        "reconciled": true,
+        "reconciliation_method": "criterion-level discussion of written arguments against screenshots, brief and dossier",
+        "reconciliation_notes": {
+          "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png, brief.json and dossier.json. It was not a live exchange between raters. Totals were R1 83, R2 65, R3 71 (spread 18).",
+          "mechanism": "15 (R1 18, R2 12, R3 15). The curvature-ordered reveal is visible: at 2s only the two curvature-2 mauve discs are solid and the 3s are faint ghosts. The 8s shot confirms the ring encoding: the large mauve discs carry 1 ring, the orange discs 2, the small gold discs many, so integer curvature is readable on screen. Against R1: the brief names the mechanism as inversion folding in a strip model, and that fold is never shown, so the full-mechanism score is not earned. Against R2: the integer-curvature structure is the research content of the dossier and it is plainly embodied, so 12 under-credits it.",
+          "ambition": "18 (R1 21, R2 17, R3 17). Per-pixel iterated inversion with exact curvature recovery and analytic antialiasing in 3,119 of 4,096 bytes is real 4K technique, and the 8s and 20s frames show crisp tangencies down to dust-sized circles, which is one point above R2 and R3. It does not reach R1: inversion gaskets are a Shadertoy staple, and the promised dive into the foam, the stated memorable moment, appears as only about a 1.15x zoom by 20s.",
+          "craft": "20 (R1 22, R2 19, R3 19). The parchment ground, mauve, ochre, sage and terracotta discs with soft radial shading and fine engraved rings are among the most refined in the set, and edges stay clean at the smallest circles. The 20s drain to pale pastels is planned in the brief but still costs contrast, so it sits between R1 and the other two.",
+          "distinctness": "12 (R1 15, R2 10, R3 12). The Apollonian gasket is a famous fractal close to the untouched-known-fractal slop rule, and the centred circle on warm linen overlaps other anchors. The curvature-driven colour and ring engraving set it apart from a stock gasket, so it sits above R2. Settled at R3.",
+          "polish": "7 (R1 7, R2 7, R3 8). The 2s to 8s build is good. Storyboard beat 4 promises a pull back to the whole gasket, but the 20s frame is cropped at top and bottom and reads faded rather than resolved. R1 said it neither docked nor credited beats it could not see; the 20s frame itself is screenshot evidence under SPEC Stage 7, so the crop is docked.",
+          "outcome": "Agreed 72, exactly at the Stage 8 publish line (publish_min 72): a front-page piece with no margin. R1 83 credited the technique as if the dive had landed; R2 65 treated the invisible inversion as if the curvature encoding were invisible too. This makes it the set's threshold anchor for jury calibration."
+        }
       }
     },
     {
@@ -576,20 +883,28 @@
       "compo": "audiovisual",
       "byte_size": 10144,
       "size_budget_bytes": 24576,
-      "agreed_total": 60,
+      "agreed_total": 65,
       "agreed_scores": {
-        "mechanism": 15,
-        "ambition": 14,
-        "craft": 15,
-        "distinctness": 11,
+        "mechanism": 16,
+        "ambition": 16,
+        "craft": 16,
+        "distinctness": 12,
         "polish": 5
       },
       "stage8_tier": "b-sides",
-      "summary_evidence": "Designed endless-stair loop: the 20s frame deliberately matches the 2s frame, which still reads as a tunnel and as the anti-slop same-start-and-end pattern.",
-      "spread": 4,
-      "reconciled": false,
-      "reconciliation_method": "median per criterion of the three blind ratings",
-      "reconciliation_notes": null,
+      "summary_evidence": "Copper beads on a log spiral with a matching spectral bell make the octave hand-off legible, but the 2s and 8s frames are nearly the same composition, the concentric navy bands read as a tunnel, and by 20s only the widened bell and longer copper arcs have changed.",
+      "spread": 20,
+      "reconciled": true,
+      "reconciliation_method": "criterion-level discussion of written arguments against screenshots, brief and dossier",
+      "reconciliation_notes": {
+        "process": "One reconciliation thread weighed the three written criterion arguments against shot-02s/08s/20s.png at full 1280 x 720 resolution, brief.json and dossier.json. It was not a live exchange between raters. Codex rated from a downscaled three-shot contact strip (its own evidence says 'at contact-strip scale'), so its legibility and moire observations were checked against the full-size shots before they were weighed. On the 10 anchors other than 05 and 08 Codex sits 3.5 to 11.5 points above the Opus mean on 9 and 1.5 below on anchor-01. Here it sits 19.5 above an Opus pair that agrees within 1 point, about twice its usual offset, so its observations were argued, not its numbers. Totals were Op1 60, Op2 61, Codex 80 (spread 20).",
+        "mechanism": "16 (Op1 15, Op2 15, Codex 17). Codex is right that the beads grade in size and brightness turn by turn and that the bell is visibly broader at 20s, with the outer partials more prominent in both the spiral and the ribbon. The Opus pair's objection stands in part: the hand-off is carried as much by the explanatory ribbon panel as by the spiral. Settled one above the Opus pair.",
+        "ambition": "16 (Op1 14, Op2 15, Codex 20). Codex credits the two linked views of one octave hand-off, which is a fair point the Opus pair under-weighted. Against Codex: a nine-sine Shepard-Risset bank under a Gaussian envelope is a classic, modest synthesis task, and the visual is one log-polar shader plus a chart strip in 10.1 KB of 24 KB. Settled one above Op2.",
+        "craft": "16 (Op1 15, Op2 15, Codex 19). The navy and copper palette, soft bead highlights and fine radial ticks are coherent, as all three agree. Against Codex: the alternating flat concentric bands read as a tunnel, the bottom panel is a UI chart strip that cuts across the spiral lines, and the 'click or press a key for sound' prompt sits in every frame. Settled one above the Opus pair.",
+        "distinctness": "12 (Op1 11, Op2 11, Codex 17). Codex argues the concept: octave equivalence as a pattern repeating outward. On screen the concentric ring vortex sits close to the slop list's plain tunnel and repeats the centred radial composition of other anchors. The bead-on-log-spiral with a matching ribbon is not a stock tunnel, which earns one point over the Opus pair.",
+        "polish": "5 (Op1 5, Op2 5, Codex 7). At full size the 2s and 8s frames are nearly the same composition, the bead cluster rotated; by 20s only the bell has widened and the copper arcs lengthened. Codex's polish evidence only notes small labels, not development. Settled at the Opus pair.",
+        "outcome": "Agreed 65, B-sides. Codex (80) scored the octave concept the brief describes; the Opus pair (60, 61) scored the near-static tunnel the shots show and missed the visibly widened 20s bell. It sits one point below anchor-05 (66): the two Opus raters put these two pieces within 2 points of each other, and Codex within 3."
+      },
       "individual_ratings": {
         "opus-rater-1": {
           "scores": {
@@ -625,6 +940,25 @@
             "polish": "The 2s, 8s and 20s frames are nearly the same composition (spiral beads, bell panel); only the bell widens at 20s. That is the 'no development' loop by design, with no beginning or ending."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 17,
+            "ambition": 20,
+            "craft": 19,
+            "distinctness": 17,
+            "polish": 7
+          },
+          "total": 80,
+          "evidence": {
+            "mechanism": "Copper beads of graded brightness sit on successive spiral turns, and the lower ribbon shows their levels under a shared bell. At 20 seconds the bell is broader and the outer beads are easier to see.",
+            "ambition": "At 10,144 of 24,576 bytes, the audiovisual entry gives the octave hand-off two linked views. The first two shots show the bead cluster at different angles, and the last makes the outer partials more prominent in both views.",
+            "craft": "The alternating navy coils and fine radial ticks give the eye a scale reference, while the copper trails make it easy to follow the brighter beads among the nested turns.",
+            "distinctness": "The central spiral turns octave equivalence into a visual pattern that repeats outward, with the straight spectral ribbon below showing the same spacing on an axis.",
+            "polish": "Copper accents tie the spiral and ribbon together across all three shots. The frequency labels and sound prompt are difficult to read at contact-strip scale."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 14,
@@ -642,6 +976,27 @@
             "polish": "The 2s and 8s frames are near-identical (bead positions shifted, bell unchanged); at 20s the bell is only wider. A Shepard loop has no development by design, which matches the 'loop with no development' slop pattern exactly. The 'click or press a key for sound' text stays on screen throughout."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 60,
+        "agreed_scores": {
+          "mechanism": 15,
+          "ambition": 14,
+          "craft": 15,
+          "distinctness": 11,
+          "polish": 5
+        },
+        "stage8_tier": "b-sides",
+        "summary_evidence": "Designed endless-stair loop: the 20s frame deliberately matches the 2s frame, which still reads as a tunnel and as the anti-slop same-start-and-end pattern.",
+        "spread": 4,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -650,17 +1005,17 @@
       "compo": "16k-demo",
       "byte_size": 12403,
       "size_budget_bytes": 16384,
-      "agreed_total": 75,
+      "agreed_total": 78,
       "agreed_scores": {
         "mechanism": 16,
         "ambition": 22,
-        "craft": 15,
+        "craft": 16,
         "distinctness": 16,
-        "polish": 6
+        "polish": 8
       },
       "stage8_tier": "publish",
       "summary_evidence": "Most ambitious piece of the set: three acts with real 3D columns and sea, but the 20s 3D render shows visible artefacts and rough shading.",
-      "spread": 6,
+      "spread": 8,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -699,6 +1054,25 @@
             "polish": "Strong narrative arc from close-up crack front (2s) to full lattice (8s) to causeway sunset (20s), ending on a horizon with the camera still moving. The 8s middle act is visually static."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 17,
+            "ambition": 23,
+            "craft": 20,
+            "distinctness": 16,
+            "polish": 8
+          },
+          "total": 84,
+          "evidence": {
+            "mechanism": "The opening fractures skew and vary in spacing, the middle shot settles into a regular hexagonal field, and the final shoreline carries that cell geometry into uneven column tops.",
+            "ambition": "At 12,403 of 16,384 bytes, the demo moves from glowing surface cracks through a reorganized lattice to a low coastal view with column relief, haze and reflected sunlight.",
+            "craft": "Mottled crust and varied crack brightness sell the heat in the first shot. The finale uses stepped silhouettes and a broken reflection path to give the coast depth, though foreground shadow hides some facet detail.",
+            "distinctness": "Turning the orange crack network into the recognizable footprint of a basalt causeway gives the abstract opening a specific geological payoff.",
+            "polish": "The warm crack glow carries into the muted gold of the sunset, and the final reflection draws the eye toward the sea. Several foreground columns blend together in shadow."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 16,
@@ -716,6 +1090,27 @@
             "polish": "The pacing arc is good (cracks → hexes → columns), but the 20s end state shows obvious artefacts (floating fragments at right, stair-stepped edges, low effective resolution), and the 2s opening is too blurred to read."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 75,
+        "agreed_scores": {
+          "mechanism": 16,
+          "ambition": 22,
+          "craft": 15,
+          "distinctness": 16,
+          "polish": 6
+        },
+        "stage8_tier": "publish",
+        "summary_evidence": "Most ambitious piece of the set: three acts with real 3D columns and sea, but the 20s 3D render shows visible artefacts and rough shading.",
+        "spread": 6,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -734,7 +1129,7 @@
       },
       "stage8_tier": "publish",
       "summary_evidence": "Live reaction-diffusion simulation: wave rings break and curl into a mosaic of spiral rotors with no text needed while the dish shifts from indigo to copper.",
-      "spread": 0,
+      "spread": 8,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -773,6 +1168,25 @@
             "polish": "Textbook three-act arc: sparse rings, then collision and breakage, then self-sustaining spiral mosaic with a colour turn. The dish is perfectly centred and framed. The 20s end state is visibly 'after' the pacemakers stop."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 19,
+            "ambition": 23,
+            "craft": 24,
+            "distinctness": 19,
+            "polish": 9
+          },
+          "total": 94,
+          "evidence": {
+            "mechanism": "Three separate ring systems grow into cusped contact boundaries in the middle shot. By 20 seconds, curled tips and multiple spiral cores have taken over the dish, making the change in wave behavior visible.",
+            "ambition": "At 11,739 of 24,576 bytes, the simulation stages three visually distinct states in one dish, from sparse ignition through crowded collision fronts to a mature field of rotors with a material and palette shift.",
+            "craft": "The lit rim, cast shadow, and mottled ground give the dish physical depth. Ivory leading edges keep adjacent waves legible when the indigo bands crowd together, and copper relief carries that definition into the finale.",
+            "distinctness": "The final plate has a carved, enamel-like finish, and its asymmetrical whirlpools visibly grow out of the early bullseye geometry. The wave pattern itself supplies the composition.",
+            "polish": "The circular rim stays crisp as the interior fills, and the palette change preserves the wave contours. A few pale dots compete with nearby spiral tips in the final shot."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 19,
@@ -790,6 +1204,27 @@
             "polish": "Strong arc from rings (2s) to collisions (8s) to a full spiral mosaic (20s) with a clear end state. Points docked for the rim-boundary artefacts and the abrupt palette jump between 8s and 20s, which looks like a hard switch."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 87,
+        "agreed_scores": {
+          "mechanism": 19,
+          "ambition": 21,
+          "craft": 21,
+          "distinctness": 17,
+          "polish": 9
+        },
+        "stage8_tier": "publish",
+        "summary_evidence": "Live reaction-diffusion simulation: wave rings break and curl into a mosaic of spiral rotors with no text needed while the dish shifts from indigo to copper.",
+        "spread": 0,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -798,17 +1233,17 @@
       "compo": "data-sculpture",
       "byte_size": 25775,
       "size_budget_bytes": 32768,
-      "agreed_total": 84,
+      "agreed_total": 89,
       "agreed_scores": {
         "mechanism": 19,
-        "ambition": 21,
-        "craft": 20,
-        "distinctness": 16,
-        "polish": 8
+        "ambition": 22,
+        "craft": 21,
+        "distinctness": 18,
+        "polish": 9
       },
       "stage8_tier": "publish",
       "summary_evidence": "Pulse waterfall shows the dispersion mechanism directly on a strong chart-paper look; the 20s relief has flat posterised facets and the stack recalls a famous album cover.",
-      "spread": 8,
+      "spread": 12,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -847,6 +1282,25 @@
             "polish": "Labelled states I → II → IV progress clearly from sparse pen trace to dense waterfall to sculpted relief, the camera still turning at 20s. Consistent frame margin and title block throughout."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 19,
+            "ambition": 24,
+            "craft": 24,
+            "distinctness": 19,
+            "polish": 9
+          },
+          "total": 95,
+          "evidence": {
+            "mechanism": "The first chart marks the interval between two sharp spikes. In the waterfall, repeated vermilion curves bend across horizontal channel traces, making the growing low-frequency delay visible across successive pulses.",
+            "ambition": "In 25,775 bytes of a 32 KiB data-sculpture budget, the strip moves from a pen trace to a dense multichannel plot and then to a perspective relief built from stacked pulse profiles.",
+            "craft": "Fine graphite traces and vermilion guides make the waterfall readable as a layered plot. In the relief, faceted gold peaks cast deep shadows and the closely spaced ridges preserve the structure of the pulse stack.",
+            "distinctness": "Turning the pulse stack into a gilded object with a bronze-colored base gives the archival plotting treatment a distinctive physical form.",
+            "polish": "Parchment texture, section headings, and engraved-looking ticks tie the three shots together. Some of the fine chart labels are difficult to read in the contact strip."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 18,
@@ -864,6 +1318,27 @@
             "polish": "Clear chaptering (I at 2s → II at 8s → IV at 20s). The 2s frame is sparse, with two spikes and mostly empty grid, and the section-heading text does some of the transition work."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 84,
+        "agreed_scores": {
+          "mechanism": 19,
+          "ambition": 21,
+          "craft": 20,
+          "distinctness": 16,
+          "polish": 8
+        },
+        "stage8_tier": "publish",
+        "summary_evidence": "Pulse waterfall shows the dispersion mechanism directly on a strong chart-paper look; the 20s relief has flat posterised facets and the stack recalls a famous album cover.",
+        "spread": 8,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     },
     {
@@ -872,9 +1347,9 @@
       "compo": "audiovisual",
       "byte_size": 20342,
       "size_budget_bytes": 24576,
-      "agreed_total": 80,
+      "agreed_total": 82,
       "agreed_scores": {
-        "mechanism": 16,
+        "mechanism": 18,
         "ambition": 21,
         "craft": 20,
         "distinctness": 15,
@@ -882,7 +1357,7 @@
       },
       "stage8_tier": "publish",
       "summary_evidence": "Strong 2s to 8s to 20s arc from orrery to mandala in a warm palette with synthesised sound; the final mandala is overplotted and muddy.",
-      "spread": 5,
+      "spread": 13,
       "reconciled": false,
       "reconciliation_method": "median per criterion of the three blind ratings",
       "reconciliation_notes": null,
@@ -921,6 +1396,25 @@
             "polish": "Strong arc: two planets on a tilted disc (2s), five planets with rings (8s), full face-on seven-body mandala (20s). Captions are small and corner-anchored; the sound prompt fades by 20s."
           }
         },
+        "codex-gpt-6.2-sol": {
+          "scores": {
+            "mechanism": 18,
+            "ambition": 23,
+            "craft": 23,
+            "distinctness": 18,
+            "polish": 8
+          },
+          "total": 90,
+          "evidence": {
+            "mechanism": "The opening pair of tagged bodies leaves a fine chord trace. More orbital bands appear in the middle shot, and the face-on finale exposes several overlapping lobed figures.",
+            "ambition": "At 20,342 of 24,576 bytes, the audiovisual entry stages a glowing star, a widening multi-orbit view and a face-on seven-body figure. The dossier reports that those same orbital phases drive the tones.",
+            "craft": "The mottled star and warm halo give the center depth, while the oblique orbit planes and fine copper and gold strands remain visually distinct across the camera change.",
+            "distinctness": "The trajectory from two bright bodies on tilted rings to a face-on rosette makes the orbital ratios themselves produce the finale's ornament.",
+            "polish": "The copper-to-gold palette holds across all three shots. The tiny captions and body labels are hard to read at contact-strip scale, and some fine rays merge in the final weave."
+          }
+        }
+      },
+      "historical_fallback_ratings": {
         "opus-rater-3-adversarial": {
           "scores": {
             "mechanism": 16,
@@ -938,6 +1432,27 @@
             "polish": "Clear 2s→8s→20s build (2 planets → 5 → 7 face-on). The 'press or tap for sound' hint fades by 20s. Labels are tiny italic serif, and the left-aligned caption is detached from the centred composition."
           }
         }
+      },
+      "m2_fallback_agreement": {
+        "raters": [
+          "opus-rater-1",
+          "opus-rater-2",
+          "opus-rater-3-adversarial"
+        ],
+        "agreed_total": 80,
+        "agreed_scores": {
+          "mechanism": 16,
+          "ambition": 21,
+          "craft": 20,
+          "distinctness": 15,
+          "polish": 8
+        },
+        "stage8_tier": "publish",
+        "summary_evidence": "Strong 2s to 8s to 20s arc from orrery to mandala in a warm palette with synthesised sound; the final mandala is overplotted and muddy.",
+        "spread": 5,
+        "reconciled": false,
+        "reconciliation_method": "median per criterion of the three blind ratings",
+        "reconciliation_notes": null
       }
     }
   ]

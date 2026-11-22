@@ -49,7 +49,7 @@ One workflow, `nightly.yml`, sequential jobs. Each LLM stage is a separate Claud
 This is where `agent-emotion-core` plugs in. Treat it as a library, do not reimplement it.
 
 - State lives in `state/emotion.json`, committed nightly. Wall-clock decay between runs comes for free.
-- Inputs appraised as events tonight: each dossier fact (novelty, valence, relevance to the crew's developed likes and dislikes), last night's verdict (pride or disappointment), streak of shelved nights (frustration), audience reactions on the piece's GitHub Discussion if any (optional, phase 4).
+- Inputs appraised as events tonight: each dossier fact (novelty, valence, relevance to the crew's developed likes and dislikes), last night's verdict (pride or disappointment), streak of shelved nights (frustration), audience reactions on the piece's GitHub Discussion if any (optional, phase 4). The verdict and the streak are each counted once, deterministically, never re-appraised by Haiku: Stage 9 feeds each verdict outcome into `agent-emotion-core` when it is decided, and Stage 2 folds the shelved-night streak into the `frustration` signal. Haiku sees both only as context.
 - A cheap Haiku call does the appraisal only (maps each event to the engine's appraisal inputs). The engine does the dynamics. Never let the LLM write the state directly.
 - `mood.json` exports: the dominant emotions, PAD mood vector, drive levels, and current likes/dislikes.
 - Use the engine's habituation: repeated exposure to the same technique family or topic domain should lower interest. This is the organic anti-repetition pressure, backed by the hard ledger rules.

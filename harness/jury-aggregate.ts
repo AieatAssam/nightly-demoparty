@@ -14,9 +14,10 @@ function intMedian(xs: number[]): number {
 
 /**
  * Per-criterion median scores, exact-sum total, strict-majority pairwise vote (a tie is false). Evidence, critique
- * and the pairwise/calibration fields are copied whole from the sample whose total is closest to the aggregate
- * (ties: same pairwise vote, then lowest index), so the prose stays one coherent visual pass. Inputs and the result
- * are checked with validateVerdictStrict; throws on any failure.
+ * and the pairwise/calibration fields are copied whole from one representative sample, so the prose stays one
+ * coherent visual pass: among the samples that voted with the majority (so the copied pairwise_justification always
+ * agrees with pairwise_beats_median), the one whose total is closest to the aggregate, lowest index on ties.
+ * Inputs and the result are checked with validateVerdictStrict; throws on any failure.
  */
 export function aggregateJuryVerdicts(verdicts: Verdict[], options: VerdictStrictOptions = {}, repoRoot?: string): Verdict {
   if (!verdicts.length) throw new Error("aggregateJuryVerdicts needs at least one verdict");
@@ -27,9 +28,11 @@ export function aggregateJuryVerdicts(verdicts: Verdict[], options: VerdictStric
   const scores = Object.fromEntries(CRITERIA.map((k) => [k, intMedian(verdicts.map((v) => v.scores[k]))])) as Verdict["scores"];
   const total = CRITERIA.reduce((s, k) => s + scores[k], 0);
   const beats = verdicts.filter((v) => v.pairwise_beats_median).length * 2 > verdicts.length;
+  // A 1-1 tie votes false, so the majority side is never empty.
   const rep = verdicts
-    .map((v, i) => ({ v, i, d: Math.abs(v.total - total), miss: v.pairwise_beats_median === beats ? 0 : 1 }))
-    .sort((a, b) => a.d - b.d || a.miss - b.miss || a.i - b.i)[0]!.v;
+    .map((v, i) => ({ v, i, d: Math.abs(v.total - total) }))
+    .filter(({ v }) => v.pairwise_beats_median === beats)
+    .sort((a, b) => a.d - b.d || a.i - b.i)[0]!.v;
   const out: Verdict = {
     scores,
     total,

@@ -12389,5 +12389,1171 @@
         }
       ]
     }
-  ]
+  ],
+  "m5_codex_reconciled": {
+    "status": "RHO TARGET MET AGAINST THE CODEX-RECONCILED ANCHOR SCORES. One fresh full 12-anchor leave-one-out --samples 3 run (36 Haiku --effort high calls) on the unchanged frozen generic prompt (prompt_sha256 2ed18107b1a6339a0576870d7f4a6cd06c5b6238b8695b8a838f6df0d573e890) against anchors/scores.json version 2 (raters opus-rater-1, opus-rater-2, codex-gpt-6.2-sol; anchor-05, anchor-07 and anchor-08 reconciled by discussion): Spearman rho 0.8278, MAE 6.33, bias -0.83, max abs error 13. 12/12 aggregated verdicts valid; 36/36 raw verdicts valid; 36/36 within 4 API turns (35 in 3, 1 in 4). Run once, not repeated.",
+    "anchor_scores_version": 2,
+    "command": "npx tsx harness/calibrate-jury.ts --model haiku --effort high --samples 3 --concurrency 6 --label m5-codex-reconciled --out <file>",
+    "run": {
+      "label": "m5-codex-reconciled",
+      "model": "haiku",
+      "effort": "high",
+      "samples": 3,
+      "raw_valid": "36/36",
+      "raw_within_turns": "36/36",
+      "prompt_sha256": "2ed18107b1a6339a0576870d7f4a6cd06c5b6238b8695b8a838f6df0d573e890",
+      "ran_at": "2026-11-22T19:11:14.878Z",
+      "n": 12,
+      "valid": 12,
+      "within_turns": 12,
+      "spearman_rho": 0.8278,
+      "mae": 6.33,
+      "max_abs_error": 13,
+      "bias": -0.83,
+      "cost_usd": 0.4433,
+      "results": [
+        {
+          "anchor": "anchor-01",
+          "agreed": 52,
+          "calibration_anchors": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-09",
+            "anchor-12"
+          ],
+          "model_total": 65,
+          "error": 13,
+          "model_scores": {
+            "mechanism": 17,
+            "ambition": 10,
+            "craft": 17,
+            "distinctness": 14,
+            "polish": 7
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0361,
+          "duration_s": 43,
+          "samples": [
+            {
+              "model_total": 62,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 9,
+                "craft": 17,
+                "distinctness": 14,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>16, a anchor-02 v5>9, c anchor-08 v16>17, d anchor-08 v12>14, p anchor-08 v5>6",
+                "rank: anchor-08 (65) > TONIGHT > anchor-02 (39)",
+                "sum: 16+9+17+14+6=62"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01041841,
+              "duration_s": 26
+            },
+            {
+              "model_total": 67,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 10,
+                "craft": 17,
+                "distinctness": 16,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>17, a anchor-02 v5>10, c anchor-08 v16>17, d anchor-09 v16>16, p anchor-12 v8>7",
+                "rank: anchor-09 (78) > TONIGHT > anchor-08 (65)",
+                "sum: 17+10+17+16+7=67"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.013185220000000001,
+              "duration_s": 43
+            },
+            {
+              "model_total": 66,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 10,
+                "craft": 17,
+                "distinctness": 14,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>17, a anchor-08 v16>10, c anchor-08 v16>17, d anchor-08 v12>14, p anchor-09 v8>8",
+                "rank: anchor-09 (78) > TONIGHT > anchor-08 (65)",
+                "sum: m+a+c+d+p=66 (17+10+17+14+8)"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01244918,
+              "duration_s": 38
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-02",
+          "agreed": 39,
+          "calibration_anchors": [
+            "anchor-03",
+            "anchor-05",
+            "anchor-06",
+            "anchor-10"
+          ],
+          "model_total": 45,
+          "error": 6,
+          "model_scores": {
+            "mechanism": 10,
+            "ambition": 7,
+            "craft": 13,
+            "distinctness": 10,
+            "polish": 5
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0354,
+          "duration_s": 36,
+          "samples": [
+            {
+              "model_total": 48,
+              "model_scores": {
+                "mechanism": 11,
+                "ambition": 8,
+                "craft": 12,
+                "distinctness": 11,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-03 16>11, a anchor-03 10>8, c anchor-03 10>12, d anchor-03 10>11, p anchor-03 6>6",
+                "rank: BOTTOM (TONIGHT 48 < anchor-03 52 < anchor-05 66 < anchor-06 69 < anchor-10 87)",
+                "sum: 11+8+12+11+6=48"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01211759,
+              "duration_s": 36
+            },
+            {
+              "model_total": 45,
+              "model_scores": {
+                "mechanism": 9,
+                "ambition": 7,
+                "craft": 14,
+                "distinctness": 10,
+                "polish": 5
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-03 v16>n9, a anchor-03 v10>n7, c anchor-05 v14>n14, d anchor-03 v10>n10, p anchor-03 v6>n5",
+                "rank: anchor-03 (52) > TONIGHT (BOTTOM: below all four anchors)",
+                "sum: m9+a7+c14+d10+p5=45"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01140812,
+              "duration_s": 31
+            },
+            {
+              "model_total": 45,
+              "model_scores": {
+                "mechanism": 10,
+                "ambition": 7,
+                "craft": 13,
+                "distinctness": 10,
+                "polish": 5
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "Rank: below all four anchors. Tonight is caption-led title cards with one size-encoding beat, so it scores 45, under anchor-03 (52).",
+                "crit: m anchor-03 v16>10, a anchor-03 v10>7, c anchor-05 v14>13, d anchor-03 v10>10, p anchor-03 v6>5",
+                "rank: anchor-03 (52) > TONIGHT > BOTTOM",
+                "sum: 10+7+13+10+5=45"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.011848520000000001,
+              "duration_s": 34
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-03",
+          "agreed": 52,
+          "calibration_anchors": [
+            "anchor-02",
+            "anchor-04",
+            "anchor-07",
+            "anchor-11"
+          ],
+          "model_total": 63,
+          "error": 11,
+          "model_scores": {
+            "mechanism": 15,
+            "ambition": 13,
+            "craft": 16,
+            "distinctness": 11,
+            "polish": 8
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0357,
+          "duration_s": 36,
+          "samples": [
+            {
+              "model_total": 69,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 14,
+                "craft": 16,
+                "distinctness": 16,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 v15>15, a anchor-04 v12>14, c anchor-04 v17>16, d anchor-11 v18>16, p anchor-04 v7>8",
+                "rank: anchor-07 (75) > TONIGHT > anchor-04 (61)",
+                "sum: 15+14+16+16+8=69"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.012204560000000001,
+              "duration_s": 36
+            },
+            {
+              "model_total": 56,
+              "model_scores": {
+                "mechanism": 13,
+                "ambition": 12,
+                "craft": 14,
+                "distinctness": 11,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 15>13, a anchor-04 12>12, c anchor-04 17>14, d anchor-04 10>11, p anchor-04 7>6",
+                "rank: anchor-04 (61) > TONIGHT > anchor-02 (39)",
+                "sum: 13+12+14+11+6=56"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.0115376,
+              "duration_s": 30
+            },
+            {
+              "model_total": 66,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 13,
+                "craft": 18,
+                "distinctness": 11,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 v15>16, a anchor-04 v12>13, c anchor-04 v17>18, d anchor-04 v10>11, p anchor-04 v7>8",
+                "rank: anchor-07 (75) > TONIGHT > anchor-04 (61)",
+                "sum: 16+13+18+11+8=66"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.011933280000000001,
+              "duration_s": 32
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-04",
+          "agreed": 61,
+          "calibration_anchors": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-09",
+            "anchor-12"
+          ],
+          "model_total": 62,
+          "error": 1,
+          "model_scores": {
+            "mechanism": 14,
+            "ambition": 12,
+            "craft": 16,
+            "distinctness": 14,
+            "polish": 6
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0405,
+          "duration_s": 47,
+          "samples": [
+            {
+              "model_total": 59,
+              "model_scores": {
+                "mechanism": 12,
+                "ambition": 12,
+                "craft": 16,
+                "distinctness": 13,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>12, a anchor-08 v16>12, c anchor-08 v16>16, d anchor-08 v12>13, p anchor-12 v8>6",
+                "rank: anchor-02 (39) > TONIGHT > anchor-08 (65)",
+                "sum: m+a+c+d+p=59: 12+12+16+13+6=59"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.013003710000000002,
+              "duration_s": 37
+            },
+            {
+              "model_total": 62,
+              "model_scores": {
+                "mechanism": 14,
+                "ambition": 11,
+                "craft": 16,
+                "distinctness": 15,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>14, a anchor-08 v16>11, c anchor-08 v16>16, d anchor-12 v15>15, p anchor-08 v5>6",
+                "rank: anchor-08 (65) > TONIGHT > anchor-02 (39)",
+                "sum: 14+11+16+15+6=62"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01318215,
+              "duration_s": 39
+            },
+            {
+              "model_total": 64,
+              "model_scores": {
+                "mechanism": 14,
+                "ambition": 13,
+                "craft": 17,
+                "distinctness": 14,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>14, a anchor-08 v16>13, c anchor-08 v16>17, d anchor-08 v12>14, p anchor-08 v5>6",
+                "rank: anchor-08 (65) > TONIGHT > anchor-02 (39)",
+                "sum: m14+a13+c17+d14+p6=64"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.014326209999999999,
+              "duration_s": 47
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-05",
+          "agreed": 66,
+          "calibration_anchors": [
+            "anchor-01",
+            "anchor-08",
+            "anchor-06",
+            "anchor-10"
+          ],
+          "model_total": 62,
+          "error": -4,
+          "model_scores": {
+            "mechanism": 15,
+            "ambition": 10,
+            "craft": 15,
+            "distinctness": 15,
+            "polish": 7
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0356,
+          "duration_s": 33,
+          "samples": [
+            {
+              "model_total": 62,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 11,
+                "craft": 15,
+                "distinctness": 15,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 16>15, a anchor-01 8>11, c anchor-08 16>15, d anchor-06 14>15, p anchor-01 6>6",
+                "rank: anchor-01 (52) > TONIGHT > anchor-08 (65)",
+                "sum: 15+11+15+15+6=62"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01142363,
+              "duration_s": 32
+            },
+            {
+              "model_total": 56,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 8,
+                "craft": 14,
+                "distinctness": 12,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-01 v15>15, a anchor-01 v8>8, c anchor-01 v13>14, d anchor-01 v10>12, p anchor-01 v6>7",
+                "rank: anchor-08 (65) > TONIGHT > anchor-01 (52)",
+                "sum: 15+8+14+12+7=56"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.011987349999999999,
+              "duration_s": 33
+            },
+            {
+              "model_total": 63,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 10,
+                "craft": 15,
+                "distinctness": 15,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 17>16, a anchor-01 8>10, c anchor-06 14>15, d anchor-06 14>15, p anchor-06 7>7",
+                "rank: anchor-08 (65) > TONIGHT > anchor-01 (52)",
+                "sum: m+a+c+d+p=16+10+15+15+7=63"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01218132,
+              "duration_s": 33
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-06",
+          "agreed": 69,
+          "calibration_anchors": [
+            "anchor-03",
+            "anchor-04",
+            "anchor-09",
+            "anchor-11"
+          ],
+          "model_total": 63,
+          "error": -6,
+          "model_scores": {
+            "mechanism": 15,
+            "ambition": 14,
+            "craft": 15,
+            "distinctness": 13,
+            "polish": 6
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0373,
+          "duration_s": 41,
+          "samples": [
+            {
+              "model_total": 60,
+              "model_scores": {
+                "mechanism": 14,
+                "ambition": 14,
+                "craft": 13,
+                "distinctness": 12,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 v15>14, a anchor-04 v12>14, c anchor-04 v17>13, d anchor-04 v10>12, p anchor-04 v7>7",
+                "rank: anchor-04 (61) > TONIGHT > anchor-03 (52)",
+                "sum: 14+14+13+12+7=60"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01350602,
+              "duration_s": 41
+            },
+            {
+              "model_total": 67,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 15,
+                "craft": 16,
+                "distinctness": 13,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-03 16>17, a anchor-04 12>15, c anchor-09 16>16, d anchor-04 10>13, p anchor-04 7>6",
+                "rank: anchor-09 (78) > TONIGHT > anchor-04 (61)",
+                "sum: 17+15+16+13+6=67"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01234174,
+              "duration_s": 36
+            },
+            {
+              "model_total": 65,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 14,
+                "craft": 15,
+                "distinctness": 15,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-09 16>15, a anchor-04 12>14, c anchor-04 17>15, d anchor-09 16>15, p anchor-03 6>6",
+                "rank: anchor-09 (78) > TONIGHT > anchor-04 (61)",
+                "sum: 15+14+15+15+6=65"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.011475500000000001,
+              "duration_s": 30
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-07",
+          "agreed": 75,
+          "calibration_anchors": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-06",
+            "anchor-12"
+          ],
+          "model_total": 75,
+          "error": 0,
+          "model_scores": {
+            "mechanism": 16,
+            "ambition": 18,
+            "craft": 19,
+            "distinctness": 14,
+            "polish": 8
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0377,
+          "duration_s": 37,
+          "samples": [
+            {
+              "model_total": 73,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 18,
+                "craft": 18,
+                "distinctness": 14,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 17>16, a anchor-06 17>18, c anchor-12 20>18, d anchor-06 14>14, p anchor-06 7>7",
+                "rank: anchor-12 (82) > TONIGHT > anchor-06 (69)",
+                "sum: 16+18+18+14+7=73"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01260245,
+              "duration_s": 35
+            },
+            {
+              "model_total": 76,
+              "model_scores": {
+                "mechanism": 18,
+                "ambition": 18,
+                "craft": 19,
+                "distinctness": 13,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 17>18, a anchor-06 17>18, c anchor-12 20>19, d anchor-06 14>13, p anchor-12 8>8",
+                "rank: anchor-12 (82) > TONIGHT > anchor-06 (69)",
+                "sum: 18+18+19+13+8=76"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01275014,
+              "duration_s": 37
+            },
+            {
+              "model_total": 73,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 15,
+                "craft": 20,
+                "distinctness": 14,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 v17>16, a anchor-08 v16>15, c anchor-12 v20>20, d anchor-06 v14>14, p anchor-12 v8>8",
+                "rank: anchor-12 (82) > TONIGHT > anchor-06 (69)",
+                "sum: 16+15+20+14+8=73"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.012302900000000002,
+              "duration_s": 34
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-08",
+          "agreed": 65,
+          "calibration_anchors": [
+            "anchor-01",
+            "anchor-04",
+            "anchor-06",
+            "anchor-10"
+          ],
+          "model_total": 67,
+          "error": 2,
+          "model_scores": {
+            "mechanism": 16,
+            "ambition": 14,
+            "craft": 17,
+            "distinctness": 13,
+            "polish": 7
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.038,
+          "duration_s": 39,
+          "samples": [
+            {
+              "model_total": 68,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 14,
+                "craft": 17,
+                "distinctness": 13,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 v15>16, a anchor-04 v12>14, c anchor-04 v17>17, d anchor-06 v14>13, p anchor-04 v7>8",
+                "rank: anchor-04 (61) > TONIGHT > anchor-06 (69)",
+                "sum: 16+14+17+13+8=68"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.012356450000000001,
+              "duration_s": 38
+            },
+            {
+              "model_total": 68,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 14,
+                "craft": 18,
+                "distinctness": 13,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 v15>16, a anchor-04 v12>14, c anchor-04 v17>18, d anchor-06 v14>13, p anchor-06 v7>7",
+                "rank: anchor-06 (69) > TONIGHT > anchor-04 (61)",
+                "sum: 16+14+18+13+7=68"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01243259,
+              "duration_s": 34
+            },
+            {
+              "model_total": 62,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 12,
+                "craft": 16,
+                "distinctness": 12,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-04 15>15, a anchor-04 12>12, c anchor-04 17>16, d anchor-04 10>12, p anchor-04 7>7",
+                "rank: anchor-06 (69) > TONIGHT > anchor-04 (61)",
+                "sum: 15+12+16+12+7=62"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01324267,
+              "duration_s": 39
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-09",
+          "agreed": 78,
+          "calibration_anchors": [
+            "anchor-03",
+            "anchor-04",
+            "anchor-06",
+            "anchor-11"
+          ],
+          "model_total": 73,
+          "error": -5,
+          "model_scores": {
+            "mechanism": 16,
+            "ambition": 19,
+            "craft": 17,
+            "distinctness": 14,
+            "polish": 7
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 4,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0392,
+          "duration_s": 37,
+          "samples": [
+            {
+              "model_total": 74,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 19,
+                "craft": 18,
+                "distinctness": 15,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 v17>15, a anchor-06 v17>19, c anchor-04 v17>18, d anchor-06 v14>15, p anchor-04 v7>7",
+                "rank: anchor-11 (89) > TONIGHT > anchor-06 (69)",
+                "sum: m+a+c+d+p=15+19+18+15+7=74"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.012469609999999999,
+              "duration_s": 35
+            },
+            {
+              "model_total": 71,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 18,
+                "craft": 16,
+                "distinctness": 14,
+                "polish": 6
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 4,
+              "cli_num_turns": 10,
+              "verification_lines": [
+                "crit: m anchor-06 v17>17, a anchor-06 v17>18, c anchor-06 v14>16, d anchor-06 v14>14, p anchor-06 v7>6",
+                "rank: anchor-11 (89) > TONIGHT > anchor-06 (69)",
+                "sum: 17+18+16+14+6=71"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01364928,
+              "duration_s": 35
+            },
+            {
+              "model_total": 74,
+              "model_scores": {
+                "mechanism": 16,
+                "ambition": 19,
+                "craft": 17,
+                "distinctness": 14,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 17>16, a anchor-06 17>19, c anchor-04 17>17, d anchor-06 14>14, p anchor-06 7>8",
+                "rank: anchor-11 (89) > TONIGHT > anchor-06 (69)",
+                "sum: 16+19+17+14+8=74"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.013088190000000003,
+              "duration_s": 37
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-10",
+          "agreed": 87,
+          "calibration_anchors": [
+            "anchor-02",
+            "anchor-08",
+            "anchor-09",
+            "anchor-12"
+          ],
+          "model_total": 78,
+          "error": -9,
+          "model_scores": {
+            "mechanism": 17,
+            "ambition": 18,
+            "craft": 19,
+            "distinctness": 16,
+            "polish": 8
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0357,
+          "duration_s": 31,
+          "samples": [
+            {
+              "model_total": 77,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 18,
+                "craft": 19,
+                "distinctness": 15,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-08 v16>17, a anchor-08 v16>18, c anchor-12 v20>19, d anchor-09 v16>15, p anchor-12 v8>8",
+                "rank: anchor-09 (78) > TONIGHT > anchor-08 (65)",
+                "sum: 17+18+19+15+8=77"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.011996979999999999,
+              "duration_s": 30
+            },
+            {
+              "model_total": 79,
+              "model_scores": {
+                "mechanism": 19,
+                "ambition": 17,
+                "craft": 19,
+                "distinctness": 16,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-12 v18>19, a anchor-08 v16>17, c anchor-12 v20>19, d anchor-09 v16>16, p anchor-12 v8>8",
+                "rank: anchor-12 (82) > TONIGHT > anchor-09 (78)",
+                "sum: 19+17+19+16+8=79"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.011543939999999999,
+              "duration_s": 28
+            },
+            {
+              "model_total": 79,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 19,
+                "craft": 20,
+                "distinctness": 16,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-12 18>17, a anchor-12 21>19, c anchor-12 20>20, d anchor-12 15>16, p anchor-12 8>7",
+                "rank: anchor-12 (82) > TONIGHT > anchor-09 (78)",
+                "sum: 17+19+20+16+7=79"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01219801,
+              "duration_s": 31
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-11",
+          "agreed": 89,
+          "calibration_anchors": [
+            "anchor-01",
+            "anchor-05",
+            "anchor-06",
+            "anchor-10"
+          ],
+          "model_total": 81,
+          "error": -8,
+          "model_scores": {
+            "mechanism": 17,
+            "ambition": 20,
+            "craft": 20,
+            "distinctness": 16,
+            "polish": 8
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0347,
+          "duration_s": 30,
+          "samples": [
+            {
+              "model_total": 81,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 20,
+                "craft": 20,
+                "distinctness": 16,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-10 v19>17, a anchor-10 v21>20, c anchor-10 v21>20, d anchor-10 v17>16, p anchor-10 v9>8",
+                "rank: anchor-10 (87) > TONIGHT > anchor-06 (69)",
+                "sum: 17+20+20+16+8=81"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01130507,
+              "duration_s": 26
+            },
+            {
+              "model_total": 81,
+              "model_scores": {
+                "mechanism": 18,
+                "ambition": 19,
+                "craft": 20,
+                "distinctness": 16,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-06 v17>18, a anchor-10 v21>19, c anchor-10 v21>20, d anchor-10 v17>16, p anchor-10 v9>8",
+                "rank: anchor-06 (69) > TONIGHT > anchor-10 (87)",
+                "sum: 18+19+20+16+8=81"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01126881,
+              "duration_s": 27
+            },
+            {
+              "model_total": 82,
+              "model_scores": {
+                "mechanism": 17,
+                "ambition": 20,
+                "craft": 20,
+                "distinctness": 17,
+                "polish": 8
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-10 19>17, a anchor-10 21>20, c anchor-10 21>20, d anchor-10 17>17, p anchor-10 9>8",
+                "rank: anchor-10 (87) > TONIGHT > anchor-06 (69)",
+                "sum: m+a+c+d+p=17+20+20+17+8=82"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.012093129999999999,
+              "duration_s": 30
+            }
+          ]
+        },
+        {
+          "anchor": "anchor-12",
+          "agreed": 82,
+          "calibration_anchors": [
+            "anchor-03",
+            "anchor-04",
+            "anchor-07",
+            "anchor-10"
+          ],
+          "model_total": 71,
+          "error": -11,
+          "model_scores": {
+            "mechanism": 15,
+            "ambition": 18,
+            "craft": 17,
+            "distinctness": 14,
+            "polish": 7
+          },
+          "valid": true,
+          "validation_errors": [],
+          "api_turns": 3,
+          "cli_num_turns": null,
+          "verification_lines": [],
+          "subtype": "success",
+          "cost_usd": 0.0374,
+          "duration_s": 36,
+          "samples": [
+            {
+              "model_total": 71,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 18,
+                "craft": 17,
+                "distinctness": 14,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-07 16>15, a anchor-07 19>18, c anchor-04 17>17, d anchor-07 13>14, p anchor-04 7>7",
+                "rank: anchor-04 (61) > TONIGHT > anchor-07 (75)",
+                "sum: 15+18+17+14+7=71"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01279145,
+              "duration_s": 36
+            },
+            {
+              "model_total": 71,
+              "model_scores": {
+                "mechanism": 15,
+                "ambition": 18,
+                "craft": 17,
+                "distinctness": 14,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-07 16>15, a anchor-07 19>18, c anchor-07 20>17, d anchor-07 13>14, p anchor-07 7>7",
+                "rank: anchor-07 (75) > TONIGHT > anchor-04 (61)",
+                "sum: 15+18+17+14+7=71"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.012781810000000001,
+              "duration_s": 36
+            },
+            {
+              "model_total": 70,
+              "model_scores": {
+                "mechanism": 14,
+                "ambition": 17,
+                "craft": 18,
+                "distinctness": 14,
+                "polish": 7
+              },
+              "valid": true,
+              "validation_errors": [],
+              "api_turns": 3,
+              "cli_num_turns": 9,
+              "verification_lines": [
+                "crit: m anchor-07 16>14, a anchor-07 19>17, c anchor-07 20>18, d anchor-07 13>14, p anchor-07 7>7",
+                "rank: anchor-04 (61) > TONIGHT > anchor-07 (75)",
+                "sum: m+a+c+d+p=14+17+18+14+7=70"
+              ],
+              "subtype": "success",
+              "cost_usd": 0.01185054,
+              "duration_s": 32
+            }
+          ]
+        }
+      ]
+    }
+  }
 }
