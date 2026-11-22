@@ -1,0 +1,19 @@
+Nightly Demoparty
+Copyright 2026 Aieat Assam
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full license text.
+
+Third-party material
+--------------------
+
+The following third-party works are vendored or referenced by this project.
+Each keeps its own license, which applies to that material only.
+
+- hallmark (MIT). Design skill, vendored under .claude/skills/hallmark/.
+  [Attribution and copyright notice to be filled in when vendored.]
+
+- agent-emotion-core. Emotion engine used as a library at stage 2.
+  [Attribution, copyright notice and license identifier to be filled in when vendored.]
+
+<!-- Add further third-party entries here: name, license, copyright, source. -->

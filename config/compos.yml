@@ -1,0 +1,58 @@
+compos:
+  - id: 4k-shader
+    label: 4K shader intro
+    size_budget_bytes: 4096
+    requires_audio: false
+    notes: Single fragment shader, must have a time arc
+  - id: 16k-demo
+    label: 16K realtime demo
+    size_budget_bytes: 16384
+    requires_audio: false
+    notes: WebGL2 or WebGPU, multi-scene
+  - id: audiovisual
+    label: Audiovisual
+    size_budget_bytes: 24576
+    requires_audio: true
+    notes: Synthesised sound drives visuals, or the reverse
+  - id: interactive-toy
+    label: Interactive toy
+    size_budget_bytes: 24576
+    requires_audio: false
+    notes: Pointer or keyboard changes the system, not just the camera
+  - id: data-sculpture
+    label: Data sculpture
+    size_budget_bytes: 32768
+    requires_audio: false
+    notes: A real dataset from the dossier, rendered as form; budget includes inlined data
+  - id: kinetic-type
+    label: Kinetic type
+    size_budget_bytes: 12288
+    requires_audio: false
+    notes: SVG or canvas typography, text taken from the research
+  - id: simulation
+    label: Simulation
+    size_budget_bytes: 24576
+    requires_audio: false
+    notes: A faithful small model of the researched mechanism
+  - id: constraint-night
+    label: Constraint night
+    size_budget_bytes: 16384
+    requires_audio: false
+    notes: One harsh limit per night; the default budget applies when no constraint variant is picked
+    constraints:
+      - id: 1kb-micro
+        label: 1 KB
+        size_budget_bytes: 1024
+        rule: Whole piece in 1024 bytes minified
+      - id: two-colour
+        label: Two colours
+        size_budget_bytes: 16384
+        rule: Strictly two colours in the rendered output
+      - id: css-only
+        label: CSS only
+        size_budget_bytes: 16384
+        rule: No JS rendering; CSS animation only
+      - id: no-canvas
+        label: No canvas
+        size_budget_bytes: 16384
+        rule: Pure SVG or DOM; no canvas and no WebGL

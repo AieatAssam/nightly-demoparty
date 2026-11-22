@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Noise</title>
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+// Unseeded random noise as the whole idea: lint must flag math-random-render.
+(() => {
+  const ctx = document.getElementById('c').getContext('2d');
+  const draw = () => {
+    for (let i = 0; i < 400; i++) {
+      ctx.fillStyle = `hsl(${Math.random() * 360}, 90%, 60%)`;
+      ctx.fillRect(Math.random() * 1280, Math.random() * 720, 40, 40);
+    }
+    requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

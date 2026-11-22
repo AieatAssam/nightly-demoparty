@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Still Life</title>
+<style>html,body{margin:0;height:100%;background:#0b0d12;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+// Draws one frame and never changes it: the motion and development gates must fail.
+(() => {
+  const ctx = document.getElementById('c').getContext('2d');
+  const bg = ctx.createLinearGradient(0, 0, 0, 720);
+  bg.addColorStop(0, 'hsl(210, 40%, 14%)');
+  bg.addColorStop(1, 'hsl(250, 45%, 22%)');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 1280, 720);
+  const blobs = [[300, 200, 180, 190], [860, 260, 220, 30], [620, 520, 160, 300]];
+  for (const [x, y, r, hue] of blobs) {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `hsla(${hue}, 85%, 62%, 0.95)`);
+    g.addColorStop(1, `hsla(${hue}, 80%, 35%, 0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+  }
+})();
+</script>
+</body>
+</html>

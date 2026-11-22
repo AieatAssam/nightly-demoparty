@@ -1,0 +1,46 @@
+# Patterns are single-quoted so backslashes reach the regex engine unchanged.
+static_rules:
+  - id: math-random-render
+    pattern: 'Math\.random\s*\('
+    flags: "i"
+    message: "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js."
+  - id: shadertoy-boilerplate
+    pattern: '\bmainImage\s*\(\s*out\s+vec4|shadertoy\.com'
+    flags: "i"
+    message: "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template."
+  - id: matrix-rain-cliche
+    pattern: 'matrixRain|katakana.*drop'
+    flags: "i"
+    message: "Matrix rain is on the permanent slop list."
+  - id: hello-world-plasma
+    pattern: '\bsin\([^)]*\)\s*\+\s*(?:Math\.)?sin\([^)]*\)\s*\+\s*(?:Math\.)?sin\([^)]*\)\s*\+\s*(?:Math\.)?sin\('
+    flags: "i"
+    message: "Four-sine plasma boilerplate. Build a field with development instead."
+
+visual_slop:
+  - id: plain-plasma
+    description: "Plain plasma: sine sums as the whole picture."
+  - id: plain-starfield
+    description: "Plain starfield: points drifting toward the camera with no structure behind them."
+  - id: plain-tunnel
+    description: "Plain tunnel: concentric rings flying past with nothing else happening."
+  - id: matrix-rain
+    description: "Matrix rain: falling glyph columns."
+  - id: mouse-particles-without-system
+    description: "Mouse-following particles with no system behind them."
+  - id: single-primitive-on-gradient
+    description: "A single raymarched sphere or torus on a gradient."
+  - id: untouched-fractal-zoom
+    description: "Untouched Mandelbrot or Julia zoom."
+  - id: default-gradient-palette
+    description: "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default."
+  - id: bloom-hiding-empty-scene
+    description: "Bloom or chromatic aberration used to hide an empty scene."
+  - id: math-random-as-idea
+    description: "Math.random() noise as the main visual idea."
+  - id: no-development-loop
+    description: "A loop with no development: the 20 s frame looks like the 2 s frame."
+  - id: captions-doing-visuals-work
+    description: "Title cards or captions doing the work the visuals should do."
+  - id: shadertoy-copy
+    description: "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Networked</title>
+<style>html,body{margin:0;height:100%;background:#101018;color:#f0e0a0}</style>
+</head>
+<body>
+<h1>Loading</h1>
+<script>
+// Pulls a remote image at runtime: the network gate must report it as a blocked request.
+const img = new Image();
+img.src = 'https://cdn.example.net/background.gif';
+document.body.appendChild(img);
+let t = 0;
+const tick = () => { t += 1; document.body.style.background = `hsl(${(t * 2) % 360}, 40%, 12%)`; requestAnimationFrame(tick); };
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

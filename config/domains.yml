@@ -1,0 +1,309 @@
+domains:
+  # science
+  - id: bioluminescent-flash-cascades
+    name: Bioluminescent flash cascades
+    category: science
+    weight: 1.0
+    prompt_hint: "Dinoflagellate flashes: how mechanical shear triggers a proton-gated luciferin burst that travels along a wave front."
+  - id: diatom-frustule-lattices
+    name: Diatom frustule lattices
+    category: science
+    weight: 1.0
+    prompt_hint: "Diatom silica shells: pore arrays that act as photonic crystals, and how their spacing sets iridescence."
+  - id: slime-mold-network-growth
+    name: Slime mold network growth
+    category: science
+    weight: 1.0
+    prompt_hint: "Physarum foraging: flux-reinforced tubes that optimise a graph with no central controller."
+  - id: magnetotactic-bacteria
+    name: Magnetotactic bacteria
+    category: science
+    weight: 1.0
+    prompt_hint: "Magnetosome chains that align like compass needles, and how the cell swims along field lines."
+  - id: dendritic-solidification
+    name: Dendritic solidification
+    category: science
+    weight: 1.0
+    prompt_hint: "Anisotropic surface energy and undercooling that pick the branch tips of snowflakes and alloys."
+  - id: lichen-radial-growth
+    name: Lichen radial growth
+    category: science
+    weight: 1.0
+    prompt_hint: "Fungal hyphae and algal layers that grow concentric rings at a measured radial rate."
+  - id: ferrofluid-rosensweig-spikes
+    name: Ferrofluid Rosensweig spikes
+    category: science
+    weight: 1.0
+    prompt_hint: "The hexagonal spike lattice that forms on a ferrofluid pool above a critical field strength."
+  - id: mycorrhizal-carbon-routing
+    name: Mycorrhizal carbon routing
+    category: science
+    weight: 1.0
+    prompt_hint: "Root-fungus networks that route sugars along resistance gradients between neighbouring trees."
+  # mathematics
+  - id: penrose-inflation
+    name: Penrose inflation
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "Substitution rules that regrow an aperiodic kite-and-dart tiling from a single seed tile."
+  - id: jones-polynomial-knots
+    name: Jones polynomial of knots
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "How skein relations turn a knot diagram into a polynomial, and why trefoil and figure-eight differ."
+  - id: lorenz-lobe-switching
+    name: Lorenz lobe switching
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "Trajectories that hop between two unstable wings of the Lorenz attractor at irregular intervals."
+  - id: wallpaper-group-tessellation
+    name: Wallpaper group tessellation
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "The seventeen plane symmetry groups and the fundamental domains that generate each Escher-style tiling."
+  - id: continued-fraction-convergents
+    name: Continued fraction convergents
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "Successive rational approximations that trace a structured pattern when plotted as points in the plane."
+  - id: loop-erased-random-walk
+    name: Loop-erased random walk
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "Wilson's algorithm, where erasing loops from a random walk yields a uniform spanning tree."
+  - id: quaternion-julia-slices
+    name: Quaternion Julia slices
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "Fixed-w cross-sections of a four-dimensional fractal, and which slices stay connected."
+  - id: ulam-spiral-prime-bands
+    name: Ulam spiral prime bands
+    category: mathematics
+    weight: 1.0
+    prompt_hint: "Diagonal bands of prime density in the Ulam spiral, and the quadratic polynomials that leave them behind."
+  # craft
+  - id: kintsugi-fracture-geometry
+    name: Kintsugi fracture geometry
+    category: craft
+    weight: 1.0
+    prompt_hint: "The branching pattern of a ceramic break, and how lacquer and gold follow the fracture paths."
+  - id: letterpress-impression-depth
+    name: Letterpress impression depth
+    category: craft
+    weight: 1.0
+    prompt_hint: "Ink squash and paper deformation under plate pressure, and how impression depth creates relief."
+  - id: ebru-marbling-combs
+    name: Ebru marbling combs
+    category: craft
+    weight: 1.0
+    prompt_hint: "A hair comb dragging paint on viscous size to produce repeated combed figures."
+  - id: shibori-resist-folds
+    name: Shibori resist folds
+    category: craft
+    weight: 1.0
+    prompt_hint: "How folding and binding cloth maps a fold geometry onto indigo penetration."
+  - id: spindle-turning-profiles
+    name: Spindle turning profiles
+    category: craft
+    weight: 1.0
+    prompt_hint: "A turned spindle silhouette as a revolved curve, and the tool path that carves it."
+  - id: pattern-welded-damascus
+    name: Pattern-welded damascus
+    category: craft
+    weight: 1.0
+    prompt_hint: "Repeated folding of steel layers, and how acid etching exposes the banding."
+  - id: coptic-stitch-order
+    name: Coptic stitch order
+    category: craft
+    weight: 1.0
+    prompt_hint: "The sewing sequence that lets a book spine lie flat, and how each chain loop locks the next."
+  - id: twill-weave-drafts
+    name: Twill weave drafts
+    category: craft
+    weight: 1.0
+    prompt_hint: "Warp and weft interlacing orders that produce diagonal ridges, as read from a threading draft."
+  # history
+  - id: antikythera-gear-trains
+    name: Antikythera gear trains
+    category: history
+    weight: 1.0
+    prompt_hint: "Epicyclic gearing that models lunar anomaly and the Metonic cycle inside a pocket-sized mechanism."
+  - id: stereographic-astrolabe
+    name: Stereographic astrolabe projection
+    category: history
+    weight: 1.0
+    prompt_hint: "How the celestial sphere is projected onto a flat plate, and why the mapping keeps circles as circles."
+  - id: soroban-bead-arithmetic
+    name: Soroban bead arithmetic
+    category: history
+    weight: 1.0
+    prompt_hint: "Heaven and earth beads that encode digits, and the carry motions that make them compute."
+  - id: cuneiform-wedge-numerals
+    name: Cuneiform wedge numerals
+    category: history
+    weight: 1.0
+    prompt_hint: "Stylus wedges pressed into clay as sexagesimal numbers, and place value without a zero symbol."
+  - id: caravanserai-spacing
+    name: Caravanserai route spacing
+    category: history
+    weight: 1.0
+    prompt_hint: "Water distance and day's-march spacing that set the placement of caravan stops along a route."
+  - id: voynich-word-statistics
+    name: Voynich word statistics
+    category: history
+    weight: 1.0
+    prompt_hint: "Word-level repetition and entropy patterns in the Voynich manuscript that resist ordinary language models."
+  - id: rhumb-line-spiral
+    name: Rhumb line spiral
+    category: history
+    weight: 1.0
+    prompt_hint: "A constant-bearing sailing course drawn on a Mercator chart, and why it spirals toward the pole."
+  - id: phantasmagoria-lantern
+    name: Phantasmagoria lantern
+    category: history
+    weight: 1.0
+    prompt_hint: "Lantern slides moved on rails and refocused to make ghostly figures appear to advance."
+  # nature
+  - id: starling-topological-neighbours
+    name: Starling topological neighbours
+    category: nature
+    weight: 1.0
+    prompt_hint: "Murmurations that track seven neighbours rather than a metric radius, and the turning wave that passes through a flock."
+  - id: nautilus-log-spiral
+    name: Nautilus logarithmic chambers
+    category: nature
+    weight: 1.0
+    prompt_hint: "Chamber septa that scale by a constant factor, producing a logarithmic spiral from one growth rule."
+  - id: ballistospore-launch
+    name: Ballistospore launch
+    category: nature
+    weight: 1.0
+    prompt_hint: "Surface-tension droplet coalescence that flings a spore off its sterigma."
+  - id: cicada-chorus-synchrony
+    name: Cicada chorus synchrony
+    category: nature
+    weight: 1.0
+    prompt_hint: "Pulse-coupled tymbal clicks that lock across a grove into a single rhythm."
+  - id: aeolian-ripple-saltation
+    name: Aeolian saltation ripples
+    category: nature
+    weight: 1.0
+    prompt_hint: "Wind-blown grains that hop and set a ripple wavelength through the length of their bounce."
+  - id: coral-accretion-morphology
+    name: Coral accretion morphology
+    category: nature
+    weight: 1.0
+    prompt_hint: "Calcification rates that depend on light and flow, producing branching coral forms."
+  - id: pine-cone-hygroscopic-scales
+    name: Pine cone hygroscopic scales
+    category: nature
+    weight: 1.0
+    prompt_hint: "Bilayer scale stress that opens and closes a cone with humidity, with no living muscle involved."
+  - id: chromatophore-wave-patterns
+    name: Chromatophore wave patterns
+    category: nature
+    weight: 1.0
+    prompt_hint: "Sequential muscle contractions that spread across cephalopod skin as a travelling colour wave."
+  # music
+  - id: pythagorean-comma-drift
+    name: Pythagorean comma drift
+    category: music
+    weight: 1.0
+    prompt_hint: "Stacked fifths that drift from the octave, and the tuning compromises that follow."
+  - id: kotekan-interlock
+    name: Kotekan interlock
+    category: music
+    weight: 1.0
+    prompt_hint: "Two gamelan parts that alternate notes so that neither plays the melody alone."
+  - id: tabla-tala-cycles
+    name: Tabla tala cycles
+    category: music
+    weight: 1.0
+    prompt_hint: "Theka patterns that divide a sixteen-beat cycle into uneven groups."
+  - id: glass-harmonica-partials
+    name: Glass harmonica partials
+    category: music
+    weight: 1.0
+    prompt_hint: "Bowl wall vibration modes, and how a wetted rim shifts the pitch of each partial."
+  - id: theremin-heterodyne
+    name: Theremin heterodyne
+    category: music
+    weight: 1.0
+    prompt_hint: "Beat frequency between two oscillators used as a pitch and loudness signal."
+  - id: euclidean-rhythm-distribution
+    name: Euclidean rhythm distribution
+    category: music
+    weight: 1.0
+    prompt_hint: "Bjorklund distribution of k onsets across n steps, and the world rhythms that fall out of it."
+  - id: ondes-sympathetic-strings
+    name: Ondes Martenot sympathetic strings
+    category: music
+    weight: 1.0
+    prompt_hint: "Continuous ribbon glissando over sympathetic resonance strings that colour each note."
+  # architecture
+  - id: gothic-rib-vault-thrust
+    name: Gothic rib vault thrust
+    category: architecture
+    weight: 1.0
+    prompt_hint: "Pointed arches that route thrust down ribs to flying buttresses, along the funicular line of pressure."
+  - id: muqarnas-stalactite-cells
+    name: Muqarnas stalactite cells
+    category: architecture
+    weight: 1.0
+    prompt_hint: "Prismatic vault cells repeated in tiers, where each tier is a modular unit of a larger dome."
+  - id: board-marked-concrete
+    name: Board-marked concrete
+    category: architecture
+    weight: 1.0
+    prompt_hint: "Timber grain imprinted into formwork, leaving a readable texture on cured concrete."
+  - id: catenary-hanging-arch
+    name: Catenary hanging arch
+    category: architecture
+    weight: 1.0
+    prompt_hint: "An inverted hanging chain whose shape carries pure compression, as in the Gaudi method."
+  - id: voronoi-facade-perforation
+    name: Voronoi facade perforation
+    category: architecture
+    weight: 1.0
+    prompt_hint: "Perforation holes sized by distance to a field, forming a cell-based facade."
+  - id: tensegrity-prestress
+    name: Tensegrity prestress
+    category: architecture
+    weight: 1.0
+    prompt_hint: "Floating compression struts held inside a continuous tension network by prestress."
+  - id: shoji-ken-module
+    name: Shoji ken module
+    category: architecture
+    weight: 1.0
+    prompt_hint: "The ken module that sets the rhythm of wooden lattice grids and the light that passes through them."
+  - id: warren-truss-load-paths
+    name: Warren truss load paths
+    category: architecture
+    weight: 1.0
+    prompt_hint: "Diagonal members that alternate between tension and compression along a bridge truss."
+  # engineering
+  - id: anchor-escapement-impulse
+    name: Anchor escapement impulse
+    category: engineering
+    weight: 1.0
+    prompt_hint: "Impulse pallets that convert a balance oscillation into an intermittent tick of the train."
+  - id: von-karman-vortex-street
+    name: Von Karman vortex street
+    category: engineering
+    weight: 1.0
+    prompt_hint: "Alternating vortices shed behind a cylinder at a Strouhal frequency set by flow speed."
+  - id: grain-growth-annealing
+    name: Grain growth during annealing
+    category: engineering
+    weight: 1.0
+    prompt_hint: "Boundary curvature driving grain coarsening, following von Neumann's law for facet count."
+  - id: pll-acquisition-lock
+    name: Phase-locked loop acquisition
+    category: engineering
+    weight: 1.0
+    prompt_hint: "A voltage-controlled oscillator pulling in and then tracking a reference signal."
+  - id: differential-torque-split
+    name: Differential torque split
+    category: engineering
+    weight: 1.0
+    prompt_hint: "Planetary gears that split torque between wheels turning at different speeds through a corner."

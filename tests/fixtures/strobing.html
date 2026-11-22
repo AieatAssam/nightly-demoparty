@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Strobe</title>
+<style>html,body{margin:0;height:100%;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+// Full-frame white/black flips at 6 Hz: far above the 3 flashes-per-second limit.
+(() => {
+  const ctx = document.getElementById('c').getContext('2d');
+  const draw = (ms) => {
+    ctx.fillStyle = Math.floor(ms / 83.333) % 2 ? '#ffffff' : '#000000';
+    ctx.fillRect(0, 0, 1280, 720);
+    requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

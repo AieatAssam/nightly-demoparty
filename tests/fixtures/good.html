@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; media-src blob:">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slow Tide</title>
+<style>
+html,body{margin:0;height:100%;background:#0b0d12;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+(() => {
+  const cv = document.getElementById('c');
+  const ctx = cv.getContext('2d');
+  const W = 1280;
+  const H = 720;
+  const S = Math.sin;
+  const C = Math.cos;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Reduced-motion variant: the same piece on a much slower clock.
+  const speed = reduce ? 0.12 : 1;
+
+  // Seven fixed blobs; positions come from index-based phases, so every run is identical.
+  const blobs = [];
+  for (let i = 0; i < 7; i++) {
+    blobs.push({ fx: 0.31 + i * 0.09, fy: 0.23 + i * 0.13, ph: i * 1.7, r: 150 + (i % 3) * 70, hue: 190 + i * 24 });
+  }
+
+  function draw(ms) {
+    const t = (ms / 1000) * speed;
+
+    // Slow global brightness and hue drift across the whole frame.
+    const lift = 0.5 + 0.5 * S(t * 0.35);
+    const hueBase = 200 + t * 3;
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, `hsl(${hueBase}, 40%, ${6 + lift * 16}%)`);
+    bg.addColorStop(1, `hsl(${hueBase + 40}, 45%, ${10 + lift * 22}%)`);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Large soft blobs drifting across the screen.
+    for (const b of blobs) {
+      const x = W * (0.5 + 0.36 * S(t * 0.5 + b.ph) * C(t * 0.21 + b.fx * 4));
+      const y = H * (0.5 + 0.36 * C(t * 0.43 + b.ph) * S(t * 0.17 + b.fy * 5));
+      const r = b.r * (1 + 0.12 * S(t * 0.3 + b.ph));
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      const h = b.hue + t * 4;
+      g.addColorStop(0, `hsla(${h}, 85%, 62%, 0.95)`);
+      g.addColorStop(0.6, `hsla(${h}, 80%, 45%, 0.45)`);
+      g.addColorStop(1, `hsla(${h}, 80%, 35%, 0)`);
+      ctx.fillStyle = g;
+      ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+    }
+
+    // Anchor: a large disc at the centre, visible from the first frame.
+    const pulse = 0.5 + 0.5 * S(t * 0.6);
+    const a = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, 200);
+    a.addColorStop(0, `hsla(40, 90%, ${70 + pulse * 10}%, 0.9)`);
+    a.addColorStop(1, 'hsla(40, 90%, 60%, 0)');
+    ctx.fillStyle = a;
+    ctx.fillRect(W / 2 - 200, H / 2 - 200, 400, 400);
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

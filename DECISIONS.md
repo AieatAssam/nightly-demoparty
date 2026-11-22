@@ -97,7 +97,44 @@ The added files are `plan`, `appraisals`, `meta`, `ledger-entry`, `usage-entry` 
 - Each `meta.attempts[].outcome` matches what ran:
   - `build_failed`: `gates: null`, `verdict: null`.
   - `gates_failed`: `gates.passed === false`, `verdict: null`.
-  - `below_threshold`: `gates.passed === true`, `verdict.total` below the publish threshold.
+  - `below_threshold`: `gates.passed === true`, and `verdict.total` below the publish threshold or `verdict: null` (the jury produced no valid verdict).
   - `pairwise_failed`: `gates.passed === true`, `verdict.total` at or above the threshold, `verdict.pairwise_beats_median === false` and non-null `verdict.pairwise_median_ref` (so it never happens on an empty archive).
   - `passed`: `gates.passed === true`, `verdict.total` at or above the threshold, and either `verdict.pairwise_beats_median === true` or `verdict.pairwise_median_ref === null`.
 - Stage 6 `gates.ts` always runs every browser probe and never stops at the first failure, so `gates.json` holds every measurement and all screenshots even when an early check fails. The only exception is HTML that cannot load or render at all.
+
+## Milestone 1 review fixes (Threads 1R and 1D)
+
+### Decide and ratchet
+
+- **Pairwise fail at the attempt cap goes to B-side.** When the attempt cap is reached and the best attempt scored at or above the publish threshold but lost the pairwise check (`pairwise_failed`), the night is a B-side, not a shelve. SPEC says a pairwise loss "is a fail" for publishing; the piece still cleared the B-side floor, so it lands on the B-sides shelf with a reason naming the lost pairwise comparison. Below the threshold, the usual 60 to 71 B-side band and the below-60 shelve rule apply.
+- **The 30-night median ignores shelved nights.** `median30d` (and so the ratchet) uses only `published` and `b-side` rows with a non-null `score` from the 30 calendar nights before the date. Shelved rows can carry a best-effort score; counting them would let a bad week lower the bar.
+- **The ratchet runs weekly, not nightly.** `harness/cli.ts decide` reads `publish_min` from `config/thresholds.yml` (or `--threshold`). The weekly job runs `harness/cli.ts ratchet [--date D]`, which prints `min(ratchet_cap, max(72, floor(median_30d - ratchet_median_offset)))` (72 when nothing is scored), and writes that value back to `publish_min`. The floor is SPEC's fixed 72 (`RATCHET_FLOOR`), not the current `publish_min`, so a weaker month brings the threshold back down as SPEC's formula does.
+- **Gates passed but no verdict is `below_threshold`.** If the jury never produced a valid verdict for an attempt whose gates passed, `classifyAttempt` records `below_threshold` with `verdict: null`. The attempt is not publishable and its gates did not fail, so this is the honest bucket. The `below_threshold` invariant above therefore reads: `gates.passed === true` and either `verdict === null` or `verdict.total` below the threshold.
+
+### Publish
+
+- `publishNight` treats `plan.dry_run === true` exactly like `dryRun: true`: it writes only under `outputDir` and throws if `outputDir` is missing, so a dry-run plan can never touch the repo ledger or site.
+
+### Gates
+
+- **Gates run under the publish CSP.** The piece is served to Chromium through `injectOrVerifyCsp`, the same function publish uses. `injectOrVerifyCsp` strips every CSP meta tag wherever it appears and inserts one canonical tag right after the doctype (which may follow a BOM, whitespace or comments), or at byte 0 when there is no doctype. The doctype stays first so the page never switches to quirks mode, and the tag can never be inserted inside a script string that happens to contain `<head>`.
+- **Every CSP violation fails the console gate.** An init script records each `securitypolicyviolation` event (eval, string timers, blocked fonts, workers, `data:` fetches, external URLs) into `console_errors`, and external URLs also go to `network_requests`. Chromium logs repeated violations to the console only once, and a piece can catch the `EvalError`, so the event listener is the complete record. WebRTC is outside CSP, so the init script also records any access to `RTCPeerConnection` or `RTCDataChannel`.
+- **Strobe area is 9.5% of the viewport.** WCAG 2.3.1 limits flashes over a 341 x 256 px region at 1024 x 768, which is about 9.5% of 1280 x 720. Cells need not be contiguous, which is stricter than WCAG.
+- **Strobe covers the whole timeline.** The CDP screencast runs from 0.5 s (scaled) until after the t20 screenshot, so a strobe that starts late is caught. Each frame is reduced to its 64 x 36 flash grid on arrival; raw PNGs are never kept.
+- **Strobe fails closed on sparse sampling.** Screencast frames arrive on paint, so a static page sends almost none and that is correct. The strobe gate fails with an "insufficient sampling" message only when the piece is animating (`frame_diff_mean` at or above its floor) and, over the window between the first and last changed frame, the screencast rate is below 14 fps and below half the page's own rAF rate (frames were dropped), or no changed frame was captured at all. A piece that updates via `setInterval` below 14 times a second while rAF runs at full rate would fail closed; none are known.
+- **Reduced motion is sampled at t2 and t8.** Normal and reduced motion are each the larger of the two samples, so a calm intro cannot hide an ignored `prefers-reduced-motion`. The reduced variant must also be non-blank at both times.
+- **Novelty Gate B takes the night's date.** `runHardGates({ date })` and `gate --date D` compare only against earlier ledger rows, so rerunning the gates on the same night never collides with that night's own row. `closest_date` is the row with the smallest distance relative to its own threshold (`hamming / phash_min_hamming` vs `histogram_distance / histogram_min_distance`).
+
+### Static lint
+
+Rejected outright (the canonical CSP blocks most of these at runtime too; the lint catches them before the browser):
+
+- `eval` in any form, including `(0, eval)` and the string `'eval'`; `Function(` with or without `new`; `.constructor` property access (the `(() => {}).constructor("...")` trick). A class `constructor(` method is not affected.
+- `setTimeout` and `setInterval` with a string literal as the first argument.
+- These JS rules (and the network API rules) apply to executable scripts only: no `type`, `type="module"` or a JavaScript MIME type. Shader sources in `<script type="x-shader/...">` are not JS, so GLSL such as `layout(location = 0)` is not navigation. Their bodies still get the URL-literal and slop scans. A declaration such as `const location = ...` is not a location assignment.
+- Navigation: assignments to `location` or `location.href` (and the other URL parts), `location.assign/replace/reload(`, `window.open(` and bare `open(`.
+- `<form>` tags, `javascript:` URIs in attributes (after decoding entities and dropping control characters) or in JS strings.
+- `RTCPeerConnection`, `webkitRTCPeerConnection` and other `RTC*` constructors, including names spelled from concatenated string literals.
+- CSS `url()` hidden with CSS escapes (`\75rl(`), `image-set()` with non-`data:`/`blob:` strings, and any non-safe candidate in a `srcset`.
+
+`fetch` is flagged only as a global (`fetch(`, `window.fetch`, `self.fetch`, `globalThis.fetch`), and neither `fetch` nor `import` is flagged as a method (`o.fetch`) or an object key (`{ import: 1 }`). The `hello-world-plasma` slop rule matches both `sin(` and `Math.sin(`.

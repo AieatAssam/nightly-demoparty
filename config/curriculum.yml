@@ -1,0 +1,227 @@
+techniques:
+  - id: domain-warping
+    name: Domain warping
+    family: noise-field
+    how_to: "Feed fBm noise back into its own coordinates two or three times. Keep octaves low and warp amplitude near 4 for slow folds. Use the seeded noise from lib/noise, never Math.random."
+    snippet: |
+      // Iterated domain warp. fbm(vec2) -> float in [-1, 1], from lib/noise.
+      vec2 warp(vec2 p, float t) {
+        vec2 q = vec2(fbm(p + vec2(0.0, t * 0.05)), fbm(p + vec2(5.2, 1.3)));
+        vec2 r = vec2(fbm(p + 4.0 * q + vec2(1.7, 9.2) + t * 0.1),
+                      fbm(p + 4.0 * q + vec2(8.3, 2.8) - t * 0.08));
+        return p + 4.0 * r;
+      }
+
+  - id: reaction-diffusion
+    name: Gray-Scott reaction-diffusion
+    family: simulation
+    how_to: "Run Gray-Scott on a ping-pong pair of Float32Arrays with periodic boundaries. Feed rate F and kill rate k pick spots, stripes or splitting cells. Seed a few squares, not full-frame noise."
+    snippet: |
+      // One Gray-Scott step on n*n grids u, v into un, vn (periodic boundary).
+      function step(u, v, un, vn, n, F = 0.037, k = 0.06, Du = 1.0, Dv = 0.5) {
+        const idx = (x, y) => ((y + n) % n) * n + ((x + n) % n);
+        const lap = (a, x, y) =>
+          a[idx(x - 1, y)] + a[idx(x + 1, y)] + a[idx(x, y - 1)] + a[idx(x, y + 1)] - 4 * a[idx(x, y)];
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+          const i = idx(x, y), uvv = u[i] * v[i] * v[i];
+          un[i] = u[i] + Du * lap(u, x, y) - uvv + F * (1 - u[i]);
+          vn[i] = v[i] + Dv * lap(v, x, y) + uvv - (F + k) * v[i];
+        }
+      }
+
+  - id: voronoi-sdf
+    name: Voronoi F2-F1 cell edges
+    family: distance-field
+    how_to: "Find the two nearest jittered feature points in the 3x3 neighbourhood and return F2 minus F1. That difference is zero on cell borders, so thresholding it gives crisp edges. Use a smooth-min to blend cells organically."
+    snippet: |
+      // F2 - F1 Worley distance: small values sit on cell borders.
+      // hash22(vec2) -> vec2 in [0,1)^2, seeded.
+      float cellEdge(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        float d1 = 8.0, d2 = 8.0;
+        for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) {
+          vec2 g = vec2(x, y);
+          vec2 o = hash22(i + g);
+          float d = length(g + o - f);
+          if (d < d1) { d2 = d1; d1 = d; }
+          else if (d < d2) d2 = d;
+        }
+        return d2 - d1;
+      }
+
+  - id: poincare-hyperbolic
+    name: Poincare disk tiling
+    family: hyperbolic-geometry
+    how_to: "Tile the Poincare disk by reflecting a fundamental triangle across geodesic circles. Each geodesic is a circle orthogonal to the unit circle, so inversion in it maps the disk to itself. Recurse to a fixed depth and cull tiles that are too small on screen."
+    snippet: |
+      // Inversion in the circle with centre c and radius r. A geodesic circle is
+      // orthogonal to the unit disk, so this reflection keeps the disk invariant.
+      function invert(z, c, r) {
+        const dx = z.x - c.x, dy = z.y - c.y;
+        const d2 = dx * dx + dy * dy || 1e-12;
+        const k = (r * r) / d2;
+        return { x: c.x + dx * k, y: c.y + dy * k };
+      }
+
+  - id: verlet-cloth
+    name: Verlet cloth with constraints
+    family: physics
+    how_to: "Use position Verlet with 3 to 6 constraint passes per step. Pin the top row, add wind as a per-frame acceleration, and damp velocity by scaling the displacement by 0.99. Keep the mesh small enough to stay under the frame budget."
+    snippet: |
+      // Position Verlet: p = current positions, old = previous positions.
+      function integrate(p, old, dt, g = -9.8) {
+        for (let i = 0; i < p.length; i++) {
+          const vx = (p[i].x - old[i].x) * 0.99;
+          const vy = (p[i].y - old[i].y) * 0.99;
+          old[i] = { x: p[i].x, y: p[i].y };
+          p[i].x += vx;
+          p[i].y += vy + g * dt * dt;
+        }
+      }
+      // links: [[a, b, restLength], ...]; pinned[i] freezes particle i.
+      function satisfy(links, p, pinned) {
+        for (const [a, b, rest] of links) {
+          const dx = p[b].x - p[a].x, dy = p[b].y - p[a].y;
+          const d = Math.hypot(dx, dy) || 1e-9;
+          const k = (d - rest) / d / 2;
+          if (!pinned[a]) { p[a].x += dx * k; p[a].y += dy * k; }
+          if (!pinned[b]) { p[b].x -= dx * k; p[b].y -= dy * k; }
+        }
+      }
+
+  - id: l-system-stochastic
+    name: Stochastic L-system
+    family: grammar
+    how_to: "Expand an axiom with weighted productions, drawing each choice from the seeded RNG. Jitter the turn angle by about 8 degrees per iteration for organic variety. Cap the string length so the output fits the size budget."
+    snippet: |
+      // Stochastic L-system expansion. rng() returns a value in [0, 1).
+      // rules: { F: [{ p: 0.5, to: "F[+F]F" }, { p: 0.5, to: "F[-F]F" }] }
+      function expand(axiom, rules, iterations, rng) {
+        let s = axiom;
+        for (let i = 0; i < iterations; i++) {
+          let out = "";
+          for (const ch of s) {
+            const options = rules[ch];
+            if (!options) { out += ch; continue; }
+            const r = rng();
+            let acc = 0, chosen = ch;
+            for (const { p, to } of options) {
+              acc += p;
+              if (r < acc) { chosen = to; break; }
+            }
+            out += chosen;
+          }
+          if (out.length > 200000) break;
+          s = out;
+        }
+        return s;
+      }
+
+  - id: fm-karplus-strong
+    name: FM voice and Karplus-Strong pluck
+    family: audio-synthesis
+    how_to: "For bells and metal, use a two-operator FM voice at a 1:2 carrier-to-modulator ratio, with the modulation index decaying on the envelope. For plucked strings, use a Karplus-Strong delay line of length sampleRate / f with an averaging low-pass in the feedback. Keep the output under 0.9 peak to avoid clipping."
+    snippet: |
+      // Karplus-Strong pluck. rng() returns a value in [0, 1).
+      function pluck(freq, sr, seconds, rng) {
+        const N = Math.round(sr / freq);
+        const buf = new Float32Array(N);
+        for (let i = 0; i < N; i++) buf[i] = rng() * 2 - 1;
+        const out = new Float32Array(Math.floor(sr * seconds));
+        let idx = 0;
+        for (let n = 0; n < out.length; n++) {
+          out[n] = buf[idx];
+          const next = (idx + 1) % N;
+          buf[idx] = 0.996 * 0.5 * (buf[idx] + buf[next]);
+          idx = next;
+        }
+        return out;
+      }
+
+  - id: chladni-eigenmodes
+    name: Chladni plate eigenmodes
+    family: wave-modal
+    how_to: "Sum the square-plate modes cos(n pi x) cos(m pi y) minus the swapped term. Draw the zero set as a thin bright line. Step n and m through integer pairs only so each frame stays a physical mode, and crossfade between pairs."
+    snippet: |
+      // Chladni plate: nodal lines of the square-plate mode (n, m), uv in [0, 1].
+      float chladni(vec2 uv, float n, float m) {
+        const float PI = 3.14159265;
+        float v = cos(n * PI * uv.x) * cos(m * PI * uv.y)
+                - cos(m * PI * uv.x) * cos(n * PI * uv.y);
+        return 1.0 - smoothstep(0.0, 0.02, abs(v));  // thin bright nodal line
+      }
+
+  - id: boids-topological
+    name: Topological boids
+    family: agent-flocking
+    how_to: "Steer each boid toward the average of its K nearest neighbours, not everything inside a radius. K = 7 gives murmuration-like waves. Weight cohesion at 0.8 and alignment at 1.2. An O(n^2) neighbour sort is fine up to about 500 boids."
+    snippet: |
+      // Topological neighbours: the K nearest boids, not a metric radius.
+      function steer(i, boids, K = 7) {
+        const me = boids[i];
+        const near = boids
+          .map((b, j) => ({ j, d: (b.x - me.x) ** 2 + (b.y - me.y) ** 2 }))
+          .filter((o) => o.j !== i)
+          .sort((a, b) => a.d - b.d)
+          .slice(0, K)
+          .map((o) => boids[o.j]);
+        if (near.length === 0) return { ax: 0, ay: 0 };
+        let cx = 0, cy = 0, vx = 0, vy = 0;
+        for (const b of near) { cx += b.x; cy += b.y; vx += b.vx; vy += b.vy; }
+        const n = near.length;
+        return {
+          ax: (cx / n - me.x) * 0.8 + (vx / n - me.vx) * 1.2,
+          ay: (cy / n - me.y) * 0.8 + (vy / n - me.vy) * 1.2,
+        };
+      }
+
+  - id: raymarch-gyroid
+    name: Raymarched gyroid lattice
+    family: raymarching
+    how_to: "March the implicit gyroid sin(x)cos(y) + sin(y)cos(z) + sin(z)cos(x). The field is not a true distance, so step by half its magnitude. Cap the iterations. A thin band around zero gives a lattice look."
+    snippet: |
+      // Gyroid implicit field. Not a true SDF, so the march step is conservative.
+      float gyroid(vec3 p, float scale) {
+        p *= scale;
+        return dot(sin(p), cos(p.yzx));
+      }
+      float march(vec3 ro, vec3 rd) {
+        float t = 0.0;
+        for (int i = 0; i < 120; i++) {
+          vec3 p = ro + rd * t;
+          float d = gyroid(p, 2.0);
+          if (abs(d) < 0.01 || t > 30.0) break;
+          t += 0.5 * abs(d);
+        }
+        return t;
+      }
+
+  - id: svg-displacement-kinetic
+    name: SVG turbulence displacement on type
+    family: svg-motion
+    how_to: "Apply feTurbulence and feDisplacementMap to live text, and animate baseFrequency with SMIL. Keep the displacement scale under 12 so the text stays legible. Use this for kinetic type that needs no JavaScript."
+    snippet: |
+      <svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="wobble" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="n">
+              <animate attributeName="baseFrequency" values="0.02;0.035;0.02" dur="8s" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+        <text x="20" y="130" font-size="96" font-family="Georgia, serif" filter="url(#wobble)">MOIRE</text>
+      </svg>
+
+  - id: signed-distance-typography
+    name: Signed-distance glyph edges
+    family: typography-sdf
+    how_to: "Store glyphs as a signed distance field, or compute one from a polyline outline. Use fwidth for a one-pixel antialiased edge, and move the stroke threshold over time so letters swell and breathe. Take the words from the research dossier, not from a caption."
+    snippet: |
+      // Animated SDF glyph edge. d is the signed distance to the outline.
+      float sdfText(float d, float t) {
+        float weight = 0.02 + 0.015 * sin(t * 1.3);   // stroke swell
+        float aa = fwidth(d);                          // one-pixel antialias
+        return 1.0 - smoothstep(weight - aa, weight + aa, d);  // 1 inside, 0 outside
+      }
