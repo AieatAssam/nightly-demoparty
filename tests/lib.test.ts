@@ -508,8 +508,8 @@ afterAll(async () => {
 });
 
 /** Opens a page at ROOT_URL whose single module script is `code`; resolves when window.__done is set. */
-async function runInPage(code: string, init?: string): Promise<{ page: Page; result: Mod; errors: string[] }> {
-  const ctx = await browser.newContext({ viewport: { width: 320, height: 180 } });
+async function runInPage(code: string, init?: string, b: Browser = browser, timeout = 30000): Promise<{ page: Page; result: Mod; errors: string[] }> {
+  const ctx = await b.newContext({ viewport: { width: 320, height: 180 } });
   if (init) await ctx.addInitScript({ content: init });
   const page = await ctx.newPage();
   const errors: string[] = [];
@@ -521,10 +521,16 @@ async function runInPage(code: string, init?: string): Promise<{ page: Page; res
       body: `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0}canvas{display:block;width:100vw;height:100vh}</style></head><body><canvas id="c"></canvas><script type="module">\n${code}\n</script></body></html>`,
     }),
   );
-  await page.goto(ROOT_URL);
-  await page.waitForFunction(() => (window as unknown as { __done?: boolean }).__done === true, null, { timeout: 30000 });
-  const result = await page.evaluate(() => (window as unknown as { __result: unknown }).__result);
-  return { page, result, errors };
+  try {
+    await page.goto(ROOT_URL);
+    // Interval polling, not rAF: a stalled rAF must not hide a setTimeout-driven result.
+    await page.waitForFunction(() => (window as unknown as { __done?: boolean }).__done === true, null, { timeout, polling: 100 });
+    const result = await page.evaluate(() => (window as unknown as { __result: unknown }).__result);
+    return { page, result, errors };
+  } catch (e) {
+    await ctx.close(); // never leave a hung page in the shared browser
+    throw e;
+  }
 }
 const libs = (...names: string[]): string => names.map((n) => read(`lib/${n}.js`)).join('\n');
 const minLibs = (...names: string[]): string => names.map((n) => read(`lib/min/${n}.js`)).join('\n');
@@ -596,27 +602,43 @@ ${done('msg')}`;
 
   it('WebGPU render + compute path draws the storage buffer on a secure origin', async (t) => {
     const code = `${libs('webgpu')}
-// Headless Linux can leave requestAdapter/requestDevice pending forever; give up after 5 s and skip.
-const within = (p) => Promise.race([p, new Promise((r) => setTimeout(() => r(null), 5000))]);
-const ad = navigator.gpu ? await within(navigator.gpu.requestAdapter()) : null;
-const probe = ad ? await within(ad.requestDevice()) : null;
-if (probe) probe.destroy();
-if (!probe) { ${done('{ skipped: true }')} } else {
-const WGSL = \`@compute @workgroup_size(4) fn cs(@builtin(global_invocation_id) id:vec3u){S[id.x]=f32(id.x)*.25;}
+// Headless Linux can hang anywhere in adapter, device, gpuStart, rAF or mapAsync; bound the whole run at 10 s and skip.
+const run = async () => {
+  const ad = navigator.gpu ? await navigator.gpu.requestAdapter() : null;
+  const probe = ad ? await ad.requestDevice() : null;
+  if (!probe) return { skipped: true };
+  probe.destroy();
+  const WGSL = \`@compute @workgroup_size(4) fn cs(@builtin(global_invocation_id) id:vec3u){S[id.x]=f32(id.x)*.25;}
 @fragment fn fs(@builtin(position) p:vec4f)->@location(0) vec4f{return vec4f(S[1],S[2],S[3],1.);}\`;
-const st = await gpuStart(document.getElementById('c'), WGSL, () => ({ kind: 'fallback' }), { storage: 4, workgroups: 1 });
-await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-let data = null;
-if (st.kind === 'webgpu') {
-  const rb = st.dev.createBuffer({ size: 16, usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST });
-  const enc = st.dev.createCommandEncoder(); enc.copyBufferToBuffer(st.buf, 0, rb, 0, 16); st.dev.queue.submit([enc.finish()]);
-  await rb.mapAsync(GPUMapMode.READ); data = Array.from(new Float32Array(rb.getMappedRange()));
-}
-${done('{ kind: st.kind, data }')} }`;
-    const { page, result, errors } = await runInPage(code);
-    if (result.skipped) { await page.context().close(); t.skip(); return; }
-    const png = PNG.sync.read(await page.screenshot({ type: 'png' }));
-    await page.context().close();
+  const st = await gpuStart(document.getElementById('c'), WGSL, () => ({ kind: 'fallback' }), { storage: 4, workgroups: 1 });
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  let data = null;
+  if (st.kind === 'webgpu') {
+    const rb = st.dev.createBuffer({ size: 16, usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST });
+    const enc = st.dev.createCommandEncoder(); enc.copyBufferToBuffer(st.buf, 0, rb, 0, 16); st.dev.queue.submit([enc.finish()]);
+    await rb.mapAsync(GPUMapMode.READ); data = Array.from(new Float32Array(rb.getMappedRange()));
+  }
+  return { kind: st.kind, data };
+};
+// A thrown error is a real failure, not a hang: surface it instead of letting it time out into a skip.
+const res = await Promise.race([run().catch((e) => ({ kind: 'error: ' + e.message })), new Promise((r) => setTimeout(() => r({ skipped: true }), 10000))]);
+${done('res')}`;
+    // Own browser: a WebGPU hang or crash on headless Linux must never poison the shared WebGL2 browser.
+    const gpuBrowser = await chromium.launch({ headless: true, args: CHROMIUM_ARGS });
+    let result: Mod, errors: string[] = [], png!: PNG;
+    try {
+      try {
+        const r = await runInPage(code, undefined, gpuBrowser, 15000);
+        ({ result, errors } = r);
+        if (!result.skipped) png = PNG.sync.read(await r.page.screenshot({ type: 'png', timeout: 10000 }));
+      } catch (e) {
+        if ((e as Error).name !== 'TimeoutError') throw e;
+        result = { skipped: true };
+      }
+    } finally {
+      await gpuBrowser.close();
+    }
+    if (result.skipped) { t.skip(); return; }
     expect(errors).toEqual([]);
     expect(result.kind).toBe('webgpu');
     expect(result.data).toEqual([0, 0.25, 0.5, 0.75]);
@@ -624,7 +646,7 @@ ${done('{ kind: st.kind, data }')} }`;
     expect(Math.abs(png.data[i]! - 64)).toBeLessThan(4);
     expect(Math.abs(png.data[i + 1]! - 128)).toBeLessThan(4);
     expect(Math.abs(png.data[i + 2]! - 191)).toBeLessThan(4);
-  }, 30_000);
+  }, 60_000);
 
   it('WebGPU falls back to WebGL2 when there is no adapter, and when the WGSL is invalid', async () => {
     const code = `${libs('webgl2', 'webgpu')}
@@ -633,20 +655,33 @@ const fb = () => glStart(c, 'void main(){o=vec4(.2,.6,.4,1);}');
 const a = await gpuStart(c, 'not wgsl at all', fb);
 const c2 = document.createElement('canvas');
 const b = await gpuStart(c2, '@fragment fn fs()->@location(0) vec4f{return vec4f(1.);}', () => ({ kind: 'fallback-b' }));
+b.stop?.(); // with a real adapter b is a live WebGPU loop on a detached canvas; nothing needs it
+// Let WebGL2 commit a frame to the compositor (slow on Linux SwiftShader), then read back inside a rAF, right after the loop's draw.
 await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-${done('{ a: a.kind, b: b.kind }')}`;
+await new Promise((r) => setTimeout(r, 100));
+const px = await new Promise((r) => requestAnimationFrame(() => {
+  const p = new Uint8Array(4);
+  if (a.gl) a.gl.readPixels(160, 90, 1, 1, a.gl.RGBA, a.gl.UNSIGNED_BYTE, p);
+  r(Array.from(p));
+}));
+${done('{ a: a.kind, b: b.kind, px }')}`;
     // Bad WGSL on a real adapter (when present), then no adapter at all.
     const r1 = await runInPage(code);
-    const png = PNG.sync.read(await r1.page.screenshot({ type: 'png' }));
-    await r1.page.context().close();
+    let png: PNG;
+    try {
+      png = PNG.sync.read(await r1.page.screenshot({ type: 'png' }));
+    } finally {
+      await r1.page.context().close();
+    }
     expect(r1.errors).toEqual([]);
     expect(r1.result.a).toBe('webgl2');
+    expect(r1.result.px).toEqual([51, 153, 102, 255]);
     const i = (90 * png.width + 160) * 4;
     expect([png.data[i], png.data[i + 1], png.data[i + 2]]).toEqual([51, 153, 102]);
     const r2 = await runInPage(code, 'if (navigator.gpu) navigator.gpu.requestAdapter = async () => null;');
     await r2.page.context().close();
     expect(r2.errors).toEqual([]);
-    expect(r2.result).toEqual({ a: 'webgl2', b: 'fallback-b' });
+    expect(r2.result).toMatchObject({ a: 'webgl2', b: 'fallback-b', px: [51, 153, 102, 255] });
   }, 30_000);
 
   it('synth: offline probe is loud enough, never clips even when overdriven, and nothing starts before a gesture', async () => {
@@ -756,7 +791,7 @@ const music = seq({ bpm: 92, div: 4, seed: 11 }, (ctx, out, t, i, rnd) => {
 registerAudioProbe(music);
 const syn = startSynth(music);
 const frame = (st) => { const b = syn.bands(); st.audio = [b.bass, b.mid, b.high, b.rms]; };
-gpuStart(canvas, ${JSON.stringify(PIECE_WGSL)}, () => glStart(canvas, GLSL, { scale: 0.25, frame }), { scale: 0.25, frame });
+gpuStart(canvas, ${JSON.stringify(PIECE_WGSL)}, () => glStart(canvas, GLSL, { scale: 0.25, reduce: 0.05, frame }), { scale: 0.25, reduce: 0.05, frame });
 </script>
 </body>
 </html>

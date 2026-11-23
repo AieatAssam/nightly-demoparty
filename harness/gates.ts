@@ -38,6 +38,8 @@ export const CHROMIUM_ARGS = [
   '--autoplay-policy=no-user-gesture-required',
   // Linux containers ship a tiny /dev/shm; use /tmp so large captures do not crash the renderer.
   '--disable-dev-shm-usage',
+  // --ignore-gpu-blocklist otherwise routes 2D canvas through Ganesh -> ANGLE -> SwiftShader, 10-20x slower than Skia's CPU raster on Linux.
+  '--disable-accelerated-2d-canvas',
 ];
 
 const PAIR_GAP_MS = 250; // real time between motion-pair frames; never scaled

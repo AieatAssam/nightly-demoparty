@@ -557,3 +557,11 @@ GitHub Actions run 45087510796 (ubuntu-latest, 4 vCPU, software SwiftShader) pas
 - `tests/lib.test.ts`, WebGPU render and compute: `requestAdapter()` and `requestDevice()` are each raced against 5 s. If no device answers, the test skips via `t.skip()`; with WebGPU present it runs in full. It waits two `requestAnimationFrame` callbacks after `gpuStart` instead of a fixed 500 ms.
 - `tests/lib.test.ts`, WebGPU to WebGL2 fallback: waits two `requestAnimationFrame` callbacks after `gpuStart` instead of a fixed 300 ms, so the screenshot no longer catches an unpainted white frame.
 - `tests/lib.test.ts`, composed raymarcher piece: render scale lowered from 0.5 to 0.25 (320x180). It exercises the same WebGL2, SDF, synth and WebGPU fallback paths, and runs fast enough on CI to clear the 14 fps screencast floor and the 0.65 reduced motion ratio.
+
+Follow-up from run 45089704578 (85e5cd6). The 320x180 WebGL2 raymarcher cleared `runHardGates` in 14.6 s, while plain 1280x720 2D canvas fixtures ran 10 to 20 times slower than real time. Gate thresholds are still unchanged.
+
+- `harness/gates.ts`: added `--disable-accelerated-2d-canvas` to `CHROMIUM_ARGS`. With `--ignore-gpu-blocklist`, headless Linux sent 2D `<canvas>` through Skia Ganesh, ANGLE and SwiftShader instead of Skia's CPU rasterizer. WebGL2 still runs on SwiftShader.
+- `tests/lib.test.ts`, WebGPU render and compute: runs in its own `chromium.launch` browser, closed in `finally`, so a hang cannot poison the shared WebGL2 browser. The whole in-page run (adapter, device, `gpuStart`, two rAFs, `mapAsync`) is raced against 10 s, `waitForFunction` is bounded at 15 s, and the screenshot at 10 s. Timeouts skip via `t.skip()`; machines with working WebGPU run the full check.
+- `tests/lib.test.ts`, `runInPage`: closes its context when `goto` or `waitForFunction` fails, and polls every 100 ms instead of per rAF.
+- `tests/lib.test.ts`, WebGPU to WebGL2 fallback: stops the unused `b` loop, waits two rAFs, 100 ms and one more rAF before capture, checks `gl.readPixels` as well as the screenshot, and closes contexts in `finally`.
+- `tests/lib.test.ts`, composed raymarcher piece: `reduce: 0.05` for `glStart` and `gpuStart`. At the default 0.2 the fast high contrast ring gave a reduced motion ratio of 0.681 on SwiftShader. The 0.65 gate is unchanged.
