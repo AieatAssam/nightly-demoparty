@@ -571,3 +571,4 @@ Follow-up from run 45089704578 (85e5cd6). The 320x180 WebGL2 raymarcher cleared 
 
 - Uncommented the cron schedules in `.github/workflows/nightly.yml` (`17 2 * * *`), `.github/workflows/weekly.yml` (`30 3 * * 0`), and `.github/workflows/monthly.yml` (`0 4 1 * *`).
 - Updated `tests/workflows.test.ts` to assert active `schedule` and `workflow_dispatch` triggers with those exact cron expressions, and updated `README.md` and `SETUP.md` status notes for `AieatAssam/nightly-demoparty`.
+- Live run `45134527190` passed `plan`, `research`, `feel`, `brief`, and `build_and_judge`, but failed in `publish` Set up job: `actions/upload-pages-artifact` pinned to `56afc609e74202658d3ffba0e8f6dda462b179fa` was an unresolvable tag-object SHA. Updated to verified commit SHA `7b1f4a764d45c48632c6b24a0339c27f5614fb0b` (`v4`, same `path:` input) in `nightly.yml` and `monthly.yml`.
