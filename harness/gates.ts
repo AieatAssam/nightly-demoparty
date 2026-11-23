@@ -36,10 +36,12 @@ export const CHROMIUM_ARGS = [
   '--enable-unsafe-webgpu',
   // Lets an autoplaying piece actually play, so AUDIO_INIT_SCRIPT hears it instead of Chromium muting it.
   '--autoplay-policy=no-user-gesture-required',
+  // Linux containers ship a tiny /dev/shm; use /tmp so large captures do not crash the renderer.
+  '--disable-dev-shm-usage',
 ];
 
 const PAIR_GAP_MS = 250; // real time between motion-pair frames; never scaled
-const CALL_TIMEOUT_MS = 5000;
+const CALL_TIMEOUT_MS = 15000; // 1280x720 SwiftShader PNG captures on a 4-vCPU Linux runner need headroom
 /** Below this screencast rate a 3 Hz flash limit cannot be resolved (Nyquist: 2 transitions per flash). */
 const STROBE_MIN_FPS = 14;
 

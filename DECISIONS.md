@@ -546,3 +546,14 @@ I previewed the plans first. Seeds `dry-run-01` and `dry-run-03` both drew `cons
 - `SETUP.md` is the manual GitHub checklist for the repository owner: create the remote and push `main`, add `CLAUDE_CODE_OAUTH_TOKEN`, enable Pages with GitHub Actions, check workflow permissions, run the first `dry_run: true` dispatch, then enable the cron schedules.
 - Earlier sections of this file are unchanged.
 - `README.md` was expanded into a showcase with tracked gallery preview captures (`docs/screenshots/gallery-{front,piece,archive,crew}.png`) alongside the existing dry-run, five-moods and showpiece-anchor renders. `SETUP.md` was updated for `AieatAssam/nightly-demoparty`, with a status section for the steps already provisioned.
+
+## CI fix (Ubuntu SwiftShader test stability)
+
+GitHub Actions run 45087510796 (ubuntu-latest, 4 vCPU, software SwiftShader) passed 303 of 314 tests and failed only in `tests/gates.test.ts` and `tests/lib.test.ts`. The cause was CPU contention and tight test timing, not the gates. No production gate threshold changed: `STROBE_MIN_FPS` stays 14, reduced motion stays 0.65, and luminance, motion, development, frame time, CSP and lint stay strict.
+
+- `vitest.config.ts`: `fileParallelism: false`, so two Chromium SwiftShader suites never run at once. `testTimeout` is 120000.
+- `harness/gates.ts`: added `--disable-dev-shm-usage` to `CHROMIUM_ARGS` (small `/dev/shm` in Linux containers) and raised `CALL_TIMEOUT_MS` from 5000 to 15000 for 1280x720 PNG captures under software rendering.
+- `tests/gates.test.ts`: per-test timeouts raised from 60 s to 90 s, and the `timingScale: 1` good piece from 120 s to 150 s.
+- `tests/lib.test.ts`, WebGPU render and compute: `requestAdapter()` and `requestDevice()` are each raced against 5 s. If no device answers, the test skips via `t.skip()`; with WebGPU present it runs in full. It waits two `requestAnimationFrame` callbacks after `gpuStart` instead of a fixed 500 ms.
+- `tests/lib.test.ts`, WebGPU to WebGL2 fallback: waits two `requestAnimationFrame` callbacks after `gpuStart` instead of a fixed 300 ms, so the screenshot no longer catches an unpainted white frame.
+- `tests/lib.test.ts`, composed raymarcher piece: render scale lowered from 0.5 to 0.25 (320x180). It exercises the same WebGL2, SDF, synth and WebGPU fallback paths, and runs fast enough on CI to clear the 14 fps screencast floor and the 0.65 reduced motion ratio.

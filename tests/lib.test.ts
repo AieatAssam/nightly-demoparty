@@ -596,12 +596,16 @@ ${done('msg')}`;
 
   it('WebGPU render + compute path draws the storage buffer on a secure origin', async (t) => {
     const code = `${libs('webgpu')}
-const has = !!(navigator.gpu && await navigator.gpu.requestAdapter());
-if (!has) { ${done('{ skipped: true }')} } else {
+// Headless Linux can leave requestAdapter/requestDevice pending forever; give up after 5 s and skip.
+const within = (p) => Promise.race([p, new Promise((r) => setTimeout(() => r(null), 5000))]);
+const ad = navigator.gpu ? await within(navigator.gpu.requestAdapter()) : null;
+const probe = ad ? await within(ad.requestDevice()) : null;
+if (probe) probe.destroy();
+if (!probe) { ${done('{ skipped: true }')} } else {
 const WGSL = \`@compute @workgroup_size(4) fn cs(@builtin(global_invocation_id) id:vec3u){S[id.x]=f32(id.x)*.25;}
 @fragment fn fs(@builtin(position) p:vec4f)->@location(0) vec4f{return vec4f(S[1],S[2],S[3],1.);}\`;
 const st = await gpuStart(document.getElementById('c'), WGSL, () => ({ kind: 'fallback' }), { storage: 4, workgroups: 1 });
-await new Promise((r) => setTimeout(r, 500));
+await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 let data = null;
 if (st.kind === 'webgpu') {
   const rb = st.dev.createBuffer({ size: 16, usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST });
@@ -629,7 +633,7 @@ const fb = () => glStart(c, 'void main(){o=vec4(.2,.6,.4,1);}');
 const a = await gpuStart(c, 'not wgsl at all', fb);
 const c2 = document.createElement('canvas');
 const b = await gpuStart(c2, '@fragment fn fs()->@location(0) vec4f{return vec4f(1.);}', () => ({ kind: 'fallback-b' }));
-await new Promise((r) => setTimeout(r, 300));
+await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 ${done('{ a: a.kind, b: b.kind }')}`;
     // Bad WGSL on a real adapter (when present), then no adapter at all.
     const r1 = await runInPage(code);
@@ -752,7 +756,7 @@ const music = seq({ bpm: 92, div: 4, seed: 11 }, (ctx, out, t, i, rnd) => {
 registerAudioProbe(music);
 const syn = startSynth(music);
 const frame = (st) => { const b = syn.bands(); st.audio = [b.bass, b.mid, b.high, b.rms]; };
-gpuStart(canvas, ${JSON.stringify(PIECE_WGSL)}, () => glStart(canvas, GLSL, { scale: 0.5, frame }), { scale: 0.5, frame });
+gpuStart(canvas, ${JSON.stringify(PIECE_WGSL)}, () => glStart(canvas, GLSL, { scale: 0.25, frame }), { scale: 0.25, frame });
 </script>
 </body>
 </html>

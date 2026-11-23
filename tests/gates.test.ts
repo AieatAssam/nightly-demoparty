@@ -42,68 +42,68 @@ describe('runHardGates (fixtures)', () => {
     const r = await gate('good.html');
     expect(r.failures).toEqual([]);
     expect(r.passed).toBe(true);
-  }, 60_000);
+  }, 90_000);
 
   it('good.html passes at full timingScale 1', async () => {
     const r = await gate('good.html', { timingScale: 1 });
     expect(r.failures).toEqual([]);
     expect(r.passed).toBe(true);
-  }, 120_000);
+  }, 150_000);
 
   it('no-reduced-motion.html fails only reduced_motion', async () => {
     const r = await gate('no-reduced-motion.html');
     expect(names(r)).toEqual(['reduced_motion']);
-  }, 60_000);
+  }, 90_000);
 
   it('oversized.html fails only size', async () => {
     const r = await gate('oversized.html');
     expect(names(r)).toEqual(['size']);
-  }, 60_000);
+  }, 90_000);
 
   it('static.html fails motion and development, not luminance', async () => {
     const r = await gate('static.html');
     expect(names(r)).toEqual(expect.arrayContaining(['motion', 'development']));
     expect(names(r)).not.toContain('luminance');
     expect(names(r)).not.toContain('strobe');
-  }, 60_000);
+  }, 90_000);
 
   it('blank.html fails luminance, motion and development', async () => {
     const r = await gate('blank.html');
     expect(names(r)).toEqual(expect.arrayContaining(['luminance', 'motion', 'development']));
     expect(names(r)).not.toContain('strobe');
-  }, 60_000);
+  }, 90_000);
 
   it('networked.html fails network, lint and console', async () => {
     const r = await gate('networked.html');
     expect(names(r)).toEqual(expect.arrayContaining(['network', 'lint', 'console']));
-  }, 60_000);
+  }, 90_000);
 
   it('strobing.html fails strobe', async () => {
     const r = await gate('strobing.html');
     expect(names(r)).toContain('strobe');
-  }, 60_000);
+  }, 90_000);
 
   it('slop-random.html fails lint', async () => {
     const r = await gate('slop-random.html');
     expect(names(r)).toContain('lint');
-  }, 60_000);
+  }, 90_000);
 
   it('autoplay-audio.html (audiovisual) fails audio_autoplay', async () => {
     const r = await gate('autoplay-audio.html', { compo: 'audiovisual' });
     expect(names(r)).toContain('audio_autoplay');
-  }, 60_000);
+  }, 90_000);
 
   it('good-audiovisual.html (audiovisual) passes with a passing audio probe', async () => {
     const r = await gate('good-audiovisual.html', { compo: 'audiovisual' });
     expect(r.failures).toEqual([]);
     expect(r.audio_probe?.passed).toBe(true);
-  }, 60_000);
+  }, 90_000);
 
   it('evalpiece.html fails console under the canonical CSP even though it catches the error', async () => {
     const r = await gate('evalpiece.html');
     expect(names(r)).toEqual(expect.arrayContaining(['console', 'lint']));
     expect(r.console_errors.some((e) => /^CSP violation: script-src/.test(e))).toBe(true);
-  }, 60_000);
+  }, 90_000);
 
   it('latestrobe.html (6 Hz from t = 6 s) fails strobe on the flash count', async () => {
     const r = await gate('latestrobe.html', { timingScale: 0.5 });
@@ -115,7 +115,7 @@ describe('runHardGates (fixtures)', () => {
     const r = await gate('smallstrobe.html');
     expect(names(r)).toContain('strobe');
     expect(r.strobe.max_flashes_per_sec).toBeGreaterThan(3);
-  }, 60_000);
+  }, 90_000);
 
   it('passes date to Novelty Gate B so a same-date ledger row is not compared', async () => {
     const first = await gate('good.html');
