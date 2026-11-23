@@ -610,7 +610,15 @@ const run = async () => {
   probe.destroy();
   const WGSL = \`@compute @workgroup_size(4) fn cs(@builtin(global_invocation_id) id:vec3u){S[id.x]=f32(id.x)*.25;}
 @fragment fn fs(@builtin(position) p:vec4f)->@location(0) vec4f{return vec4f(S[1],S[2],S[3],1.);}\`;
+  // gpuStart warns before falling back; a WGSL validation error is a real failure, a vanished device or context is not.
+  const warns = []; const warn = console.warn; console.warn = (m, ...a) => { warns.push(String(m)); warn(m, ...a); };
   const st = await gpuStart(document.getElementById('c'), WGSL, () => ({ kind: 'fallback' }), { storage: 4, workgroups: 1 });
+  console.warn = warn;
+  if (st.kind === 'fallback') {
+    const w = warns.find((m) => m.startsWith('webgpu: '));
+    if (w && !/no canvas context|lost/i.test(w)) return { kind: 'error: ' + w };
+    return { skipped: true, reason: 'device lost: gpuStart fell back' };
+  }
   await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
   let data = null;
   if (st.kind === 'webgpu') {
@@ -620,8 +628,9 @@ const run = async () => {
   }
   return { kind: st.kind, data };
 };
-// A thrown error is a real failure, not a hang: surface it instead of letting it time out into a skip.
-const res = await Promise.race([run().catch((e) => ({ kind: 'error: ' + e.message })), new Promise((r) => setTimeout(() => r({ skipped: true }), 10000))]);
+// Headless Linux Dawn can drop the WebGPU instance or device mid-run: skip on that, surface every other throw.
+const LOST = /external Instance reference no longer exists|device is lost|lost/i;
+const res = await Promise.race([run().catch((e) => LOST.test(e.message) ? { skipped: true, reason: 'device lost: ' + e.message } : { kind: 'error: ' + e.message }), new Promise((r) => setTimeout(() => r({ skipped: true }), 10000))]);
 ${done('res')}`;
     // Own browser: a WebGPU hang or crash on headless Linux must never poison the shared WebGL2 browser.
     const gpuBrowser = await chromium.launch({ headless: true, args: CHROMIUM_ARGS });

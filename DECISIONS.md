@@ -565,3 +565,4 @@ Follow-up from run 45089704578 (85e5cd6). The 320x180 WebGL2 raymarcher cleared 
 - `tests/lib.test.ts`, `runInPage`: closes its context when `goto` or `waitForFunction` fails, and polls every 100 ms instead of per rAF.
 - `tests/lib.test.ts`, WebGPU to WebGL2 fallback: stops the unused `b` loop, waits two rAFs, 100 ms and one more rAF before capture, checks `gl.readPixels` as well as the screenshot, and closes contexts in `finally`.
 - `tests/lib.test.ts`, composed raymarcher piece: `reduce: 0.05` for `glStart` and `gpuStart`. At the default 0.2 the fast high contrast ring gave a reduced motion ratio of 0.681 on SwiftShader. The 0.65 gate is unchanged.
+- `tests/lib.test.ts`, WebGPU render and compute: headless Ubuntu Dawn can lose the WebGPU instance during `mapAsync` ("A valid external Instance reference no longer exists"), so the test skips on device-lost errors or a device-loss fallback, while WGSL validation errors and other throws still fail.
