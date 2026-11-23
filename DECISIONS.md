@@ -526,3 +526,23 @@ I previewed the plans first. Seeds `dry-run-01` and `dry-run-03` both drew `cons
 
 - Raised `build_and_judge` `timeout-minutes` from 35 to 45 and `LAST_ATTEMPT_START_S` from 960 to 1560 s, so per-job timeouts now sum to 79 minutes worst-case. M6B dry-run timings put Attempts 1-2 at about 900 to 915 s, so under the old limit Attempt 3 (Opus low effort, which won `run-02`) would rarely start. Now it has headroom on GitHub-hosted runners (26 minutes start limit + 19 minutes worst-case attempt and upload = 45), while median runs stay under 25 minutes.
 - Updated `SPEC.md` Section 5 lines 175-176 (per-job 79-minute worst-case sum with 45 minutes for build and judge, and npm package cache wording per Codex #3) and the pinned tests in `tests/workflows.test.ts`, so spec, workflows and tests stay aligned.
+
+## Codex Consultation #4 and Milestone 7 docs
+
+### Codex Consultation #4: pipeline diagram
+
+- Codex CLI (`gpt-6.2-sol`) generated the pipeline Mermaid diagram (`/tmp/codex-c4-diagram.md`) from `SPEC.md`.
+- The diagram flagged an under-specified branch in `SPEC.md`: the attempt cap is reached with a score of 72 or higher but the piece lost the pairwise comparison. The diagram labelled it "Fallback unspecified".
+
+### Alignment in `README.md`
+
+- That branch now follows the implemented Milestone 1 rule in this file: a score of 60 or higher that is below threshold or loses pairwise goes to the B-sides shelf (`Best -->|60+ ...| BSides --> Publish`). Scores below 60, or nights with no valid verdict, go to the shelf card (`Shelve --> Publish`).
+- Halted nights and nights where every gate failed no longer end in a separate "End run without a release" node. They route directly to `Shelve --> Publish`, matching the `always()` publish job in `nightly.yml`. Every night leaves a ledger row and an audit folder.
+- The diagram's `Unspecified` node was removed, because the B-sides rule above covers that branch.
+
+### Milestone 7 docs
+
+- `README.md` covers what the system is, the nightly pipeline diagram, the repository layout, local development (tests, gates, dry runs, gallery build and audit, actionlint), and a pointer to the setup checklist.
+- `SETUP.md` is the manual GitHub checklist for the repository owner: create the remote and push `main`, add `CLAUDE_CODE_OAUTH_TOKEN`, enable Pages with GitHub Actions, check workflow permissions, run the first `dry_run: true` dispatch, then enable the cron schedules.
+- Earlier sections of this file are unchanged.
+- `README.md` was expanded into a showcase with tracked gallery preview captures (`docs/screenshots/gallery-{front,piece,archive,crew}.png`) alongside the existing dry-run, five-moods and showpiece-anchor renders. `SETUP.md` was updated for `AieatAssam/nightly-demoparty`, with a status section for the steps already provisioned.

@@ -17,7 +17,8 @@
     "decide": "tsx harness/cli.ts decide",
     "publish": "tsx harness/cli.ts publish",
     "site:build": "tsx site/build.ts",
-    "dry-run": "tsx harness/dry-run.ts"
+    "dry-run": "tsx harness/dry-run.ts",
+    "site:audit": "tsx site/audit.ts"
   },
   "dependencies": {
     "ajv": "^8.17.1",
@@ -29,6 +30,7 @@
     "@types/node": "^22.10.0",
     "@types/pngjs": "^6.0.5",
     "playwright": "^1.51.0",
+    "puppeteer-core": "^25.18.1",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "vitest": "^3.1.1"

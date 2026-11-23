@@ -57,6 +57,12 @@ jobs:
       - name: Build site
         run: if [ -f site/build.ts ]; then npm run site:build; fi
 
+      # sloplint launches Chrome with its sandbox on; Ubuntu 24.04 AppArmor blocks the user namespaces it needs.
+      - name: Audit site with Hallmark
+        run: |
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          npm run site:audit
+
       - name: Lint workflows
         run: |
           set -euo pipefail

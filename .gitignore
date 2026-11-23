@@ -7,3 +7,6 @@ coverage/
 tmp/
 .tmp/
 test-results/
+.hallmark/
+.env
+.env.*
