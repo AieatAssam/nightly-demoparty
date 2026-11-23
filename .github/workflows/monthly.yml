@@ -2,9 +2,8 @@ name: Monthly Showcase
 
 # No LLM: a script picks the month's top-scored published pieces from the ledger.
 on:
-  # Uncomment after first workflow_dispatch dry run (see SETUP.md):
-  # schedule:
-  #   - cron: '0 4 1 * *'
+  schedule:
+    - cron: '0 4 1 * *'
   workflow_dispatch:
     inputs:
       month:

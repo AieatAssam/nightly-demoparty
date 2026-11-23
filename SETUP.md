@@ -6,17 +6,14 @@ The live instance is [`AieatAssam/nightly-demoparty`](https://github.com/AieatAs
 
 ## Status
 
-> **Already provisioned on `AieatAssam/nightly-demoparty`**
+> **Provisioned on `AieatAssam/nightly-demoparty`**
 >
 > - Step 1: public repository created and `main` pushed.
 > - Step 2: `CLAUDE_CODE_OAUTH_TOKEN` repository secret configured.
 > - Step 3: GitHub Pages enabled with the GitHub Actions source.
 > - Step 4: Actions read and write workflow permissions enabled, and a `main` branch protection ruleset configured.
->
-> **Remaining steps to go live**
->
-> - Step 5: run the first manual `workflow_dispatch` dry run with `dry_run: true`, plus the optional 10-run shakeout.
-> - Step 6: uncomment the `schedule:` cron triggers in `.github/workflows/{nightly,weekly,monthly}.yml` and push.
+> - Step 5: manual `workflow_dispatch` runs (dry run or live) can be triggered any time under **Actions -> Nightly Demoparty -> Run workflow** (and the matching Weekly Retro and Monthly Showcase workflows).
+> - Step 6: `schedule:` cron triggers are active on `nightly.yml` (`17 2 * * *`), `weekly.yml` (`30 3 * * 0`), and `monthly.yml` (`0 4 1 * *`).
 
 The full steps below stay intact, so any fork can reproduce the whole setup from scratch.
 
@@ -34,6 +31,8 @@ git push -u origin main
 Use the HTTPS URL instead if you do not use SSH keys with GitHub.
 
 ## 2. Generate and add `CLAUDE_CODE_OAUTH_TOKEN`
+
+> **Fork owners:** the workflows ship with active `schedule:` blocks, so comment out each `schedule:` block (or disable the workflows under Actions, see Step 6) *before* you add `CLAUDE_CODE_OAUTH_TOKEN`, and keep them off until your Step 5 `dry_run: true` run passes.
 
 1. Run this locally and follow the prompts:
 
@@ -86,13 +85,13 @@ Before you leave the system unattended, run the 10-run `workflow_dispatch` shake
 
 ## 6. Enable the cron schedules
 
-Each workflow has its `schedule:` block commented out until the dry runs pass. Uncomment it in each file:
+The three schedules ship active in the workflows:
 
 - `.github/workflows/nightly.yml`: `cron: '17 2 * * *'` (daily, 02:17 UTC). Change the hour if it overlaps your interactive Claude use.
 - `.github/workflows/weekly.yml`: `cron: '30 3 * * 0'` (Sunday, 03:30 UTC, retrospective).
 - `.github/workflows/monthly.yml`: `cron: '0 4 1 * *'` (1st of the month, 04:00 UTC, showcase).
 
-Then commit and push to `main`:
+On `AieatAssam/nightly-demoparty` they are already live. On a fork, comment out each `schedule:` block (or disable the workflows under Actions) before you add `CLAUDE_CODE_OAUTH_TOKEN`, and keep them off until your Step 5 `dry_run: true` check passes. Then re-enable them:
 
 ```sh
 git add .github/workflows/nightly.yml .github/workflows/weekly.yml .github/workflows/monthly.yml

@@ -3,9 +3,8 @@ name: Weekly Retro
 # Opus at low effort reads the week and proposes slop rules, 3 techniques and the threshold. The LLM job is
 # read-only; the apply job checks every proposal (harness/retro-apply.ts) before it touches config/.
 on:
-  # Uncomment after first workflow_dispatch dry run (see SETUP.md):
-  # schedule:
-  #   - cron: '30 3 * * 0'
+  schedule:
+    - cron: '30 3 * * 0'
   workflow_dispatch:
     inputs:
       dry_run:

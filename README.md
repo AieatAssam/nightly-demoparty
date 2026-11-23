@@ -356,7 +356,7 @@ Install it with `go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12`.
 
 ## GitHub setup
 
-[`AieatAssam/nightly-demoparty`](https://github.com/AieatAssam/nightly-demoparty) is provisioned but not yet on its cron schedule; see the status section in [`SETUP.md`](SETUP.md#status) for the remaining steps. To run your own fork, follow the step-by-step checklist in [`SETUP.md`](SETUP.md): create the repository, add `CLAUDE_CODE_OAUTH_TOKEN`, enable Pages with GitHub Actions, set workflow permissions, run a `dry_run: true` dispatch, then enable the cron schedules.
+[`AieatAssam/nightly-demoparty`](https://github.com/AieatAssam/nightly-demoparty) is live on its nightly (`17 2 * * *` UTC), weekly (`30 3 * * 0` UTC), and monthly (`0 4 1 * *` UTC) cron schedules; see the status section in [`SETUP.md`](SETUP.md#status). To run your own fork, follow the step-by-step checklist in [`SETUP.md`](SETUP.md): create the repository, pause the schedules (comment out each `schedule:` block or disable the workflows) until a dry run passes, add `CLAUDE_CODE_OAUTH_TOKEN`, enable Pages with GitHub Actions, set workflow permissions, run a `dry_run: true` dispatch, then re-enable the schedules.
 
 ## License
 

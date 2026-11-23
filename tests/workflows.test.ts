@@ -81,12 +81,10 @@ describe(".github", () => {
     for (const { file, step } of allSteps()) if (step.run) expect(step.run, `${file}: ${String(step.name)}`).not.toContain("${{");
   });
 
-  test("schedules stay commented out until the first dispatch dry run", () => {
+  test("schedules and workflow_dispatch are active with their configured crons", () => {
     for (const [f, cron] of [["nightly.yml", "17 2 * * *"], ["weekly.yml", "30 3 * * 0"], ["monthly.yml", "0 4 1 * *"]] as const) {
-      expect(Object.keys(wf(f).on), f).toEqual(["workflow_dispatch"]);
-      const text = readFileSync(join(GH, "workflows", f), "utf8");
-      expect(text).toContain("# Uncomment after first workflow_dispatch dry run (see SETUP.md):");
-      expect(text).toContain(`#   - cron: '${cron}'`);
+      expect(Object.keys(wf(f).on).sort(), f).toEqual(["schedule", "workflow_dispatch"]);
+      expect(wf(f).on.schedule, f).toEqual([{ cron }]);
     }
   });
 

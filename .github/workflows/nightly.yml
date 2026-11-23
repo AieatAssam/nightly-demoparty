@@ -5,9 +5,8 @@ name: Nightly Demoparty
 # Job timeouts sum to 79 minutes worst-case, with 45 for build_and_judge (SPEC Section 5; see DECISIONS.md, M6C). Inside
 # build_and_judge an attempt only starts when its worst case still fits the job timeout, so a slow night stops cleanly.
 on:
-  # Uncomment after first workflow_dispatch dry run (see SETUP.md):
-  # schedule:
-  #   - cron: '17 2 * * *'
+  schedule:
+    - cron: '17 2 * * *'
   workflow_dispatch:
     inputs:
       force_domain:

@@ -566,3 +566,8 @@ Follow-up from run 45089704578 (85e5cd6). The 320x180 WebGL2 raymarcher cleared 
 - `tests/lib.test.ts`, WebGPU to WebGL2 fallback: stops the unused `b` loop, waits two rAFs, 100 ms and one more rAF before capture, checks `gl.readPixels` as well as the screenshot, and closes contexts in `finally`.
 - `tests/lib.test.ts`, composed raymarcher piece: `reduce: 0.05` for `glStart` and `gpuStart`. At the default 0.2 the fast high contrast ring gave a reduced motion ratio of 0.681 on SwiftShader. The 0.65 gate is unchanged.
 - `tests/lib.test.ts`, WebGPU render and compute: headless Ubuntu Dawn can lose the WebGPU instance during `mapAsync` ("A valid external Instance reference no longer exists"), so the test skips on device-lost errors or a device-loss fallback, while WGSL validation errors and other throws still fail.
+
+## Milestone 8 (go live: cron schedules enabled)
+
+- Uncommented the cron schedules in `.github/workflows/nightly.yml` (`17 2 * * *`), `.github/workflows/weekly.yml` (`30 3 * * 0`), and `.github/workflows/monthly.yml` (`0 4 1 * *`).
+- Updated `tests/workflows.test.ts` to assert active `schedule` and `workflow_dispatch` triggers with those exact cron expressions, and updated `README.md` and `SETUP.md` status notes for `AieatAssam/nightly-demoparty`.
