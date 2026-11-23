@@ -1,0 +1,38 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 2,
+  "best_total": 63,
+  "reason": "Attempt 2: scored 63, below 72. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Drive the two corner bars from the real kite and dart counts of the generated patch so they visibly change between shot-02s, shot-08s and shot-20s instead of staying identical; label them with the counts.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Centre the patch at shot-02s and add the storyboard push-in on the newest shell at about 10 s followed by a pull-back at 15 to 20 s, so the framing changes over time and the 20 s frame shows the whole patch.",
+        "expected_gain": 3
+      },
+      {
+        "rank": 3,
+        "change": "Fade older shells to pale ochre and keep the newest shell in saturated amber and rust, so the generation layers read as depth rather than one flat field of tiles.",
+        "expected_gain": 3
+      }
+    ],
+    "build_failed": false
+  }
+}

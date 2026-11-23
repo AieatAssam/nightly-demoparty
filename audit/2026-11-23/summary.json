@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-23",
+  "dry_run": false,
+  "compo": "simulation",
+  "domain": "penrose-inflation",
+  "status": "b-side",
+  "reason": "B-side: best attempt 2 scored 63, below the publish threshold 72.",
+  "best_attempt": 2,
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 60
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 63
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates_passed": false,
+      "gate_failures": [
+        "strobe"
+      ],
+      "total": null
+    }
+  ],
+  "llm_calls": 12,
+  "cost_usd": 0.6979,
+  "tokens": 1638185,
+  "duration_s": 1035
+}

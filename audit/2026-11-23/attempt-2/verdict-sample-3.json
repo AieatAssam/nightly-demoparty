@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 11,
+    "craft": 17,
+    "distinctness": 13,
+    "polish": 7
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-02s: one large ochre and rust kite-dart cluster on cream at the centre; by shot-08s dozens of kites and darts fill the triangular patch, and by shot-20s a dense star-vertex Penrose field fills the same envelope.",
+    "ambition": "shot-08s: one flat 2D layer of tiles with a thin left-edge panel of two bars; no camera move, lighting, material or layering is visible across 2, 8 and 20 s, so the bytes buy one tiling rule.",
+    "craft": "shot-20s: crisp graphite edges and a clean ochre, rust and cream palette with no visible artefacts at full size; the tiny tiles near the lower edge are dense but resolve cleanly and match the brief palette.",
+    "distinctness": "shot-02s: cream ground with ochre and rust kites and darts, a Penrose field that differs from the spiral, widget, birds and waterfall anchors; by shot-20s the dense star-vertex field stays on the same palette.",
+    "polish": "shot-02s: the seed cluster sits right of centre with the bars static; by shot-20s the same triangle envelope is filled with no push-in or pull-back, so the end state resolves without the planned camera move."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet; no prior piece to compare against.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    { "rank": 1, "change": "Animate the two top-left count bars so the ochre kite bar and rust dart bar track K'=2K+D and D'=K+D each generation; in the current frames both bars keep the same height at 2, 8 and 20 s.", "expected_gain": 6 },
+    { "rank": 2, "change": "Add the brief's push-in on the newest shell at about 10 s and a pull-back by 20 s; the triangular patch keeps the same scale and position in all three frames, so the camera never moves.", "expected_gain": 4 },
+    { "rank": 3, "change": "Fade older generations to pale ochre and give the newest ring a distinct amber or rust edge, so each shell reads as its own layer instead of one uniform dense triangle at 8 s and 20 s.", "expected_gain": 3 }
+  ]
+}

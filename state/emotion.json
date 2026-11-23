@@ -18,31 +18,216 @@
   0.287
  ],
  "mood": [
-  0.161,
-  0.273,
-  0.287
+  0.38489458461612963,
+  0.45878591385447187,
+  0.3389687424897762
  ],
- "emotions": {},
+ "emotions": {
+  "joy": {
+   "i": 0.66447688589664,
+   "target": null,
+   "cause": "Found a buildable mechanism: period-escape test.",
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  "interest": {
+   "i": 0.6868723516185433,
+   "target": null,
+   "cause": "Found a buildable mechanism: period-escape test.",
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  "boredom": {
+   "i": 0.12502328976917138,
+   "target": null,
+   "cause": "Learned that kites split into two kites and two half-darts, and darts split into one kite and two half-darts.",
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  "surprise": {
+   "i": 0.17314153940899343,
+   "target": null,
+   "cause": "Learned that inflating the kites and darts makes them larger than the period parallelogram, which proves the tiling never repeats.",
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  "pride": {
+   "i": 0.15682733535996313,
+   "target": null,
+   "cause": "Tonight's simulation piece on penrose-inflation went to the B-sides at 63.",
+   "source": null,
+   "thread": "night-2026-11-23"
+  }
+ },
  "chem": {
-  "da": 0.52,
-  "ne": 0.515,
-  "sht": 0.4975,
-  "cort": 0.315,
+  "da": 0.9547729095795514,
+  "ne": 0.8776353513008195,
+  "sht": 0.7522784742070965,
+  "cort": 0.30053789616478166,
   "oxt": 0.42500000000000004,
-  "opi": 0.5
+  "opi": 0.9759855372232322
  },
  "stress": 0.0,
  "load": 0.0,
- "opp": 0.0,
+ "opp": 0.05006775326277594,
  "drives": {
-  "novelty": 0.30000000002549765,
-  "social": 0.3000000000166152,
+  "novelty": 0,
+  "social": 0.6365938338951909,
   "fatigue": 0.0
  },
- "sentiments": {},
+ "sentiments": {
+  "topic:penrose-inflation": {
+   "L": 0.17710248457358488,
+   "W": 0.8772695852974534,
+   "n": 1,
+   "ep": null
+  },
+  "topic:tiling-geometry": {
+   "L": 0.1871024845735849,
+   "W": 0.8403062435817543,
+   "n": 1,
+   "ep": null
+  },
+  "topic:kite-dart-angles": {
+   "L": 0.08279833808612658,
+   "W": 0.08647534836398264,
+   "n": 1,
+   "ep": null
+  },
+  "thread:night-2026-11-23": {
+   "L": 0.17710248457358488,
+   "W": 0.8772695852974534,
+   "n": 1,
+   "ep": null
+  },
+  "topic:substitution-rules": {
+   "L": 0.2745444783097343,
+   "W": 0.46863283970995084,
+   "n": 1,
+   "ep": null
+  },
+  "topic:golden-ratio": {
+   "L": 0.2925382024196207,
+   "W": 0.5872886532132106,
+   "n": 1,
+   "ep": null
+  },
+  "topic:aperiodicity": {
+   "L": 0.22019957466634665,
+   "W": 0.41575501109659546,
+   "n": 1,
+   "ep": null
+  },
+  "topic:iterated-map": {
+   "L": 0.2534510536052846,
+   "W": 0.33566989560646976,
+   "n": 1,
+   "ep": null
+  },
+  "topic:growth-shells": {
+   "L": 0.25434764205553256,
+   "W": 0.3398313218164008,
+   "n": 1,
+   "ep": null
+  },
+  "topic:simulation": {
+   "L": 0.10268030449646189,
+   "W": 0.12130127926361456,
+   "n": 1,
+   "ep": null
+  }
+ },
  "relationships": {},
- "threads": {},
- "memory": [],
- "t": 5.298190646701389e-10,
- "wall": 1795370775.197126
+ "threads": {
+  "night-2026-11-23": {
+   "exposure": 1.4737554075407961
+  }
+ },
+ "memory": [
+  {
+   "t": 14.293144156138103,
+   "event": "Learned that kites split into two kites and two half-darts, and darts split into one kite and two half-darts.",
+   "emotion": "interest",
+   "i": 0.644,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Learned that the kite-to-dart ratio in a large Penrose tiling approaches the golden ratio.",
+   "emotion": "interest",
+   "i": 1.206,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Learned that inflating the kites and darts makes them larger than the period parallelogram, which proves the tiling never repeats.",
+   "emotion": "interest",
+   "i": 1.076,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Learned that the Bielefeld two-prototile rhomb substitution has inflation factor 1.618 and matrix powers whose entries are Fibonacci numbers",
+   "emotion": "interest",
+   "i": 0.762,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Found a buildable mechanism: two-kite split.",
+   "emotion": "joy",
+   "i": 0.976,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Found a buildable mechanism: kite-dart count lock.",
+   "emotion": "joy",
+   "i": 0.913,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Found a buildable mechanism: generation shell growth.",
+   "emotion": "joy",
+   "i": 0.881,
+   "source": null,
+   "thread": "night-2026-11-23"
+  },
+  {
+   "t": 14.293144156138103,
+   "event": "Found a buildable mechanism: period-escape test.",
+   "emotion": "interest",
+   "i": 0.755,
+   "source": null,
+   "thread": "night-2026-11-23"
+  }
+ ],
+ "t": 14.633018111785255,
+ "wall": 1795423454.2382007,
+ "emotion_adaptation": {
+  "joy": 0.5943349228192752,
+  "interest": 0.6925548329495259,
+  "boredom": 0.08072045531101077,
+  "surprise": 0.14669496241619773,
+  "pride": 0.03920683383999078
+ },
+ "seen_event_ids": [
+  "2026-11-23:1:fact-1",
+  "2026-11-23:2:fact-2",
+  "2026-11-23:3:fact-3",
+  "2026-11-23:4:fact-4",
+  "2026-11-23:5:fact-5",
+  "2026-11-23:6:mech-1",
+  "2026-11-23:7:mech-2",
+  "2026-11-23:8:mech-3",
+  "2026-11-23:9:mech-4",
+  "2026-11-23:verdict:b-side"
+ ]
 }

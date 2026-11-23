@@ -1,0 +1,104 @@
+{
+  "timestamp": "2026-11-23T08:23:50.576Z",
+  "preset_override": null,
+  "dominant_emotions": [
+    {
+      "label": "interest",
+      "intensity": 0.785
+    },
+    {
+      "label": "joy",
+      "intensity": 0.705
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.38
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.156
+    }
+  ],
+  "pad": {
+    "pleasure": 0.385,
+    "arousal": 0.459,
+    "dominance": 0.339
+  },
+  "neurochemistry": {
+    "dopamine": 1,
+    "noradrenaline": 1,
+    "serotonin": 0.743,
+    "cortisol": 0.315,
+    "oxytocin": 0.425,
+    "opioids": 1
+  },
+  "drives": {
+    "novelty": 0,
+    "social": 0.631,
+    "fatigue": 0
+  },
+  "derived_signals": {
+    "interest": 0.785,
+    "boredom": 0.156,
+    "frustration": 0.079
+  },
+  "likes": [
+    {
+      "topic": "golden-ratio",
+      "score": 0.259
+    },
+    {
+      "topic": "substitution-rules",
+      "score": 0.241
+    },
+    {
+      "topic": "penrose-inflation",
+      "score": 0.229
+    },
+    {
+      "topic": "tiling-geometry",
+      "score": 0.229
+    },
+    {
+      "topic": "growth-shells",
+      "score": 0.22
+    },
+    {
+      "topic": "iterated-map",
+      "score": 0.22
+    },
+    {
+      "topic": "aperiodicity",
+      "score": 0.186
+    }
+  ],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.73,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.385,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "assertive",
+      "value": 0.339,
+      "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.785,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.079,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

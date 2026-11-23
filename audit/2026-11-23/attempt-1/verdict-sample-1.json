@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 12,
+    "craft": 13,
+    "distinctness": 14,
+    "polish": 5
+  },
+  "total": 60,
+  "evidence": {
+    "mechanism": "shot-02s: a centred 10-fold rosette of ochre kites and rust darts on cream; by shot-08s the same tiling has inflated to gen 6, filling the frame edge to edge with much smaller tiles.",
+    "ambition": "shot-08s: one flat 2D tile layer with flat fills and thin graphite edges plus two small count bars; by shot-20s it is still one flat layer with no lighting, depth or second rendering idea.",
+    "craft": "shot-08s: warm cream, ochre and rust palette with clean thin edges, but the top-left bars and bottom-left caption sit on the tiles and lose legibility at full size; shot-20s shows the same overlap.",
+    "distinctness": "shot-02s: warm ochre and rust Penrose kite-and-dart rosette on cream, a non-slop mathematical mechanism with no archive to compare; by shot-20s the palette and flat tile look stay unchanged.",
+    "polish": "shot-02s: composed, centred rosette at start; shot-20s: the patch is pushed left and clipped at the right edge, leaving a flat empty cream area of roughly a third of the frame, so the end state is unresolved."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet for the last 30 nights, so no head-to-head comparison is possible.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    { "rank": 1, "change": "Recentre the patch at shot-20s and pull back so the whole octagonal patch fits in frame; remove the clipped cream dead zone on the right edge.", "expected_gain": 4 },
+    { "rank": 2, "change": "Move the two count bars and the generation caption off the tiling into a cream margin band so shot-08s and shot-20s read without overlap.", "expected_gain": 2 },
+    { "rank": 3, "change": "Give each generation its own shade or graphite outline weight so the shells read as layers at shot-08s and shot-20s instead of one flat tile field.", "expected_gain": 5 }
+  ]
+}

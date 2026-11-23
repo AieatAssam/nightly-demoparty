@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 13,
+    "craft": 16,
+    "distinctness": 16,
+    "polish": 6
+  },
+  "total": 66,
+  "evidence": {
+    "mechanism": "shot-08s: a patch of about 60 ochre and rust triangles fills the frame from apex to base, each tile split by graphite edge lines; by shot-20s the same growth yields a few hundred smaller tiles.",
+    "ambition": "shot-08s: one flat 2D layer of tiles plus a two-bar legend, with no lighting, material or extra layers; by shot-20s density rises sharply, but the bytes buy one generator and little rendering depth.",
+    "craft": "shot-02s: crisp graphite edges on flat ochre and rust fills over a cream ground, and the palette matches the brief; the seed cluster sits right of centre and the left legend bars are tiny. By shot-20s no seams are visible.",
+    "distinctness": "shot-02s: kite and dart triangles in cream, ochre and rust, with no noise fill, birds or plasma; by shot-20s tile clusters meet at star-like vertices, a non-periodic structure none of the four anchors show.",
+    "polish": "shot-02s: a sparse cluster sits off-centre with large empty areas; by shot-20s the frame fills and resolves, but the left legend bars stay the same height at all three times, so the count shift never shows."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet, so the pairwise check defaults to true by rule.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-06", "anchor-11"],
+  "critique": [
+    { "rank": 1, "change": "Drive the left legend bars from the live kite and dart counts. They stay the same height at shot-02s, shot-08s and shot-20s, so the count lock never shows. Let them trade shares as each generation adds tiles.", "expected_gain": 4 },
+    { "rank": 2, "change": "Centre the seed cluster at shot-02s, where it sits right of centre with a large empty field. Add the brief's push-in on the newest shell and pull-back to the whole patch, so the three shots differ in scale.", "expected_gain": 3 },
+    { "rank": 3, "change": "Tint each new generation a distinct ochre and let older shells fade to pale ochre, as the brief describes. Right now the flat fills show one layer, so the shell growth reads as one mass.", "expected_gain": 3 }
+  ]
+}

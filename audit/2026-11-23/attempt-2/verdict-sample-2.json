@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 13,
+    "craft": 15,
+    "distinctness": 13,
+    "polish": 6
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-02s: one large ochre and rust triangle split into about six pieces at centre; by shot-08s roughly 60 tiles fill the triangle and by shot-20s around 200 tiles, so the substitution growth is visible on screen.",
+    "ambition": "shot-08s: one flat layer of flat-filled tiles with thin graphite edges and a small unlabelled two-bar corner chart; no lighting, depth or material change from shot-02s to shot-20s, so ambition stays modest.",
+    "craft": "shot-20s: dense flat ochre and rust tiles with consistent thin edges and no visible overlaps or gaps at full size; the warm cream ground suits the palette, but the corner bars are identical in all three shots.",
+    "distinctness": "shot-08s: a Penrose kite and dart patch in ochre and rust on cream; the cream ground resembles anchor-04, but the substitution tiling itself is not present in any anchor strip.",
+    "polish": "shot-02s: the small patch sits right of centre with the corner bars unchanged; by shot-20s the triangle fills the frame and resolves into a dense patch, but there is no visible pull-back as the storyboard describes."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive yet: the median block reads NONE, so there is no head-to-head comparison available for tonight.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-04",
+    "anchor-06",
+    "anchor-11"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Drive the two corner bars from the real kite and dart counts of the generated patch so they visibly change between shot-02s, shot-08s and shot-20s instead of staying identical; label them with the counts.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Centre the patch at shot-02s and add the storyboard push-in on the newest shell at about 10 s followed by a pull-back at 15 to 20 s, so the framing changes over time and the 20 s frame shows the whole patch.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Fade older shells to pale ochre and keep the newest shell in saturated amber and rust, so the generation layers read as depth rather than one flat field of tiles.",
+      "expected_gain": 3
+    }
+  ]
+}

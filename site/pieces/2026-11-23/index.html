@@ -1,0 +1,133 @@
+<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; media-src blob:">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Penrose kite and dart shells</title>
+<style>*{margin:0;padding:0}html,body{height:100%;overflow:hidden;background:#efe3c8}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const RM = matchMedia('(prefers-reduced-motion: reduce)');
+const PHI = (1 + Math.sqrt(5)) / 2;
+const DEPTH = 9, BAND = 104, PX = 0, PY = 0.77;
+const CREAM = [0xef, 0xe3, 0xc8], OCHRE = [0xc8, 0x91, 0x2e], RUST = [0x9c, 0x4a, 0x24], AMBER = [0xe6, 0xb4, 0x5c];
+const GRAPH = '#3a332c';
+// [time, depth] changes; each change cross-fades over 0.5 s, gaps are at least 1 s.
+const CHANGES = [[1.0, 3], [3.4, 4], [4.4, 5], [5.4, 6], [9.6, 7], [10.6, 8], [11.6, 9]];
+const RGB = c => 'rgb(' + c.map(v => Math.round(v)).join(',') + ')';
+
+// Golden-triangle subdivision. Type 0 is the 36-72-72 acute triangle, type 1 the 108-36-36 obtuse one.
+// Each record is [type, apex, base1, base2] with the apex first. Children exactly partition their parent.
+function put(Q, w, t, ax, ay, bx, by, qx, qy) {
+  Q[w] = t; Q[w+1] = ax; Q[w+2] = ay; Q[w+3] = bx; Q[w+4] = by; Q[w+5] = qx; Q[w+6] = qy;
+  return w + 7;
+}
+const levels = [], cntA = [];
+levels.push(new Float64Array([0, 0, 1.5388, -0.5, 0, 0.5, 0]));
+for (let k = 1; k <= DEPTH; k++) {
+  const P = levels[k - 1], n = P.length / 7, Q = new Float64Array(n * 14);
+  let w = 0;
+  for (let i = 0; i < n; i++) {
+    const o = i * 7, t = P[o];
+    const x0 = P[o+1], y0 = P[o+2], x1 = P[o+3], y1 = P[o+4], x2 = P[o+5], y2 = P[o+6];
+    if (t === 0) {
+      const qx = x0 + (x2 - x0) / PHI, qy = y0 + (y2 - y0) / PHI;
+      w = put(Q, w, 0, x1, y1, x2, y2, qx, qy);
+      w = put(Q, w, 1, qx, qy, x0, y0, x1, y1);
+    } else {
+      const rx = x1 + (x2 - x1) / PHI, ry = y1 + (y2 - y1) / PHI;
+      w = put(Q, w, 0, x1, y1, x0, y0, rx, ry);
+      w = put(Q, w, 1, rx, ry, x0, y0, x2, y2);
+    }
+  }
+  levels.push(Q);
+}
+for (const P of levels) {
+  let a = 0;
+  for (let i = 0; i < P.length; i += 7) a += P[i] === 0;
+  cntA.push(a);
+}
+const countOf = k => levels[k].length / 7;
+
+function push01(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
+function sched(T) {
+  let d = 2, p = 2, t0 = -1;
+  for (const [t, v] of CHANGES) if (T >= t) { p = d; d = v; t0 = t; }
+  return [p, d, t0 < 0 ? 1 : push01((T - t0) / 0.5)];
+}
+function zoomAt(T) { return 1 + 1.4 * push01((T - 10) / 4) - 1.4 * push01((T - 15) / 4); }
+function fillOf(t, k, g) {
+  if (k === g) return RGB(t ? RUST : AMBER);
+  const b = t ? RUST : OCHRE, a = Math.min(0.6, 0.07 * (g - k));
+  return RGB(b.map((v, i) => v + (CREAM[i] - v) * a));
+}
+function path(P, n, t, S, c, s, ox, oy) {
+  ctx.beginPath();
+  for (let i = 0; i < n; i++) {
+    const o = i * 7;
+    if (t >= 0 && P[o] !== t) continue;
+    for (let v = 0; v < 3; v++) {
+      const x = P[o+1+2*v] - PX, y = P[o+2+2*v] - PY;
+      const sx = ox + S * (x * c - y * s), sy = oy - S * (x * s + y * c);
+      if (v) ctx.lineTo(sx, sy); else ctx.moveTo(sx, sy);
+    }
+    ctx.closePath();
+  }
+}
+function drawLevel(k, alpha, g, S, rot, ox, oy) {
+  const P = levels[k], n = P.length / 7, c = Math.cos(rot), s = Math.sin(rot);
+  ctx.globalAlpha = alpha;
+  for (let t = 0; t < 2; t++) {
+    path(P, n, t, S, c, s, ox, oy);
+    ctx.fillStyle = fillOf(t, k, g);
+    ctx.fill();
+  }
+  path(P, n, -1, S, c, s, ox, oy);
+  ctx.strokeStyle = GRAPH;
+  ctx.lineWidth = k < 6 ? 1.4 : 0.8;
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+function draw(T) {
+  const W = cv.width, H = cv.height;
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = RGB(CREAM);
+  ctx.fillRect(0, 0, W, H);
+  const [p, d, f] = sched(T);
+  const z = zoomAt(T), rot = 0.25 * Math.sin(T * 0.5);
+  const S = 0.55 * Math.min(W - BAND, H) * z;
+  const ox = BAND + (W - BAND) / 2, oy = H / 2;
+  if (f < 1) drawLevel(p, 1, d, S, rot, ox, oy);
+  drawLevel(d, f, d, S, rot, ox, oy);
+  // Margin band with the kite and dart counts; it sits off the tiling.
+  ctx.fillStyle = RGB(CREAM);
+  ctx.fillRect(0, 0, BAND, H);
+  ctx.fillStyle = GRAPH;
+  ctx.fillRect(BAND - 1, 0, 1, H);
+  const a = cntA[d], b = countOf(d) - a, sc = 200 / (a + b), base = 260;
+  ctx.fillStyle = RGB(OCHRE);
+  ctx.fillRect(24, base - a * sc, 28, a * sc);
+  ctx.fillStyle = RGB(RUST);
+  ctx.fillRect(60, base - b * sc, 28, b * sc);
+  ctx.fillStyle = GRAPH;
+  ctx.fillRect(16, base, 80, 1);
+}
+let T = 0, last = -1;
+function frame(m) {
+  requestAnimationFrame(frame);
+  const dt = last < 0 ? 0 : Math.min((m - last) / 1000, 0.5);
+  last = m;
+  T += dt * (RM.matches ? 0.2 : 1);
+  draw(T);
+}
+function size() { cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener('resize', size);
+size();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

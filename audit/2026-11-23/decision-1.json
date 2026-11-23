@@ -1,0 +1,34 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 60,
+  "reason": "Attempt 1: scored 60, below 72. Retrying (2/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Recentre the patch at shot-20s and pull back so the whole octagonal patch fits in frame; remove the clipped cream dead zone on the right edge.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Move the two count bars and the generation caption off the tiling into a cream margin band so shot-08s and shot-20s read without overlap.",
+        "expected_gain": 2
+      },
+      {
+        "rank": 3,
+        "change": "Give each generation its own shade or graphite outline weight so the shells read as layers at shot-08s and shot-20s instead of one flat tile field.",
+        "expected_gain": 5
+      }
+    ],
+    "build_failed": false
+  }
+}

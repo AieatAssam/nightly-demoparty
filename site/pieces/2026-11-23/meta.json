@@ -1,0 +1,777 @@
+{
+  "date": "2026-11-23",
+  "status": "b-side",
+  "reason": "B-side: best attempt 2 scored 63, below the publish threshold 72.",
+  "publish_threshold": 72,
+  "best_attempt": 2,
+  "plan": {
+    "date": "2026-11-23",
+    "compo": "simulation",
+    "size_budget_bytes": 24576,
+    "constraint": null,
+    "domain": "penrose-inflation",
+    "wildcard": false,
+    "banned": {
+      "techniques": [],
+      "domains": [],
+      "palette_hexes": [],
+      "slop_patterns": [
+        "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+        "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+        "Matrix rain is on the permanent slop list.",
+        "Four-sine plasma boilerplate. Build a field with development instead.",
+        "Plain plasma: sine sums as the whole picture.",
+        "Plain starfield: points drifting toward the camera with no structure behind them.",
+        "Plain tunnel: concentric rings flying past with nothing else happening.",
+        "Matrix rain: falling glyph columns.",
+        "Mouse-following particles with no system behind them.",
+        "A single raymarched sphere or torus on a gradient.",
+        "Untouched Mandelbrot or Julia zoom.",
+        "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+        "Bloom or chromatic aberration used to hide an empty scene.",
+        "Math.random() noise as the main visual idea.",
+        "A loop with no development: the 20 s frame looks like the 2 s frame.",
+        "Title cards or captions doing the work the visuals should do.",
+        "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+      ]
+    },
+    "boredom_override": false,
+    "requires_audio": false,
+    "seed": "2026-11-23",
+    "dry_run": false,
+    "overrides": {
+      "domain": null,
+      "compo": null,
+      "mood_preset": null
+    }
+  },
+  "dossier": {
+    "topic": "Kite-and-dart Penrose tiling grown by two substitution rules whose kite-to-dart count locks to the golden ratio",
+    "domain": "penrose-inflation",
+    "wildcard_chosen": false,
+    "summary": "Penrose kite-and-dart tilings grow from substitution rules. Each kite splits into two kites and two half-darts, and each dart splits into one kite and two half-darts. The result never repeats, yet the ratio of kites to darts settles to the golden ratio, so the tile count grows by a fixed factor of about 2.618 per generation.",
+    "facts": [
+      {
+        "claim": "A kite is a quadrilateral with interior angles 72, 72, 72 and 144 degrees. A dart is a non-convex quadrilateral with interior angles 36, 72, 36 and 216 degrees.",
+        "source_url": "https://en.wikipedia.org/wiki/Penrose_tiling",
+        "source_title": "Penrose tiling - Wikipedia"
+      },
+      {
+        "claim": "Penrose tiling features follow from a hierarchical pentagonal structure given by substitution rules: a kite decomposes into two kites and two half-darts, and a dart decomposes into one kite and two half-darts.",
+        "source_url": "https://en.wikipedia.org/wiki/Penrose_tiling",
+        "source_title": "Penrose tiling - Wikipedia"
+      },
+      {
+        "claim": "The ratio of the number of kites to darts in any sufficiently large P2 Penrose tiling approximates the golden ratio.",
+        "source_url": "https://en.wikipedia.org/wiki/Penrose_tiling",
+        "source_title": "Penrose tiling - Wikipedia"
+      },
+      {
+        "claim": "Inflating the kites and darts eventually makes them larger than the period parallelogram itself. This inflation property proves that any tiling of this kind is non-periodic.",
+        "source_url": "https://www.maths.ox.ac.uk/node/15074",
+        "source_title": "A is for Aperiodic Tiles"
+      },
+      {
+        "claim": "The Bielefeld page for its two-prototile rhomb substitution gives the inflation factor as the golden mean, 1.618033988, and says all entries in powers of its substitution matrix are Fibonacci numbers.",
+        "source_url": "https://tilings.math.uni-bielefeld.de/substitution/penrose-rhomb",
+        "source_title": "Penrose Rhomb"
+      }
+    ],
+    "visualisable_mechanisms": [
+      {
+        "name": "two-kite split",
+        "description": "Each kite is replaced by two smaller kites and two half-dart wedges; each dart is replaced by one smaller kite and two half-dart wedges. Cause: the substitution rule applied to every tile at once, so the whole patch is rewritten at each generation.",
+        "render_or_sonify_hint": "Start from one seed kite. On each step, every tile is replaced by its scaled-down pieces, drawn as nested pentagonal clusters with kites in one colour and darts in a second colour."
+      },
+      {
+        "name": "kite-dart count lock",
+        "description": "Counts follow K' = 2K + D and D' = K + D, a derived consequence of the split rules (two half-darts reassemble into one dart). The eigenvector of that matrix gives a kite-to-dart ratio of phi to 1, so the ratio converges regardless of the seed.",
+        "render_or_sonify_hint": "Show a two-bar counter of kites and darts per generation. Early bars jump around, then the proportion settles to about 1.618 to 1 and stays there."
+      },
+      {
+        "name": "generation shell growth",
+        "description": "The tile count is multiplied by the matrix eigenvalue phi squared, about 2.618, at each generation. Each new generation forms a shell around the earlier patch, so the piece builds up in layers over time.",
+        "render_or_sonify_hint": "Over a 20 second loop, reveal successive rings of smaller tiles around the seed, each ring holding about 2.6 times as many tiles as the one before, with the older rings fading but still visible."
+      },
+      {
+        "name": "period-escape test",
+        "description": "Because inflated tiles eventually exceed any period parallelogram, no translated copy of the tiling can line up with itself exactly. Cause: the scale factor compounds faster than any fixed translation.",
+        "render_or_sonify_hint": "Overlay a shifted copy of the tiling in a thin outline. At each generation it visibly fails to match, and matching flashes only where a short patch happens to recur."
+      }
+    ],
+    "open_questions": [
+      "The count matrix K' = 2K + D, D' = K + D is derived from the split rules and must be checked against a generated patch before the build relies on it.",
+      "Sources label the pieces differently (Robinson triangles versus half-darts), so the build needs one canonical decomposition for its code.",
+      "Does a single seed kite or dart fix one tiling under inflation, or does the choice of seed branch the result?"
+    ],
+    "surprise": {
+      "score": 62,
+      "justification": "A generalist expects a pattern built by repetition or a random-looking fill. In fact two fixed tile splits give an endless tiling that never repeats, and its kite-to-dart count locks to the golden ratio."
+    },
+    "dataset": null
+  },
+  "mood": {
+    "timestamp": "2026-11-23T08:23:50.576Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.785
+      },
+      {
+        "label": "joy",
+        "intensity": 0.705
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.38
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.156
+      }
+    ],
+    "pad": {
+      "pleasure": 0.385,
+      "arousal": 0.459,
+      "dominance": 0.339
+    },
+    "neurochemistry": {
+      "dopamine": 1,
+      "noradrenaline": 1,
+      "serotonin": 0.743,
+      "cortisol": 0.315,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.631,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.785,
+      "boredom": 0.156,
+      "frustration": 0.079
+    },
+    "likes": [
+      {
+        "topic": "golden-ratio",
+        "score": 0.259
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.241
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.229
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.229
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.22
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.22
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.186
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.73,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.385,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.339,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "experimental",
+        "value": 0.785,
+        "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.079,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  },
+  "brief": {
+    "title": "Penrose kite and dart shells",
+    "concept": "A seed kite in a Penrose tiling is rewritten by two substitution rules at every generation, so ochre kites and rust darts grow outward in shells while their count settles toward the golden ratio.",
+    "mechanism_embodied": {
+      "mechanism_name": "two-kite split",
+      "how_visualised": "Every ochre kite is replaced by two smaller kites and two rust half-darts, and every dart by one kite and two half-darts, applied to all tiles at once each generation. The single seed kite at centre is the only starting tile. Each generation appears as a ring of smaller tiles around the older patch, and two bars in a corner show the kite and dart counts over time."
+    },
+    "discarded_obvious_idea": "Obvious: a random-looking tiling filled by noise, with colours drifting across it. Rejected: the noise fill hides the substitution rule and the count lock, and it breaks the seeded-PRNG rule.",
+    "compo": "simulation",
+    "constraint_honoured": null,
+    "techniques": [
+      "recursive substitution tiling",
+      "generation shell reveal",
+      "kite-dart count bars"
+    ],
+    "novel_technique": "recursive substitution tiling",
+    "technique_family": "tiling-geometry",
+    "palette": [
+      "#efe3c8",
+      "#c8912e",
+      "#9c4a24",
+      "#e6b45c",
+      "#3a332c"
+    ],
+    "motion_sound_plan": "Mood applied: high tempo with dense fields and 4 cuts (never closer than 0.34 s), warm-consonant palette with mirrored radial symmetry, assertive framing with the patch filling the frame and a strong push-in then pull-back, experimental risk on the substitution tiling. No audio. Constraint: none.",
+    "storyboard": [
+      {
+        "beat": 1,
+        "t_start_s": 0,
+        "t_end_s": 5,
+        "description": "Ochre seed kite centred on a cream ground, mirrored about its long axis. By 2 s it has split into four pieces, two kites and two rust half-darts, forming a compact pentagonal cluster in the centre third of the frame."
+      },
+      {
+        "beat": 2,
+        "t_start_s": 5,
+        "t_end_s": 10,
+        "description": "Every tile is rewritten at once: kites split and darts split into a kite and two half-darts. Rings of smaller graphite-edged tiles spread outward from the centre, and the seed cluster fades to amber. The 8 s frame shows the patch filling the frame from centre to edge."
+      },
+      {
+        "beat": 3,
+        "t_start_s": 10,
+        "t_end_s": 15,
+        "description": "Peak: the camera pushes in on the newest shell, with many rings of tiny amber and rust tiles around a dense centre. Two bars in the top-left corner show kite and dart counts trading shares. Hard cuts between generations, each at least 0.34 s apart."
+      },
+      {
+        "beat": 4,
+        "t_start_s": 15,
+        "t_end_s": 20,
+        "description": "The camera pulls back to show the whole patch. Each outer shell holds more tiles than the shell inside it, and older shells fade to pale ochre but stay visible. The two corner bars rest near a 1.6 to 1 ratio, and the framing keeps beat 3's dense centre."
+      }
+    ],
+    "memorable_moment": "A seed kite splitting into four pieces, then rings of smaller ochre and rust tiles spreading outward from the centre.",
+    "self_declared_risk": "The substitution rule may be coded with a wrong decomposition, leaving overlaps or gaps, and the corner bars may not match the generated patch. The frame budget may also run out at the third generation.",
+    "liner_note": "The Penrose tiling entry on Wikipedia says a kite splits into two kites and two half-darts, and that in any sufficiently large P2 tiling the ratio of kites to darts approximates the golden ratio. The rule rewrites every tile at once, so each generation builds a larger patch around the older one, and the pattern is non-periodic. On screen, ochre kites and rust darts split into smaller pentagonal clusters, and each generation forms a new shell around the last. By the final beat the frame pulls back to show the whole patch, with the newest shell brightest."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-23/attempt-1/index.html",
+        "compo": "simulation",
+        "byte_size": 5327,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 3071.1869,
+          "t8": 1864.5973,
+          "t20": 4389.674,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 15.5091,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 59.1451,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 1,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 33.4,
+          "p90": 150,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "3070707070706830",
+            "t8": "8acc9296cc8e96a8",
+            "t20": "c0a8a09068a820b0"
+          },
+          "color_histogram": [
+            0.003311,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.070246,
+            0,
+            0,
+            0,
+            0.031607,
+            0.000639,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.392879,
+            0.000279,
+            0,
+            0,
+            0.004317,
+            0.000213,
+            0.00028,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.151851,
+            0,
+            0.000116,
+            0,
+            0,
+            0,
+            0.001268,
+            0.342992
+          ],
+          "min_hamming_distance": null,
+          "min_histogram_distance": null,
+          "closest_date": null,
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 33.1337,
+          "reduced_motion": 0.9007,
+          "ratio": 0.0272
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-23/attempt-1/shot-02s.png",
+          "t8": "audit/2026-11-23/attempt-1/shot-08s.png",
+          "t20": "audit/2026-11-23/attempt-1/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 11,
+          "craft": 15,
+          "distinctness": 14,
+          "polish": 5
+        },
+        "total": 60,
+        "evidence": {
+          "mechanism": "shot-02s: a centred 10-fold rosette of ochre kites and rust darts on cream; by shot-08s the same tiling has inflated to gen 6, filling the frame edge to edge with much smaller tiles.",
+          "ambition": "shot-08s: one flat 2D tile layer with flat fills and thin graphite edges plus two small count bars; by shot-20s it is still one flat layer with no lighting, depth or second rendering idea.",
+          "craft": "shot-08s: warm cream, ochre and rust palette with clean thin edges, but the top-left bars and bottom-left caption sit on the tiles and lose legibility at full size; shot-20s shows the same overlap.",
+          "distinctness": "shot-02s: warm ochre and rust Penrose kite-and-dart rosette on cream, a non-slop mathematical mechanism with no archive to compare; by shot-20s the palette and flat tile look stay unchanged.",
+          "polish": "shot-02s: composed, centred rosette at start; shot-20s: the patch is pushed left and clipped at the right edge, leaving a flat empty cream area of roughly a third of the frame, so the end state is unresolved."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": null,
+        "pairwise_justification": "No median archive exists yet for the last 30 nights, so no head-to-head comparison is possible.",
+        "calibration_anchors_used": [
+          "anchor-03",
+          "anchor-04",
+          "anchor-06",
+          "anchor-11"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Recentre the patch at shot-20s and pull back so the whole octagonal patch fits in frame; remove the clipped cream dead zone on the right edge.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Move the two count bars and the generation caption off the tiling into a cream margin band so shot-08s and shot-20s read without overlap.",
+            "expected_gain": 2
+          },
+          {
+            "rank": 3,
+            "change": "Give each generation its own shade or graphite outline weight so the shells read as layers at shot-08s and shot-20s instead of one flat tile field.",
+            "expected_gain": 5
+          }
+        ]
+      },
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-23/attempt-2/index.html",
+        "compo": "simulation",
+        "byte_size": 4878,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 1425.0513,
+          "t8": 1443.5038,
+          "t20": 1637.2518,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 3.0138,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 13.0244,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 1,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 16.8,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "1010101018183830",
+            "t8": "1818101030302830",
+            "t20": "1818101030303038"
+          },
+          "color_histogram": [
+            0.00199,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.006268,
+            0,
+            0,
+            0,
+            0.004538,
+            0.000558,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.061596,
+            0.001438,
+            0,
+            0,
+            0,
+            0.001358,
+            0.000356,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.003038,
+            0.058073,
+            0.000122,
+            0,
+            0,
+            0,
+            0.000318,
+            0.860348
+          ],
+          "min_hamming_distance": null,
+          "min_histogram_distance": null,
+          "closest_date": null,
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 2.6852,
+          "reduced_motion": 0.7772,
+          "ratio": 0.2894
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-23/attempt-2/shot-02s.png",
+          "t8": "audit/2026-11-23/attempt-2/shot-08s.png",
+          "t20": "audit/2026-11-23/attempt-2/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 13,
+          "craft": 16,
+          "distinctness": 13,
+          "polish": 6
+        },
+        "total": 63,
+        "evidence": {
+          "mechanism": "shot-02s: one large ochre and rust triangle split into about six pieces at centre; by shot-08s roughly 60 tiles fill the triangle and by shot-20s around 200 tiles, so the substitution growth is visible on screen.",
+          "ambition": "shot-08s: one flat layer of flat-filled tiles with thin graphite edges and a small unlabelled two-bar corner chart; no lighting, depth or material change from shot-02s to shot-20s, so ambition stays modest.",
+          "craft": "shot-20s: dense flat ochre and rust tiles with consistent thin edges and no visible overlaps or gaps at full size; the warm cream ground suits the palette, but the corner bars are identical in all three shots.",
+          "distinctness": "shot-08s: a Penrose kite and dart patch in ochre and rust on cream; the cream ground resembles anchor-04, but the substitution tiling itself is not present in any anchor strip.",
+          "polish": "shot-02s: the small patch sits right of centre with the corner bars unchanged; by shot-20s the triangle fills the frame and resolves into a dense patch, but there is no visible pull-back as the storyboard describes."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": null,
+        "pairwise_justification": "No median archive yet: the median block reads NONE, so there is no head-to-head comparison available for tonight.",
+        "calibration_anchors_used": [
+          "anchor-03",
+          "anchor-04",
+          "anchor-06",
+          "anchor-11"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Drive the two corner bars from the real kite and dart counts of the generated patch so they visibly change between shot-02s, shot-08s and shot-20s instead of staying identical; label them with the counts.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Centre the patch at shot-02s and add the storyboard push-in on the newest shell at about 10 s followed by a pull-back at 15 to 20 s, so the framing changes over time and the 20 s frame shows the whole patch.",
+            "expected_gain": 3
+          },
+          {
+            "rank": 3,
+            "change": "Fade older shells to pale ochre and keep the newest shell in saturated amber and rust, so the generation layers read as depth rather than one flat field of tiles.",
+            "expected_gain": 3
+          }
+        ]
+      },
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates": {
+        "passed": false,
+        "piece_path": "audit/2026-11-23/attempt-3/index.html",
+        "compo": "simulation",
+        "byte_size": 3673,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 1186.7141,
+          "t8": 1471.3147,
+          "t20": 1741.2702,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 2.7294,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 22.5068,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 4,
+          "limit": 3,
+          "passed": false
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 16.8,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "1010686830301010",
+            "t8": "70e8d4c470703030",
+            "t20": "30e8cc6c68703030"
+          },
+          "color_histogram": [
+            0.003741,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.002205,
+            0,
+            0,
+            0,
+            0.011572,
+            0.007805,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.038214,
+            0.00426,
+            0,
+            0,
+            0.000451,
+            0.005309,
+            0.000446,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.001679,
+            0.000224,
+            0,
+            0,
+            0.045543,
+            0.095499,
+            0.009577,
+            0,
+            0,
+            0,
+            0.056147,
+            0.717329
+          ],
+          "min_hamming_distance": null,
+          "min_histogram_distance": null,
+          "closest_date": null,
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 9.9466,
+          "reduced_motion": 0.9863,
+          "ratio": 0.0992
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-23/attempt-3/shot-02s.png",
+          "t8": "audit/2026-11-23/attempt-3/shot-08s.png",
+          "t20": "audit/2026-11-23/attempt-3/shot-20s.png"
+        },
+        "failures": [
+          {
+            "gate": "strobe",
+            "message": "4 flashes per second over 9.5% of the screen (limit 3)",
+            "measured": 4,
+            "threshold": 3
+          }
+        ]
+      },
+      "verdict": null,
+      "outcome": "gates_failed"
+    }
+  ],
+  "liner_note": "The Penrose tiling entry on Wikipedia says a kite splits into two kites and two half-darts, and that in any sufficiently large P2 tiling the ratio of kites to darts approximates the golden ratio. The rule rewrites every tile at once, so each generation builds a larger patch around the older one, and the pattern is non-periodic. On screen, ochre kites and rust darts split into smaller pentagonal clusters, and each generation forms a new shell around the last. By the final beat the frame pulls back to show the whole patch, with the newest shell brightest.",
+  "screenshots": {
+    "t2": "shot-02s.png",
+    "t8": "shot-08s.png",
+    "t20": "shot-20s.png"
+  },
+  "piece_rel_path": "pieces/2026-11-23/index.html"
+}

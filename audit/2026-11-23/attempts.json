@@ -1,0 +1,495 @@
+[
+  {
+    "attempt": 1,
+    "model": "haiku",
+    "effort": null,
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/2026-11-23/attempt-1/index.html",
+      "compo": "simulation",
+      "byte_size": 5327,
+      "size_budget_bytes": 24576,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 3071.1869,
+        "t8": 1864.5973,
+        "t20": 4389.674,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 15.5091,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 59.1451,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 1,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 33.4,
+        "p90": 150,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": null,
+      "novelty_b": {
+        "phashes": {
+          "t2": "3070707070706830",
+          "t8": "8acc9296cc8e96a8",
+          "t20": "c0a8a09068a820b0"
+        },
+        "color_histogram": [
+          0.003311,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.070246,
+          0,
+          0,
+          0,
+          0.031607,
+          0.000639,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.392879,
+          0.000279,
+          0,
+          0,
+          0.004317,
+          0.000213,
+          0.00028,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.151851,
+          0,
+          0.000116,
+          0,
+          0,
+          0,
+          0.001268,
+          0.342992
+        ],
+        "min_hamming_distance": null,
+        "min_histogram_distance": null,
+        "closest_date": null,
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 33.1337,
+        "reduced_motion": 0.9007,
+        "ratio": 0.0272
+      },
+      "screenshots": {
+        "t2": "audit/2026-11-23/attempt-1/shot-02s.png",
+        "t8": "audit/2026-11-23/attempt-1/shot-08s.png",
+        "t20": "audit/2026-11-23/attempt-1/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 15,
+        "ambition": 11,
+        "craft": 15,
+        "distinctness": 14,
+        "polish": 5
+      },
+      "total": 60,
+      "evidence": {
+        "mechanism": "shot-02s: a centred 10-fold rosette of ochre kites and rust darts on cream; by shot-08s the same tiling has inflated to gen 6, filling the frame edge to edge with much smaller tiles.",
+        "ambition": "shot-08s: one flat 2D tile layer with flat fills and thin graphite edges plus two small count bars; by shot-20s it is still one flat layer with no lighting, depth or second rendering idea.",
+        "craft": "shot-08s: warm cream, ochre and rust palette with clean thin edges, but the top-left bars and bottom-left caption sit on the tiles and lose legibility at full size; shot-20s shows the same overlap.",
+        "distinctness": "shot-02s: warm ochre and rust Penrose kite-and-dart rosette on cream, a non-slop mathematical mechanism with no archive to compare; by shot-20s the palette and flat tile look stay unchanged.",
+        "polish": "shot-02s: composed, centred rosette at start; shot-20s: the patch is pushed left and clipped at the right edge, leaving a flat empty cream area of roughly a third of the frame, so the end state is unresolved."
+      },
+      "pairwise_beats_median": true,
+      "pairwise_median_ref": null,
+      "pairwise_justification": "No median archive exists yet for the last 30 nights, so no head-to-head comparison is possible.",
+      "calibration_anchors_used": [
+        "anchor-03",
+        "anchor-04",
+        "anchor-06",
+        "anchor-11"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "Recentre the patch at shot-20s and pull back so the whole octagonal patch fits in frame; remove the clipped cream dead zone on the right edge.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 2,
+          "change": "Move the two count bars and the generation caption off the tiling into a cream margin band so shot-08s and shot-20s read without overlap.",
+          "expected_gain": 2
+        },
+        {
+          "rank": 3,
+          "change": "Give each generation its own shade or graphite outline weight so the shells read as layers at shot-08s and shot-20s instead of one flat tile field.",
+          "expected_gain": 5
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 2,
+    "model": "haiku",
+    "effort": null,
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/2026-11-23/attempt-2/index.html",
+      "compo": "simulation",
+      "byte_size": 4878,
+      "size_budget_bytes": 24576,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 1425.0513,
+        "t8": 1443.5038,
+        "t20": 1637.2518,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 3.0138,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 13.0244,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 1,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 16.7,
+        "p90": 16.8,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": null,
+      "novelty_b": {
+        "phashes": {
+          "t2": "1010101018183830",
+          "t8": "1818101030302830",
+          "t20": "1818101030303038"
+        },
+        "color_histogram": [
+          0.00199,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.006268,
+          0,
+          0,
+          0,
+          0.004538,
+          0.000558,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.061596,
+          0.001438,
+          0,
+          0,
+          0,
+          0.001358,
+          0.000356,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.003038,
+          0.058073,
+          0.000122,
+          0,
+          0,
+          0,
+          0.000318,
+          0.860348
+        ],
+        "min_hamming_distance": null,
+        "min_histogram_distance": null,
+        "closest_date": null,
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 2.6852,
+        "reduced_motion": 0.7772,
+        "ratio": 0.2894
+      },
+      "screenshots": {
+        "t2": "audit/2026-11-23/attempt-2/shot-02s.png",
+        "t8": "audit/2026-11-23/attempt-2/shot-08s.png",
+        "t20": "audit/2026-11-23/attempt-2/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 15,
+        "ambition": 13,
+        "craft": 16,
+        "distinctness": 13,
+        "polish": 6
+      },
+      "total": 63,
+      "evidence": {
+        "mechanism": "shot-02s: one large ochre and rust triangle split into about six pieces at centre; by shot-08s roughly 60 tiles fill the triangle and by shot-20s around 200 tiles, so the substitution growth is visible on screen.",
+        "ambition": "shot-08s: one flat layer of flat-filled tiles with thin graphite edges and a small unlabelled two-bar corner chart; no lighting, depth or material change from shot-02s to shot-20s, so ambition stays modest.",
+        "craft": "shot-20s: dense flat ochre and rust tiles with consistent thin edges and no visible overlaps or gaps at full size; the warm cream ground suits the palette, but the corner bars are identical in all three shots.",
+        "distinctness": "shot-08s: a Penrose kite and dart patch in ochre and rust on cream; the cream ground resembles anchor-04, but the substitution tiling itself is not present in any anchor strip.",
+        "polish": "shot-02s: the small patch sits right of centre with the corner bars unchanged; by shot-20s the triangle fills the frame and resolves into a dense patch, but there is no visible pull-back as the storyboard describes."
+      },
+      "pairwise_beats_median": true,
+      "pairwise_median_ref": null,
+      "pairwise_justification": "No median archive yet: the median block reads NONE, so there is no head-to-head comparison available for tonight.",
+      "calibration_anchors_used": [
+        "anchor-03",
+        "anchor-04",
+        "anchor-06",
+        "anchor-11"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "Drive the two corner bars from the real kite and dart counts of the generated patch so they visibly change between shot-02s, shot-08s and shot-20s instead of staying identical; label them with the counts.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 2,
+          "change": "Centre the patch at shot-02s and add the storyboard push-in on the newest shell at about 10 s followed by a pull-back at 15 to 20 s, so the framing changes over time and the 20 s frame shows the whole patch.",
+          "expected_gain": 3
+        },
+        {
+          "rank": 3,
+          "change": "Fade older shells to pale ochre and keep the newest shell in saturated amber and rust, so the generation layers read as depth rather than one flat field of tiles.",
+          "expected_gain": 3
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 3,
+    "model": "opus",
+    "effort": "low",
+    "gates": {
+      "passed": false,
+      "piece_path": "audit/2026-11-23/attempt-3/index.html",
+      "compo": "simulation",
+      "byte_size": 3673,
+      "size_budget_bytes": 24576,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 1186.7141,
+        "t8": 1471.3147,
+        "t20": 1741.2702,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 2.7294,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 22.5068,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 4,
+        "limit": 3,
+        "passed": false
+      },
+      "frame_time_ms": {
+        "median": 16.7,
+        "p90": 16.8,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": null,
+      "novelty_b": {
+        "phashes": {
+          "t2": "1010686830301010",
+          "t8": "70e8d4c470703030",
+          "t20": "30e8cc6c68703030"
+        },
+        "color_histogram": [
+          0.003741,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.002205,
+          0,
+          0,
+          0,
+          0.011572,
+          0.007805,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.038214,
+          0.00426,
+          0,
+          0,
+          0.000451,
+          0.005309,
+          0.000446,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.001679,
+          0.000224,
+          0,
+          0,
+          0.045543,
+          0.095499,
+          0.009577,
+          0,
+          0,
+          0,
+          0.056147,
+          0.717329
+        ],
+        "min_hamming_distance": null,
+        "min_histogram_distance": null,
+        "closest_date": null,
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 9.9466,
+        "reduced_motion": 0.9863,
+        "ratio": 0.0992
+      },
+      "screenshots": {
+        "t2": "audit/2026-11-23/attempt-3/shot-02s.png",
+        "t8": "audit/2026-11-23/attempt-3/shot-08s.png",
+        "t20": "audit/2026-11-23/attempt-3/shot-20s.png"
+      },
+      "failures": [
+        {
+          "gate": "strobe",
+          "message": "4 flashes per second over 9.5% of the screen (limit 3)",
+          "measured": 4,
+          "threshold": 3
+        }
+      ]
+    },
+    "verdict": null
+  }
+]

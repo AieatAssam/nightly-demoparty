@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 10,
+    "craft": 15,
+    "distinctness": 15,
+    "polish": 5
+  },
+  "total": 60,
+  "evidence": {
+    "mechanism": "shot-02s: a closed decagon of ochre kites and rust darts around a star centre, labelled gen 1; by shot-08s the same tiling fills the frame at gen 6 with a thick/thin readout of 1.618, but generations appear only as static snapshots.",
+    "ambition": "shot-08s: one flat two-tone tiling with thin edge lines and no shading, plus two small bars in the corner; by shot-20s the same flat layer at gen 7 adds no second rendering idea. Bytes used 5327 of 24576.",
+    "craft": "shot-02s: a crisp warm palette of cream, ochre, rust and graphite with clean edges; by shot-08s and shot-20s the top-left bars and bottom-left label overlap the tiles and are hard to read, and the 20s patch leaves the right third of the frame empty.",
+    "distinctness": "shot-02s: a Penrose kite-and-dart tiling, a non-periodic mathematical mechanism unlike the birds, spiral or relief in the anchors; by shot-20s it stays a flat ochre-and-rust tiling. No archive exists, so this is judged against the anchors only.",
+    "polish": "shot-02s: a symmetric, centred decagon start that is well composed; by shot-20s the patch is shifted left and clipped at the octagon edge, so the promised pull-back to the whole patch does not resolve the frame."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": null,
+  "pairwise_justification": "No median archive exists yet for the last 30 nights, so no head-to-head comparison is possible and the pairwise answer is set by rule.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-04",
+    "anchor-06",
+    "anchor-11"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "At shot-08s, replace the static gen-6 snapshot with a visible rewrite: the newest ring of smaller kites and darts spreads outward from the seed while the older tiles fade to pale ochre, so the substitution is seen happening rather than inferred from labels.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "At shot-20s, centre the patch and pull back so the empty cream area on the right and the clipped octagon edge are removed; move the thin/thick bars and the 'penrose substitution' label off the tiles at shot-08s and shot-20s onto a clear margin.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Add a second rendering layer: shade each tile with a light bevel or slight depth from one fixed light, and show the newest generation brightest against the older shells, so the image has layers beyond flat two-tone fills.",
+      "expected_gain": 4
+    }
+  ]
+}

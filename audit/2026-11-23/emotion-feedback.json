@@ -1,0 +1,153 @@
+{
+  "event": {
+    "event": "Tonight's simulation piece on penrose-inflation went to the B-sides at 63.",
+    "event_id": "2026-11-23:verdict:b-side",
+    "topics": [
+      "penrose-inflation",
+      "simulation",
+      "tiling-geometry"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "thread": "night-2026-11-23",
+    "relevance": 0.8,
+    "congruence": 0.05,
+    "novelty": 0.3,
+    "praiseworthiness": 0.1,
+    "control": 0.6
+  },
+  "elicited": {
+    "joy": 0.0454985843914368,
+    "pride": 0.15682733535996313,
+    "interest": 0.2694248871448074,
+    "boredom": 0.050656174822420026
+  },
+  "consolidated": {
+    "topic:penrose-inflation": 0.177,
+    "topic:tiling-geometry": 0.187,
+    "topic:kite-dart-angles": 0.083,
+    "thread:night-2026-11-23": 0.177,
+    "topic:substitution-rules": 0.275,
+    "topic:golden-ratio": 0.293,
+    "topic:aperiodicity": 0.22,
+    "topic:iterated-map": 0.253,
+    "topic:growth-shells": 0.254,
+    "topic:simulation": 0.103
+  },
+  "mood": {
+    "timestamp": "2026-11-23T08:44:14.248Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.687
+      },
+      {
+        "label": "joy",
+        "intensity": 0.664
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.173
+      },
+      {
+        "label": "pride",
+        "intensity": 0.157
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.125
+      }
+    ],
+    "pad": {
+      "pleasure": 0.385,
+      "arousal": 0.459,
+      "dominance": 0.339
+    },
+    "neurochemistry": {
+      "dopamine": 0.955,
+      "noradrenaline": 0.878,
+      "serotonin": 0.752,
+      "cortisol": 0.301,
+      "oxytocin": 0.425,
+      "opioids": 0.976
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.637,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.687,
+      "boredom": 0.125,
+      "frustration": 0.075
+    },
+    "likes": [
+      {
+        "topic": "golden-ratio",
+        "score": 0.293
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.275
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.254
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.253
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.22
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.187
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.177
+      },
+      {
+        "topic": "simulation",
+        "score": 0.103
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.083
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.73,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.385,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.339,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "moderate",
+        "value": 0.687,
+        "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.075,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  }
+}

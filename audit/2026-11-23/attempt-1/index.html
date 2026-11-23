@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Penrose kite and dart shells</title>
+<style>
+*{margin:0;padding:0}
+html,body{background:#efe3c8;overflow:hidden;height:100%}
+canvas{display:block;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+const PHI = (1 + Math.sqrt(5)) / 2, IPHI = 1 / PHI, MAXL = 7;
+const CREAM = '#efe3c8', OCHRE = '#c8912e', RUST = '#9c4a24', AMBER = '#e6b45c', GRAPH = '#3a332c';
+const GEN_T = [0.8, 1.9, 3.0, 4.2, 5.6, 7.2, 9.0];
+const ZOOM_K = [[0, 0.3], [5, 0.9], [8, 1.9], [10, 2.6], [15, 3.3], [20, 1.6], [40, 1.6]];
+
+const smooth = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+const beat = (t, a, b) => smooth((t - a) / (b - a));
+
+function zoomAt(t) {
+  for (let i = 0; i < ZOOM_K.length - 1; i++) {
+    const [t0, z0] = ZOOM_K[i], [t1, z1] = ZOOM_K[i + 1];
+    if (t <= t1) return z0 + (z1 - z0) * smooth((t - t0) / (t1 - t0));
+  }
+  return ZOOM_K[ZOOM_K.length - 1][1];
+}
+// Number of generations reached at story time t, with each new generation easing in over 0.7 s.
+function levelAt(t) { let L = 0; for (const a of GEN_T) L += beat(t, a, a + 0.7); return L; }
+
+// Robinson triangles. Record = 7 numbers: type (0 thin 36-72-72, 1 thick 108-36-36), apex, base1, base2.
+function sunSeed() {
+  const a = [];
+  for (let i = 0; i < 10; i++) {
+    const a1 = (2 * i - 1) * Math.PI / 10, a2 = (2 * i + 1) * Math.PI / 10;
+    let bx = Math.cos(a1), by = Math.sin(a1), cx = Math.cos(a2), cy = Math.sin(a2);
+    if (i % 2 === 0) { const sx = bx, sy = by; bx = cx; by = cy; cx = sx; cy = sy; }
+    a.push(0, 0, 0, bx, by, cx, cy);
+  }
+  return a;
+}
+// One substitution step applied to every triangle at once. Children exactly cover their parent.
+function subdivide(src) {
+  const out = [], n = src.length / 7;
+  for (let i = 0; i < n; i++) {
+    const o = i * 7, type = src[o], ax = src[o + 1], ay = src[o + 2], bx = src[o + 3], by = src[o + 4], cx = src[o + 5], cy = src[o + 6];
+    if (type === 0) {
+      const px = ax + (bx - ax) * IPHI, py = ay + (by - ay) * IPHI;
+      out.push(0, cx, cy, px, py, bx, by, 1, px, py, cx, cy, ax, ay);
+    } else {
+      const qx = bx + (ax - bx) * IPHI, qy = by + (ay - by) * IPHI;
+      const rx = bx + (cx - bx) * IPHI, ry = by + (cy - by) * IPHI;
+      out.push(1, rx, ry, cx, cy, ax, ay, 1, qx, qy, rx, ry, bx, by, 0, rx, ry, qx, qy, ax, ay);
+    }
+  }
+  return out;
+}
+
+const LV = [sunSeed()], CNT = [];
+for (let k = 1; k <= MAXL; k++) LV.push(subdivide(LV[k - 1]));
+for (let k = 0; k <= MAXL; k++) {
+  let th = 0, tk = 0;
+  for (let o = 0; o < LV[k].length; o += 7) { if (LV[k][o] === 0) th++; else tk++; }
+  CNT.push([th, tk]);
+}
+
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+
+function trace(arr, want, S, fx, fy, W, H) {
+  const hx = W / 2, hy = H / 2;
+  ctx.beginPath();
+  for (let o = 0; o < arr.length; o += 7) {
+    if (want !== 2 && arr[o] !== want) continue;
+    ctx.moveTo(hx + (arr[o + 1] - fx) * S, hy + (arr[o + 2] - fy) * S);
+    ctx.lineTo(hx + (arr[o + 3] - fx) * S, hy + (arr[o + 4] - fy) * S);
+    ctx.lineTo(hx + (arr[o + 5] - fx) * S, hy + (arr[o + 6] - fy) * S);
+    ctx.closePath();
+  }
+}
+
+function drawLevel(arr, alpha, edge, S, fx, fy, W, H) {
+  ctx.globalAlpha = alpha;
+  trace(arr, 0, S, fx, fy, W, H); ctx.fillStyle = OCHRE; ctx.fill();
+  trace(arr, 1, S, fx, fy, W, H); ctx.fillStyle = RUST; ctx.fill();
+  ctx.globalAlpha = alpha * 0.75;
+  trace(arr, 2, S, fx, fy, W, H); ctx.strokeStyle = edge; ctx.lineWidth = 1; ctx.stroke();
+}
+
+function paint(t) {
+  const W = innerWidth, H = innerHeight;
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+  ctx.globalAlpha = 1; ctx.fillStyle = CREAM; ctx.fillRect(0, 0, W, H);
+
+  const S = 0.36 * Math.min(W, H) * Math.pow(PHI, zoomAt(t));
+  const sm = beat(t, 9.5, 15), fx = 0.45 * sm, fy = 0.15 * sm;
+
+  const Lc = levelAt(t);
+  let k = Math.floor(Lc), f = Lc - k;
+  if (k >= MAXL) { k = MAXL; f = 0; }
+  if (f > 0) {
+    drawLevel(LV[k], 1 - f, GRAPH, S, fx, fy, W, H);
+    drawLevel(LV[k + 1], f, AMBER, S, fx, fy, W, H);
+  } else {
+    drawLevel(LV[k], 1, GRAPH, S, fx, fy, W, H);
+  }
+
+  // Count bars: share of thin and thick triangles, eased between generations.
+  const a = CNT[k], b = CNT[f > 0 ? k + 1 : k];
+  const th = a[0] + (b[0] - a[0]) * f, tk = a[1] + (b[1] - a[1]) * f, sh = th / (th + tk), BW = 220;
+  ctx.globalAlpha = 0.12; ctx.fillStyle = GRAPH;
+  ctx.fillRect(28, 28, BW, 12); ctx.fillRect(28, 46, BW, 12);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = OCHRE; ctx.fillRect(28, 28, BW * sh, 12);
+  ctx.fillStyle = RUST; ctx.fillRect(28, 46, BW * (1 - sh), 12);
+  ctx.fillStyle = GRAPH; ctx.font = '12px ui-monospace,Menlo,monospace';
+  ctx.fillText('thin ' + Math.round(th), 262, 39);
+  ctx.fillText('thick ' + Math.round(tk), 262, 57);
+  ctx.fillText('thick/thin ' + (tk / th).toFixed(3), 28, 78);
+  ctx.fillText('penrose substitution, gen ' + Math.min(MAXL, Math.floor(Lc)), 28, H - 28);
+}
+
+let story = 0, last = -1;
+const rm = matchMedia('(prefers-reduced-motion: reduce)');
+function frame(ms) {
+  requestAnimationFrame(frame);
+  if (last < 0) last = ms;
+  const dt = Math.min((ms - last) / 1000, 0.5);
+  last = ms;
+  story += dt * (rm.matches ? 0.2 : 1);
+  paint(story);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
