@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 10,
+    "craft": 13,
+    "distinctness": 11,
+    "polish": 6
+  },
+  "total": 54,
+  "evidence": {
+    "mechanism": "shot-08s: six oxblood arms carry hairline side branches, and the defect letters bunch at the centre instead of trailing the tip; by shot-20s the arms are densely hatched with small tip arrowheads.",
+    "ambition": "shot-20s: one flat vector layer over a radial clay gradient, six arms with hatched side branches and a centred glyph clump; no shading, material or second rendering pass is visible.",
+    "craft": "shot-08s: letters overlap into an illegible knot at the centre and the arrowhead tips are crude triangles; shot-02s rose-clay and oxblood palette is clean with hairline ridges.",
+    "distinctness": "shot-02s: centred six-point oxblood star on rose-clay; by shot-08s it reads as a snowflake outline, close to the brief's own discarded idea, though it shares no tiling look with the recent night.",
+    "polish": "shot-02s: composed and centred, but the tip does not fill the frame as storyboarded; shot-20s resolves to the full figure with more branches than at 2s, so the loop develops."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Penrose at its 20s frame fills the triangle with dense ochre kites and rust darts; tonight's sparse oxblood star with a clumped glyph centre loses the head-to-head vote on density.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "At shot-08s and shot-20s, place each glyph of 'defect' at one fixed distance behind the moving tip and grow exactly one side arm from each letter, so the lag is seen instead of a centred clump.", "expected_gain": 4 },
+    { "rank": 2, "change": "At shot-02s, scale the star so the tip fills the frame as storyboarded and thin the arm ridges as the tip speeds up, so the V-R sharpness lock shows on screen instead of as HUD numbers.", "expected_gain": 3 },
+    { "rank": 3, "change": "Remove the top-left title and bottom-left V/R readout, which tell the mechanism in text, and use the freed space for an arm-length gradient between older and newer side branches.", "expected_gain": 2 }
+  ]
+}

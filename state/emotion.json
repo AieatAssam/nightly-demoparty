@@ -18,121 +18,199 @@
   0.287
  ],
  "mood": [
-  0.38489458461612963,
-  0.45878591385447187,
-  0.3389687424897762
+  0.4402017361569336,
+  0.5298853590803063,
+  0.3503955034013977
  ],
  "emotions": {
   "joy": {
-   "i": 0.66447688589664,
+   "i": 0.7309377930872814,
    "target": null,
-   "cause": "Found a buildable mechanism: period-escape test.",
+   "cause": "Found a buildable mechanism: latency-length coupling.",
    "source": null,
-   "thread": "night-2026-11-23"
-  },
-  "interest": {
-   "i": 0.6868723516185433,
-   "target": null,
-   "cause": "Found a buildable mechanism: period-escape test.",
-   "source": null,
-   "thread": "night-2026-11-23"
-  },
-  "boredom": {
-   "i": 0.12502328976917138,
-   "target": null,
-   "cause": "Learned that kites split into two kites and two half-darts, and darts split into one kite and two half-darts.",
-   "source": null,
-   "thread": "night-2026-11-23"
+   "thread": "night-2026-11-25"
   },
   "surprise": {
-   "i": 0.17314153940899343,
+   "i": 0.24733877114389446,
    "target": null,
-   "cause": "Learned that inflating the kites and darts makes them larger than the period parallelogram, which proves the tiling never repeats.",
+   "cause": "Found a buildable mechanism: V-R sharpness lock.",
    "source": null,
-   "thread": "night-2026-11-23"
+   "thread": "night-2026-11-25"
+  },
+  "interest": {
+   "i": 0.70427810552367,
+   "target": null,
+   "cause": "Found a buildable mechanism: latency-length coupling.",
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  "boredom": {
+   "i": 0.06383989881195677,
+   "target": null,
+   "cause": "Tonight's kinetic-type piece on dendritic-solidification went to the B-sides at 60.",
+   "source": null,
+   "thread": "night-2026-11-25"
   },
   "pride": {
-   "i": 0.15682733535996313,
+   "i": 0.15902219744661114,
    "target": null,
-   "cause": "Tonight's simulation piece on penrose-inflation went to the B-sides at 63.",
+   "cause": "Tonight's kinetic-type piece on dendritic-solidification went to the B-sides at 60.",
    "source": null,
-   "thread": "night-2026-11-23"
+   "thread": "night-2026-11-25"
   }
  },
  "chem": {
-  "da": 0.9547729095795514,
-  "ne": 0.8776353513008195,
-  "sht": 0.7522784742070965,
-  "cort": 0.30053789616478166,
+  "da": 0.9574979869181199,
+  "ne": 0.8830678873023096,
+  "sht": 0.8823544330258162,
+  "cort": 0.2932790349116984,
   "oxt": 0.42500000000000004,
-  "opi": 0.9759855372232322
+  "opi": 0.9776951456172166
  },
  "stress": 0.0,
  "load": 0.0,
- "opp": 0.05006775326277594,
+ "opp": 0.0558454825462209,
  "drives": {
   "novelty": 0,
-  "social": 0.6365938338951909,
+  "social": 0.9630282146635536,
   "fatigue": 0.0
  },
  "sentiments": {
   "topic:penrose-inflation": {
-   "L": 0.17710248457358488,
-   "W": 0.8772695852974534,
+   "L": 0.17319286602152903,
+   "W": 0.7896410177730471,
    "n": 1,
    "ep": null
   },
   "topic:tiling-geometry": {
-   "L": 0.1871024845735849,
-   "W": 0.8403062435817543,
-   "n": 1,
+   "L": 0.3295888215510049,
+   "W": 0.8257606516683401,
+   "n": 2,
    "ep": null
   },
   "topic:kite-dart-angles": {
-   "L": 0.08279833808612658,
-   "W": 0.08647534836398264,
+   "L": 0.08097052680815202,
+   "W": 0.07783751225258884,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-23": {
-   "L": 0.17710248457358488,
-   "W": 0.8772695852974534,
+   "L": 0.17319286602152903,
+   "W": 0.7896410177730471,
    "n": 1,
    "ep": null
   },
   "topic:substitution-rules": {
-   "L": 0.2745444783097343,
-   "W": 0.46863283970995084,
+   "L": 0.2684837830668154,
+   "W": 0.4218221157011461,
    "n": 1,
    "ep": null
   },
   "topic:golden-ratio": {
-   "L": 0.2925382024196207,
-   "W": 0.5872886532132106,
+   "L": 0.2860802874664874,
+   "W": 0.5286256558097819,
    "n": 1,
    "ep": null
   },
   "topic:aperiodicity": {
-   "L": 0.22019957466634665,
-   "W": 0.41575501109659546,
+   "L": 0.21533856808960006,
+   "W": 0.3742261393859281,
    "n": 1,
    "ep": null
   },
   "topic:iterated-map": {
-   "L": 0.2534510536052846,
-   "W": 0.33566989560646976,
+   "L": 0.24785600538448102,
+   "W": 0.3021405534224608,
    "n": 1,
    "ep": null
   },
   "topic:growth-shells": {
-   "L": 0.25434764205553256,
-   "W": 0.3398313218164008,
+   "L": 0.2487328012335857,
+   "W": 0.30588630374011627,
    "n": 1,
    "ep": null
   },
   "topic:simulation": {
-   "L": 0.10268030449646189,
-   "W": 0.12130127926361456,
+   "L": 0.32001432536999647,
+   "W": 0.7854608106944718,
+   "n": 2,
+   "ep": null
+  },
+  "topic:dendritic-solidification": {
+   "L": 0.15339810176105428,
+   "W": 0.9384252130356332,
+   "n": 1,
+   "ep": null
+  },
+  "topic:physics": {
+   "L": 0.2836473824386438,
+   "W": 0.5662634090862396,
+   "n": 1,
+   "ep": null
+  },
+  "topic:tip-speed-radius-lock": {
+   "L": 0.27889362375654453,
+   "W": 0.4910035450278487,
+   "n": 1,
+   "ep": null
+  },
+  "thread:night-2026-11-25": {
+   "L": 0.15339810176105428,
+   "W": 0.9384252130356332,
+   "n": 1,
+   "ep": null
+  },
+  "topic:convection-regimes": {
+   "L": 0.18304183626682968,
+   "W": 0.21603059195955185,
+   "n": 1,
+   "ep": null
+  },
+  "topic:side-branch-defect": {
+   "L": 0.28988941983631433,
+   "W": 0.5324578527743207,
+   "n": 1,
+   "ep": null
+  },
+  "topic:tip-instability": {
+   "L": 0.2716901116573706,
+   "W": 0.3555961438069104,
+   "n": 1,
+   "ep": null
+  },
+  "topic:grammar": {
+   "L": 0.20140492271924249,
+   "W": 0.2688190962166738,
+   "n": 1,
+   "ep": null
+  },
+  "topic:recursive-branching": {
+   "L": 0.20140492271924249,
+   "W": 0.2688190962166738,
+   "n": 1,
+   "ep": null
+  },
+  "topic:growth-latency": {
+   "L": 0.25410723294441717,
+   "W": 0.49861529160913104,
+   "n": 1,
+   "ep": null
+  },
+  "topic:six-fold-symmetry": {
+   "L": 0.21586234341634264,
+   "W": 0.38578330453034054,
+   "n": 1,
+   "ep": null
+  },
+  "topic:kinetic-type": {
+   "L": 0.0979821749392037,
+   "W": 0.1140994705838948,
+   "n": 1,
+   "ep": null
+  },
+  "topic:typography-sdf": {
+   "L": 0.0979821749392037,
+   "W": 0.1140994705838948,
    "n": 1,
    "ep": null
   }
@@ -140,7 +218,10 @@
  "relationships": {},
  "threads": {
   "night-2026-11-23": {
-   "exposure": 1.4737554075407961
+   "exposure": 0.07739821834616267
+  },
+  "night-2026-11-25": {
+   "exposure": 1.768480963812668
   }
  },
  "memory": [
@@ -207,16 +288,104 @@
    "i": 0.755,
    "source": null,
    "thread": "night-2026-11-23"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that tip speed and tip radius in succinonitrile dendrites obey V*R^2 = constant, so faster tips are sharper.",
+   "emotion": "interest",
+   "i": 1.032,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that succinonitrile growth is diffusion-limited in microgravity above about 0.4 K supercooling, while convection dominates on Earth ",
+   "emotion": "interest",
+   "i": 1.129,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that in a 3D snow crystal simulation, a defect forms at a characteristic distance behind the tip and later grows into a side branch.",
+   "emotion": "joy",
+   "i": 1.179,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that the same simulation reproduces the tip instability and the start of side branching seen in Gonda and Nakahara's lab sequences.",
+   "emotion": "interest",
+   "i": 1.0,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that small bumps on a growing snow crystal swell into large branches, and bumps on those branches become side branches.",
+   "emotion": "interest",
+   "i": 0.73,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that in Li and Schaposnik's model, side-branch length records growth latency, the time a boundary cell waits before it freezes.",
+   "emotion": "interest",
+   "i": 0.926,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that in Li and Schaposnik's model, growth directions sit at six values, plus or minus 30, 90 and 150 degrees, and side branches show",
+   "emotion": "interest",
+   "i": 0.77,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Found a buildable mechanism: V-R sharpness lock.",
+   "emotion": "joy",
+   "i": 0.92,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Found a buildable mechanism: fixed-lag side-branch birth.",
+   "emotion": "joy",
+   "i": 0.86,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Found a buildable mechanism: six-axis lattice arms.",
+   "emotion": "joy",
+   "i": 0.792,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Found a buildable mechanism: latency-length coupling.",
+   "emotion": "joy",
+   "i": 0.793,
+   "source": null,
+   "thread": "night-2026-11-25"
   }
  ],
- "t": 14.633018111785255,
- "wall": 1795423454.2382007,
+ "t": 65.64565338770548,
+ "wall": 1795607099.9305136,
  "emotion_adaptation": {
-  "joy": 0.5943349228192752,
-  "interest": 0.6925548329495259,
-  "boredom": 0.08072045531101077,
-  "surprise": 0.14669496241619773,
-  "pride": 0.03920683383999078
+  "joy": 0.6772878686001889,
+  "surprise": 0.39615352983756574,
+  "interest": 0.7571281035030699,
+  "boredom": 0.046152531199208494,
+  "pride": 0.039755549361652785
  },
  "seen_event_ids": [
   "2026-11-23:1:fact-1",
@@ -228,6 +397,18 @@
   "2026-11-23:7:mech-2",
   "2026-11-23:8:mech-3",
   "2026-11-23:9:mech-4",
-  "2026-11-23:verdict:b-side"
+  "2026-11-23:verdict:b-side",
+  "2026-11-25:1:fact-1",
+  "2026-11-25:2:fact-2",
+  "2026-11-25:3:fact-3",
+  "2026-11-25:4:fact-4",
+  "2026-11-25:5:fact-5",
+  "2026-11-25:6:fact-6",
+  "2026-11-25:7:fact-7",
+  "2026-11-25:8:mech-1",
+  "2026-11-25:9:mech-2",
+  "2026-11-25:10:mech-3",
+  "2026-11-25:11:mech-4",
+  "2026-11-25:verdict:b-side"
  ]
 }

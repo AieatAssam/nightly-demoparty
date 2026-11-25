@@ -1,0 +1,54 @@
+{
+  "title": "Fixed-Lag Side Branches on a Dendrite Tip",
+  "concept": "A succinonitrile dendrite tip whose speed and radius are locked by V*R^2 = constant leaves side branches at a fixed lag behind itself, and the word defect is the row of letters where each branch is born.",
+  "mechanism_embodied": {
+    "mechanism_name": "fixed-lag side-branch birth",
+    "how_visualised": "A clay-coloured tip advances outward from the centre and leaves the letters of the word defect at a constant lag behind it. Each letter swells into a branch-shaped side arm with its own ridge, so spacing is set by the tip's motion. Six main arms follow the lattice axes. Side arm length records how long that stretch of edge stayed growable, so early arms stop short and late arms keep extending. The tip visibly thins when it speeds up."
+  },
+  "discarded_obvious_idea": "Obvious: a six-armed snowflake rotating on a gradient with random noise bumps along its edges. Rejected: random noise is on the slop list and hides the fixed-lag rule.",
+  "compo": "kinetic-type",
+  "constraint_honoured": null,
+  "techniques": [
+    "signed-distance glyph edges",
+    "fixed-lag defect birth behind the tip",
+    "six-fold mirrored lattice arms",
+    "latency-controlled arm length"
+  ],
+  "novel_technique": "signed-distance glyph edges",
+  "technique_family": "typography-sdf",
+  "palette": [
+    "#d8a193",
+    "#b8665a",
+    "#7a2636"
+  ],
+  "motion_sound_plan": "Mood: high tempo with five hard cuts at 5, 10, 11, 13 and 15 s over a dense field; warm-consonant palette of rose-clay and oxblood with six-fold mirrored symmetry; assertive framing, with the tip filling the frame at 2 s and a strong push or pull between beats. Experimental risk: signed-distance glyph growth. No audio (requires_audio is false), so no sound. Constraint is null.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Sharp oxblood tip fills the centre of a rose-clay ground, thin and filling the frame. Behind it the word defect sits as a row of six small dots at equal spacing, not yet readable."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Tip advances outward. Each letter of defect swells through the glyph threshold into a branch-shaped arm, and six arms spread along the lattice axes. Camera pulls back to mid-scale with arms filling half the frame."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Hard cuts at 11 s and 13 s switch scale: the word branch is drawn letter by letter along each main arm as new side arms. Density peaks with all six arms full, oxblood on clay."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Pull back to the whole centred six-fold figure, mirrored. Early letters stop short while late ones keep extending, so arm lengths differ. The final frame shows the whole figure, unlike the close 2 s frame."
+    }
+  ],
+  "memorable_moment": "A row of letters behind a sharp tip, each letter swelling into a branch-shaped arm.",
+  "self_declared_risk": "The glyph threshold animation may read as random blobs if the lag between letters is not constant, and fwidth edges can alias at small sizes.",
+  "liner_note": "In 1999 Koss and colleagues reported that succinonitrile dendrite tips obey V*R^2 = constant, so faster tips are sharper. Gravner and Griffeath's three-dimensional snow crystal simulation finds a defect at a characteristic distance behind the tip, which later grows into a side branch. On screen the word defect sits as a row of letters behind a clay-coloured tip; each letter swells into a branch-shaped arm. Six main arms follow the lattice axes, and each side arm's length records how long its stretch of edge stayed growable."
+}

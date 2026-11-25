@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 13,
+    "ambition": 10,
+    "craft": 15,
+    "distinctness": 12,
+    "polish": 7
+  },
+  "total": 57,
+  "evidence": {
+    "mechanism": "shot-08s: six-armed oxblood star with side arms and clay dots; glyph-like shapes sit at the arm bases but read as blobs, not a legible word. By shot-20s hairline branches fill the lattice around the star.",
+    "ambition": "shot-20s: one flat vector layer in two colours with a six-arm lattice, hairline branches and a small bottom-left caption; no lighting, material or simulation is visible.",
+    "craft": "shot-02s: clean clay ground with an oxblood star, a consistent two-colour palette and centred symmetry; shot-08s: glyph shapes at the arm bases clump into smudges and hairlines alias at 1280x720.",
+    "distinctness": "shot-02s: rose-clay ground with an oxblood six-arm star, a familiar snowflake motif. shot-20s: the warm rust palette is close to the recent Penrose night, but the subject and lattice arms differ.",
+    "polish": "shot-02s: centred, composed star with ample margins. shot-20s: arms fill more of the frame and branches lengthen, so the piece resolves into a fuller figure, though the 2s frame is sparse."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Median shot-20s: dense ochre and rust Penrose kite mosaic inside a cream triangle reads as a finished tiled object; tonight shot-20s has thin oxblood hairline branches that lose weight at thumbnail size.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Replace the glyph-blob arm bases at shot-08s with the word defect as legible letters, each sitting at a constant lag behind its arm tip, so the fixed-lag birth reads on screen.", "expected_gain": 4 },
+    { "rank": 2, "change": "Thicken the hairline side branches at shot-20s and add a second tone or subtle shading to them so they hold at thumbnail size and the piece gains some material.", "expected_gain": 3 },
+    { "rank": 3, "change": "Use the empty clay ground at shot-02s: add a faint depth or texture behind the star, or start the tip closer to the arms, so the opening frame is not sparse.", "expected_gain": 2 }
+  ]
+}

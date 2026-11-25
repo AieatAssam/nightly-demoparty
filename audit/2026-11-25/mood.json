@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-11-25T11:24:57.729Z",
+  "preset_override": null,
+  "dominant_emotions": [
+    {
+      "label": "interest",
+      "intensity": 0.791
+    },
+    {
+      "label": "joy",
+      "intensity": 0.79
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.535
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.038
+    }
+  ],
+  "pad": {
+    "pleasure": 0.44,
+    "arousal": 0.53,
+    "dominance": 0.35
+  },
+  "neurochemistry": {
+    "dopamine": 1,
+    "noradrenaline": 1,
+    "serotonin": 0.874,
+    "cortisol": 0.308,
+    "oxytocin": 0.425,
+    "opioids": 1
+  },
+  "drives": {
+    "novelty": 0,
+    "social": 0.962,
+    "fatigue": 0
+  },
+  "derived_signals": {
+    "interest": 0.791,
+    "boredom": 0.038,
+    "frustration": 0.077
+  },
+  "likes": [
+    {
+      "topic": "tiling-geometry",
+      "score": 0.301
+    },
+    {
+      "topic": "simulation",
+      "score": 0.291
+    },
+    {
+      "topic": "golden-ratio",
+      "score": 0.286
+    },
+    {
+      "topic": "substitution-rules",
+      "score": 0.269
+    },
+    {
+      "topic": "side-branch-defect",
+      "score": 0.256
+    },
+    {
+      "topic": "physics",
+      "score": 0.25
+    },
+    {
+      "topic": "growth-shells",
+      "score": 0.249
+    },
+    {
+      "topic": "dendritic-solidification",
+      "score": 0.248
+    },
+    {
+      "topic": "iterated-map",
+      "score": 0.248
+    },
+    {
+      "topic": "tip-speed-radius-lock",
+      "score": 0.245
+    },
+    {
+      "topic": "tip-instability",
+      "score": 0.238
+    },
+    {
+      "topic": "growth-latency",
+      "score": 0.22
+    },
+    {
+      "topic": "aperiodicity",
+      "score": 0.215
+    },
+    {
+      "topic": "six-fold-symmetry",
+      "score": 0.182
+    },
+    {
+      "topic": "penrose-inflation",
+      "score": 0.173
+    },
+    {
+      "topic": "grammar",
+      "score": 0.168
+    },
+    {
+      "topic": "recursive-branching",
+      "score": 0.168
+    },
+    {
+      "topic": "convection-regimes",
+      "score": 0.149
+    },
+    {
+      "topic": "kite-dart-angles",
+      "score": 0.081
+    }
+  ],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.765,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.44,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "assertive",
+      "value": 0.35,
+      "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.791,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.077,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

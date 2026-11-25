@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 9,
+    "craft": 13,
+    "distinctness": 11,
+    "polish": 6
+  },
+  "total": 53,
+  "evidence": {
+    "mechanism": "shot-08s: six oxblood arms carry thin clay side hairlines and a dense centre cluster of overlapping letters spelling defect; by shot-20s the branches are longer, but no clean row sits at a fixed lag behind a tip.",
+    "ambition": "shot-02s: one flat oxblood star on a rose vignette, a single layer with no material or lighting; by shot-20s it is a pulled-back hatched snowflake, still one flat 2D layer.",
+    "craft": "shot-02s: crisp oxblood arm silhouettes with a thin clay centreline on a smooth rose vignette; by shot-08s the overlapping letter glyphs at centre smudge into illegible clutter.",
+    "distinctness": "shot-02s: oxblood and clay six-arm star, far from the ochre Penrose kites of 2026-11-23 in subject; the rust family is shared and a six-armed snowflake is a common shader cliche.",
+    "polish": "shot-02s: the star fills the frame and is centred; by shot-20s the figure resolves whole, but the title caption and V/R readout sit unchanged in the corners of every frame."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Median's shot-08s is a dense two-tone ochre and rust Penrose tiling with clearly subdivided kites; tonight's shot-08s is overlapping letters over thin hairlines on flat clay, so the median wins the head-to-head.",
+  "calibration_anchors_used": [
+    "anchor-01",
+    "anchor-05",
+    "anchor-06",
+    "anchor-10"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Lay the defect letters out as one legible row trailing the tip at a constant fixed lag, replacing the overlapping centre cluster visible at shot-08s.",
+      "expected_gain": 5
+    },
+    {
+      "rank": 2,
+      "change": "Shade each oxblood arm with a ridge highlight or depth falloff so shot-20s reads as more than one flat 2D layer.",
+      "expected_gain": 5
+    },
+    {
+      "rank": 3,
+      "change": "Drop the title caption and the V/R/V*R^2 readout from the frames, or show the V-R lock through arm thickness at shot-02s, so text stops doing the mechanism's work.",
+      "expected_gain": 2
+    }
+  ]
+}

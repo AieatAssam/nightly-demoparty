@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 11,
+    "craft": 13,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 60,
+  "evidence": {
+    "mechanism": "shot-08s: six main arms with thin side arms leaving them at fixed angles and letter glyphs sitting along each arm; by shot-20s the arms are denser and the glyph row is jumbled, so the fixed-lag rule is hard to read.",
+    "ambition": "shot-02s: one flat oxblood star on a clay ground with six dot-studded arms and a small mono caption; by shot-20s layered hatching, glyph rows and side arms add layers but no material, lighting or depth.",
+    "craft": "shot-02s: clean crisp vector edges and a palette matching the rose-clay and oxblood brief; shot-20s: overlapping glyph smudges and thin hatch lines that alias and shimmer at full size.",
+    "distinctness": "shot-08s: six-armed snowflake with letter-born side arms, not a starfield or plasma; a six-armed snowflake is a familiar demo form, but it differs clearly from the Penrose kite tiling of 2026-11-23.",
+    "polish": "shot-02s: star is centred but only about 480 px tall, so it does not fill the frame as the brief claims; shot-20s resolves into a full mirrored figure, so start and end are both composed."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Penrose 2026-11-23 holds a denser, cleaner development at 20s: ochre and rust kites fill a large triangle. Tonight's 20s is thin hatching over jumbled glyph smudges, so the median wins the head-to-head.",
+  "calibration_anchors_used": [
+    "anchor-01",
+    "anchor-05",
+    "anchor-06",
+    "anchor-10"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Make the glyph row legible at shot-20s: give each arm one clean glyph per lag step, spaced at a constant distance behind the tip, instead of overlapping letters, so the fixed-lag rule reads on screen.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Add material or depth to the arms, such as a ridge shading or a tone step along each main arm, so the shot-02s star stops reading as a flat silhouette.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Remove the mono caption at the bottom-left of shot-02s and show the V*R^2 rule by the tip visibly thinning as its speed rises, so the visuals carry the concept.",
+      "expected_gain": 2
+    }
+  ]
+}

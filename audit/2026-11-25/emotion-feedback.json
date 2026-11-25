@@ -1,0 +1,206 @@
+{
+  "event": {
+    "event": "Tonight's kinetic-type piece on dendritic-solidification went to the B-sides at 60.",
+    "event_id": "2026-11-25:verdict:b-side",
+    "topics": [
+      "dendritic-solidification",
+      "kinetic-type",
+      "typography-sdf"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "thread": "night-2026-11-25",
+    "relevance": 0.8,
+    "congruence": 0.05,
+    "novelty": 0.3,
+    "praiseworthiness": 0.1,
+    "control": 0.6
+  },
+  "elicited": {
+    "joy": 0.04348479900275554,
+    "pride": 0.15902219744661114,
+    "interest": 0.24796506470837704,
+    "boredom": 0.06383989881195677
+  },
+  "consolidated": {
+    "topic:tiling-geometry": 0.147,
+    "topic:simulation": 0.22,
+    "topic:dendritic-solidification": 0.153,
+    "topic:physics": 0.284,
+    "topic:tip-speed-radius-lock": 0.279,
+    "thread:night-2026-11-25": 0.153,
+    "topic:convection-regimes": 0.183,
+    "topic:side-branch-defect": 0.29,
+    "topic:tip-instability": 0.272,
+    "topic:grammar": 0.201,
+    "topic:recursive-branching": 0.201,
+    "topic:growth-latency": 0.254,
+    "topic:six-fold-symmetry": 0.216,
+    "topic:kinetic-type": 0.098,
+    "topic:typography-sdf": 0.098
+  },
+  "mood": {
+    "timestamp": "2026-11-25T11:44:59.942Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "joy",
+        "intensity": 0.731
+      },
+      {
+        "label": "interest",
+        "intensity": 0.704
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.247
+      },
+      {
+        "label": "pride",
+        "intensity": 0.159
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.064
+      }
+    ],
+    "pad": {
+      "pleasure": 0.44,
+      "arousal": 0.53,
+      "dominance": 0.35
+    },
+    "neurochemistry": {
+      "dopamine": 0.957,
+      "noradrenaline": 0.883,
+      "serotonin": 0.882,
+      "cortisol": 0.293,
+      "oxytocin": 0.425,
+      "opioids": 0.978
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.963,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.704,
+      "boredom": 0.064,
+      "frustration": 0.073
+    },
+    "likes": [
+      {
+        "topic": "tiling-geometry",
+        "score": 0.33
+      },
+      {
+        "topic": "simulation",
+        "score": 0.32
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.29
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.286
+      },
+      {
+        "topic": "physics",
+        "score": 0.284
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.279
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.272
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.268
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.254
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.249
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.248
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.216
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.215
+      },
+      {
+        "topic": "grammar",
+        "score": 0.201
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.201
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.183
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.173
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.153
+      },
+      {
+        "topic": "kinetic-type",
+        "score": 0.098
+      },
+      {
+        "topic": "typography-sdf",
+        "score": 0.098
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.081
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.765,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.44,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.35,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "moderate",
+        "value": 0.704,
+        "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.073,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  }
+}

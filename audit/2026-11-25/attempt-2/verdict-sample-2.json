@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 9,
+    "craft": 12,
+    "distinctness": 12,
+    "polish": 7
+  },
+  "total": 54,
+  "evidence": {
+    "mechanism": "shot-08s: six arms with perpendicular side ticks grow from a centre cluster of overlapping t/c/e/f glyphs; the fixed-lag row of letters behind a tip is not legible. By shot-20s the arms gain more ticks.",
+    "ambition": "shot-02s: one flat vector star on a radial rose gradient with dashed centre lines; by shot-20s side ticks and glyph layers add to it, but there is no material, lighting or simulation pass.",
+    "craft": "shot-02s: clean oxblood on clay palette, but the arm roots are cut square and the dashed centre rules look broken. By shot-20s the glyph pile at the centre overlaps into clutter.",
+    "distinctness": "shot-02s: rose-clay and oxblood six-arm dendrite, unlike the cream and ochre Penrose tiling of 2026-11-23; the six-armed snowflake silhouette is itself a familiar demoscene form.",
+    "polish": "shot-02s: figure is centred and fills much of the frame at start; by shot-20s the full six-fold figure is whole, with ticks densest and glyph clutter at the centre unresolved."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Median Penrose 8s shows a dense ochre-and-rust tiling on cream with clean edges; tonight's 8s is a dark star with overlapping t/c/e/f glyphs piled at the centre, so the median wins the head-to-head.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "At shot-08s, spread the glyphs of defect into one row at a constant spacing just behind the tip, each swelling into its own arm, instead of piling them at the centre; drop the V/R readout.", "expected_gain": 4 },
+    { "rank": 2, "change": "Taper each arm root into the centre instead of the square-cut notches visible at shot-02s, and make the dashed centre rule continuous so it does not break into dashes.", "expected_gain": 3 },
+    { "rank": 3, "change": "Give the arms one shaded ridge or light falloff so the figure has a second rendering layer beyond flat fills; by shot-20s let early arms stop short so arm length visibly differs.", "expected_gain": 4 }
+  ]
+}

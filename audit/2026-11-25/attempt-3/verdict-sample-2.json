@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 11,
+    "craft": 14,
+    "distinctness": 13,
+    "polish": 7
+  },
+  "total": 61,
+  "evidence": {
+    "mechanism": "shot-08s: six oxblood arms with dense fern-like side branches grow out from a central hub on rose-clay; by shot-20s the branching has filled out into feathered arms, so the growth visibly develops.",
+    "ambition": "shot-08s: one flat 2D layer with a soft radial vignette and no material or lighting; the only extra idea is the mirrored glyph row seen at shot-02s, so ambition stays modest.",
+    "craft": "shot-02s: mirrored glyph fragments 'ectd' and 'pect' sit along the arms and specks cluster at the tips, while the figure is pushed to the upper-left; shot-20s is cleaner, with a coherent rose and oxblood palette.",
+    "distinctness": "shot-20s: oxblood six-arm fern on a rose-clay ground, unlike the ochre and rust Penrose kite tiling on cream from 2026-11-23; the six-armed snowflake form itself is a common cliche.",
+    "polish": "shot-02s: figure sits off-centre with arms clipped at the top and left edges and the right half empty; by shot-20s the figure is centred and resolved, clearly differing from the opening frame."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "shot-20s: one centred six-arm fern on rose-clay reads as a single clear figure at thumbnail size, while the median's 20s is a dense ochre and rust tile field on cream with less shape contrast.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Keep the fixed-lag rule visible after 2 s: the glyph row 'defect' vanishes by shot-08s, so make each letter birth a visible side arm at a constant distance behind the tip in shot-08s and shot-20s.", "expected_gain": 4 },
+    { "rank": 2, "change": "Centre the six-arm figure at shot-02s and stop the arms clipping at the top and left edges, so the opening frame is composed rather than pushed into one corner.", "expected_gain": 2 },
+    { "rank": 3, "change": "Replace the flat oxblood fill on the arms with a ridge highlight or simple shading, so shot-08s and shot-20s gain material and a second rendering idea beyond one flat layer.", "expected_gain": 4 }
+  ]
+}

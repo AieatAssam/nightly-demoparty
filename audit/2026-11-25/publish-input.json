@@ -1,0 +1,871 @@
+{
+  "status": "b-side",
+  "reason": "B-side: best attempt 3 scored 60, below the publish threshold 72.",
+  "publishThreshold": 72,
+  "plan": {
+    "date": "2026-11-25",
+    "compo": "kinetic-type",
+    "size_budget_bytes": 12288,
+    "constraint": null,
+    "domain": "dendritic-solidification",
+    "wildcard": false,
+    "banned": {
+      "techniques": [
+        "recursive substitution tiling",
+        "generation shell reveal",
+        "kite-dart count bars"
+      ],
+      "domains": [
+        "penrose-inflation"
+      ],
+      "palette_hexes": [
+        "#efe3c8",
+        "#c8912e",
+        "#9c4a24",
+        "#e6b45c",
+        "#3a332c"
+      ],
+      "slop_patterns": [
+        "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+        "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+        "Matrix rain is on the permanent slop list.",
+        "Four-sine plasma boilerplate. Build a field with development instead.",
+        "Plain plasma: sine sums as the whole picture.",
+        "Plain starfield: points drifting toward the camera with no structure behind them.",
+        "Plain tunnel: concentric rings flying past with nothing else happening.",
+        "Matrix rain: falling glyph columns.",
+        "Mouse-following particles with no system behind them.",
+        "A single raymarched sphere or torus on a gradient.",
+        "Untouched Mandelbrot or Julia zoom.",
+        "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+        "Bloom or chromatic aberration used to hide an empty scene.",
+        "Math.random() noise as the main visual idea.",
+        "A loop with no development: the 20 s frame looks like the 2 s frame.",
+        "Title cards or captions doing the work the visuals should do.",
+        "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+      ]
+    },
+    "boredom_override": false,
+    "requires_audio": false,
+    "seed": "2026-11-25",
+    "dry_run": false,
+    "overrides": {
+      "domain": null,
+      "compo": null,
+      "mood_preset": null
+    }
+  },
+  "dossier": {
+    "topic": "Snow-crystal dendrite tips: a speed-sharpness lock (V*R^2 = constant) plus side branches that sprout from a defect at a fixed distance behind the tip",
+    "domain": "dendritic-solidification",
+    "wildcard_chosen": false,
+    "summary": "A dendrite grows by its tip, which is pushed forward by diffusion and capillary forces. Experiments on succinonitrile find that tip speed V and tip radius R obey V*R^2 = constant, so faster tips are sharper. Side branches do not appear at random: simulations and lab sequences show a defect forming at a characteristic distance behind the tip, which grows into a side branch. Snowflake arms follow six lattice directions, and side-branch length tracks how long that part of the front stayed growable.",
+    "facts": [
+      {
+        "claim": "Koss et al. (1999) report a kinetic selection rule for succinonitrile dendrite tips, V*R^2 = constant, where V is tip velocity and R is tip radius of curvature. They say it holds in microgravity, is nearly independent of gravity, and depends slightly on supercooling.",
+        "source_url": "https://www.osti.gov/biblio/20005984",
+        "source_title": "Dendritic growth tip velocities and radii of curvature in microgravity"
+      },
+      {
+        "claim": "In microgravity, succinonitrile dendrite growth is diffusion-limited above about 0.4 K supercooling. On Earth, convection dominates dendritic growth below about 1.7 K supercooling.",
+        "source_url": "https://www.osti.gov/biblio/20005984",
+        "source_title": "Dendritic growth tip velocities and radii of curvature in microgravity"
+      },
+      {
+        "claim": "In Gravner and Griffeath's 3D snow crystal simulation, a defect arises at a characteristic distance from the crystal tip, becomes more pronounced, and later gives rise to a side branch.",
+        "source_url": "https://ar5iv.arxiv.org/html/0711.4020",
+        "source_title": "Modeling Snow Crystal Growth III: three-dimensional snowfakes"
+      },
+      {
+        "claim": "The same simulation reproduces the crystal tip instability and the start of side branching studied in laboratory experiments, and the sequence matches the lab work of Gonda and Nakahara.",
+        "source_url": "https://ar5iv.arxiv.org/html/0711.4020",
+        "source_title": "Modeling Snow Crystal Growth III: three-dimensional snowfakes"
+      },
+      {
+        "claim": "Small bumps on a growing snow crystal develop into large branches, and bumps on those branches become side branches.",
+        "source_url": "https://www.its.caltech.edu/~atomic/snowcrystals/dendrites/dendrite.htm",
+        "source_title": "Snowflake Branching"
+      },
+      {
+        "claim": "In Li and Schaposnik's model, the six main branches of a snow crystal grow along the lattice axes. Side-branch length indicates growth latency, the time a boundary cell spends before it freezes.",
+        "source_url": "https://ar5iv.labs.arxiv.org/html/1505.02042",
+        "source_title": "Interface control and snow crystal growth"
+      },
+      {
+        "claim": "In Li and Schaposnik's model, growth direction takes six values measured from the horizontal axis: plus or minus 30, 90 and 150 degrees. Side branches are described as showing chaotic-dynamics features of complexity and unpredictability.",
+        "source_url": "https://ar5iv.labs.arxiv.org/html/1505.02042",
+        "source_title": "Interface control and snow crystal growth"
+      }
+    ],
+    "visualisable_mechanisms": [
+      {
+        "name": "V-R sharpness lock",
+        "description": "Tip speed and tip radius are tied by V*R^2 = constant, so a tip that speeds up becomes sharper and a slower tip blunts. The product stays fixed while the tip moves through changing supercooling.",
+        "render_or_sonify_hint": "A needle tip whose point visibly thins as it accelerates and blunts as it slows, with the product of its speed and squared radius held on a fixed curve shown as a faint hyperbola."
+      },
+      {
+        "name": "fixed-lag side-branch birth",
+        "description": "A defect appears at a characteristic distance behind the advancing tip, grows more pronounced, and then becomes a side branch. Each new branch is born at the same lag from the tip, so the spacing is set by the tip's motion.",
+        "render_or_sonify_hint": "A moving tip leaves a trail of small bumps at a constant distance behind it; each bump swells over time into a short side arm with its own ridge."
+      },
+      {
+        "name": "six-axis lattice arms",
+        "description": "The main arms grow along six lattice directions spaced 60 degrees apart. Side branches leave the main arms at fixed angles set by the lattice rather than at random.",
+        "render_or_sonify_hint": "Six straight arms radiating from a centre at 60 degree spacing, each with rows of short side arms at a fixed angle, so the figure has hexagonal symmetry as it grows."
+      },
+      {
+        "name": "latency-length coupling",
+        "description": "A side branch's length reflects how long that stretch of the front stayed in the growable state before freezing. Longer latency gives longer branches, so the pattern records the timing of its own growth.",
+        "render_or_sonify_hint": "Side arms start at different times and freeze at different lengths: early-born arms stop short, late ones keep extending, showing a beginning, middle and end across the piece."
+      }
+    ],
+    "open_questions": [
+      "Does the V*R^2 = constant rule measured in succinonitrile also hold for ice at snowflake growth conditions?",
+      "What sets the characteristic distance behind the tip where side-branch defects form in real ice crystals?",
+      "How closely does the latency-based model of Li and Schaposnik match the measured side-branch lengths in real snow crystals?"
+    ],
+    "surprise": {
+      "score": 72,
+      "justification": "A generalist expects a snowflake tip to be a free point set by the ice's six-fold symmetry alone. The data show tip speed and radius are locked by one rule, and side branches come from a defect at a fixed distance behind the tip rather than from random noise."
+    },
+    "dataset": null
+  },
+  "mood": {
+    "timestamp": "2026-11-25T11:24:57.729Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.791
+      },
+      {
+        "label": "joy",
+        "intensity": 0.79
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.535
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.038
+      }
+    ],
+    "pad": {
+      "pleasure": 0.44,
+      "arousal": 0.53,
+      "dominance": 0.35
+    },
+    "neurochemistry": {
+      "dopamine": 1,
+      "noradrenaline": 1,
+      "serotonin": 0.874,
+      "cortisol": 0.308,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.962,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.791,
+      "boredom": 0.038,
+      "frustration": 0.077
+    },
+    "likes": [
+      {
+        "topic": "tiling-geometry",
+        "score": 0.301
+      },
+      {
+        "topic": "simulation",
+        "score": 0.291
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.286
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.269
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.256
+      },
+      {
+        "topic": "physics",
+        "score": 0.25
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.249
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.248
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.248
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.245
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.238
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.22
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.215
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.182
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.173
+      },
+      {
+        "topic": "grammar",
+        "score": 0.168
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.168
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.149
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.081
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.765,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.44,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.35,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "experimental",
+        "value": 0.791,
+        "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.077,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  },
+  "brief": {
+    "title": "Fixed-Lag Side Branches on a Dendrite Tip",
+    "concept": "A succinonitrile dendrite tip whose speed and radius are locked by V*R^2 = constant leaves side branches at a fixed lag behind itself, and the word defect is the row of letters where each branch is born.",
+    "mechanism_embodied": {
+      "mechanism_name": "fixed-lag side-branch birth",
+      "how_visualised": "A clay-coloured tip advances outward from the centre and leaves the letters of the word defect at a constant lag behind it. Each letter swells into a branch-shaped side arm with its own ridge, so spacing is set by the tip's motion. Six main arms follow the lattice axes. Side arm length records how long that stretch of edge stayed growable, so early arms stop short and late arms keep extending. The tip visibly thins when it speeds up."
+    },
+    "discarded_obvious_idea": "Obvious: a six-armed snowflake rotating on a gradient with random noise bumps along its edges. Rejected: random noise is on the slop list and hides the fixed-lag rule.",
+    "compo": "kinetic-type",
+    "constraint_honoured": null,
+    "techniques": [
+      "signed-distance glyph edges",
+      "fixed-lag defect birth behind the tip",
+      "six-fold mirrored lattice arms",
+      "latency-controlled arm length"
+    ],
+    "novel_technique": "signed-distance glyph edges",
+    "technique_family": "typography-sdf",
+    "palette": [
+      "#d8a193",
+      "#b8665a",
+      "#7a2636"
+    ],
+    "motion_sound_plan": "Mood: high tempo with five hard cuts at 5, 10, 11, 13 and 15 s over a dense field; warm-consonant palette of rose-clay and oxblood with six-fold mirrored symmetry; assertive framing, with the tip filling the frame at 2 s and a strong push or pull between beats. Experimental risk: signed-distance glyph growth. No audio (requires_audio is false), so no sound. Constraint is null.",
+    "storyboard": [
+      {
+        "beat": 1,
+        "t_start_s": 0,
+        "t_end_s": 5,
+        "description": "Sharp oxblood tip fills the centre of a rose-clay ground, thin and filling the frame. Behind it the word defect sits as a row of six small dots at equal spacing, not yet readable."
+      },
+      {
+        "beat": 2,
+        "t_start_s": 5,
+        "t_end_s": 10,
+        "description": "Tip advances outward. Each letter of defect swells through the glyph threshold into a branch-shaped arm, and six arms spread along the lattice axes. Camera pulls back to mid-scale with arms filling half the frame."
+      },
+      {
+        "beat": 3,
+        "t_start_s": 10,
+        "t_end_s": 15,
+        "description": "Hard cuts at 11 s and 13 s switch scale: the word branch is drawn letter by letter along each main arm as new side arms. Density peaks with all six arms full, oxblood on clay."
+      },
+      {
+        "beat": 4,
+        "t_start_s": 15,
+        "t_end_s": 20,
+        "description": "Pull back to the whole centred six-fold figure, mirrored. Early letters stop short while late ones keep extending, so arm lengths differ. The final frame shows the whole figure, unlike the close 2 s frame."
+      }
+    ],
+    "memorable_moment": "A row of letters behind a sharp tip, each letter swelling into a branch-shaped arm.",
+    "self_declared_risk": "The glyph threshold animation may read as random blobs if the lag between letters is not constant, and fwidth edges can alias at small sizes.",
+    "liner_note": "In 1999 Koss and colleagues reported that succinonitrile dendrite tips obey V*R^2 = constant, so faster tips are sharper. Gravner and Griffeath's three-dimensional snow crystal simulation finds a defect at a characteristic distance behind the tip, which later grows into a side branch. On screen the word defect sits as a row of letters behind a clay-coloured tip; each letter swells into a branch-shaped arm. Six main arms follow the lattice axes, and each side arm's length records how long its stretch of edge stayed growable."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-25/attempt-1/index.html",
+        "compo": "kinetic-type",
+        "byte_size": 6632,
+        "size_budget_bytes": 12288,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 552.8377,
+          "t8": 357.2506,
+          "t20": 241.1873,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 1.1073,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 4.6195,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 50,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "d490f0f0f0f09014",
+            "t8": "96d0f0f0f0f0d016",
+            "t20": "d5b2f1f0f0f1b215"
+          },
+          "color_histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.026357,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000861,
+            0.001106,
+            0,
+            0,
+            0,
+            0.007443,
+            0,
+            0,
+            0,
+            0.000048,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000875,
+            0,
+            0,
+            0,
+            0.002272,
+            0.961037,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "min_hamming_distance": 21,
+          "min_histogram_distance": 0.989852,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 2.4718,
+          "reduced_motion": 0.0804,
+          "ratio": 0.0325
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-25/attempt-1/shot-02s.png",
+          "t8": "audit/2026-11-25/attempt-1/shot-08s.png",
+          "t20": "audit/2026-11-25/attempt-1/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 13,
+          "ambition": 10,
+          "craft": 13,
+          "distinctness": 12,
+          "polish": 7
+        },
+        "total": 55,
+        "evidence": {
+          "mechanism": "shot-08s: six oxblood arms carry blobby letter glyphs spaced along each arm, with thin side arms spawning beside them; by shot-20s the side-arm lattice is denser, but the tip looks the same as in shot-02s.",
+          "ambition": "shot-02s: one flat oxblood six-arm star on clay with dot inlays and a small caption; shot-20s adds hairline side arms and glyph layers, but no shading, lighting, or simulation is visible.",
+          "craft": "shot-08s: the palette matches the brief's rose-clay and oxblood and the edges are clean, but the defect letters swell into garbled overlapping blobs, and the 20s hairlines are thin enough to moire at thumbnail size.",
+          "distinctness": "shot-02s: rose-clay ground with a centred oxblood snowflake, unlike the cream Penrose tiling of the last night; the six-arm star is still a familiar snowflake motif with no other visual idea.",
+          "polish": "shot-02s: the star is centred and composed, but the arms are only dots at 2s; by shot-20s the figure resolves into a fuller six-fold lattice, so the ending no longer matches the start."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-23",
+        "pairwise_justification": "The Penrose 2026-11-23 20s frame fills its triangle with dense ochre and rust kites on cream; tonight's 20s is thin hairlines on clay with blobby letters, so the Penrose night wins the vote on clarity and density.",
+        "calibration_anchors_used": [
+          "anchor-01",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Vary the tip on screen so V*R^2 is visible: make the oxblood tip thin and sharp in fast beats and blunt in slow ones, since shot-02s and shot-20s show the same tip shape.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 2,
+            "change": "Replace the overlapping blobby defect glyphs at shot-08s and shot-20s with separated, legible letters placed at one constant lag behind the tip, so the fixed-lag rule reads.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Add shading or a ridge highlight on each arm and side arm so the frame has more than one rendering layer, and fill the frame at shot-02s as the storyboard promises.",
+            "expected_gain": 4
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-25/attempt-2/index.html",
+        "compo": "kinetic-type",
+        "byte_size": 5184,
+        "size_budget_bytes": 12288,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 959.3676,
+          "t8": 618.5579,
+          "t20": 236.3356,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 4.7558,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 13.8075,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.3,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "1717692b2b691717",
+            "t8": "17174d33334d1717",
+            "t20": "0f170f17170f170f"
+          },
+          "color_histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.071073,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.00229,
+            0.002786,
+            0,
+            0,
+            0,
+            0.198946,
+            0,
+            0,
+            0,
+            0.000012,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.255841,
+            0,
+            0,
+            0,
+            0.31252,
+            0.156532,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "min_hamming_distance": 31,
+          "min_histogram_distance": 0.934088,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 9.4023,
+          "reduced_motion": 1.7539,
+          "ratio": 0.1865
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-25/attempt-2/shot-02s.png",
+          "t8": "audit/2026-11-25/attempt-2/shot-08s.png",
+          "t20": "audit/2026-11-25/attempt-2/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 14,
+          "ambition": 9,
+          "craft": 13,
+          "distinctness": 11,
+          "polish": 6
+        },
+        "total": 53,
+        "evidence": {
+          "mechanism": "shot-08s: six oxblood arms carry thin clay side hairlines and a dense centre cluster of overlapping letters spelling defect; by shot-20s the branches are longer, but no clean row sits at a fixed lag behind a tip.",
+          "ambition": "shot-02s: one flat oxblood star on a rose vignette, a single layer with no material or lighting; by shot-20s it is a pulled-back hatched snowflake, still one flat 2D layer.",
+          "craft": "shot-02s: crisp oxblood arm silhouettes with a thin clay centreline on a smooth rose vignette; by shot-08s the overlapping letter glyphs at centre smudge into illegible clutter.",
+          "distinctness": "shot-02s: oxblood and clay six-arm star, far from the ochre Penrose kites of 2026-11-23 in subject; the rust family is shared and a six-armed snowflake is a common shader cliche.",
+          "polish": "shot-02s: the star fills the frame and is centred; by shot-20s the figure resolves whole, but the title caption and V/R readout sit unchanged in the corners of every frame."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-23",
+        "pairwise_justification": "Median's shot-08s is a dense two-tone ochre and rust Penrose tiling with clearly subdivided kites; tonight's shot-08s is overlapping letters over thin hairlines on flat clay, so the median wins the head-to-head.",
+        "calibration_anchors_used": [
+          "anchor-01",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Lay the defect letters out as one legible row trailing the tip at a constant fixed lag, replacing the overlapping centre cluster visible at shot-08s.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 2,
+            "change": "Shade each oxblood arm with a ridge highlight or depth falloff so shot-20s reads as more than one flat 2D layer.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 3,
+            "change": "Drop the title caption and the V/R/V*R^2 readout from the frames, or show the V-R lock through arm thickness at shot-02s, so text stops doing the mechanism's work.",
+            "expected_gain": 2
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-25/attempt-3/index.html",
+        "compo": "kinetic-type",
+        "byte_size": 3594,
+        "size_budget_bytes": 12288,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 818.5178,
+          "t8": 535.4989,
+          "t20": 342.5633,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 7.2954,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 12.5323,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 1,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.4,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "57c7cf87574f4f0f",
+            "t8": "2bb76fe7b32f2f0f",
+            "t20": "1717273b231b1717"
+          },
+          "color_histogram": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.050089,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.008289,
+            0.004035,
+            0,
+            0,
+            0,
+            0.03105,
+            0,
+            0,
+            0,
+            0.000012,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.259166,
+            0,
+            0,
+            0,
+            0.380148,
+            0.267211,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "min_hamming_distance": 31,
+          "min_histogram_distance": 0.934088,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 9.3652,
+          "reduced_motion": 4.1678,
+          "ratio": 0.445
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-25/attempt-3/shot-02s.png",
+          "t8": "audit/2026-11-25/attempt-3/shot-08s.png",
+          "t20": "audit/2026-11-25/attempt-3/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 11,
+          "craft": 14,
+          "distinctness": 13,
+          "polish": 7
+        },
+        "total": 60,
+        "evidence": {
+          "mechanism": "shot-08s: six symmetric arms on the lattice axes, each with regular comb side-branches spaced along its length; by shot-20s the side arms feather out with varying lengths, but no visible tip or lag defect.",
+          "ambition": "shot-08s: one flat fill layer with a subtle radial vignette, no lighting or material; the branching is a single shape pass. by shot-20s the same layer is denser, using under a third of the 12 KB budget.",
+          "craft": "shot-02s: text fragments clipped at the frame edges and stray letter debris along the top-left arms; by shot-08s the rose-clay ground and oxblood arms are clean, with crisp edges and no moire.",
+          "distinctness": "shot-08s: a centred oxblood six-arm snowflake on rose-clay, a motif many demos have used; the recent Penrose night is ochre and rust on cream with a tiling, so palette and layout differ from it.",
+          "polish": "shot-02s: figure sits in the left half with its text clipped at the frame edges; by shot-20s the figure is centred, mirrored and resolved, with arms of differing lengths."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-23",
+        "pairwise_justification": "shot-08s shows one sparse six-arm figure on flat rose; the 2026-11-23 Penrose strip grows from one kite into a dense ochre and rust tiling, so the median wins the head-to-head.",
+        "calibration_anchors_used": [
+          "anchor-01",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Add a second rendering idea: shade each arm with a lit ridge highlight and a darker underside, and give the back arms a lower-contrast depth layer so the figure reads as a 3D crystal rather than one flat fill.",
+            "expected_gain": 6
+          },
+          {
+            "rank": 2,
+            "change": "Make the fixed-lag rule visible: draw a bright growth tip at the front and birth each side branch at a constant distance behind it, so early arms stop short at 8s and late arms keep extending to 20s.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Clean the craft flaws: remove the clipped text and stray letter debris at shot-02s, and centre the tip so the 2s frame is composed rather than cut at the left edge.",
+            "expected_gain": 3
+          }
+        ]
+      }
+    }
+  ],
+  "bestAttempt": 3,
+  "dryRun": false
+}

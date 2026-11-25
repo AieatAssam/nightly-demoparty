@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 13,
+    "ambition": 10,
+    "craft": 12,
+    "distinctness": 12,
+    "polish": 7
+  },
+  "total": 54,
+  "evidence": {
+    "mechanism": "shot-08s: six oxblood arms carry blobby letter glyphs spaced along each arm, with thin side arms spawning beside them; by shot-20s the side-arm lattice is denser, but the tip looks the same as in shot-02s.",
+    "ambition": "shot-02s: one flat oxblood six-arm star on clay with dot inlays and a small caption; shot-20s adds hairline side arms and glyph layers, but no shading, lighting, or simulation is visible.",
+    "craft": "shot-08s: the palette matches the brief's rose-clay and oxblood and the edges are clean, but the defect letters swell into garbled overlapping blobs, and the 20s hairlines are thin enough to moire at thumbnail size.",
+    "distinctness": "shot-02s: rose-clay ground with a centred oxblood snowflake, unlike the cream Penrose tiling of the last night; the six-arm star is still a familiar snowflake motif with no other visual idea.",
+    "polish": "shot-02s: the star is centred and composed, but the arms are only dots at 2s; by shot-20s the figure resolves into a fuller six-fold lattice, so the ending no longer matches the start."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "The Penrose 2026-11-23 20s frame fills its triangle with dense ochre and rust kites on cream; tonight's 20s is thin hairlines on clay with blobby letters, so the Penrose night wins the vote on clarity and density.",
+  "calibration_anchors_used": ["anchor-01", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Vary the tip on screen so V*R^2 is visible: make the oxblood tip thin and sharp in fast beats and blunt in slow ones, since shot-02s and shot-20s show the same tip shape.", "expected_gain": 5 },
+    { "rank": 2, "change": "Replace the overlapping blobby defect glyphs at shot-08s and shot-20s with separated, legible letters placed at one constant lag behind the tip, so the fixed-lag rule reads.", "expected_gain": 4 },
+    { "rank": 3, "change": "Add shading or a ridge highlight on each arm and side arm so the frame has more than one rendering layer, and fill the frame at shot-02s as the storyboard promises.", "expected_gain": 4 }
+  ]
+}

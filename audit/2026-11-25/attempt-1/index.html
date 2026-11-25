@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixed-Lag Side Branches on a Dendrite Tip</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#d8a193}
+canvas{display:block;width:100vw;height:100vh}
+#t{position:fixed;left:14px;bottom:10px;font:12px ui-monospace,Menlo,monospace;color:#7a2636}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="t">fixed-lag side branches | V*R^2 = const</div>
+<script type="module">
+// Fixed-lag side-branch birth on a dendrite tip.
+// Tip distance P(t) advances; tip speed V = dP/dt sets tip radius R = sqrt(K / V) so V*R^2 = K.
+// Each letter of "defect" is born when the tip is LAG ahead of its site, i.e. at a fixed lag behind the tip.
+// Its side arms grow from birth until a freeze time that depends on its latency, so early arms stop short.
+const RED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv = document.getElementById('c');
+const X = cv.getContext('2d');
+const GROUND = '#d8a193', CLAY = '#b8665a', OX = '#7a2636';
+const SEED = 20261125, K = 96, LAG = 45, GROW = 14;
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const sm = x => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+const mix = (a, b, u) => a + (b - a) * u;
+const hs = n => { let h = Math.imul(n ^ 0x9e3779b9, 0x85ebca6b); h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35); h ^= h >>> 16; return (h >>> 0) / 4294967296; };
+
+const BT = [0, 1, 2, 3, 4, 5].map(k => 2.5 + 2.2 * k);       // birth times of defect letters
+const FR = BT.map((b, k) => b + 2 + 1.6 * k);                 // freeze times (latency)
+const JIT = BT.map((b, k) => 0.92 + 0.16 * hs(k + SEED));
+const P = t => 90 + 6 * t + 0.25 * t * t;                     // tip distance along arm
+const Rt = t => Math.sqrt(K / (6 + 0.5 * t));                 // tip radius from V*R^2 = K, V = dP/dt
+const SITE = BT.map(b => P(b) - LAG);                         // fixed lag behind tip at birth
+
+// Stroke glyphs in a unit box (x right, y down).
+const GLY = {
+  d: [[[.8, 0], [.8, 1]], [[.8, .45], [.25, .45], [.1, .6], [.1, .9], [.25, 1], [.8, 1]]],
+  e: [[[.1, .55], [.9, .55], [.8, .2], [.5, 0], [.15, .2], [.1, .55], [.15, .85], [.5, 1], [.9, .9]]],
+  f: [[[.9, 0], [.6, 0], [.45, .15], [.45, 1]], [[.15, .4], [.75, .4]]],
+  c: [[[.9, .2], [.6, 0], [.25, .1], [.1, .5], [.25, .9], [.6, 1], [.9, .8]]],
+  t: [[[.45, 0], [.45, .9], [.6, 1], [.9, .95]], [[.15, .3], [.8, .3]]],
+  b: [[[.15, 0], [.15, 1]], [[.15, .45], [.6, .45], [.85, .6], [.85, .85], [.6, 1], [.15, 1]]],
+  r: [[[.15, 1], [.15, .1]], [[.15, .45], [.5, .2], [.85, .2]]],
+  a: [[[.85, .35], [.6, .2], [.3, .2], [.12, .4], [.12, .8], [.35, 1], [.7, .95], [.85, .7]], [[.85, .2], [.85, 1]]],
+  n: [[[.1, 1], [.1, .2]], [[.1, .45], [.4, .2], [.85, .3], [.9, .6], [.9, 1]]],
+  h: [[[.1, 0], [.1, 1]], [[.1, .5], [.5, .25], [.85, .45], [.85, 1]]]
+};
+const WORD = 'defect', BRANCH = 'branch';
+
+// Camera: beat 1 close on the tip, beat 2 pulls back, hard cuts at 11 s and 13 s, beat 4 pulls back to the whole figure.
+function Z(t) {
+  if (t < 5) return mix(2.8, 2.4, sm(t / 5));
+  if (t < 10) return mix(2.4, 1.5, sm((t - 5) / 5));
+  if (t < 11) return 1.5;
+  if (t < 13) return 1.1;
+  if (t < 15) return 1.55;
+  return mix(1.55, 0.95, sm((t - 15) / 5)) * (1 - 0.003 * Math.max(0, t - 20));
+}
+
+let W = 0, H = 0;
+function glyph(ch, cx, cy, rot, lw, al) {
+  X.save();
+  X.translate(cx, cy);
+  X.rotate(rot);
+  X.strokeStyle = GROUND;
+  X.lineWidth = lw;
+  X.globalAlpha = al;
+  X.lineJoin = 'round';
+  X.lineCap = 'round';
+  X.beginPath();
+  for (const pl of GLY[ch]) {
+    pl.forEach((q, i) => {
+      const x = (q[0] - 0.5) * 11, y = (q[1] - 0.5) * 16;
+      if (i) X.lineTo(x, y); else X.moveTo(x, y);
+    });
+  }
+  X.stroke();
+  X.restore();
+}
+
+// One arm in local coordinates (x along the arm, world units). Drawn six times for six-fold symmetry.
+function arm(t) {
+  const p = P(t), r = Rt(t), Ls = [];
+  for (let k = 0; k < 6; k++) {
+    const e = Math.min(t, FR[k]) - BT[k];
+    Ls[k] = e > 0 ? GROW * e * JIT[k] : 0;
+    const L = Ls[k], s = SITE[k];
+    if (L <= 0) continue;
+    for (const sg of [1, -1]) {
+      X.beginPath();
+      X.moveTo(s, 0);
+      X.lineTo(s + 0.5 * L, sg * 0.866 * L);
+      X.strokeStyle = CLAY; X.lineWidth = 3.2; X.lineCap = 'round'; X.stroke();
+      X.strokeStyle = OX; X.lineWidth = 0.9; X.stroke();
+    }
+  }
+  // main body with a tip of radius r
+  X.beginPath();
+  X.moveTo(0, -9);
+  X.quadraticCurveTo(p * 0.6, -3, p - r, -r);
+  X.arc(p - r, 0, r, -Math.PI / 2, Math.PI / 2);
+  X.quadraticCurveTo(p * 0.6, 3, 0, 9);
+  X.closePath();
+  X.fillStyle = OX;
+  X.fill();
+  // defect letters: seed dots when the tip passes, then carved glyphs that swell after birth
+  for (let k = 0; k < 6; k++) {
+    const s = SITE[k], b = BT[k];
+    if (p < s) continue;
+    if (t < b) {
+      X.fillStyle = GROUND;
+      X.beginPath();
+      X.arc(s, 0, 1.6, 0, 6.2832);
+      X.fill();
+    } else {
+      const gk = sm((t - b) / 1.2);
+      if (gk > 0.01) glyph(WORD[k], s, 0, 0, 0.8 + 4.2 * gk, gk);
+    }
+  }
+  // beat 3: the word branch drawn letter by letter onto the side arms
+  for (let k = 0; k < 6; k++) {
+    const bg = sm((t - 11 - 0.35 * k) / 0.9);
+    if (bg <= 0.01 || Ls[k] <= 0) continue;
+    for (const sg of [1, -1]) {
+      glyph(BRANCH[k], SITE[k] + 0.3 * Ls[k], sg * 0.52 * Ls[k], sg * Math.PI / 3, 1 + 2 * bg, bg * 0.9);
+    }
+  }
+}
+
+function draw(t) {
+  const z = Z(t), S = H / 720, sc = S * z, cx = W / 2, cy = H / 2;
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  X.globalAlpha = 1;
+  X.fillStyle = GROUND;
+  X.fillRect(0, 0, W, H);
+  // hexagonal lattice ground, in clay
+  X.fillStyle = CLAY;
+  X.globalAlpha = 0.5;
+  const hw = cx / sc + 60, hh = cy / sc + 60;
+  for (let j = Math.floor(-hh / 52) - 1; j <= Math.ceil(hh / 52) + 1; j++) {
+    for (let i = Math.floor(-hw / 60) - 1; i <= Math.ceil(hw / 60) + 1; i++) {
+      const x = (i + 0.5 * (j & 1)) * 60, y = j * 52;
+      X.fillRect(cx + x * sc - 1.2, cy + y * sc - 1.2, 2.4, 2.4);
+    }
+  }
+  X.globalAlpha = 1;
+  X.setTransform(sc, 0, 0, sc, cx, cy);
+  for (let a = 0; a < 6; a++) {
+    X.save();
+    X.rotate((30 + 60 * a) * Math.PI / 180);
+    arm(t);
+    X.restore();
+  }
+  X.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+function fit() {
+  W = cv.width = innerWidth;
+  H = cv.height = innerHeight;
+}
+fit();
+addEventListener('resize', fit);
+draw(0);
+
+let T = 0, last = -1;
+function frame(ms) {
+  if (last < 0) last = ms;
+  T += Math.min((ms - last) / 1000, 0.5) * (RED ? 0.2 : 1);
+  last = ms;
+  draw(T);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 55,
+  "reason": "Attempt 2: scored 53, below 72. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Lay the defect letters out as one legible row trailing the tip at a constant fixed lag, replacing the overlapping centre cluster visible at shot-08s.",
+        "expected_gain": 5
+      },
+      {
+        "rank": 2,
+        "change": "Shade each oxblood arm with a ridge highlight or depth falloff so shot-20s reads as more than one flat 2D layer.",
+        "expected_gain": 5
+      },
+      {
+        "rank": 3,
+        "change": "Drop the title caption and the V/R/V*R^2 readout from the frames, or show the V-R lock through arm thickness at shot-02s, so text stops doing the mechanism's work.",
+        "expected_gain": 2
+      }
+    ],
+    "build_failed": false
+  }
+}

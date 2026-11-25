@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-25",
+  "compo": "kinetic-type",
+  "size_budget_bytes": 12288,
+  "constraint": null,
+  "domain": "dendritic-solidification",
+  "wildcard": false,
+  "banned": {
+    "techniques": [
+      "recursive substitution tiling",
+      "generation shell reveal",
+      "kite-dart count bars"
+    ],
+    "domains": [
+      "penrose-inflation"
+    ],
+    "palette_hexes": [
+      "#efe3c8",
+      "#c8912e",
+      "#9c4a24",
+      "#e6b45c",
+      "#3a332c"
+    ],
+    "slop_patterns": [
+      "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+      "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+      "Matrix rain is on the permanent slop list.",
+      "Four-sine plasma boilerplate. Build a field with development instead.",
+      "Plain plasma: sine sums as the whole picture.",
+      "Plain starfield: points drifting toward the camera with no structure behind them.",
+      "Plain tunnel: concentric rings flying past with nothing else happening.",
+      "Matrix rain: falling glyph columns.",
+      "Mouse-following particles with no system behind them.",
+      "A single raymarched sphere or torus on a gradient.",
+      "Untouched Mandelbrot or Julia zoom.",
+      "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+      "Bloom or chromatic aberration used to hide an empty scene.",
+      "Math.random() noise as the main visual idea.",
+      "A loop with no development: the 20 s frame looks like the 2 s frame.",
+      "Title cards or captions doing the work the visuals should do.",
+      "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+    ]
+  },
+  "boredom_override": false,
+  "requires_audio": false,
+  "seed": "2026-11-25",
+  "dry_run": false,
+  "overrides": {
+    "domain": null,
+    "compo": null,
+    "mood_preset": null
+  }
+}
