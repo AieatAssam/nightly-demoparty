@@ -1,0 +1,25 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "gates_failed"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": null,
+  "reason": "Attempt 1: hard gates failed: motion. Retrying (2/3).",
+  "feedback": {
+    "gate_failures": [
+      {
+        "gate": "motion",
+        "message": "mean frame-to-frame difference 0.001 is below 0.8: the piece looks static",
+        "measured": 0.0009,
+        "threshold": 0.8
+      }
+    ],
+    "critique": [],
+    "build_failed": false
+  }
+}

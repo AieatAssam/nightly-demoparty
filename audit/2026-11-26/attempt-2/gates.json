@@ -1,0 +1,135 @@
+{
+  "passed": false,
+  "piece_path": "audit/2026-11-26/attempt-2/index.html",
+  "compo": "simulation",
+  "byte_size": 6626,
+  "size_budget_bytes": 24576,
+  "console_errors": [],
+  "network_requests": [],
+  "luminance_variance": {
+    "t2": 3643.4678,
+    "t8": 3644.2393,
+    "t20": 3450.4565,
+    "floor": 12,
+    "passed": true
+  },
+  "motion": {
+    "frame_diff_mean": 0.0017,
+    "frame_diff_floor": 0.8,
+    "development_diff_t2_t20": 33.1787,
+    "development_floor": 2.5,
+    "passed": false
+  },
+  "strobe": {
+    "max_flashes_per_sec": 3,
+    "limit": 3,
+    "passed": true
+  },
+  "frame_time_ms": {
+    "median": 16.7,
+    "p90": 33.3,
+    "budget_ms": 250,
+    "passed": true
+  },
+  "audio_probe": null,
+  "novelty_b": {
+    "phashes": {
+      "t2": "1b1f27132b27132b",
+      "t8": "1b1f27132b27132b",
+      "t20": "160e1e160e060e0e"
+    },
+    "color_histogram": [
+      0.475924,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.131207,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.00002,
+      0.13199,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.130978,
+      0,
+      0,
+      0,
+      0,
+      0.12988,
+      0
+    ],
+    "min_hamming_distance": 15,
+    "min_histogram_distance": 0.837972,
+    "closest_date": "2026-11-25",
+    "passed": true
+  },
+  "slop_lint": {
+    "passed": true,
+    "violations": []
+  },
+  "reduced_motion": {
+    "passed": true,
+    "normal_motion": 0.0015,
+    "reduced_motion": 0.0001,
+    "ratio": 0.0455
+  },
+  "screenshots": {
+    "t2": "audit/2026-11-26/attempt-2/shot-02s.png",
+    "t8": "audit/2026-11-26/attempt-2/shot-08s.png",
+    "t20": "audit/2026-11-26/attempt-2/shot-20s.png"
+  },
+  "failures": [
+    {
+      "gate": "motion",
+      "message": "mean frame-to-frame difference 0.002 is below 0.8: the piece looks static",
+      "measured": 0.0017,
+      "threshold": 0.8
+    }
+  ]
+}

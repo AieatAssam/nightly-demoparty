@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 12,
+    "polish": 6
+  },
+  "total": 60,
+  "evidence": {
+    "mechanism": "shot-02s: a solid vermilion disc fills about half the grid over apricot noise with an umber border; by shot-08s it has become a four-lobed diamond with hairline diagonal fronts, so the cascade shows but does not branch visibly.",
+    "ambition": "shot-08s: live cell simulation with per-cell height tint, a flash layer and an umber scar layer over a noise backdrop; by shot-20s the vermilion mass has shifted off-centre, so the sim runs but the rendering is one idea.",
+    "craft": "shot-02s: warm apricot, vermilion and umber palette is cohesive, but the per-cell static noise is busy; shot-08s and shot-20s show hairline diagonal aliasing along the fronts, and a corner caption is cut off.",
+    "distinctness": "shot-08s: apricot, vermilion and umber grid with an astroid-like four-lobed field; the ochre-rust palette and branching-front look overlap the recent Penrose and dendrite nights, so novelty is only partial.",
+    "polish": "shot-02s: composed centred disc with a dark border; by shot-20s the vermilion cluster sits left of centre and is not the promised symmetric settled pile, and the caption is truncated, so the end state does not resolve."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-25",
+  "pairwise_justification": "The median dendrite has six crisp branches and fine tip detail at 20 s; tonight's noisy apricot grid with a lopsided vermilion blob loses the head-to-head vote.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-07", "anchor-10"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Render topple fronts as thin branching lines that fade behind the flash, instead of the solid vermilion disc at shot-02s, so the four-neighbour spread reads as branching at 2 s and 8 s.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Make shot-20s resolve to the centred, four-fold symmetric settled pile the storyboard promises: lock the centre drop and hold the last drop fixed so the frame matches the 8 s symmetry rather than a lopsided blob.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Replace the per-cell static apricot noise with a smoothed height tint, remove the hairline diagonal aliasing along the fronts at shot-08s and shot-20s, and stop the corner caption from being cut off.",
+      "expected_gain": 3
+    }
+  ]
+}

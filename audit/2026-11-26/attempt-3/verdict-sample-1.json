@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 14,
+    "craft": 18,
+    "distinctness": 12,
+    "polish": 6
+  },
+  "total": 65,
+  "evidence": {
+    "mechanism": "shot-08s: a four-pointed vermilion star with concave sides sits inside an umber square scar, the settled wedge pattern of the cascade; by shot-20s the vermilion has become an off-centre irregular blob.",
+    "ambition": "shot-08s: one live 200x200 integer simulation drives flash, scar and palette-tint layers; there is no lighting or second material, and shot-20s adds only faint diagonal hairlines.",
+    "craft": "shot-20s: faint diagonal hairline streaks cross the umber field and the grid cells read as static noise; the apricot, vermilion and umber palette stays coherent, and the caption is clipped at the frame bottom.",
+    "distinctness": "shot-02s: apricot and umber grid with a vermilion disc at centre; the palette sits close to the ochre and rust of the 2026-11-23 Penrose night, though the sandpile cascade differs from its tiling and the 2026-11-25 dendrite.",
+    "polish": "shot-02s: a centred filled disc frames the start and shot-08s is a composed four-fold star, but shot-20s drifts off-centre with clipped caption text, so the end state does not settle."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-25",
+  "pairwise_justification": "The median's six-armed dendrite on a rose gradient is one crisp form that reads at a glance; tonight's 8 s frame is a four-pointed umber-scarred blob over a noisy grid, which loses the head-to-head vote.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-07", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Replace the flat vermilion disc at shot-02s with a visible branching front: colour each cell by its flash age so a bright leading edge splits into branches and cools into umber scar, as the brief describes.", "expected_gain": 4 },
+    { "rank": 2, "change": "Remove the diagonal hairline streaks in the umber field at shot-20s and replace the static 0-3 tint noise with a smoothed palette ramp so the scars read as material instead of grain.", "expected_gain": 3 },
+    { "rank": 3, "change": "Keep the grid and caption inside the 1280x720 frame: the label is clipped at shot-08s and shot-20s, so pad the layout or drop the caption so the grid is unobstructed at every timestamp.", "expected_gain": 2 }
+  ]
+}

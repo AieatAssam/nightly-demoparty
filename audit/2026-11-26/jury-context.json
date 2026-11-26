@@ -1,0 +1,10 @@
+{
+  "expected_anchors": [
+    "anchor-03",
+    "anchor-04",
+    "anchor-07",
+    "anchor-10"
+  ],
+  "archive_empty": false,
+  "median_ref": "2026-11-25"
+}

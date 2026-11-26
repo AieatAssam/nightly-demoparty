@@ -1,0 +1,238 @@
+{
+  "event": {
+    "event": "Tonight's simulation piece on self-organised criticality sandpiles went to the B-sides at 65.",
+    "event_id": "2026-11-26:verdict:b-side",
+    "topics": [
+      "self-organised criticality sandpiles",
+      "simulation",
+      "cellular-automaton"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "thread": "night-2026-11-26",
+    "relevance": 0.8,
+    "congruence": 0.05,
+    "novelty": 0.3,
+    "praiseworthiness": 0.1,
+    "control": 0.6
+  },
+  "elicited": {
+    "joy": 0.04499706140822018,
+    "pride": 0.16625357831896956,
+    "interest": 0.25163509572160925,
+    "boredom": 0.06296136791063973
+  },
+  "consolidated": {
+    "topic:simulation": 0.077,
+    "topic:self-organised-criticality-sandpiles": 0.223,
+    "topic:cellular-automaton": 0.195,
+    "topic:toppling-cascade": 0.277,
+    "thread:night-2026-11-26": 0.145,
+    "topic:abelian-property": 0.273,
+    "topic:pile-growth": 0.264,
+    "topic:fractal-pattern": 0.229,
+    "topic:stable-threshold": 0.201,
+    "topic:avalanche-cascade": 0.245,
+    "topic:self-organised criticality sandpiles": 0.1
+  },
+  "mood": {
+    "timestamp": "2026-11-26T11:14:07.606Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.745
+      },
+      {
+        "label": "joy",
+        "intensity": 0.634
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.281
+      },
+      {
+        "label": "pride",
+        "intensity": 0.166
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.063
+      }
+    ],
+    "pad": {
+      "pleasure": 0.455,
+      "arousal": 0.574,
+      "dominance": 0.374
+    },
+    "neurochemistry": {
+      "dopamine": 0.955,
+      "noradrenaline": 0.909,
+      "serotonin": 0.996,
+      "cortisol": 0.283,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.987,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.745,
+      "boredom": 0.063,
+      "frustration": 0.071
+    },
+    "likes": [
+      {
+        "topic": "simulation",
+        "score": 0.394
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.326
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.287
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.283
+      },
+      {
+        "topic": "physics",
+        "score": 0.281
+      },
+      {
+        "topic": "toppling-cascade",
+        "score": 0.277
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.276
+      },
+      {
+        "topic": "abelian-property",
+        "score": 0.273
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.269
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.266
+      },
+      {
+        "topic": "pile-growth",
+        "score": 0.264
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.252
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.246
+      },
+      {
+        "topic": "avalanche-cascade",
+        "score": 0.245
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.245
+      },
+      {
+        "topic": "fractal-pattern",
+        "score": 0.229
+      },
+      {
+        "topic": "self-organised-criticality-sandpiles",
+        "score": 0.223
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.214
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.213
+      },
+      {
+        "topic": "stable-threshold",
+        "score": 0.201
+      },
+      {
+        "topic": "grammar",
+        "score": 0.199
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.199
+      },
+      {
+        "topic": "cellular-automaton",
+        "score": 0.195
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.181
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.171
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.152
+      },
+      {
+        "topic": "self-organised criticality sandpiles",
+        "score": 0.1
+      },
+      {
+        "topic": "kinetic-type",
+        "score": 0.097
+      },
+      {
+        "topic": "typography-sdf",
+        "score": 0.097
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.08
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.787,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.455,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.374,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "moderate",
+        "value": 0.745,
+        "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.071,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  }
+}

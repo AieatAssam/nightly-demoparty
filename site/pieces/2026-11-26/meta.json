@@ -1,0 +1,859 @@
+{
+  "date": "2026-11-26",
+  "status": "b-side",
+  "reason": "B-side: best attempt 3 scored 65, below the publish threshold 72.",
+  "publish_threshold": 72,
+  "best_attempt": 3,
+  "plan": {
+    "date": "2026-11-26",
+    "compo": "simulation",
+    "size_budget_bytes": 24576,
+    "constraint": null,
+    "domain": "wildcard",
+    "wildcard": true,
+    "banned": {
+      "techniques": [
+        "signed-distance glyph edges",
+        "fixed-lag defect birth behind the tip",
+        "six-fold mirrored lattice arms",
+        "latency-controlled arm length",
+        "recursive substitution tiling",
+        "generation shell reveal",
+        "kite-dart count bars"
+      ],
+      "domains": [
+        "dendritic-solidification",
+        "penrose-inflation"
+      ],
+      "palette_hexes": [
+        "#d8a193",
+        "#b8665a",
+        "#7a2636",
+        "#efe3c8",
+        "#c8912e",
+        "#9c4a24",
+        "#e6b45c",
+        "#3a332c"
+      ],
+      "slop_patterns": [
+        "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+        "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+        "Matrix rain is on the permanent slop list.",
+        "Four-sine plasma boilerplate. Build a field with development instead.",
+        "Plain plasma: sine sums as the whole picture.",
+        "Plain starfield: points drifting toward the camera with no structure behind them.",
+        "Plain tunnel: concentric rings flying past with nothing else happening.",
+        "Matrix rain: falling glyph columns.",
+        "Mouse-following particles with no system behind them.",
+        "A single raymarched sphere or torus on a gradient.",
+        "Untouched Mandelbrot or Julia zoom.",
+        "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+        "Bloom or chromatic aberration used to hide an empty scene.",
+        "Math.random() noise as the main visual idea.",
+        "A loop with no development: the 20 s frame looks like the 2 s frame.",
+        "Title cards or captions doing the work the visuals should do.",
+        "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+      ]
+    },
+    "boredom_override": false,
+    "requires_audio": false,
+    "seed": "2026-11-26",
+    "dry_run": false,
+    "overrides": {
+      "domain": null,
+      "compo": null,
+      "mood_preset": null
+    }
+  },
+  "dossier": {
+    "topic": "Bak-Tang-Wiesenfeld sandpile: a site holding 4 grains topples, sending one grain to each of its 4 neighbours, and one dropped grain can cascade into a multi-step avalanche",
+    "domain": "self-organised criticality sandpiles",
+    "wildcard_chosen": true,
+    "summary": "A grid of cells holds integer grain counts. Adding one grain at a random cell is harmless until a cell reaches 4; then it topples, losing 4 grains and giving one to each neighbour. Those neighbours may topple in turn, so one grain can set off an avalanche of varying size and duration. Piling many grains on one cell grows a fractal-looking pattern whose size scales roughly as sqrt(N). The final stable state does not depend on the order in which topplings happen, which is what makes the model analysable.",
+    "facts": [
+      {
+        "claim": "A site relaxes by toppling: four sand grains leave the site and each of the four neighbouring sites receives one grain.",
+        "source_url": "https://ar5iv.labs.arxiv.org/html/cond-mat/9909009",
+        "source_title": "Studying Self-Organized Criticality with Exactly Solved Models"
+      },
+      {
+        "claim": "The order in which particle addition and site toppling are performed does not matter for the final configuration (the abelian property).",
+        "source_url": "https://ar5iv.labs.arxiv.org/html/cond-mat/9909009",
+        "source_title": "Studying Self-Organized Criticality with Exactly Solved Models"
+      },
+      {
+        "claim": "The size of the pattern formed by adding N grains at one site of a flat substrate scales with N as sqrt(N).",
+        "source_url": "https://arxiv.org/abs/0808.1732",
+        "source_title": "Pattern formation in growing sandpiles"
+      },
+      {
+        "claim": "Adding grains at a single site on a flat substrate in Abelian sandpile models produces complex patterns.",
+        "source_url": "https://arxiv.org/abs/0808.1732",
+        "source_title": "Pattern formation in growing sandpiles"
+      },
+      {
+        "claim": "The relaxation rule eventually yields a fixed configuration with all values less than 4, so the threshold for toppling is 4.",
+        "source_url": "https://wolframscience.com/nksonline/page-989c/",
+        "source_title": "Note (c) for Origins of Simple Behavior: A New Kind of Science | Online by Stephen Wolfram [Page 989]"
+      },
+      {
+        "claim": "Avalanches of different sizes occur, yielding activity that lasts for varying numbers of steps.",
+        "source_url": "https://wolframscience.com/nksonline/page-989c/",
+        "source_title": "Note (c) for Origins of Simple Behavior: A New Kind of Science | Online by Stephen Wolfram [Page 989]"
+      },
+      {
+        "claim": "If the origin carries a huge number of grains of sand, the configuration after relaxation forms fractal patterns.",
+        "source_url": "https://en.wikipedia.org/wiki/Abelian_sandpile_model",
+        "source_title": "Abelian sandpile model"
+      }
+    ],
+    "visualisable_mechanisms": [
+      {
+        "name": "four-grain toppling cascade",
+        "description": "A cell at height 4 or more loses 4 grains and gives one to each of its four orthogonal neighbours. Any neighbour reaching 4 topples in turn, so a single added grain can set off a chain reaction that spreads outward and stops when every cell is below 4.",
+        "render_or_sonify_hint": "Colour cells by height (0 to 3 as dim tones, a flash at topple). A single grain drop shows a branching flash front that spreads through the grid and dies out, leaving a darker scar."
+      },
+      {
+        "name": "single-source pile growth",
+        "description": "Grains are dropped repeatedly on one origin cell. The stable pile spreads outward in a fractal-looking pattern whose radius grows roughly as sqrt(N) with N grains added, so the shape develops over time.",
+        "render_or_sonify_hint": "A centred square lattice starts empty, then a four-fold symmetric pile of coloured height bands grows outward in rings of nested squares, with the outermost edge advancing more slowly as time goes on."
+      },
+      {
+        "name": "avalanche duration bursts",
+        "description": "Avalanches have varying sizes and lifetimes. A few grains set off long cascades and many set off almost none, so activity arrives in bursts of irregular length.",
+        "render_or_sonify_hint": "Each grain drop triggers a short or long sequence of flashes; the count of topplings per drop is shown as a small bar or pitch that varies between clicks and stays irregular."
+      },
+      {
+        "name": "order-independent relaxation",
+        "description": "The same set of grains relaxes to the same final pattern whether topplings are done one site at a time in a random order or all at once. Only the path to the final state differs.",
+        "render_or_sonify_hint": "Run two side-by-side grids with different toppling orders from the same starting pile; the cells converge to identical final heights, showing the same pattern on both sides at the end."
+      }
+    ],
+    "open_questions": [
+      "Should the grid be finite with grains lost at the edge, and how large should it be to keep the pattern visible?",
+      "How many relaxation steps per frame keep cascades readable without making the pile settle too fast?",
+      "Does the sqrt(N) scaling hold tightly enough in the simulation to be shown as a visible growth law?"
+    ],
+    "surprise": {
+      "score": 68,
+      "justification": "A generalist expects a sand pile to grow like a smooth heap with a simple slope. In the BTW model, the pile is set by a single threshold of 4, one grain can trigger avalanches of any size, and the final picture is fractal and independent of toppling order."
+    },
+    "dataset": null
+  },
+  "mood": {
+    "timestamp": "2026-11-26T10:59:50.606Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.825
+      },
+      {
+        "label": "joy",
+        "intensity": 0.661
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.487
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.02
+      }
+    ],
+    "pad": {
+      "pleasure": 0.455,
+      "arousal": 0.574,
+      "dominance": 0.374
+    },
+    "neurochemistry": {
+      "dopamine": 1,
+      "noradrenaline": 1,
+      "serotonin": 0.986,
+      "cortisol": 0.294,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.987,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.825,
+      "boredom": 0.02,
+      "frustration": 0.074
+    },
+    "likes": [
+      {
+        "topic": "simulation",
+        "score": 0.432
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.327
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.287
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.283
+      },
+      {
+        "topic": "physics",
+        "score": 0.281
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.276
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.269
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.266
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.252
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.246
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.245
+      },
+      {
+        "topic": "toppling-cascade",
+        "score": 0.243
+      },
+      {
+        "topic": "abelian-property",
+        "score": 0.239
+      },
+      {
+        "topic": "self-organised-criticality-sandpiles",
+        "score": 0.239
+      },
+      {
+        "topic": "pile-growth",
+        "score": 0.231
+      },
+      {
+        "topic": "cellular-automaton",
+        "score": 0.226
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.214
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.213
+      },
+      {
+        "topic": "avalanche-cascade",
+        "score": 0.211
+      },
+      {
+        "topic": "grammar",
+        "score": 0.199
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.199
+      },
+      {
+        "topic": "fractal-pattern",
+        "score": 0.195
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.181
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.171
+      },
+      {
+        "topic": "stable-threshold",
+        "score": 0.167
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.152
+      },
+      {
+        "topic": "kinetic-type",
+        "score": 0.097
+      },
+      {
+        "topic": "typography-sdf",
+        "score": 0.097
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.08
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.787,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.455,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.374,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "experimental",
+        "value": 0.825,
+        "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.074,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  },
+  "brief": {
+    "title": "Four-Grain Toppling Fronts",
+    "concept": "A dense apricot grid of sand cells with grain counts from 0 to 3 receives seeded drops at its centre, and each cell reaching four flashes vermilion and sends grains to its four neighbours, so branching fronts spread and leave umber scars.",
+    "mechanism_embodied": {
+      "mechanism_name": "four-grain toppling cascade",
+      "how_visualised": "Each square cell is tinted by its grain count from 0 to 3. A cell reaching 4 flashes vermilion, loses four grains and adds one to each of its four orthogonal neighbours; any neighbour reaching 4 flashes in turn, so each drop draws a branching front that dies out and leaves a darker umber scar where cells have settled below 4."
+    },
+    "discarded_obvious_idea": "Obvious: a heap of falling sand particles that tumbles down a slope into a cone. Rejected: it is a particle physics toy that hides the threshold-of-4 rule and the cascade, which is the whole idea.",
+    "compo": "simulation",
+    "constraint_honoured": null,
+    "techniques": [
+      "abelian toppling cascade on integer height grid",
+      "four-neighbour threshold relaxation per frame",
+      "ping-pong integer height buffers",
+      "flash-decay topple front rendering with umber scars"
+    ],
+    "novel_technique": "abelian toppling cascade on integer height grid",
+    "technique_family": "cellular-automaton",
+    "palette": [
+      "#f2c9a0",
+      "#d9703f",
+      "#6e5a3c"
+    ],
+    "motion_sound_plan": "No audio, so no BPM; visual tempo is one seeded drop every 0.5 s, a dense field of 200 by 200 cells, and four beats with hard cuts at 5, 10 and 15 s (high tempo, high density). Warm-consonant: apricot ground, vermilion flashes, four-fold symmetry about the centre drop. Assertive camera: grid fills the frame, push-in at 10 s, pull-back at 15 s. Experimental: ping-pong integer simulation. Drop cells come from the seeded PRNG in lib/noise.js, never Math.random. Constraint: none.",
+    "storyboard": [
+      {
+        "beat": 1,
+        "t_start_s": 0,
+        "t_end_s": 5,
+        "description": "Full 200 by 200 apricot grid of cells tinted by height 0 to 3. One seeded drop at the centre flashes vermilion; a branching front has spread to about a quarter of the grid radius by 2 s, with darker umber scars behind it."
+      },
+      {
+        "beat": 2,
+        "t_start_s": 5,
+        "t_end_s": 10,
+        "description": "Drops land every 0.5 s at seeded cells around the centre. Overlapping vermilion fronts cover most of the grid, with dense umber scars; the frame is busy and high in contrast at 8 s."
+      },
+      {
+        "beat": 3,
+        "t_start_s": 10,
+        "t_end_s": 15,
+        "description": "Camera pushes in to a 40 by 40 cell window around one long avalanche. Cells are large, a vermilion front crosses the window, and the height tones of the cells are visible as a close, tight texture."
+      },
+      {
+        "beat": 4,
+        "t_start_s": 15,
+        "t_end_s": 20,
+        "description": "Camera pulls back to the full grid. The settled pile is a centred, four-fold symmetric square of umber scars with every cell below 4, and one last drop flashes at the centre."
+      }
+    ],
+    "memorable_moment": "A vermilion front branches out from the centre of a dense apricot grid, leaving umber scars behind where it has passed.",
+    "self_declared_risk": "The cascades may die too fast, or the grid edge may drain grains and empty the frame by 20 s; a 200 by 200 relaxation per frame may also exceed the frame budget.",
+    "liner_note": "The Bak-Tang-Wiesenfeld sandpile sets a threshold of 4: a site holding four grains gives one grain to each of its four neighbours, and any neighbour that reaches four does the same. Here each cell is a square tinted by its grain count from 0 to 3. A drop on the centre flashes vermilion, and the flash spreads as a branching front before dying out and leaving umber scars. Drops arrive every half second, so the fronts overlap and the frame fills with cascades. At the end the grid pulls back to a settled pile where every cell holds less than four grains."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": false,
+        "piece_path": "audit/2026-11-26/attempt-1/index.html",
+        "compo": "simulation",
+        "byte_size": 7330,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 3395.2209,
+          "t8": 3983.8607,
+          "t20": 3983.9741,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 0.0009,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 31.717,
+          "development_floor": 2.5,
+          "passed": false
+        },
+        "strobe": {
+          "max_flashes_per_sec": 3,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 16.7,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "0f170f0f0f0f0b0f",
+            "t8": "0f0f0f0f070f0f17",
+            "t20": "0f0f0f0f0f0f0f17"
+          },
+          "color_histogram": [
+            0.383037,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000234,
+            0,
+            0,
+            0,
+            0.001487,
+            0.000189,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000001,
+            0.022297,
+            0,
+            0,
+            0,
+            0.263901,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.055195,
+            0.227621,
+            0,
+            0,
+            0,
+            0.046036,
+            0
+          ],
+          "min_hamming_distance": 15,
+          "min_histogram_distance": 0.69464,
+          "closest_date": "2026-11-25",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 0.0009,
+          "reduced_motion": 0,
+          "ratio": 0.0324
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-26/attempt-1/shot-02s.png",
+          "t8": "audit/2026-11-26/attempt-1/shot-08s.png",
+          "t20": "audit/2026-11-26/attempt-1/shot-20s.png"
+        },
+        "failures": [
+          {
+            "gate": "motion",
+            "message": "mean frame-to-frame difference 0.001 is below 0.8: the piece looks static",
+            "measured": 0.0009,
+            "threshold": 0.8
+          }
+        ]
+      },
+      "verdict": null,
+      "outcome": "gates_failed"
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": false,
+        "piece_path": "audit/2026-11-26/attempt-2/index.html",
+        "compo": "simulation",
+        "byte_size": 6626,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 3643.4678,
+          "t8": 3644.2393,
+          "t20": 3450.4565,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 0.0017,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 33.1787,
+          "development_floor": 2.5,
+          "passed": false
+        },
+        "strobe": {
+          "max_flashes_per_sec": 3,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.3,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "1b1f27132b27132b",
+            "t8": "1b1f27132b27132b",
+            "t20": "160e1e160e060e0e"
+          },
+          "color_histogram": [
+            0.475924,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.131207,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.00002,
+            0.13199,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.130978,
+            0,
+            0,
+            0,
+            0,
+            0.12988,
+            0
+          ],
+          "min_hamming_distance": 15,
+          "min_histogram_distance": 0.837972,
+          "closest_date": "2026-11-25",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 0.0015,
+          "reduced_motion": 0.0001,
+          "ratio": 0.0455
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-26/attempt-2/shot-02s.png",
+          "t8": "audit/2026-11-26/attempt-2/shot-08s.png",
+          "t20": "audit/2026-11-26/attempt-2/shot-20s.png"
+        },
+        "failures": [
+          {
+            "gate": "motion",
+            "message": "mean frame-to-frame difference 0.002 is below 0.8: the piece looks static",
+            "measured": 0.0017,
+            "threshold": 0.8
+          }
+        ]
+      },
+      "verdict": null,
+      "outcome": "gates_failed"
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-26/attempt-3/index.html",
+        "compo": "simulation",
+        "byte_size": 2630,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 3766.6816,
+          "t8": 3984.8283,
+          "t20": 4178.3516,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 8.1003,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 28.7601,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 1,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 16.7,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "3333332b33333333",
+            "t8": "3333332b2b2b332b",
+            "t20": "3e32322a2a32328e"
+          },
+          "color_histogram": [
+            0.385694,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000076,
+            0,
+            0,
+            0,
+            0.00007,
+            0.000112,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.077794,
+            0,
+            0,
+            0,
+            0.078026,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.168656,
+            0,
+            0,
+            0,
+            0.107484,
+            0.09231,
+            0,
+            0,
+            0,
+            0.089778,
+            0
+          ],
+          "min_hamming_distance": 14,
+          "min_histogram_distance": 0.600412,
+          "closest_date": "2026-11-25",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 9.4705,
+          "reduced_motion": 4.6463,
+          "ratio": 0.4906
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-26/attempt-3/shot-02s.png",
+          "t8": "audit/2026-11-26/attempt-3/shot-08s.png",
+          "t20": "audit/2026-11-26/attempt-3/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 14,
+          "craft": 18,
+          "distinctness": 12,
+          "polish": 6
+        },
+        "total": 65,
+        "evidence": {
+          "mechanism": "shot-08s: a four-pointed vermilion star with concave sides sits inside an umber square scar, the settled wedge pattern of the cascade; by shot-20s the vermilion has become an off-centre irregular blob.",
+          "ambition": "shot-08s: one live 200x200 integer simulation drives flash, scar and palette-tint layers; there is no lighting or second material, and shot-20s adds only faint diagonal hairlines.",
+          "craft": "shot-20s: faint diagonal hairline streaks cross the umber field and the grid cells read as static noise; the apricot, vermilion and umber palette stays coherent, and the caption is clipped at the frame bottom.",
+          "distinctness": "shot-02s: apricot and umber grid with a vermilion disc at centre; the palette sits close to the ochre and rust of the 2026-11-23 Penrose night, though the sandpile cascade differs from its tiling and the 2026-11-25 dendrite.",
+          "polish": "shot-02s: a centred filled disc frames the start and shot-08s is a composed four-fold star, but shot-20s drifts off-centre with clipped caption text, so the end state does not settle."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-25",
+        "pairwise_justification": "The median's six-armed dendrite on a rose gradient is one crisp form that reads at a glance; tonight's 8 s frame is a four-pointed umber-scarred blob over a noisy grid, which loses the head-to-head vote.",
+        "calibration_anchors_used": [
+          "anchor-03",
+          "anchor-04",
+          "anchor-07",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Replace the flat vermilion disc at shot-02s with a visible branching front: colour each cell by its flash age so a bright leading edge splits into branches and cools into umber scar, as the brief describes.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Remove the diagonal hairline streaks in the umber field at shot-20s and replace the static 0-3 tint noise with a smoothed palette ramp so the scars read as material instead of grain.",
+            "expected_gain": 3
+          },
+          {
+            "rank": 3,
+            "change": "Keep the grid and caption inside the 1280x720 frame: the label is clipped at shot-08s and shot-20s, so pad the layout or drop the caption so the grid is unobstructed at every timestamp.",
+            "expected_gain": 2
+          }
+        ]
+      },
+      "outcome": "below_threshold"
+    }
+  ],
+  "liner_note": "The Bak-Tang-Wiesenfeld sandpile sets a threshold of 4: a site holding four grains gives one grain to each of its four neighbours, and any neighbour that reaches four does the same. Here each cell is a square tinted by its grain count from 0 to 3. A drop on the centre flashes vermilion, and the flash spreads as a branching front before dying out and leaving umber scars. Drops arrive every half second, so the fronts overlap and the frame fills with cascades. At the end the grid pulls back to a settled pile where every cell holds less than four grains.",
+  "screenshots": {
+    "t2": "shot-02s.png",
+    "t8": "shot-08s.png",
+    "t20": "shot-20s.png"
+  },
+  "piece_rel_path": "pieces/2026-11-26/index.html"
+}

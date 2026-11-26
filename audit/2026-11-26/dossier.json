@@ -1,0 +1,75 @@
+{
+  "topic": "Bak-Tang-Wiesenfeld sandpile: a site holding 4 grains topples, sending one grain to each of its 4 neighbours, and one dropped grain can cascade into a multi-step avalanche",
+  "domain": "self-organised criticality sandpiles",
+  "wildcard_chosen": true,
+  "summary": "A grid of cells holds integer grain counts. Adding one grain at a random cell is harmless until a cell reaches 4; then it topples, losing 4 grains and giving one to each neighbour. Those neighbours may topple in turn, so one grain can set off an avalanche of varying size and duration. Piling many grains on one cell grows a fractal-looking pattern whose size scales roughly as sqrt(N). The final stable state does not depend on the order in which topplings happen, which is what makes the model analysable.",
+  "facts": [
+    {
+      "claim": "A site relaxes by toppling: four sand grains leave the site and each of the four neighbouring sites receives one grain.",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/cond-mat/9909009",
+      "source_title": "Studying Self-Organized Criticality with Exactly Solved Models"
+    },
+    {
+      "claim": "The order in which particle addition and site toppling are performed does not matter for the final configuration (the abelian property).",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/cond-mat/9909009",
+      "source_title": "Studying Self-Organized Criticality with Exactly Solved Models"
+    },
+    {
+      "claim": "The size of the pattern formed by adding N grains at one site of a flat substrate scales with N as sqrt(N).",
+      "source_url": "https://arxiv.org/abs/0808.1732",
+      "source_title": "Pattern formation in growing sandpiles"
+    },
+    {
+      "claim": "Adding grains at a single site on a flat substrate in Abelian sandpile models produces complex patterns.",
+      "source_url": "https://arxiv.org/abs/0808.1732",
+      "source_title": "Pattern formation in growing sandpiles"
+    },
+    {
+      "claim": "The relaxation rule eventually yields a fixed configuration with all values less than 4, so the threshold for toppling is 4.",
+      "source_url": "https://wolframscience.com/nksonline/page-989c/",
+      "source_title": "Note (c) for Origins of Simple Behavior: A New Kind of Science | Online by Stephen Wolfram [Page 989]"
+    },
+    {
+      "claim": "Avalanches of different sizes occur, yielding activity that lasts for varying numbers of steps.",
+      "source_url": "https://wolframscience.com/nksonline/page-989c/",
+      "source_title": "Note (c) for Origins of Simple Behavior: A New Kind of Science | Online by Stephen Wolfram [Page 989]"
+    },
+    {
+      "claim": "If the origin carries a huge number of grains of sand, the configuration after relaxation forms fractal patterns.",
+      "source_url": "https://en.wikipedia.org/wiki/Abelian_sandpile_model",
+      "source_title": "Abelian sandpile model"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "four-grain toppling cascade",
+      "description": "A cell at height 4 or more loses 4 grains and gives one to each of its four orthogonal neighbours. Any neighbour reaching 4 topples in turn, so a single added grain can set off a chain reaction that spreads outward and stops when every cell is below 4.",
+      "render_or_sonify_hint": "Colour cells by height (0 to 3 as dim tones, a flash at topple). A single grain drop shows a branching flash front that spreads through the grid and dies out, leaving a darker scar."
+    },
+    {
+      "name": "single-source pile growth",
+      "description": "Grains are dropped repeatedly on one origin cell. The stable pile spreads outward in a fractal-looking pattern whose radius grows roughly as sqrt(N) with N grains added, so the shape develops over time.",
+      "render_or_sonify_hint": "A centred square lattice starts empty, then a four-fold symmetric pile of coloured height bands grows outward in rings of nested squares, with the outermost edge advancing more slowly as time goes on."
+    },
+    {
+      "name": "avalanche duration bursts",
+      "description": "Avalanches have varying sizes and lifetimes. A few grains set off long cascades and many set off almost none, so activity arrives in bursts of irregular length.",
+      "render_or_sonify_hint": "Each grain drop triggers a short or long sequence of flashes; the count of topplings per drop is shown as a small bar or pitch that varies between clicks and stays irregular."
+    },
+    {
+      "name": "order-independent relaxation",
+      "description": "The same set of grains relaxes to the same final pattern whether topplings are done one site at a time in a random order or all at once. Only the path to the final state differs.",
+      "render_or_sonify_hint": "Run two side-by-side grids with different toppling orders from the same starting pile; the cells converge to identical final heights, showing the same pattern on both sides at the end."
+    }
+  ],
+  "open_questions": [
+    "Should the grid be finite with grains lost at the edge, and how large should it be to keep the pattern visible?",
+    "How many relaxation steps per frame keep cascades readable without making the pile settle too fast?",
+    "Does the sqrt(N) scaling hold tightly enough in the simulation to be shown as a visible growth law?"
+  ],
+  "surprise": {
+    "score": 68,
+    "justification": "A generalist expects a sand pile to grow like a smooth heap with a simple slope. In the BTW model, the pile is set by a single threshold of 4, one grain can trigger avalanches of any size, and the final picture is fractal and independent of toppling order."
+  },
+  "dataset": null
+}

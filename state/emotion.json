@@ -18,199 +18,259 @@
   0.287
  ],
  "mood": [
-  0.4402017361569336,
-  0.5298853590803063,
-  0.3503955034013977
+  0.45517336591340385,
+  0.5740511845774247,
+  0.37403842980054613
  ],
  "emotions": {
   "joy": {
-   "i": 0.7309377930872814,
+   "i": 0.6341390927214126,
    "target": null,
-   "cause": "Found a buildable mechanism: latency-length coupling.",
+   "cause": "Found a buildable mechanism: order-independent relaxation.",
    "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-26"
   },
   "surprise": {
-   "i": 0.24733877114389446,
+   "i": 0.28087081475100695,
    "target": null,
-   "cause": "Found a buildable mechanism: V-R sharpness lock.",
+   "cause": "Found a buildable mechanism: avalanche duration bursts.",
    "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-26"
   },
   "interest": {
-   "i": 0.70427810552367,
+   "i": 0.7447856774640018,
    "target": null,
-   "cause": "Found a buildable mechanism: latency-length coupling.",
+   "cause": "Found a buildable mechanism: order-independent relaxation.",
    "source": null,
-   "thread": "night-2026-11-25"
-  },
-  "boredom": {
-   "i": 0.06383989881195677,
-   "target": null,
-   "cause": "Tonight's kinetic-type piece on dendritic-solidification went to the B-sides at 60.",
-   "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-26"
   },
   "pride": {
-   "i": 0.15902219744661114,
+   "i": 0.16625357831896956,
    "target": null,
-   "cause": "Tonight's kinetic-type piece on dendritic-solidification went to the B-sides at 60.",
+   "cause": "Tonight's simulation piece on self-organised criticality sandpiles went to the B-sides at 65.",
    "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-26"
+  },
+  "boredom": {
+   "i": 0.06296136791063973,
+   "target": null,
+   "cause": "Tonight's simulation piece on self-organised criticality sandpiles went to the B-sides at 65.",
+   "source": null,
+   "thread": "night-2026-11-26"
   }
  },
  "chem": {
-  "da": 0.9574979869181199,
-  "ne": 0.8830678873023096,
-  "sht": 0.8823544330258162,
-  "cort": 0.2932790349116984,
+  "da": 0.9552411976792985,
+  "ne": 0.908683453954044,
+  "sht": 0.9955415215068005,
+  "cort": 0.28296101200536034,
   "oxt": 0.42500000000000004,
-  "opi": 0.9776951456172166
+  "opi": 1
  },
  "stress": 0.0,
  "load": 0.0,
- "opp": 0.0558454825462209,
+ "opp": 0.06422364520706599,
  "drives": {
   "novelty": 0,
-  "social": 0.9630282146635536,
+  "social": 0.9870899202992303,
   "fatigue": 0.0
  },
  "sentiments": {
   "topic:penrose-inflation": {
-   "L": 0.17319286602152903,
-   "W": 0.7896410177730471,
+   "L": 0.17142206877637506,
+   "W": 0.7522957070383848,
    "n": 1,
    "ep": null
   },
   "topic:tiling-geometry": {
-   "L": 0.3295888215510049,
-   "W": 0.8257606516683401,
+   "L": 0.326498466235842,
+   "W": 0.786707097667331,
    "n": 2,
    "ep": null
   },
   "topic:kite-dart-angles": {
-   "L": 0.08097052680815202,
-   "W": 0.07783751225258884,
+   "L": 0.08014264983432379,
+   "W": 0.07415626214468032,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-23": {
-   "L": 0.17319286602152903,
-   "W": 0.7896410177730471,
+   "L": 0.17142206877637506,
+   "W": 0.7522957070383848,
    "n": 1,
    "ep": null
   },
   "topic:substitution-rules": {
-   "L": 0.2684837830668154,
-   "W": 0.4218221157011461,
+   "L": 0.26573869111040577,
+   "W": 0.4018724453686208,
    "n": 1,
    "ep": null
   },
   "topic:golden-ratio": {
-   "L": 0.2860802874664874,
-   "W": 0.5286256558097819,
+   "L": 0.2831552813933415,
+   "W": 0.5036248150046694,
    "n": 1,
    "ep": null
   },
   "topic:aperiodicity": {
-   "L": 0.21533856808960006,
-   "W": 0.3742261393859281,
+   "L": 0.21313685532909257,
+   "W": 0.3565274748714951,
    "n": 1,
    "ep": null
   },
   "topic:iterated-map": {
-   "L": 0.24785600538448102,
-   "W": 0.3021405534224608,
+   "L": 0.24532182056721985,
+   "W": 0.2878511072068544,
    "n": 1,
    "ep": null
   },
   "topic:growth-shells": {
-   "L": 0.2487328012335857,
-   "W": 0.30588630374011627,
+   "L": 0.24618965168405915,
+   "W": 0.2914197058740779,
    "n": 1,
    "ep": null
   },
   "topic:simulation": {
-   "L": 0.32001432536999647,
-   "W": 0.7854608106944718,
-   "n": 2,
+   "L": 0.39426974547360716,
+   "W": 0.8937421854216397,
+   "n": 3,
    "ep": null
   },
   "topic:dendritic-solidification": {
-   "L": 0.15339810176105428,
-   "W": 0.9384252130356332,
+   "L": 0.15182969457287046,
+   "W": 0.8940432972115365,
    "n": 1,
    "ep": null
   },
   "topic:physics": {
-   "L": 0.2836473824386438,
-   "W": 0.5662634090862396,
+   "L": 0.28074725141734036,
+   "W": 0.5394825270220902,
    "n": 1,
    "ep": null
   },
   "topic:tip-speed-radius-lock": {
-   "L": 0.27889362375654453,
-   "W": 0.4910035450278487,
+   "L": 0.2760420971782055,
+   "W": 0.46778200568507355,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-25": {
-   "L": 0.15339810176105428,
-   "W": 0.9384252130356332,
+   "L": 0.15182969457287046,
+   "W": 0.8940432972115365,
    "n": 1,
    "ep": null
   },
   "topic:convection-regimes": {
-   "L": 0.18304183626682968,
-   "W": 0.21603059195955185,
+   "L": 0.18117033897681467,
+   "W": 0.2058136333627515,
    "n": 1,
    "ep": null
   },
   "topic:side-branch-defect": {
-   "L": 0.28988941983631433,
-   "W": 0.5324578527743207,
+   "L": 0.28692546757986503,
+   "W": 0.5072757719079449,
    "n": 1,
    "ep": null
   },
   "topic:tip-instability": {
-   "L": 0.2716901116573706,
-   "W": 0.3555961438069104,
+   "L": 0.26891223683890875,
+   "W": 0.33877856697437875,
    "n": 1,
    "ep": null
   },
   "topic:grammar": {
-   "L": 0.20140492271924249,
-   "W": 0.2688190962166738,
+   "L": 0.1993456734527782,
+   "W": 0.25610555619828007,
    "n": 1,
    "ep": null
   },
   "topic:recursive-branching": {
-   "L": 0.20140492271924249,
-   "W": 0.2688190962166738,
+   "L": 0.1993456734527782,
+   "W": 0.25610555619828007,
    "n": 1,
    "ep": null
   },
   "topic:growth-latency": {
-   "L": 0.25410723294441717,
-   "W": 0.49861529160913104,
+   "L": 0.2515091329278972,
+   "W": 0.4750337620493923,
    "n": 1,
    "ep": null
   },
   "topic:six-fold-symmetry": {
-   "L": 0.21586234341634264,
-   "W": 0.38578330453034054,
+   "L": 0.2136552753549675,
+   "W": 0.3675380550313191,
    "n": 1,
    "ep": null
   },
   "topic:kinetic-type": {
-   "L": 0.0979821749392037,
-   "W": 0.1140994705838948,
+   "L": 0.09698036366693705,
+   "W": 0.10870324611263676,
    "n": 1,
    "ep": null
   },
   "topic:typography-sdf": {
-   "L": 0.0979821749392037,
-   "W": 0.1140994705838948,
+   "L": 0.09698036366693705,
+   "W": 0.10870324611263676,
+   "n": 1,
+   "ep": null
+  },
+  "topic:self-organised-criticality-sandpiles": {
+   "L": 0.22288521604694078,
+   "W": 0.9436841072191001,
+   "n": 1,
+   "ep": null
+  },
+  "topic:cellular-automaton": {
+   "L": 0.19493405670183434,
+   "W": 0.7584373887522424,
+   "n": 1,
+   "ep": null
+  },
+  "topic:toppling-cascade": {
+   "L": 0.27666909719016664,
+   "W": 0.4897749911988557,
+   "n": 1,
+   "ep": null
+  },
+  "thread:night-2026-11-26": {
+   "L": 0.14522649791672942,
+   "W": 0.9449404263710711,
+   "n": 1,
+   "ep": null
+  },
+  "topic:abelian-property": {
+   "L": 0.27288521604694077,
+   "W": 0.4977270137751793,
+   "n": 1,
+   "ep": null
+  },
+  "topic:pile-growth": {
+   "L": 0.26442454927719244,
+   "W": 0.4964400481396474,
+   "n": 1,
+   "ep": null
+  },
+  "topic:fractal-pattern": {
+   "L": 0.2288089383768928,
+   "W": 0.43769506341055653,
+   "n": 1,
+   "ep": null
+  },
+  "topic:stable-threshold": {
+   "L": 0.20101319397352074,
+   "W": 0.2527294644969178,
+   "n": 1,
+   "ep": null
+  },
+  "topic:avalanche-cascade": {
+   "L": 0.24532458421307374,
+   "W": 0.4838583889688754,
+   "n": 1,
+   "ep": null
+  },
+  "topic:self-organised criticality sandpiles": {
+   "L": 0.10023680109192819,
+   "W": 0.11791880882018457,
    "n": 1,
    "ep": null
   }
@@ -218,10 +278,13 @@
  "relationships": {},
  "threads": {
   "night-2026-11-23": {
-   "exposure": 0.07739821834616267
+   "exposure": 0.019933323437677116
   },
   "night-2026-11-25": {
-   "exposure": 1.768480963812668
+   "exposure": 0.45545884386369223
+  },
+  "night-2026-11-26": {
+   "exposure": 1.7774696289624685
   }
  },
  "memory": [
@@ -376,16 +439,104 @@
    "i": 0.793,
    "source": null,
    "thread": "night-2026-11-25"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that a site with four grains topples, sending one grain to each of its four neighbours.",
+   "emotion": "interest",
+   "i": 0.991,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that the final pile does not depend on the order of topplings, the abelian property.",
+   "emotion": "interest",
+   "i": 1.221,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that the size of the pile from N grains at one site scales as the square root of N.",
+   "emotion": "interest",
+   "i": 1.116,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that adding grains at a single site on a flat substrate produces complex patterns.",
+   "emotion": "interest",
+   "i": 1.029,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that relaxation ends in a stable configuration where every value is below four.",
+   "emotion": "interest",
+   "i": 0.957,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that avalanches come in many sizes and last for varying numbers of steps.",
+   "emotion": "interest",
+   "i": 0.913,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that a very large grain count at the origin forms fractal patterns after relaxation.",
+   "emotion": "interest",
+   "i": 0.867,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: four-grain toppling cascade.",
+   "emotion": "joy",
+   "i": 0.934,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: single-source pile growth.",
+   "emotion": "joy",
+   "i": 0.843,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: avalanche duration bursts.",
+   "emotion": "interest",
+   "i": 0.798,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: order-independent relaxation.",
+   "emotion": "interest",
+   "i": 0.783,
+   "source": null,
+   "thread": "night-2026-11-26"
   }
  ],
- "t": 65.64565338770548,
- "wall": 1795607099.9305136,
+ "t": 89.13107046061091,
+ "wall": 1795691647.59753,
  "emotion_adaptation": {
-  "joy": 0.6772878686001889,
-  "surprise": 0.39615352983756574,
-  "interest": 0.7571281035030699,
-  "boredom": 0.046152531199208494,
-  "pride": 0.039755549361652785
+  "joy": 0.6928460571933954,
+  "surprise": 0.548649104730029,
+  "interest": 0.8125181798361744,
+  "boredom": 0.03284599958759802,
+  "pride": 0.04156339457974239
  },
  "seen_event_ids": [
   "2026-11-23:1:fact-1",
@@ -409,6 +560,18 @@
   "2026-11-25:9:mech-2",
   "2026-11-25:10:mech-3",
   "2026-11-25:11:mech-4",
-  "2026-11-25:verdict:b-side"
+  "2026-11-25:verdict:b-side",
+  "2026-11-26:1:fact-1",
+  "2026-11-26:2:fact-2",
+  "2026-11-26:3:fact-3",
+  "2026-11-26:4:fact-4",
+  "2026-11-26:5:fact-5",
+  "2026-11-26:6:fact-6",
+  "2026-11-26:7:fact-7",
+  "2026-11-26:8:mech-1",
+  "2026-11-26:9:mech-2",
+  "2026-11-26:10:mech-3",
+  "2026-11-26:11:mech-4",
+  "2026-11-26:verdict:b-side"
  ]
 }

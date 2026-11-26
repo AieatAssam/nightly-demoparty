@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Four-Grain Toppling Fronts</title>
+<style>*{margin:0}html,body{background:#6e5a3c;overflow:hidden}canvas{width:100vw;height:100vh;display:block}#t{position:fixed;left:14px;bottom:10px;font:12px ui-monospace,Menlo,monospace;color:#f2c9a0;letter-spacing:.12em;pointer-events:none}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="t">FOUR-GRAIN TOPPLING FRONTS</div>
+<script type="module">
+const GL_HEAD=`#version 300 es
+precision highp float;precision highp int;precision highp sampler2D;
+uniform float u_time,u_reduced;uniform vec2 u_res,u_mouse;uniform vec4 u_audio;out vec4 o;
+`,GL_VS=`#version 300 es
+void main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}`;function glProgram(e,n,u=GL_VS){const i=e.createProgram();for(const[a,o]of[[e.VERTEX_SHADER,u],[e.FRAGMENT_SHADER,n]]){const t=e.createShader(a);if(e.shaderSource(t,o),e.compileShader(t),!e.getShaderParameter(t,e.COMPILE_STATUS))throw Error("GLSL compile failed: "+e.getShaderInfoLog(t));e.attachShader(i,t)}if(e.linkProgram(i),!e.getProgramParameter(i,e.LINK_STATUS))throw Error("GLSL link failed: "+e.getProgramInfoLog(i));return i}function glSetter(e,n){const u={[e.FLOAT]:"uniform1fv",[e.FLOAT_VEC2]:"uniform2fv",[e.FLOAT_VEC3]:"uniform3fv",[e.FLOAT_VEC4]:"uniform4fv",[e.INT]:"uniform1iv",[e.SAMPLER_2D]:"uniform1iv"},i={};for(let a=e.getProgramParameter(n,e.ACTIVE_UNIFORMS);a--;){const o=e.getActiveUniform(n,a);i[o.name.replace("[0]","")]=[e.getUniformLocation(n,o.name),u[o.type]]}return(a,o)=>{const t=i[a];t&&t[1]&&e[t[1]](t[0],typeof o=="number"?[o]:o)}}const glDraw=(e,n=null,u=e.drawingBufferWidth,i=e.drawingBufferHeight)=>{e.bindFramebuffer(e.FRAMEBUFFER,n),e.viewport(0,0,u,i),e.drawArrays(e.TRIANGLES,0,3)};function glStart(e,n,{scale:u=1,dprMax:i=1,reduce:a=.2,frame:o}={}){const t=e.getContext("webgl2",{antialias:!1});if(!t)throw Error("WebGL2 unavailable");const m=glProgram(t,n.startsWith("#version")?n:GL_HEAD+n),s=matchMedia("(prefers-reduced-motion: reduce)"),r={kind:"webgl2",gl:t,prog:m,set:glSetter(t,m),time:0,reduced:!1,mouse:[.5,.5],audio:[0,0,0,0],raf:0};e.addEventListener("pointermove",c=>{const f=e.getBoundingClientRect();r.mouse=[(c.clientX-f.left)/f.width,1-(c.clientY-f.top)/f.height]});let E=-1;const _=c=>{r.raf=requestAnimationFrame(_);const f=Math.min(devicePixelRatio,i)*u,d=Math.max(1,e.clientWidth*f|0),T=Math.max(1,e.clientHeight*f|0);(e.width!==d||e.height!==T)&&(e.width=d,e.height=T),r.reduced=s.matches,r.time+=E<0?0:Math.min((c-E)/1e3,.5)*(r.reduced?a:1),E=c,o&&o(r),t.useProgram(m),r.set("u_time",r.time),r.set("u_reduced",r.reduced?1:0),r.set("u_res",[d,T]),r.set("u_mouse",r.mouse),r.set("u_audio",r.audio),glDraw(t)};return r.raf=requestAnimationFrame(_),r.stop=()=>cancelAnimationFrame(r.raf),r}function createPingPong(e,n,u){const i=!!e.getExtension("EXT_color_buffer_float"),a=()=>{const t=e.createTexture(),m=e.createFramebuffer();e.bindTexture(e.TEXTURE_2D,t),e.texImage2D(e.TEXTURE_2D,0,i?e.RGBA16F:e.RGBA8,n,u,0,e.RGBA,i?e.HALF_FLOAT:e.UNSIGNED_BYTE,null);for(const[s,r]of[[e.TEXTURE_MIN_FILTER,e.LINEAR],[e.TEXTURE_MAG_FILTER,e.LINEAR],[e.TEXTURE_WRAP_S,e.REPEAT],[e.TEXTURE_WRAP_T,e.REPEAT]])e.texParameteri(e.TEXTURE_2D,s,r);return e.bindFramebuffer(e.FRAMEBUFFER,m),e.framebufferTexture2D(e.FRAMEBUFFER,e.COLOR_ATTACHMENT0,e.TEXTURE_2D,t,0),{tex:t,fb:m}},o={w:n,h:u,float:i,a:a(),b:a(),swap:()=>{[o.a,o.b]=[o.b,o.a]}};return e.bindFramebuffer(e.FRAMEBUFFER,null),o}export{GL_HEAD,glProgram,glSetter,glDraw,glStart,createPingPong};
+
+// Abelian four-grain toppling on a 256 x 256 integer grid.
+// Heights live in R (h / 32, exact in half float and in RGBA8); G = topple flash, B = umber scar memory.
+const N = 256, SPS = 24, DS = 12, CAP = 8, C = [128, 128];
+
+// Seeded integer hash (JS side) for drop cells.
+const hash = i => { let x = Math.imul(i ^ 0x9e3779b9, 0x85ebca6b); x ^= x >>> 13; x = Math.imul(x, 0xc2b2ae35); x ^= x >>> 16; return (x >>> 0) / 4294967296; };
+const DR = [];
+for (let k = 0; k < 64; k++) DR.push([128 + Math.round((hash(2 * k + 1) - 0.5) * 80), 128 + Math.round((hash(2 * k + 2) - 0.5) * 80)]);
+
+// Story-time drop schedule: one centre drop at 1 s; seeded cells every 0.5 s in beats 2 and 3;
+// a centre drop at 19 s; then one seeded drop per second after 20 s so the field keeps moving.
+const dropAt = s => {
+  if (s % DS) return null;
+  const k = (s / DS) | 0;
+  if (s === SPS) return C;
+  if (s < 5 * SPS) return null;
+  if (s < 15 * SPS) return DR[k % 64];
+  if (s === 19 * SPS) return C;
+  if (s < 20 * SPS) return null;
+  return s % SPS ? null : DR[k % 64];
+};
+
+const SIM = GL_HEAD + `uniform sampler2D S;uniform float Z,A;uniform vec2 D;
+uint hu(uint x){x^=x>>16u;x*=0x7feb352du;x^=x>>15u;x*=0x846ca68bu;x^=x>>16u;return x;}
+float hh(ivec2 q){if(q.x<0||q.y<0||q.x>255||q.y>255)return 0.;return floor(texelFetch(S,q,0).r*32.+.5);}
+float tt(ivec2 q){return step(4.,hh(q));}
+void main(){
+ ivec2 p=ivec2(gl_FragCoord.xy);
+ if(Z>.5){
+  float h=1.+float(hu(uint(p.x)*73856093u^uint(p.y)*19349663u^2026u)%3u);
+  if(p==ivec2(128,128))h=3.;
+  o=vec4(h/32.,0.,0.,1.);return;
+ }
+ vec4 v=texelFetch(S,p,0);
+ float h=floor(v.r*32.+.5);
+ float t=tt(p);
+ h+=tt(p+ivec2(1,0))+tt(p+ivec2(-1,0))+tt(p+ivec2(0,1))+tt(p+ivec2(0,-1))-4.*t;
+ if(A>.5&&p==ivec2(D))h+=1.;
+ float g=t>.5?1.:v.g*.92;
+ float b=min(1.,v.b*.996+t*.35);
+ o=vec4(h/32.,g,b,1.);
+}`;
+
+const RENDER = `uniform sampler2D S;uniform float HS;
+void main(){
+ vec2 p=(2.*gl_FragCoord.xy-u_res)/u_res.y;
+ vec2 c=vec2(128.)+p*HS;
+ ivec2 q=ivec2(floor(c));
+ vec3 A=vec3(242.,201.,160.)/255.,V=vec3(217.,112.,63.)/255.,U=vec3(110.,90.,60.)/255.;
+ vec3 col=U*.5;
+ if(q.x>=0&&q.y>=0&&q.x<256&&q.y<256){
+  vec4 v=texelFetch(S,q,0);
+  float h=floor(v.r*32.+.5);
+  col=mix(U,A,clamp(.1+.3*h,0.,1.));
+  col=mix(col,U*.6,clamp(v.b*.6,0.,.6));
+  col=mix(col,V,clamp(v.g,0.,1.)*.95);
+  float cp=u_res.y/(2.*HS);
+  if(cp>5.){vec2 f=fract(c);float e=min(min(f.x,1.-f.x),min(f.y,1.-f.y));col*=mix(.6,1.,smoothstep(0.,1.2/cp,e));}
+ }
+ vec2 uv=gl_FragCoord.xy/u_res-.5;
+ col*=1.-.35*dot(uv,uv);
+ o=vec4(col,1.);
+}`;
+
+// Camera: full grid (beat 1), full grid (beat 2), push-in to a 40 x 40 window (beat 3), pull back (beat 4).
+const sm = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+const bt = (t, a, b) => sm((t - a) / (b - a));
+const hsOf = t => 100 + 28 * bt(t, 4.5, 5.5) - 108 * bt(t, 9.5, 10.5) + 108 * bt(t, 14.5, 15.5);
+
+let sim, setS, pp, steps = 0, seeded = false;
+const cv = document.getElementById('c');
+glStart(cv, RENDER, { scale: 0.5, frame(st) {
+  const gl = st.gl;
+  if (!sim) { sim = glProgram(gl, SIM); setS = glSetter(gl, sim); pp = createPingPong(gl, N, N); }
+  gl.useProgram(sim); gl.activeTexture(gl.TEXTURE0);
+  if (!seeded) {
+    seeded = true; gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+    setS('Z', 1); setS('A', 0); glDraw(gl, pp.b.fb, N, N); pp.swap(); setS('Z', 0);
+  }
+  for (let n = Math.min(CAP, Math.floor(st.time * SPS) - steps); n > 0; n--) {
+    steps++;
+    const d = dropAt(steps);
+    setS('A', d ? 1 : 0);
+    if (d) setS('D', d);
+    gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+    glDraw(gl, pp.b.fb, N, N); pp.swap();
+  }
+  gl.useProgram(st.prog); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, pp.a.tex);
+  st.set('HS', hsOf(st.time));
+} });
+</script>
+</body>
+</html>

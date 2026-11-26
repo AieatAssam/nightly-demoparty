@@ -1,0 +1,192 @@
+{
+  "timestamp": "2026-11-26T10:59:50.606Z",
+  "preset_override": null,
+  "dominant_emotions": [
+    {
+      "label": "interest",
+      "intensity": 0.825
+    },
+    {
+      "label": "joy",
+      "intensity": 0.661
+    },
+    {
+      "label": "surprise",
+      "intensity": 0.487
+    },
+    {
+      "label": "boredom",
+      "intensity": 0.02
+    }
+  ],
+  "pad": {
+    "pleasure": 0.455,
+    "arousal": 0.574,
+    "dominance": 0.374
+  },
+  "neurochemistry": {
+    "dopamine": 1,
+    "noradrenaline": 1,
+    "serotonin": 0.986,
+    "cortisol": 0.294,
+    "oxytocin": 0.425,
+    "opioids": 1
+  },
+  "drives": {
+    "novelty": 0,
+    "social": 0.987,
+    "fatigue": 0
+  },
+  "derived_signals": {
+    "interest": 0.825,
+    "boredom": 0.02,
+    "frustration": 0.074
+  },
+  "likes": [
+    {
+      "topic": "simulation",
+      "score": 0.432
+    },
+    {
+      "topic": "tiling-geometry",
+      "score": 0.327
+    },
+    {
+      "topic": "side-branch-defect",
+      "score": 0.287
+    },
+    {
+      "topic": "golden-ratio",
+      "score": 0.283
+    },
+    {
+      "topic": "physics",
+      "score": 0.281
+    },
+    {
+      "topic": "tip-speed-radius-lock",
+      "score": 0.276
+    },
+    {
+      "topic": "tip-instability",
+      "score": 0.269
+    },
+    {
+      "topic": "substitution-rules",
+      "score": 0.266
+    },
+    {
+      "topic": "growth-latency",
+      "score": 0.252
+    },
+    {
+      "topic": "growth-shells",
+      "score": 0.246
+    },
+    {
+      "topic": "iterated-map",
+      "score": 0.245
+    },
+    {
+      "topic": "toppling-cascade",
+      "score": 0.243
+    },
+    {
+      "topic": "abelian-property",
+      "score": 0.239
+    },
+    {
+      "topic": "self-organised-criticality-sandpiles",
+      "score": 0.239
+    },
+    {
+      "topic": "pile-growth",
+      "score": 0.231
+    },
+    {
+      "topic": "cellular-automaton",
+      "score": 0.226
+    },
+    {
+      "topic": "six-fold-symmetry",
+      "score": 0.214
+    },
+    {
+      "topic": "aperiodicity",
+      "score": 0.213
+    },
+    {
+      "topic": "avalanche-cascade",
+      "score": 0.211
+    },
+    {
+      "topic": "grammar",
+      "score": 0.199
+    },
+    {
+      "topic": "recursive-branching",
+      "score": 0.199
+    },
+    {
+      "topic": "fractal-pattern",
+      "score": 0.195
+    },
+    {
+      "topic": "convection-regimes",
+      "score": 0.181
+    },
+    {
+      "topic": "penrose-inflation",
+      "score": 0.171
+    },
+    {
+      "topic": "stable-threshold",
+      "score": 0.167
+    },
+    {
+      "topic": "dendritic-solidification",
+      "score": 0.152
+    },
+    {
+      "topic": "kinetic-type",
+      "score": 0.097
+    },
+    {
+      "topic": "typography-sdf",
+      "score": 0.097
+    },
+    {
+      "topic": "kite-dart-angles",
+      "score": 0.08
+    }
+  ],
+  "dislikes": [],
+  "creative_parameters": {
+    "tempo_density_cut_rate": {
+      "level": "high",
+      "value": 0.787,
+      "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+    },
+    "palette_warmth_consonance_symmetry": {
+      "level": "warm-consonant",
+      "value": 0.455,
+      "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+    },
+    "scale_contrast_camera": {
+      "level": "assertive",
+      "value": 0.374,
+      "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+    },
+    "technical_risk_budget": {
+      "level": "experimental",
+      "value": 0.825,
+      "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+    },
+    "boredom_force_unused_30d": false,
+    "frustration_scope_polish_weight": {
+      "shrink_scope": false,
+      "polish_weight_boost": 0.074,
+      "guidance": "Normal scope: polish weight follows the usual rubric."
+    }
+  }
+}

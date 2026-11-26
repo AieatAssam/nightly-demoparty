@@ -1,0 +1,50 @@
+{
+  "title": "Four-Grain Toppling Fronts",
+  "concept": "A dense apricot grid of sand cells with grain counts from 0 to 3 receives seeded drops at its centre, and each cell reaching four flashes vermilion and sends grains to its four neighbours, so branching fronts spread and leave umber scars.",
+  "mechanism_embodied": {
+    "mechanism_name": "four-grain toppling cascade",
+    "how_visualised": "Each square cell is tinted by its grain count from 0 to 3. A cell reaching 4 flashes vermilion, loses four grains and adds one to each of its four orthogonal neighbours; any neighbour reaching 4 flashes in turn, so each drop draws a branching front that dies out and leaves a darker umber scar where cells have settled below 4."
+  },
+  "discarded_obvious_idea": "Obvious: a heap of falling sand particles that tumbles down a slope into a cone. Rejected: it is a particle physics toy that hides the threshold-of-4 rule and the cascade, which is the whole idea.",
+  "compo": "simulation",
+  "constraint_honoured": null,
+  "techniques": [
+    "abelian toppling cascade on integer height grid",
+    "four-neighbour threshold relaxation per frame",
+    "ping-pong integer height buffers",
+    "flash-decay topple front rendering with umber scars"
+  ],
+  "novel_technique": "abelian toppling cascade on integer height grid",
+  "technique_family": "cellular-automaton",
+  "palette": ["#f2c9a0", "#d9703f", "#6e5a3c"],
+  "motion_sound_plan": "No audio, so no BPM; visual tempo is one seeded drop every 0.5 s, a dense field of 200 by 200 cells, and four beats with hard cuts at 5, 10 and 15 s (high tempo, high density). Warm-consonant: apricot ground, vermilion flashes, four-fold symmetry about the centre drop. Assertive camera: grid fills the frame, push-in at 10 s, pull-back at 15 s. Experimental: ping-pong integer simulation. Drop cells come from the seeded PRNG in lib/noise.js, never Math.random. Constraint: none.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "Full 200 by 200 apricot grid of cells tinted by height 0 to 3. One seeded drop at the centre flashes vermilion; a branching front has spread to about a quarter of the grid radius by 2 s, with darker umber scars behind it."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "Drops land every 0.5 s at seeded cells around the centre. Overlapping vermilion fronts cover most of the grid, with dense umber scars; the frame is busy and high in contrast at 8 s."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Camera pushes in to a 40 by 40 cell window around one long avalanche. Cells are large, a vermilion front crosses the window, and the height tones of the cells are visible as a close, tight texture."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Camera pulls back to the full grid. The settled pile is a centred, four-fold symmetric square of umber scars with every cell below 4, and one last drop flashes at the centre."
+    }
+  ],
+  "memorable_moment": "A vermilion front branches out from the centre of a dense apricot grid, leaving umber scars behind where it has passed.",
+  "self_declared_risk": "The cascades may die too fast, or the grid edge may drain grains and empty the frame by 20 s; a 200 by 200 relaxation per frame may also exceed the frame budget.",
+  "liner_note": "The Bak-Tang-Wiesenfeld sandpile sets a threshold of 4: a site holding four grains gives one grain to each of its four neighbours, and any neighbour that reaches four does the same. Here each cell is a square tinted by its grain count from 0 to 3. A drop on the centre flashes vermilion, and the flash spreads as a branching front before dying out and leaving umber scars. Drops arrive every half second, so the fronts overlap and the frame fills with cascades. At the end the grid pulls back to a settled pile where every cell holds less than four grains."
+}

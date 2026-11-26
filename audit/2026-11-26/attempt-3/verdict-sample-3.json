@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 17,
+    "craft": 18,
+    "distinctness": 15,
+    "polish": 5
+  },
+  "total": 70,
+  "evidence": {
+    "mechanism": "shot-08s: a vermilion four-armed cross with thin diagonal front lines and umber scars spans the square grid; by shot-20s the fronts merge into an off-centre irregular blob, so the cascade reads but does not branch clearly.",
+    "ambition": "shot-08s: one flat 200-cell height field tinted apricot to umber with a live vermilion front; no lighting, material or second layer is visible, so the bytes buy one simulated 2D field rather than several rendering ideas.",
+    "craft": "shot-02s: speckled 0-3 tint noise fills the border and a flat vermilion disc covers the centre; at full size the caption at bottom-left is clipped by the grid edge at shot-08s and the cells read as pixel static.",
+    "distinctness": "shot-02s: apricot and vermilion sand on a square grid, unlike the rose dendrite of 2026-11-25; the ochre and rust palette still overlaps the 2026-11-23 Penrose kites, so the distinctness is only partial.",
+    "polish": "shot-20s: the grid shrinks and the vermilion blob sits off-centre with a stepped edge instead of a centred four-fold umber pile; the 2 s disc and 20 s blob never resolve into one composed end state."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-25",
+  "pairwise_justification": "Head-to-head, the median's crisp rose dendrite on a dark field reads cleaner than tonight's speckled apricot grid; tonight's 2 s flat disc is weaker than the median's branched tip, though tonight's 8 s X is stronger.",
+  "calibration_anchors_used": ["anchor-03", "anchor-04", "anchor-07", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "Make the 2 s frame branch: replace the solid vermilion disc at shot-02s with sparse front tips that fork along the four axes, as the diagonal front lines already do at shot-08s.", "expected_gain": 4 },
+    { "rank": 2, "change": "Resolve the 20 s frame: let the cascade die so the vermilion clears and the umber pile re-centres into the four-fold square seen at shot-08s, instead of the off-centre blob at shot-20s.", "expected_gain": 3 },
+    { "rank": 3, "change": "Remove the speckled 0-3 tint noise on the border and keep the caption fully inside the frame at bottom-left; use one flat umber tone outside the active grid to lift craft.", "expected_gain": 2 }
+  ]
+}
