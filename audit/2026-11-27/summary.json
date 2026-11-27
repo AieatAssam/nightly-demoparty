@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-27",
+  "dry_run": false,
+  "compo": "audiovisual",
+  "domain": "coral-accretion-morphology",
+  "status": "b-side",
+  "reason": "B-side: best attempt 3 scored 70, below the publish threshold 72.",
+  "best_attempt": 3,
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 62
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 63
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates_passed": true,
+      "gate_failures": [],
+      "total": 70
+    }
+  ],
+  "llm_calls": 16,
+  "cost_usd": 0.9264,
+  "tokens": 2102141,
+  "duration_s": 1154
+}

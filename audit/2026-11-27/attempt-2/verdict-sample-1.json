@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 14,
+    "craft": 17,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 67,
+  "evidence": {
+    "mechanism": "shot-02s: a mirrored colony of celadon spheres under a flow gauge reading 9.0 cm/s, below the 20 cm/s tick; by shot-08s at 22.4 cm/s most of the colony has darkened to slate, but the khaki shell is barely lit.",
+    "ambition": "shot-08s: one flat 2D layer of shaded spheres and thin edges plus a flow readout bar; no visible halo haze or second layer, so the ambition rests on the node state change alone.",
+    "craft": "shot-02s: restrained khaki ground, clean celadon sphere shading and crisp slate label text with no artefacts; shot-08s: the dense slate nodes merge into a low-contrast murky mass in the core.",
+    "distinctness": "shot-02s: coral-like branching colony on khaki with a flow gauge, unlike the apricot sand grid, dendrite type or Penrose kites of the last three nights; by shot-20s the same branch form repeats.",
+    "polish": "shot-02s: colony sits centre-right against the flow gauge at left, so 2 s is composed; by shot-20s the colony has pulled back to a smaller scale with rose tips at the top, but its outline is close to shot-08s."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Tonight's branching colony with a dark core shows one clear state change from shot-02s to shot-08s; the median's Penrose kites on cream stay a static tiling with less visible development, so tonight wins the head-to-head.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Make the khaki shell visibly lit: at shot-08s the whole colony reads slate, so raise the brightness of outer tips and keep a clear khaki rim around the dark core so the shell-versus-core split reads at a glance.", "expected_gain": 4 },
+    { "rank": 2, "change": "Add the boundary-layer halos already described in the brief: soft translucent khaki haze around lit branches and between tight branches at shot-08s and shot-20s, giving a second rendering layer.", "expected_gain": 3 },
+    { "rank": 3, "change": "Separate the murky core at shot-08s by keeping node edges legible in the dark slate state, and make shot-20s differ in outline from shot-08s by reopening branches so the core visibly thins.", "expected_gain": 2 }
+  ]
+}

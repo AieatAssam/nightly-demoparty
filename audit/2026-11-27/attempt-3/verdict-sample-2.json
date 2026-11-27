@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 17,
+    "ambition": 16,
+    "craft": 18,
+    "distinctness": 15,
+    "polish": 6
+  },
+  "total": 72,
+  "evidence": {
+    "mechanism": "shot-08s: a dark slate core of dense nodes sits inside a khaki-lit outer shell with rose tips at the top; by shot-20s the same dark core persists at a smaller scale, so the flow threshold effect is visible on screen.",
+    "ambition": "shot-08s: one 2D scene with a growing L-system of several hundred nodes, halos, a flow dial and a dark/lit state change; no depth, lighting or material layers beyond flat fills.",
+    "craft": "shot-02s: restrained khaki-green ground with celadon branches and tan nodes, centred and clean; shot-08s: the dark core is an even dot grid with little tonal variation and the halos are barely visible.",
+    "distinctness": "shot-02s: a branching fan in celadon and tan on khaki-green with dark slate nodes; the recent Penrose tiling and sand-grid nights use hard-edged tiles, so this branching form and palette differ.",
+    "polish": "shot-02s: composed centred fan with the dial at 10 cm/s; shot-20s: a pull-back to a smaller colony with the dial still at 25 cm/s, so flow does not visibly ease back and the end state is only partly resolved."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Shot-08s shows a dark core inside a lit shell, which reads as a changing scene. The median's Penrose kites are a strong static tiling, but tonight's threshold shift wins a head-to-head on legibility and palette.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Make the flow dial ease back by shot-20s: it reads 25 cm/s in both shot-08s and shot-20s, so the core never reopens. Drop the dial to about 15 cm/s by 20s and thin the dark core so the reopening is visible.", "expected_gain": 3 },
+    { "rank": 2, "change": "Break the uniform dot grid in the dark core: vary node radius and slate tone by live-neighbour count so the core reads as a shelter gradient rather than a flat dot cloud, especially at shot-08s.", "expected_gain": 3 },
+    { "rank": 3, "change": "Make the boundary-layer halos visible at shot-02s and shot-08s, with a khaki haze between tight branches, so the second mechanism adds a layer beyond flat node fills.", "expected_gain": 2 }
+  ]
+}

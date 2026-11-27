@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 13,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 62,
+  "evidence": {
+    "mechanism": "shot-08s: dark slate node clump fills the top-centre core of the khaki colony while the flanks stay teal-lit; by shot-20s the core is smaller and the dial arrow sits above the 20 cm/s tick.",
+    "ambition": "shot-08s: one line-stroked L-system colony with a flow dial, hairline halos and a dark core; no material, lighting or second layer is visible, so a single rendering idea carries the piece.",
+    "craft": "shot-08s: thin teal strokes and hairline halos on flat khaki; the dark core is a dense tangle of overlapping slate strokes that reads as scribble, and the caption sits small at the bottom edge.",
+    "distinctness": "shot-02s: khaki ground with celadon branching coral and no grid, tiles or sand; it differs from the apricot sand grid, dendrite type and ochre Penrose kites of recent nights, though its cream tone is close to the Penrose strip.",
+    "polish": "shot-02s: colony centred and fully framed with the dial low; by shot-20s the colony shrinks with clear margin and the dark core persists, so the 20s frame resolves rather than repeating the 2s frame."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "shot-08s vs median: the Penrose strip has dense ochre and rust kites with strong contrast on cream, while tonight's thin teal strokes on khaki and the dark-slate clump read fainter, so the median wins the vote.",
+  "calibration_anchors_used": [
+    "anchor-02",
+    "anchor-08",
+    "anchor-09",
+    "anchor-12"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "At shot-08s replace the overplotted dark strokes in the core with fewer slate node fills and dimmed halos so the stagnant pocket reads as a shaped region with a clear edge rather than scribble.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Add a second rendering idea such as shaded tube depth or soft occlusion on shielded tips, so shot-02s and shot-08s show shelter as light falling off inside the colony, not only as line colour.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Enlarge the 20 cm/s tick and dial readout and let the dial visibly cross it at 6 s, so the threshold reads from the frame itself, not from the small caption at the bottom edge.",
+      "expected_gain": 3
+    }
+  ]
+}

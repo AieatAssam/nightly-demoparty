@@ -1,0 +1,551 @@
+[
+  {
+    "attempt": 1,
+    "model": "haiku",
+    "effort": null,
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/2026-11-27/attempt-1/index.html",
+      "compo": "audiovisual",
+      "byte_size": 10309,
+      "size_budget_bytes": 24576,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 214.3402,
+        "t8": 284.3524,
+        "t20": 223.4363,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 6.0449,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 5.2771,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 0,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 16.7,
+        "p90": 33.3,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": {
+        "required": true,
+        "autoplayed": false,
+        "rms": 0.113955,
+        "peak": 0.424455,
+        "clipped_ratio": 0,
+        "passed": true
+      },
+      "novelty_b": {
+        "phashes": {
+          "t2": "903070d4e8f03010",
+          "t8": "903070cce8f03010",
+          "t20": "88107068f0701008"
+        },
+        "color_histogram": [
+          0,
+          0.001107,
+          0,
+          0,
+          0,
+          0.001447,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.021552,
+          0,
+          0,
+          0,
+          0.005753,
+          0.000352,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.000145,
+          0,
+          0,
+          0,
+          0.003319,
+          0.089167,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.877157,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "min_hamming_distance": 15,
+        "min_histogram_distance": 0.732632,
+        "closest_date": "2026-11-23",
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 8.9455,
+        "reduced_motion": 0.7904,
+        "ratio": 0.0884
+      },
+      "screenshots": {
+        "t2": "audit/2026-11-27/attempt-1/shot-02s.png",
+        "t8": "audit/2026-11-27/attempt-1/shot-08s.png",
+        "t20": "audit/2026-11-27/attempt-1/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 14,
+        "ambition": 13,
+        "craft": 14,
+        "distinctness": 14,
+        "polish": 7
+      },
+      "total": 62,
+      "evidence": {
+        "mechanism": "shot-08s: dark slate node clump fills the top-centre core of the khaki colony while the flanks stay teal-lit; by shot-20s the core is smaller and the dial arrow sits above the 20 cm/s tick.",
+        "ambition": "shot-08s: one line-stroked L-system colony with a flow dial, hairline halos and a dark core; no material, lighting or second layer is visible, so a single rendering idea carries the piece.",
+        "craft": "shot-08s: thin teal strokes and hairline halos on flat khaki; the dark core is a dense tangle of overlapping slate strokes that reads as scribble, and the caption sits small at the bottom edge.",
+        "distinctness": "shot-02s: khaki ground with celadon branching coral and no grid, tiles or sand; it differs from the apricot sand grid, dendrite type and ochre Penrose kites of recent nights, though its cream tone is close to the Penrose strip.",
+        "polish": "shot-02s: colony centred and fully framed with the dial low; by shot-20s the colony shrinks with clear margin and the dark core persists, so the 20s frame resolves rather than repeating the 2s frame."
+      },
+      "pairwise_beats_median": false,
+      "pairwise_median_ref": "2026-11-23",
+      "pairwise_justification": "shot-08s vs median: the Penrose strip has dense ochre and rust kites with strong contrast on cream, while tonight's thin teal strokes on khaki and the dark-slate clump read fainter, so the median wins the vote.",
+      "calibration_anchors_used": [
+        "anchor-02",
+        "anchor-08",
+        "anchor-09",
+        "anchor-12"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "At shot-08s replace the overplotted dark strokes in the core with fewer slate node fills and dimmed halos so the stagnant pocket reads as a shaped region with a clear edge rather than scribble.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 2,
+          "change": "Add a second rendering idea such as shaded tube depth or soft occlusion on shielded tips, so shot-02s and shot-08s show shelter as light falling off inside the colony, not only as line colour.",
+          "expected_gain": 4
+        },
+        {
+          "rank": 3,
+          "change": "Enlarge the 20 cm/s tick and dial readout and let the dial visibly cross it at 6 s, so the threshold reads from the frame itself, not from the small caption at the bottom edge.",
+          "expected_gain": 3
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 2,
+    "model": "haiku",
+    "effort": null,
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/2026-11-27/attempt-2/index.html",
+      "compo": "audiovisual",
+      "byte_size": 11873,
+      "size_budget_bytes": 24576,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 518.1061,
+        "t8": 1901.8933,
+        "t20": 780.499,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 5.3814,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 7.2219,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 0,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 33.3,
+        "p90": 33.4,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": {
+        "required": true,
+        "autoplayed": false,
+        "rms": 0.117922,
+        "peak": 0.4355,
+        "clipped_ratio": 0,
+        "passed": true
+      },
+      "novelty_b": {
+        "phashes": {
+          "t2": "8808303068687090",
+          "t8": "884c687068687090",
+          "t20": "8808282870701088"
+        },
+        "color_histogram": [
+          0,
+          0.011043,
+          0,
+          0,
+          0,
+          0.030188,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.000011,
+          0,
+          0,
+          0,
+          0.062442,
+          0,
+          0,
+          0,
+          0.010367,
+          0.003288,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.003444,
+          0,
+          0,
+          0,
+          0.005513,
+          0.02074,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.852963,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "min_hamming_distance": 15,
+        "min_histogram_distance": 0.729333,
+        "closest_date": "2026-11-23",
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 8.45,
+        "reduced_motion": 0.6061,
+        "ratio": 0.0717
+      },
+      "screenshots": {
+        "t2": "audit/2026-11-27/attempt-2/shot-02s.png",
+        "t8": "audit/2026-11-27/attempt-2/shot-08s.png",
+        "t20": "audit/2026-11-27/attempt-2/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 14,
+        "ambition": 14,
+        "craft": 14,
+        "distinctness": 14,
+        "polish": 7
+      },
+      "total": 63,
+      "evidence": {
+        "mechanism": "shot-02s: flow dial reads 9.0 cm/s below its 20 cm/s tick over a mirrored celadon branch colony; by shot-08s at 22.4 cm/s the tips go dark slate, but the lit khaki outer shell barely reads.",
+        "ambition": "shot-02s: one rendering idea, shaded spheres on thin links, plus a flow dial inset; shot-08s adds a colony-wide dark state change, and no halos, second layer or new rendering idea appears by shot-20s.",
+        "craft": "shot-02s: clean khaki ground and soft-shaded celadon spheres with no visible artefacts at full size; shot-08s dark slate tips lose separation from the ground, and the rose accent glow at shot-20s is blurred.",
+        "distinctness": "shot-02s: khaki ground with celadon and slate spheres on a mirrored branched colony differs from the apricot sand grid, the dendrite lettering and the ochre Penrose kites of the recent nights; rose tips add one accent.",
+        "polish": "shot-02s: colony sits right of centre with empty khaki upper-left, a composed start; shot-20s returns to a lit state with the dial back under 20 cm/s, so the loop resolves, but its layout stays close to shot-02s."
+      },
+      "pairwise_beats_median": false,
+      "pairwise_median_ref": "2026-11-23",
+      "pairwise_justification": "shot-08s is mostly dark slate spheres on khaki, while the median's shot-20s packs dense ochre and rust kites into a triangle with visible growth; the Penrose frame is the stronger head-to-head image.",
+      "calibration_anchors_used": [
+        "anchor-02",
+        "anchor-08",
+        "anchor-09",
+        "anchor-12"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "At shot-08s keep the outer khaki shell at full brightness above the 20 cm/s tick, so the dark core contrasts with a lit rim instead of the whole colony going dark slate.",
+          "expected_gain": 5
+        },
+        {
+          "rank": 2,
+          "change": "Add the boundary-layer halo from the brief as translucent khaki rings around branch tips, a second rendering idea visible in shot-08s and shot-20s beyond shaded spheres on lines.",
+          "expected_gain": 5
+        },
+        {
+          "rank": 3,
+          "change": "Change the shot-20s composition: pull the camera back so the colony sits smaller with margin, giving the loop a distinct end state rather than a near-copy of the shot-02s layout.",
+          "expected_gain": 2
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 3,
+    "model": "opus",
+    "effort": "low",
+    "gates": {
+      "passed": true,
+      "piece_path": "audit/2026-11-27/attempt-3/index.html",
+      "compo": "audiovisual",
+      "byte_size": 9945,
+      "size_budget_bytes": 24576,
+      "console_errors": [],
+      "network_requests": [],
+      "luminance_variance": {
+        "t2": 511.8455,
+        "t8": 616.3174,
+        "t20": 369.1534,
+        "floor": 12,
+        "passed": true
+      },
+      "motion": {
+        "frame_diff_mean": 2.4934,
+        "frame_diff_floor": 0.8,
+        "development_diff_t2_t20": 5.2698,
+        "development_floor": 2.5,
+        "passed": true
+      },
+      "strobe": {
+        "max_flashes_per_sec": 0,
+        "limit": 3,
+        "passed": true
+      },
+      "frame_time_ms": {
+        "median": 33.3,
+        "p90": 50,
+        "budget_ms": 250,
+        "passed": true
+      },
+      "audio_probe": {
+        "required": true,
+        "autoplayed": false,
+        "rms": 0.08304,
+        "peak": 0.309584,
+        "clipped_ratio": 0,
+        "passed": true
+      },
+      "novelty_b": {
+        "phashes": {
+          "t2": "4a2a4e0e160e4a89",
+          "t8": "4a16324c170e4a89",
+          "t20": "4a2a72324e0e4a89"
+        },
+        "color_histogram": [
+          0,
+          0.020458,
+          0,
+          0,
+          0,
+          0.086889,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.660134,
+          0,
+          0,
+          0,
+          0.157571,
+          0.00329,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.000126,
+          0,
+          0,
+          0,
+          0.001167,
+          0.06592,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.004445,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "min_hamming_distance": 23,
+        "min_histogram_distance": 0.99415,
+        "closest_date": "2026-11-26",
+        "passed": true
+      },
+      "slop_lint": {
+        "passed": true,
+        "violations": []
+      },
+      "reduced_motion": {
+        "passed": true,
+        "normal_motion": 4.6314,
+        "reduced_motion": 0.4495,
+        "ratio": 0.0971
+      },
+      "screenshots": {
+        "t2": "audit/2026-11-27/attempt-3/shot-02s.png",
+        "t8": "audit/2026-11-27/attempt-3/shot-08s.png",
+        "t20": "audit/2026-11-27/attempt-3/shot-20s.png"
+      },
+      "failures": []
+    },
+    "verdict": {
+      "scores": {
+        "mechanism": 17,
+        "ambition": 16,
+        "craft": 17,
+        "distinctness": 14,
+        "polish": 6
+      },
+      "total": 70,
+      "evidence": {
+        "mechanism": "shot-02s: about a thousand khaki-lit tips in a fan-shaped mirrored colony, dial at 10 cm/s with no dark nodes; by shot-08s the dial reads 25 cm/s and a dark slate cluster forms in the upper centre under a lit khaki shell.",
+        "ambition": "shot-08s: roughly a thousand nodes in three visible states (khaki, dark slate, rose tips), faint halos and a live flow dial, all on one flat 2D canvas; shot-20s keeps the same single layer at smaller scale.",
+        "craft": "shot-08s: flat dots render cleanly at 1280 px with no visible aliasing, but the halos are barely visible and the dark core reads as a grey smudge where tips overlap; shot-20s is equally clean.",
+        "distinctness": "shot-02s: khaki-sage fan of branching tips on a slate ground, unlike the apricot sand grid, the ochre Penrose kites or the dendrite typography of the last three nights; its earthy palette overlaps slightly with the Penrose piece.",
+        "polish": "shot-02s: colony centred with an even margin and already composed; by shot-20s it has shrunk to roughly a third of the frame width in a mostly empty field, so the piece resolves but loses weight."
+      },
+      "pairwise_beats_median": true,
+      "pairwise_median_ref": "2026-11-23",
+      "pairwise_justification": "Head-to-head, tonight's 8s frame has a dark slate core against a lit khaki shell that reads at a glance; the median's cream ground holds one ochre kite triangle whose detail is fine but low-contrast.",
+      "calibration_anchors_used": [
+        "anchor-02",
+        "anchor-08",
+        "anchor-09",
+        "anchor-12"
+      ],
+      "critique": [
+        {
+          "rank": 1,
+          "change": "Re-frame shot-20s so the colony stays near its shot-08s scale with a tighter margin; the current pull-back shrinks it to about a third of the frame and leaves the dark core too small to read at a glance.",
+          "expected_gain": 3
+        },
+        {
+          "rank": 2,
+          "change": "At shot-08s give the stagnant core a clear edge: thin out the dark slate tips at the core boundary so an empty pocket shows inside the khaki shell instead of a grey cloud of overlapping dots.",
+          "expected_gain": 3
+        },
+        {
+          "rank": 3,
+          "change": "Make the boundary-layer halos visible at shot-08s: raise the halo alpha around lit tips so the khaki haze between branches becomes a second rendering layer rather than a faint ring around a few tips.",
+          "expected_gain": 3
+        }
+      ]
+    }
+  }
+]

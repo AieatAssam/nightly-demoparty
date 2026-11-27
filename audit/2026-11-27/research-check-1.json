@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "schema": "dossier",
+  "file": "audit/2026-11-27/dossier.json",
+  "strict": true,
+  "errors": [
+    "/summary must NOT have more than 600 characters {\"limit\":600}"
+  ]
+}

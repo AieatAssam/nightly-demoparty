@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Stagnant Core</title>
+<style>*{margin:0}html,body{height:100%;overflow:hidden;background:#c9bf98}canvas{width:100vw;height:100vh;display:block}</style>
+</head><body><canvas id="c"></canvas>
+<script type="module">
+const srng=e=>()=>{e=e+1831565813|0;let t=Math.imul(e^e>>>15,1|e);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296},mtof=e=>440*2**((e-69)/12);function synthBus(e,{delay:t=.3,feedback:n=.35,wet:l=.25}={}){const a=h=>{const p=e.createGain();return p.gain.value=h,p},i=a(1),o=a(1),u=a(l),c=a(n),r=e.createDelay(2),s=e.createDelay(2),f=e.createChannelMerger(2),d=e.createDynamicsCompressor(),A=e.createWaveShaper(),g=e.createAnalyser(),q=new Float32Array(1024);for(let h=0;h<1024;h++)q[h]=.9*Math.tanh(2*(h/511.5-1));A.curve=q,d.threshold.value=-18,d.ratio.value=4,d.attack.value=.003,d.release.value=.2,r.delayTime.value=s.delayTime.value=t,i.connect(o),i.connect(u).connect(r).connect(s).connect(c).connect(r),r.connect(f,0,0),s.connect(f,0,1),f.connect(o),o.connect(d).connect(A).connect(g).connect(e.destination),g.fftSize=1024;const w=new Uint8Array(g.frequencyBinCount),v=new Float32Array(g.fftSize),y={bass:0,mid:0,high:0,rms:0};let R=0;const M=(h,p)=>{const b=e.sampleRate/g.fftSize,m=Math.round(h/b),k=Math.max(m+1,Math.round(p/b));let B=0;for(let T=m;T<k;T++)B+=w[T];return B/(k-m)/255};return{input:i,analyser:g,bands:()=>{g.getByteFrequencyData(w),g.getFloatTimeDomainData(v);let h=0;for(const m of v)h+=m*m;const p={bass:M(20,250),mid:M(250,2e3),high:M(2e3,1e4),rms:Math.min(1,Math.sqrt(h/v.length)*2)},b=Math.max(0,e.currentTime-R);R=e.currentTime;for(const m in y)y[m]=p[m]+(y[m]-p[m])*Math.exp(-b/(p[m]>y[m]?.05:.25));return{...y}}}}const env=(e,t,n,l,a)=>{const i=e.createGain();return i.gain.setValueAtTime(0,t),i.gain.linearRampToValueAtTime(a,t+n),i.gain.exponentialRampToValueAtTime(1e-4,t+n+l),i};function fm(e,t,n,l,a=.4,{ratio:i=2,index:o=3,vol:u=.3}={}){const c=e.createOscillator(),r=e.createOscillator(),s=e.createGain(),f=env(e,n,.005,a,u);c.frequency.value=l,r.frequency.value=l*i,s.gain.setValueAtTime(l*o,n),s.gain.exponentialRampToValueAtTime(l*o*.05+.001,n+a),r.connect(s).connect(c.frequency),c.connect(f).connect(t);for(const d of[c,r])d.start(n),d.stop(n+a+.05)}function sub(e,t,n,l,a=.3,{cutoff:i=1800,q:o=6,vol:u=.25,type:c="sawtooth"}={}){const r=e.createOscillator(),s=e.createBiquadFilter(),f=env(e,n,.005,a,u);r.type=c,r.frequency.value=l,s.type="lowpass",s.Q.value=o,s.frequency.setValueAtTime(i,n),s.frequency.exponentialRampToValueAtTime(Math.max(60,l),n+a),r.connect(s).connect(f).connect(t),r.start(n),r.stop(n+a+.05)}function ksBuffer(e,t,n=1,l=1,a=.996){const i=Math.max(2,Math.round(e/t)),o=new Float32Array(Math.ceil(e*n)),u=srng(l);for(let c=0;c<i&&c<o.length;c++)o[c]=u()*2-1;for(let c=i;c<o.length;c++)o[c]=a*.5*(o[c-i]+o[c-i+1]);return o}function pluck(e,t,n,l,a=1,{vol:i=.4,seed:o=1,damp:u=.996}={}){const c=e.createBuffer(1,Math.ceil(e.sampleRate*a),e.sampleRate),r=e.createBufferSource(),s=e.createGain();c.copyToChannel(ksBuffer(e.sampleRate,l,a,o,u),0),r.buffer=c,s.gain.value=i,r.connect(s).connect(t),r.start(n)}const seq=({bpm:e=120,div:t=4,seed:n=1}={},l)=>(a,i,o,u,c=0)=>{const r=60/e/t;for(let s=Math.max(0,Math.ceil(o/r-1e-9));s*r<u;s++)l(a,i,c+s*r,s,srng(n^Math.imul(s+1,2654435761)))};function startSynth(e,{target:t=document,ahead:n=.2,bus:l}={}){const a={ctx:null,bus:null,bands:()=>({bass:0,mid:0,high:0,rms:0})},i=()=>{if(a.ctx)return void a.ctx.resume();const o=a.ctx=new AudioContext,u=a.bus=synthBus(o,l),c=o.currentTime+.05;let r=0;a.bands=u.bands;const s=()=>{const f=o.currentTime-c+n;f>r&&(e(o,u.input,r,f,c),r=f)};s(),setInterval(s,50)};for(const o of["pointerdown","keydown"])t.addEventListener(o,i);return a}const registerAudioProbe=(e,t)=>{window.__demopartyAudioProbe=async n=>e(n,synthBus(n,t).input,0,n.length/n.sampleRate,0)};export{mtof,synthBus,fm,sub,ksBuffer,pluck,seq,startSynth,registerAudioProbe};
+const clamp01=t=>t<0?0:t>1?1:t,lerp=(t,n,c)=>t+(n-t)*c,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),quintic=t=>(t=clamp01(t),t*t*t*(t*(t*6-15)+10)),cubicInOut=t=>(t=clamp01(t),t<.5?4*t*t*t:1-(-2*t+2)**3/2),expoOut=t=>(t=clamp01(t),t===1?1:1-2**(-10*t)),backOut=(t,n=1.70158)=>(t=clamp01(t)-1,1+t*t*((n+1)*t+n)),elasticOut=t=>(t=clamp01(t),t===0||t===1?t:2**(-10*t)*Math.sin((t*10-.75)*(2*Math.PI/3))+1),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),CUTS=[0,5,10,15,20],act=(t,n=CUTS)=>{let c=0;for(;c<n.length-2&&t>=n[c+1];)c++;return{i:c,p:clamp01((t-n[c])/(n[c+1]-n[c]))}},acts=(t,n=CUTS,c=1)=>{const e=o=>o===0?1:o===n.length-1?0:smooth((t-n[o])/c+.5);return n.slice(0,-1).map((o,s)=>e(s)-e(s+1))},storyClock=({reduce:t=.2,cuts:n=CUTS}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r,...act(e,n)}}};export{clamp01,lerp,smooth,quintic,cubicInOut,expoOut,backOut,elasticOut,beat,CUTS,act,acts,storyClock};
+
+// ---- Stagnant core: stochastic branching colony, shelter-count darkening ----
+const cv=document.getElementById('c'),g=cv.getContext('2d');
+let VW=0,VH=0,TT=0,off=null;
+
+// Stochastic L-system: each tip rewrites to a fork or a continued stem, chosen by seeded draws.
+const RN=srng(20261127);
+const Q=[{x:0,y:0,a:1.75,L:.42,d:0},{x:0,y:0,a:2.25,L:.42,d:0}],LS=[];
+const lim=a=>Math.min(3.05,Math.max(1.05,a));
+for(let qi=0;qi<Q.length&&LS.length<620;qi++){
+  const q=Q[qi],x1=q.x+Math.cos(q.a)*q.L,y1=q.y+Math.sin(q.a)*q.L;
+  LS.push({x0:q.x,y0:q.y,x1,y1,d:q.d});
+  if(q.d>=9)continue;
+  if(q.d<2||RN()<.55){
+    const s=.32+.3*RN(),f=.72+.12*RN();
+    Q.push({x:x1,y:y1,a:lim(q.a-s),L:q.L*f,d:q.d+1},{x:x1,y:y1,a:lim(q.a+s),L:q.L*f,d:q.d+1});
+  } else {
+    Q.push({x:x1,y:y1,a:lim(q.a+(RN()-.5)*.5),L:q.L*.88,d:q.d+1});
+  }
+}
+// Mirror across the vertical axis.
+const NS=[];
+for(const m of LS)NS.push({x0:m.x0,y0:m.y0,x1:m.x1,y1:m.y1,d:m.d},{x0:-m.x0,y0:m.y0,x1:-m.x1,y1:m.y1,d:m.d});
+const LEN=NS.length,A=Math.round(LEN*.8);
+let mx=0;for(const e of NS)mx=Math.max(mx,e.y0,e.y1);
+const K=1/mx;for(const e of NS){e.x0*=K;e.y0*=K;e.x1*=K;e.y1*=K;}
+const MAXD=Math.max(...NS.map(e=>e.d));
+
+// Shelter count: live neighbours of each tip within one spacing radius.
+const CN=new Float32Array(LEN);
+for(let i=0;i<LEN;i++){let c=0;const a=NS[i];for(let j=0;j<LEN;j++){const b=NS[j],dx=b.x1-a.x1,dy=b.y1-a.y1;if(dx*dx+dy*dy<.002025)c++;}CN[i]=c;}
+const SO=Float32Array.from(CN).sort(),pc=q=>SO[Math.floor(q*(LEN-1))],p40=pc(.4),p90=pc(.9);
+const SHL=Float32Array.from(CN,c=>clamp01((c-p40)/Math.max(1,p90-p40)));
+
+// Palette from the brief.
+const LIT=[143,165,146],BRC=[79,107,99],DKC=[47,62,76],GRC=[201,191,152],ROC=[181,71,106];
+const mix=(a,b,f)=>a.map((v,i)=>v+(b[i]-v)*f),rgb=c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
+const SEGC=[],TIPC=[],HALC=[];
+for(let k=0;k<8;k++){SEGC.push(rgb(mix(BRC,DKC,k/7)));TIPC.push(rgb(mix(LIT,DKC,k/7)));HALC.push(`rgba(143,165,146,${(.26-.16*k/7).toFixed(3)})`);}
+const GRD=rgb(GRC),RS=rgb(ROC),DS=rgb(DKC);
+
+// Flow dial, cm/s: rises past the 20 cm/s tick at about 6 s, peaks, then eases back.
+const FK=[0,5,6,12,15,20],FV=[8,18,22,32,28,21];
+const flow=t=>{let i=0;for(let j=1;j<5;j++)if(t>=FK[j])i=j;const p=smooth((t-FK[i])/(FK[i+1]-FK[i]));return lerp(FV[i],FV[i+1],p)+.6*Math.sin(t*1.3)};
+
+// Hard-cut shots: [start, zoomStart, zoomEnd, centreX, centreY].
+const SK=[[0,1,1.05,0,.5],[3.2,1.5,1.6,-.2,.6],[6.4,.95,1,0,.5],[8.9,1.25,1.35,.12,.42],[11.6,1.9,2.1,0,.34],[14.8,.95,1,0,.5],[17.5,.98,.78,0,.48]];
+const cam=t=>{let k=0;for(let j=1;j<SK.length;j++)if(t>=SK[j][0])k=j;const s=SK[k],e=k<SK.length-1?SK[k+1][0]:s[0]+3,p=clamp01((t-s[0])/(e-s[0]));return{z:lerp(s[1],s[2],p),x:s[3]+.01*Math.sin(t*.4),y:s[4]+.01*Math.cos(t*.3)}};
+
+function size(){const d=Math.min(devicePixelRatio||1,1.5);VW=innerWidth;VH=innerHeight;cv.width=VW*d;cv.height=VH*d;g.setTransform(d,0,0,d,0,0)}
+
+function draw(t){
+  const F=flow(t),c=cam(t),Z=c.z*.8*VH,sq=Math.sqrt(c.z),
+    dkF=smooth((F-18)/4),fl=smooth((F-8)/24),ro=smooth((F-24)/6),
+    rc=Math.round(380+(A-380)*smooth(t/2.2)+(LEN-A)*clamp01((t-2.2)/15.8)),
+    px=x=>VW/2+(x-c.x)*Z,py=y=>VH/2-(y-c.y)*Z;
+  g.fillStyle=GRD;g.fillRect(0,0,VW,VH);
+  const hal=[],seg=[],tip=[],rose=new Path2D();
+  for(let k=0;k<8;k++){hal.push(new Path2D());seg.push(new Path2D());tip.push(new Path2D());}
+  for(let i=0;i<rc;i++){
+    const e=NS[i],k=Math.round(dkF*SHL[i]*7),x0=px(e.x0),y0=py(e.y0),x1=px(e.x1),y1=py(e.y1);
+    hal[k].moveTo(x0,y0);hal[k].lineTo(x1,y1);
+    seg[k].moveTo(x0,y0);seg[k].lineTo(x1,y1);
+    tip[k].moveTo(x1+2*sq,y1);tip[k].arc(x1,y1,2*sq,0,6.2832);
+    if(e.d>=MAXD-1){rose.moveTo(x1+2.6*sq,y1);rose.arc(x1,y1,2.6*sq,0,6.2832);}
+  }
+  const hw=(11-4*fl)*sq;
+  for(let k=0;k<8;k++){g.strokeStyle=HALC[k];g.lineWidth=hw;g.stroke(hal[k]);}
+  for(let k=0;k<8;k++){g.strokeStyle=SEGC[k];g.lineWidth=1.6*sq;g.stroke(seg[k]);g.fillStyle=TIPC[k];g.fill(tip[k]);}
+  g.globalAlpha=ro;g.fillStyle=RS;g.fill(rose);g.globalAlpha=1;
+
+  // Flow dial on the left edge.
+  const yv=v=>VH*.84-v/40*VH*.64;
+  g.lineWidth=1.5;
+  for(let v=0;v<=40;v+=2){const L=v===20?26:v%10===0?16:8;g.strokeStyle=v===20?RS:DS;g.beginPath();g.moveTo(16,yv(v));g.lineTo(16+L,yv(v));g.stroke();}
+  const yf=yv(F);g.fillStyle=DS;g.beginPath();g.moveTo(40,yf);g.lineTo(52,yf-6);g.lineTo(52,yf+6);g.closePath();g.fill();
+  g.fillStyle=RS;g.font='12px ui-monospace,Menlo,monospace';g.fillText('20 cm/s',60,yv(20)+4);
+  g.fillStyle=DS;g.font='13px Georgia,serif';g.fillText('Stagnant core: coral branches past 20 cm/s',16,VH-18);
+}
+
+// Score: 120 BPM quarter-note FM bells on a major triad; the pitch drops a fifth at 6 s (core opens).
+const BELL=[60,64,67,72,67,64,71];
+const score=seq({bpm:120,div:2,seed:20261127},(ctx,out,t,i,rnd)=>{if(i%2)return;fm(ctx,out,t,mtof(BELL[rnd()*BELL.length|0]+(i>=24?-7:0)),.9,{ratio:2,index:3,vol:.22})});
+registerAudioProbe(score);
+for(const e of['pointerdown','keydown'])document.addEventListener(e,()=>{if(off===null)off=TT});
+startSynth((ctx,out,t0,t1,base)=>score(ctx,out,t0+off,t1+off,base-off));
+
+const clock=storyClock({reduce:.2});
+const frame=ms=>{requestAnimationFrame(frame);TT=clock(ms).t;draw(TT)};
+addEventListener('resize',size);size();requestAnimationFrame(frame);
+</script>
+</body></html>

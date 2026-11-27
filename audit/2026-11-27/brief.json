@@ -1,0 +1,50 @@
+{
+  "title": "Stagnant Core: Coral Branches Past 20 cm/s",
+  "concept": "Densely branched coral tips shield one another, so once flow passes 20 cm/s the colony's inner tips go dark while a lit khaki shell stays exposed.",
+  "mechanism_embodied": {
+    "mechanism_name": "solid-body flow threshold",
+    "how_visualised": "Each branch tip is a node of a stochastic L-system colony. A node counts its live neighbours within one spacing radius. A flow dial, a column of ticks at the left edge, rises; when it passes its 20 cm/s tick, shielded nodes with many neighbours dim to dark slate, so a stagnant core forms while the outer shell stays khaki-lit. New khaki tips keep accreting at the edge."
+  },
+  "discarded_obvious_idea": "Obvious: a glowing coral tree whose brightness follows current speed. Rejected: it is a glow effect with no shelter rule, so the 20 cm/s threshold becomes decoration and the stagnant core never forms.",
+  "compo": "audiovisual",
+  "constraint_honoured": null,
+  "techniques": [
+    "Stochastic L-system",
+    "shelter-count node occlusion",
+    "flow-threshold stagnant-core dimming",
+    "boundary-layer halo around branches"
+  ],
+  "novel_technique": "Stochastic L-system",
+  "technique_family": "grammar",
+  "palette": ["#c9bf98", "#8fa592", "#4f6b63", "#2f3e4c", "#b5476a"],
+  "motion_sound_plan": "High tempo: dense growth, six hard cuts between 3 and 18 s, none closer than 0.34 s, 120 BPM. Warm-consonant: khaki ground, mirrored colony, major third and fifth intervals. Assertive: colony fills the frame, push-in between beats. Experimental: the L-system is the main technique. Sound starts after one click: a two-operator FM bell at 1:2 ratio sounds each new tip, with its modulation index decaying. When the core opens the pitch drops a fifth. Peak kept under 0.9. Bells and visuals share the 120 BPM grid. No constraint.",
+  "storyboard": [
+    {
+      "beat": 1,
+      "t_start_s": 0,
+      "t_end_s": 5,
+      "description": "At 2 s a mirrored colony of about 1200 celadon L-system branch tips fills the frame, all lit on khaki ground. A flow dial, a column of short ticks at the left edge, sits low. Hard cut at 3.2 s to a tighter crop of one half."
+    },
+    {
+      "beat": 2,
+      "t_start_s": 5,
+      "t_end_s": 10,
+      "description": "The flow dial passes its 20 cm/s tick at 6 s. Shielded tips fade to dark slate, a stagnant core opens in the centre, and the outer shell stays khaki-lit. Hard cuts at 6.4 s and 8.9 s. The 8 s frame shows a half-dark core with halos merging."
+    },
+    {
+      "beat": 3,
+      "t_start_s": 10,
+      "t_end_s": 15,
+      "description": "Flow peaks. Thin translucent halos merge into a khaki haze between tight branches, and rose accent tips light up on the newest growth. The camera pushes in to a close crop of the dark core. Cuts at 11.6 s and 14.8 s alternate wide and close framing."
+    },
+    {
+      "beat": 4,
+      "t_start_s": 15,
+      "t_end_s": 20,
+      "description": "Flow eases back and the core thins as branches reopen. At 17.5 s the camera pulls back to the whole mirrored colony with margin around it, dark core still visible, shell lit. The 20 s frame is the full colony at smaller scale."
+    }
+  ],
+  "memorable_moment": "A dark stagnant core opening inside a lit khaki colony as the flow dial passes its 20 cm/s tick, with one falling fifth in the bells.",
+  "self_declared_risk": "L-system growth may overfill the frame or stall, and recounting shelter neighbours across about 1200 tips may be slow. The core may read as flicker rather than a stagnant pocket.",
+  "liner_note": "A PLOS Computational Biology modelling study of Pocillopora verrucosa found that densely packed branches shield one another and act as a single solid body. Flow at about 20 cm/s starts to wrap around the colony and leaves a stagnant region inside it. On screen a mirrored colony of celadon branch tips grows tip by tip, and its shielded tips fade to dark slate as the flow dial passes its 20 cm/s tick, leaving a lit khaki shell around a dark core. Each new tip sounds a short FM bell, and the pitch drops a fifth when the core opens. Click once to start the score."
+}

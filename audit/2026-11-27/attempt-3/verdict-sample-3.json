@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 17,
+    "craft": 16,
+    "distinctness": 14,
+    "polish": 6
+  },
+  "total": 69,
+  "evidence": {
+    "mechanism": "shot-02s: about a thousand khaki-lit tips in a fan-shaped mirrored colony, dial at 10 cm/s with no dark nodes; by shot-08s the dial reads 25 cm/s and a dark slate cluster forms in the upper centre under a lit khaki shell.",
+    "ambition": "shot-08s: roughly a thousand nodes in three visible states (khaki, dark slate, rose tips), faint halos and a live flow dial, all on one flat 2D canvas; shot-20s keeps the same single layer at smaller scale.",
+    "craft": "shot-08s: flat dots render cleanly at 1280 px with no visible aliasing, but the halos are barely visible and the dark core reads as a grey smudge where tips overlap; shot-20s is equally clean.",
+    "distinctness": "shot-02s: khaki-sage fan of branching tips on a slate ground, unlike the apricot sand grid, the ochre Penrose kites or the dendrite typography of the last three nights; its earthy palette overlaps slightly with the Penrose piece.",
+    "polish": "shot-02s: colony centred with an even margin and already composed; by shot-20s it has shrunk to roughly a third of the frame width in a mostly empty field, so the piece resolves but loses weight."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Head-to-head, tonight's 8s frame has a dark slate core against a lit khaki shell that reads at a glance; the median's cream ground holds one ochre kite triangle whose detail is fine but low-contrast.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Re-frame shot-20s so the colony stays near its shot-08s scale with a tighter margin; the current pull-back shrinks it to about a third of the frame and leaves the dark core too small to read at a glance.", "expected_gain": 3 },
+    { "rank": 2, "change": "At shot-08s give the stagnant core a clear edge: thin out the dark slate tips at the core boundary so an empty pocket shows inside the khaki shell instead of a grey cloud of overlapping dots.", "expected_gain": 3 },
+    { "rank": 3, "change": "Make the boundary-layer halos visible at shot-08s: raise the halo alpha around lit tips so the khaki haze between branches becomes a second rendering layer rather than a faint ring around a few tips.", "expected_gain": 3 }
+  ]
+}

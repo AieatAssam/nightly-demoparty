@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 17,
+    "ambition": 14,
+    "craft": 17,
+    "distinctness": 14,
+    "polish": 6
+  },
+  "total": 68,
+  "evidence": {
+    "mechanism": "shot-08s: the flow dial reads 25 cm/s, past its 20 tick, and the interior tips in the crown are dark slate while the rim stays khaki and celadon, so the shelter effect is visible; by shot-20s the dark core persists at the centre.",
+    "ambition": "shot-08s: one flat 2D layer of dots, branch lines and faint halos over a gradient ground, plus a dial; the neighbour-count simulation drives the shading, but by shot-20s no second rendering idea or depth appears.",
+    "craft": "shot-02s: the muted khaki, celadon, slate and rose palette holds together with no visible artefacts; the halos are barely visible and the 2s colony is sparse, so the branch surface reads thin.",
+    "distinctness": "shot-08s: a mirrored coral fan in khaki and slate matches none of the recent nights (sand grid, dendrite, Penrose tiles) in subject, palette or technique; the dial and dark core are its own idea.",
+    "polish": "shot-02s: the mirrored fan is composed with margin; by shot-20s the colony shrinks to a smaller central fan with empty ground and the dial still at 25 cm/s, so the ending does not resolve."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Tonight's shot-08s dark slate core inside a khaki shell is a strong read, but shot-20s shrinks the colony into the centre over empty ground, while the Penrose 20s fills the frame with ochre and rust tiles, so the median wins on presence.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Add a second rendering idea to the colony: draw the boundary-layer halos as a soft, depth-sorted haze that merges between shielded tips at shot-08s, so the simulation has a visible second layer beyond flat dots and lines.", "expected_gain": 6 },
+    { "rank": 2, "change": "Let the flow dial ease back below its 20 cm/s tick by shot-20s and reopen the core at the frame edge, so the 20s frame differs from the 8s frame and the colony returns to full scale instead of shrinking into empty ground.", "expected_gain": 3 },
+    { "rank": 3, "change": "Fill the 2s colony to the same extent as the 8s crown and raise the halo opacity, so the opening frame has the density and boundary glow needed to read as composed rather than sparse.", "expected_gain": 3 }
+  ]
+}

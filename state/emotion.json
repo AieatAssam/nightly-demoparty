@@ -18,259 +18,337 @@
   0.287
  ],
  "mood": [
-  0.45517336591340385,
-  0.5740511845774247,
-  0.37403842980054613
+  0.4491679295097758,
+  0.546219533430321,
+  0.4033102936201458
  ],
  "emotions": {
   "joy": {
-   "i": 0.6341390927214126,
+   "i": 0.6845694998276726,
    "target": null,
-   "cause": "Found a buildable mechanism: order-independent relaxation.",
+   "cause": "Found a buildable mechanism: shade-and-light split.",
    "source": null,
-   "thread": "night-2026-11-26"
+   "thread": "night-2026-11-27"
   },
   "surprise": {
-   "i": 0.28087081475100695,
+   "i": 0.21158088322438173,
    "target": null,
-   "cause": "Found a buildable mechanism: avalanche duration bursts.",
+   "cause": "Found a buildable mechanism: solid-body flow threshold.",
    "source": null,
-   "thread": "night-2026-11-26"
+   "thread": "night-2026-11-27"
   },
   "interest": {
-   "i": 0.7447856774640018,
+   "i": 0.6803748640423732,
    "target": null,
-   "cause": "Found a buildable mechanism: order-independent relaxation.",
+   "cause": "Found a buildable mechanism: shade-and-light split.",
    "source": null,
-   "thread": "night-2026-11-26"
-  },
-  "pride": {
-   "i": 0.16625357831896956,
-   "target": null,
-   "cause": "Tonight's simulation piece on self-organised criticality sandpiles went to the B-sides at 65.",
-   "source": null,
-   "thread": "night-2026-11-26"
+   "thread": "night-2026-11-27"
   },
   "boredom": {
-   "i": 0.06296136791063973,
+   "i": 0.05805491464981836,
    "target": null,
-   "cause": "Tonight's simulation piece on self-organised criticality sandpiles went to the B-sides at 65.",
+   "cause": "Tonight's audiovisual piece on coral-accretion-morphology went to the B-sides at 70.",
    "source": null,
-   "thread": "night-2026-11-26"
+   "thread": "night-2026-11-27"
+  },
+  "pride": {
+   "i": 0.15733727182388801,
+   "target": null,
+   "cause": "Tonight's audiovisual piece on coral-accretion-morphology went to the B-sides at 70.",
+   "source": null,
+   "thread": "night-2026-11-27"
   }
  },
  "chem": {
-  "da": 0.9552411976792985,
-  "ne": 0.908683453954044,
-  "sht": 0.9955415215068005,
-  "cort": 0.28296101200536034,
+  "da": 0.9286571357538155,
+  "ne": 0.8611494941310174,
+  "sht": 1,
+  "cort": 0.27304546108815353,
   "oxt": 0.42500000000000004,
-  "opi": 1
+  "opi": 0.9723081595580315
  },
  "stress": 0.0,
  "load": 0.0,
- "opp": 0.06422364520706599,
+ "opp": 0.07540990719868837,
  "drives": {
   "novelty": 0,
-  "social": 0.9870899202992303,
+  "social": 0.9956179197932691,
   "fatigue": 0.0
  },
  "sentiments": {
   "topic:penrose-inflation": {
-   "L": 0.17142206877637506,
-   "W": 0.7522957070383848,
+   "L": 0.16962241918115123,
+   "W": 0.7157819680132449,
    "n": 1,
    "ep": null
   },
   "topic:tiling-geometry": {
-   "L": 0.326498466235842,
-   "W": 0.786707097667331,
+   "L": 0.32335503139816196,
+   "W": 0.7485231529967754,
    "n": 2,
    "ep": null
   },
   "topic:kite-dart-angles": {
-   "L": 0.08014264983432379,
-   "W": 0.07415626214468032,
+   "L": 0.07930128391006432,
+   "W": 0.07055698279522025,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-23": {
-   "L": 0.17142206877637506,
-   "W": 0.7522957070383848,
+   "L": 0.16962241918115123,
+   "W": 0.7157819680132449,
    "n": 1,
    "ep": null
   },
   "topic:substitution-rules": {
-   "L": 0.26573869111040577,
-   "W": 0.4018724453686208,
+   "L": 0.2629488722072398,
+   "W": 0.382366996308766,
    "n": 1,
    "ep": null
   },
   "topic:golden-ratio": {
-   "L": 0.2831552813933415,
-   "W": 0.5036248150046694,
+   "L": 0.2801826169564785,
+   "W": 0.47918067038225876,
    "n": 1,
    "ep": null
   },
   "topic:aperiodicity": {
-   "L": 0.21313685532909257,
-   "W": 0.3565274748714951,
+   "L": 0.2108992691293795,
+   "W": 0.3392229082616451,
    "n": 1,
    "ep": null
   },
   "topic:iterated-map": {
-   "L": 0.24532182056721985,
-   "W": 0.2878511072068544,
+   "L": 0.24274634520261373,
+   "W": 0.27387984549644784,
    "n": 1,
    "ep": null
   },
   "topic:growth-shells": {
-   "L": 0.24618965168405915,
-   "W": 0.2914197058740779,
+   "L": 0.24360506552100514,
+   "W": 0.2772752371664741,
    "n": 1,
    "ep": null
   },
   "topic:simulation": {
-   "L": 0.39426974547360716,
-   "W": 0.8937421854216397,
-   "n": 3,
+   "L": 0.51012765509654,
+   "W": 0.9272767739131781,
+   "n": 4,
    "ep": null
   },
   "topic:dendritic-solidification": {
-   "L": 0.15182969457287046,
-   "W": 0.8940432972115365,
+   "L": 0.15023573266159826,
+   "W": 0.8506496378750065,
    "n": 1,
    "ep": null
   },
   "topic:physics": {
-   "L": 0.28074725141734036,
-   "W": 0.5394825270220902,
-   "n": 1,
+   "L": 0.3718305498904564,
+   "W": 0.6248863542613509,
+   "n": 2,
    "ep": null
   },
   "topic:tip-speed-radius-lock": {
-   "L": 0.2760420971782055,
-   "W": 0.46778200568507355,
+   "L": 0.2731441094687026,
+   "W": 0.445077542644226,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-25": {
-   "L": 0.15182969457287046,
-   "W": 0.8940432972115365,
+   "L": 0.15023573266159826,
+   "W": 0.8506496378750065,
    "n": 1,
    "ep": null
   },
   "topic:convection-regimes": {
-   "L": 0.18117033897681467,
-   "W": 0.2058136333627515,
+   "L": 0.17926834858821705,
+   "W": 0.19582417678854308,
    "n": 1,
    "ep": null
   },
   "topic:side-branch-defect": {
-   "L": 0.28692546757986503,
-   "W": 0.5072757719079449,
+   "L": 0.2839132223930267,
+   "W": 0.4826544229145523,
    "n": 1,
    "ep": null
   },
   "topic:tip-instability": {
-   "L": 0.26891223683890875,
-   "W": 0.33877856697437875,
+   "L": 0.2660891009286241,
+   "W": 0.32233546878030356,
    "n": 1,
    "ep": null
   },
   "topic:grammar": {
-   "L": 0.1993456734527782,
-   "W": 0.25610555619828007,
-   "n": 1,
+   "L": 0.24446292928023072,
+   "W": 0.27230140674468206,
+   "n": 2,
    "ep": null
   },
   "topic:recursive-branching": {
-   "L": 0.1993456734527782,
-   "W": 0.25610555619828007,
+   "L": 0.1972528719652001,
+   "W": 0.24367510982669766,
    "n": 1,
    "ep": null
   },
   "topic:growth-latency": {
-   "L": 0.2515091329278972,
-   "W": 0.4750337620493923,
+   "L": 0.24886870096660027,
+   "W": 0.4519773247291711,
    "n": 1,
    "ep": null
   },
   "topic:six-fold-symmetry": {
-   "L": 0.2136552753549675,
-   "W": 0.3675380550313191,
+   "L": 0.2114122465981999,
+   "W": 0.3496990742985254,
    "n": 1,
    "ep": null
   },
   "topic:kinetic-type": {
-   "L": 0.09698036366693705,
-   "W": 0.10870324611263676,
+   "L": 0.09596222945899242,
+   "W": 0.1034271799027576,
    "n": 1,
    "ep": null
   },
   "topic:typography-sdf": {
-   "L": 0.09698036366693705,
-   "W": 0.10870324611263676,
+   "L": 0.09596222945899242,
+   "W": 0.1034271799027576,
    "n": 1,
    "ep": null
   },
   "topic:self-organised-criticality-sandpiles": {
-   "L": 0.22288521604694078,
-   "W": 0.9436841072191001,
+   "L": 0.2205452881035701,
+   "W": 0.8978810607696907,
    "n": 1,
    "ep": null
   },
   "topic:cellular-automaton": {
-   "L": 0.19493405670183434,
-   "W": 0.7584373887522424,
+   "L": 0.19288756992948974,
+   "W": 0.7216255544951649,
    "n": 1,
    "ep": null
   },
   "topic:toppling-cascade": {
-   "L": 0.27666909719016664,
-   "W": 0.4897749911988557,
+   "L": 0.27376452701245657,
+   "W": 0.4660030674162802,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-26": {
-   "L": 0.14522649791672942,
-   "W": 0.9449404263710711,
+   "L": 0.14370185870278687,
+   "W": 0.8990764026899454,
    "n": 1,
    "ep": null
   },
   "topic:abelian-property": {
-   "L": 0.27288521604694077,
-   "W": 0.4977270137751793,
+   "L": 0.27002037039371224,
+   "W": 0.47356912729953327,
    "n": 1,
    "ep": null
   },
   "topic:pile-growth": {
-   "L": 0.26442454927719244,
-   "W": 0.4964400481396474,
+   "L": 0.26164852670045685,
+   "W": 0.4723446263662594,
    "n": 1,
    "ep": null
   },
   "topic:fractal-pattern": {
-   "L": 0.2288089383768928,
-   "W": 0.43769506341055653,
+   "L": 0.22640682109833665,
+   "W": 0.4164509127814347,
    "n": 1,
    "ep": null
   },
   "topic:stable-threshold": {
-   "L": 0.20101319397352074,
-   "W": 0.2527294644969178,
+   "L": 0.19890288626488487,
+   "W": 0.2404628815239367,
    "n": 1,
    "ep": null
   },
   "topic:avalanche-cascade": {
-   "L": 0.24532458421307374,
-   "W": 0.4838583889688754,
+   "L": 0.24274907983473457,
+   "W": 0.4603736358662863,
    "n": 1,
    "ep": null
   },
   "topic:self-organised criticality sandpiles": {
-   "L": 0.10023680109192819,
-   "W": 0.11791880882018457,
+   "L": 0.09918447965047514,
+   "W": 0.11219545220504985,
+   "n": 1,
+   "ep": null
+  },
+  "topic:coral-accretion-morphology": {
+   "L": 0.16458201970245367,
+   "W": 0.9075875726266573,
+   "n": 1,
+   "ep": null
+  },
+  "topic:flow-threshold": {
+   "L": 0.3049094246259756,
+   "W": 0.5508540285822127,
+   "n": 1,
+   "ep": null
+  },
+  "topic:stagnant-interior": {
+   "L": 0.2740353243345976,
+   "W": 0.3550598597412415,
+   "n": 1,
+   "ep": null
+  },
+  "thread:night-2026-11-27": {
+   "L": 0.16458201970245367,
+   "W": 0.9075875726266573,
+   "n": 1,
+   "ep": null
+  },
+  "topic:flow-set-form": {
+   "L": 0.26365644126675397,
+   "W": 0.3282955478402927,
+   "n": 1,
+   "ep": null
+  },
+  "topic:boundary-layer": {
+   "L": 0.19283261899135368,
+   "W": 0.23708302977408385,
+   "n": 1,
+   "ep": null
+  },
+  "topic:flow-distribution": {
+   "L": 0.15748421173309002,
+   "W": 0.18777574895682683,
+   "n": 1,
+   "ep": null
+  },
+  "topic:optics-light": {
+   "L": 0.2540255754438335,
+   "W": 0.5578147063259574,
+   "n": 1,
+   "ep": null
+  },
+  "topic:branch-geometry": {
+   "L": 0.14384034195468764,
+   "W": 0.1762312248716693,
+   "n": 1,
+   "ep": null
+  },
+  "topic:shade-light-split": {
+   "L": 0.2540255754438335,
+   "W": 0.49764193967405995,
+   "n": 1,
+   "ep": null
+  },
+  "topic:branch-thinning": {
+   "L": 0.2406720785129003,
+   "W": 0.3221166785921116,
+   "n": 1,
+   "ep": null
+  },
+  "topic:boundary-layer-halo": {
+   "L": 0.16458757110498584,
+   "W": 0.2092166102939848,
+   "n": 1,
+   "ep": null
+  },
+  "topic:audiovisual": {
+   "L": 0.09965764966480782,
+   "W": 0.11675035524472932,
    "n": 1,
    "ep": null
   }
@@ -278,95 +356,122 @@
  "relationships": {},
  "threads": {
   "night-2026-11-23": {
-   "exposure": 0.019933323437677116
+   "exposure": 0.004949490227408742
   },
   "night-2026-11-25": {
-   "exposure": 0.45545884386369223
+   "exposure": 0.11309148239822707
   },
   "night-2026-11-26": {
-   "exposure": 1.7774696289624685
+   "exposure": 0.4413498123166352
+  },
+  "night-2026-11-27": {
+   "exposure": 1.6195932169168963
   }
  },
  "memory": [
   {
-   "t": 14.293144156138103,
-   "event": "Learned that kites split into two kites and two half-darts, and darts split into one kite and two half-darts.",
+   "t": 112.89448796212673,
+   "event": "Learned that Pocillopora verrucosa grows compact under high flow and open, thin-branched under lower flow.",
    "emotion": "interest",
-   "i": 0.644,
+   "i": 1.185,
    "source": null,
-   "thread": "night-2026-11-23"
+   "thread": "night-2026-11-27"
   },
   {
-   "t": 14.293144156138103,
-   "event": "Learned that the kite-to-dart ratio in a large Penrose tiling approaches the golden ratio.",
-   "emotion": "interest",
-   "i": 1.206,
-   "source": null,
-   "thread": "night-2026-11-23"
-  },
-  {
-   "t": 14.293144156138103,
-   "event": "Learned that inflating the kites and darts makes them larger than the period parallelogram, which proves the tiling never repeats.",
-   "emotion": "interest",
-   "i": 1.076,
-   "source": null,
-   "thread": "night-2026-11-23"
-  },
-  {
-   "t": 14.293144156138103,
-   "event": "Learned that the Bielefeld two-prototile rhomb substitution has inflation factor 1.618 and matrix powers whose entries are Fibonacci numbers",
-   "emotion": "interest",
-   "i": 0.762,
-   "source": null,
-   "thread": "night-2026-11-23"
-  },
-  {
-   "t": 14.293144156138103,
-   "event": "Found a buildable mechanism: two-kite split.",
+   "t": 112.89448796212673,
+   "event": "Found a buildable mechanism: solid-body flow threshold.",
    "emotion": "joy",
-   "i": 0.976,
+   "i": 1.055,
    "source": null,
-   "thread": "night-2026-11-23"
+   "thread": "night-2026-11-27"
   },
   {
-   "t": 14.293144156138103,
-   "event": "Found a buildable mechanism: kite-dart count lock.",
-   "emotion": "joy",
-   "i": 0.913,
-   "source": null,
-   "thread": "night-2026-11-23"
-  },
-  {
-   "t": 14.293144156138103,
-   "event": "Found a buildable mechanism: generation shell growth.",
-   "emotion": "joy",
-   "i": 0.881,
-   "source": null,
-   "thread": "night-2026-11-23"
-  },
-  {
-   "t": 14.293144156138103,
-   "event": "Found a buildable mechanism: period-escape test.",
+   "t": 112.89448796212673,
+   "event": "Learned that densely packed branching colonies act as a solid body, and flow near 20 cm/s starts to circumvent them and leave a stagnant reg",
    "emotion": "interest",
-   "i": 0.755,
+   "i": 1.034,
    "source": null,
-   "thread": "night-2026-11-23"
+   "thread": "night-2026-11-27"
   },
   {
-   "t": 65.31174585819244,
-   "event": "Learned that tip speed and tip radius in succinonitrile dendrites obey V*R^2 = constant, so faster tips are sharper.",
+   "t": 112.89448796212673,
+   "event": "Learned that the diffusive boundary layer around coral is set by flow and drives passive diffusion of oxygen and dissolved inorganic carbon ",
    "emotion": "interest",
-   "i": 1.032,
+   "i": 1.01,
    "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-27"
   },
   {
-   "t": 65.31174585819244,
-   "event": "Learned that succinonitrile growth is diffusion-limited in microgravity above about 0.4 K supercooling, while convection dominates on Earth ",
+   "t": 88.89304561628235,
+   "event": "Learned that the final pile does not depend on the order of topplings, the abelian property.",
    "emotion": "interest",
-   "i": 1.129,
+   "i": 1.221,
    "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 112.89448796212673,
+   "event": "Learned that colonies from low-flow sites spread flow velocity more evenly through the colony interior.",
+   "emotion": "interest",
+   "i": 0.938,
+   "source": null,
+   "thread": "night-2026-11-27"
+  },
+  {
+   "t": 112.89448796212673,
+   "event": "Learned that in a simulated branched coral, shaded rear sides get about half the incident light while light near the skeleton reaches about ",
+   "emotion": "interest",
+   "i": 0.933,
+   "source": null,
+   "thread": "night-2026-11-27"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that the size of the pile from N grains at one site scales as the square root of N.",
+   "emotion": "interest",
+   "i": 1.116,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 112.89448796212673,
+   "event": "Found a buildable mechanism: flow-set branch thinning.",
+   "emotion": "interest",
+   "i": 0.841,
+   "source": null,
+   "thread": "night-2026-11-27"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that adding grains at a single site on a flat substrate produces complex patterns.",
+   "emotion": "interest",
+   "i": 1.029,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 112.89448796212673,
+   "event": "Found a buildable mechanism: shade-and-light split.",
+   "emotion": "interest",
+   "i": 0.805,
+   "source": null,
+   "thread": "night-2026-11-27"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that a site with four grains topples, sending one grain to each of its four neighbours.",
+   "emotion": "interest",
+   "i": 0.991,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that relaxation ends in a stable configuration where every value is below four.",
+   "emotion": "interest",
+   "i": 0.957,
+   "source": null,
+   "thread": "night-2026-11-26"
   },
   {
    "t": 65.31174585819244,
@@ -377,6 +482,78 @@
    "thread": "night-2026-11-25"
   },
   {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: four-grain toppling cascade.",
+   "emotion": "joy",
+   "i": 0.934,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 112.89448796212673,
+   "event": "Found a buildable mechanism: boundary-layer halo.",
+   "emotion": "interest",
+   "i": 0.739,
+   "source": null,
+   "thread": "night-2026-11-27"
+  },
+  {
+   "t": 112.89448796212673,
+   "event": "Learned that colony morphology and branching degree shape both the light field and the water flow around the colony.",
+   "emotion": "interest",
+   "i": 0.734,
+   "source": null,
+   "thread": "night-2026-11-27"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that avalanches come in many sizes and last for varying numbers of steps.",
+   "emotion": "interest",
+   "i": 0.913,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that succinonitrile growth is diffusion-limited in microgravity above about 0.4 K supercooling, while convection dominates on Earth ",
+   "emotion": "interest",
+   "i": 1.129,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Learned that a very large grain count at the origin forms fractal patterns after relaxation.",
+   "emotion": "interest",
+   "i": 0.867,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: single-source pile growth.",
+   "emotion": "joy",
+   "i": 0.843,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
+   "t": 65.31174585819244,
+   "event": "Learned that tip speed and tip radius in succinonitrile dendrites obey V*R^2 = constant, so faster tips are sharper.",
+   "emotion": "interest",
+   "i": 1.032,
+   "source": null,
+   "thread": "night-2026-11-25"
+  },
+  {
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: avalanche duration bursts.",
+   "emotion": "interest",
+   "i": 0.798,
+   "source": null,
+   "thread": "night-2026-11-26"
+  },
+  {
    "t": 65.31174585819244,
    "event": "Learned that the same simulation reproduces the tip instability and the start of side branching seen in Gonda and Nakahara's lab sequences.",
    "emotion": "interest",
@@ -385,26 +562,18 @@
    "thread": "night-2026-11-25"
   },
   {
-   "t": 65.31174585819244,
-   "event": "Learned that small bumps on a growing snow crystal swell into large branches, and bumps on those branches become side branches.",
+   "t": 88.89304561628235,
+   "event": "Found a buildable mechanism: order-independent relaxation.",
    "emotion": "interest",
-   "i": 0.73,
+   "i": 0.783,
    "source": null,
-   "thread": "night-2026-11-25"
+   "thread": "night-2026-11-26"
   },
   {
    "t": 65.31174585819244,
    "event": "Learned that in Li and Schaposnik's model, side-branch length records growth latency, the time a boundary cell waits before it freezes.",
    "emotion": "interest",
    "i": 0.926,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Learned that in Li and Schaposnik's model, growth directions sit at six values, plus or minus 30, 90 and 150 degrees, and side branches show",
-   "emotion": "interest",
-   "i": 0.77,
    "source": null,
    "thread": "night-2026-11-25"
   },
@@ -426,14 +595,6 @@
   },
   {
    "t": 65.31174585819244,
-   "event": "Found a buildable mechanism: six-axis lattice arms.",
-   "emotion": "joy",
-   "i": 0.792,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 65.31174585819244,
    "event": "Found a buildable mechanism: latency-length coupling.",
    "emotion": "joy",
    "i": 0.793,
@@ -441,102 +602,22 @@
    "thread": "night-2026-11-25"
   },
   {
-   "t": 88.89304561628235,
-   "event": "Learned that a site with four grains topples, sending one grain to each of its four neighbours.",
-   "emotion": "interest",
-   "i": 0.991,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Learned that the final pile does not depend on the order of topplings, the abelian property.",
-   "emotion": "interest",
-   "i": 1.221,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Learned that the size of the pile from N grains at one site scales as the square root of N.",
-   "emotion": "interest",
-   "i": 1.116,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Learned that adding grains at a single site on a flat substrate produces complex patterns.",
-   "emotion": "interest",
-   "i": 1.029,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Learned that relaxation ends in a stable configuration where every value is below four.",
-   "emotion": "interest",
-   "i": 0.957,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Learned that avalanches come in many sizes and last for varying numbers of steps.",
-   "emotion": "interest",
-   "i": 0.913,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Learned that a very large grain count at the origin forms fractal patterns after relaxation.",
-   "emotion": "interest",
-   "i": 0.867,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Found a buildable mechanism: four-grain toppling cascade.",
+   "t": 65.31174585819244,
+   "event": "Found a buildable mechanism: six-axis lattice arms.",
    "emotion": "joy",
-   "i": 0.934,
+   "i": 0.792,
    "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Found a buildable mechanism: single-source pile growth.",
-   "emotion": "joy",
-   "i": 0.843,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Found a buildable mechanism: avalanche duration bursts.",
-   "emotion": "interest",
-   "i": 0.798,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Found a buildable mechanism: order-independent relaxation.",
-   "emotion": "interest",
-   "i": 0.783,
-   "source": null,
-   "thread": "night-2026-11-26"
+   "thread": "night-2026-11-25"
   }
  ],
- "t": 89.13107046061091,
- "wall": 1795691647.59753,
+ "t": 113.24903549902969,
+ "wall": 1795778472.457421,
  "emotion_adaptation": {
-  "joy": 0.6928460571933954,
-  "surprise": 0.548649104730029,
-  "interest": 0.8125181798361744,
-  "boredom": 0.03284599958759802,
-  "pride": 0.04156339457974239
+  "joy": 0.5841707885901035,
+  "surprise": 0.32069620031000834,
+  "interest": 0.7315970179980895,
+  "boredom": 0.04906016913456327,
+  "pride": 0.039334317955972004
  },
  "seen_event_ids": [
   "2026-11-23:1:fact-1",
@@ -572,6 +653,17 @@
   "2026-11-26:9:mech-2",
   "2026-11-26:10:mech-3",
   "2026-11-26:11:mech-4",
-  "2026-11-26:verdict:b-side"
+  "2026-11-26:verdict:b-side",
+  "2026-11-27:1:fact-1",
+  "2026-11-27:2:fact-2",
+  "2026-11-27:3:fact-3",
+  "2026-11-27:4:fact-4",
+  "2026-11-27:5:fact-5",
+  "2026-11-27:6:fact-6",
+  "2026-11-27:7:mech-1",
+  "2026-11-27:8:mech-2",
+  "2026-11-27:9:mech-3",
+  "2026-11-27:10:mech-4",
+  "2026-11-27:verdict:b-side"
  ]
 }

@@ -1,0 +1,38 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 2,
+  "best_total": 63,
+  "reason": "Attempt 2: scored 63, below 72. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "At shot-08s keep the outer khaki shell at full brightness above the 20 cm/s tick, so the dark core contrasts with a lit rim instead of the whole colony going dark slate.",
+        "expected_gain": 5
+      },
+      {
+        "rank": 2,
+        "change": "Add the boundary-layer halo from the brief as translucent khaki rings around branch tips, a second rendering idea visible in shot-08s and shot-20s beyond shaded spheres on lines.",
+        "expected_gain": 5
+      },
+      {
+        "rank": 3,
+        "change": "Change the shot-20s composition: pull the camera back so the colony sits smaller with margin, giving the loop a distinct end state rather than a near-copy of the shot-02s layout.",
+        "expected_gain": 2
+      }
+    ],
+    "build_failed": false
+  }
+}

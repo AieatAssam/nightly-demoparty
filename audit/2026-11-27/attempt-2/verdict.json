@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 14,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-02s: flow dial reads 9.0 cm/s below its 20 cm/s tick over a mirrored celadon branch colony; by shot-08s at 22.4 cm/s the tips go dark slate, but the lit khaki outer shell barely reads.",
+    "ambition": "shot-02s: one rendering idea, shaded spheres on thin links, plus a flow dial inset; shot-08s adds a colony-wide dark state change, and no halos, second layer or new rendering idea appears by shot-20s.",
+    "craft": "shot-02s: clean khaki ground and soft-shaded celadon spheres with no visible artefacts at full size; shot-08s dark slate tips lose separation from the ground, and the rose accent glow at shot-20s is blurred.",
+    "distinctness": "shot-02s: khaki ground with celadon and slate spheres on a mirrored branched colony differs from the apricot sand grid, the dendrite lettering and the ochre Penrose kites of the recent nights; rose tips add one accent.",
+    "polish": "shot-02s: colony sits right of centre with empty khaki upper-left, a composed start; shot-20s returns to a lit state with the dial back under 20 cm/s, so the loop resolves, but its layout stays close to shot-02s."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "shot-08s is mostly dark slate spheres on khaki, while the median's shot-20s packs dense ochre and rust kites into a triangle with visible growth; the Penrose frame is the stronger head-to-head image.",
+  "calibration_anchors_used": [
+    "anchor-02",
+    "anchor-08",
+    "anchor-09",
+    "anchor-12"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "At shot-08s keep the outer khaki shell at full brightness above the 20 cm/s tick, so the dark core contrasts with a lit rim instead of the whole colony going dark slate.",
+      "expected_gain": 5
+    },
+    {
+      "rank": 2,
+      "change": "Add the boundary-layer halo from the brief as translucent khaki rings around branch tips, a second rendering idea visible in shot-08s and shot-20s beyond shaded spheres on lines.",
+      "expected_gain": 5
+    },
+    {
+      "rank": 3,
+      "change": "Change the shot-20s composition: pull the camera back so the colony sits smaller with margin, giving the loop a distinct end state rather than a near-copy of the shot-02s layout.",
+      "expected_gain": 2
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 14,
+    "craft": 14,
+    "distinctness": 14,
+    "polish": 6
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-08s: flow gauge reads 22.4 cm/s past its 20 cm/s tick; interior nodes have turned dark slate while the outer tips stay khaki-lit, so the stagnant core is readable. By shot-20s the flow is 14.0 and the core is still mostly dark with a rose-lit tip pair.",
+    "ambition": "shot-02s: one flat 2D canvas of about 400 sphere-shaded nodes with thin connector lines, a flow gauge and small halos; shot-08s shows the same single layer with only node colour changed, so the bytes buy one rendering idea.",
+    "craft": "shot-02s: clean celadon sphere shading and a consistent khaki ground with a restrained rose accent; shot-08s: overlapping spheres clump into muddy dark masses at the core and the thin connector lines break up.",
+    "distinctness": "shot-08s: khaki ground with slate and celadon L-system colony and a rose accent, unlike the apricot sand grid, ochre Penrose tiles or dendrite type of the last nights; by shot-20s the rose tips sit at the top of the colony.",
+    "polish": "shot-02s: colony sits right of centre with the flow gauge on the left edge, a composed start; shot-20s: the colony shrinks into a smaller dark mass with large empty khaki areas, so the end state resolves weaker than the start."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "Penrose 20s is a dense ochre-and-rust tiling filling the cream triangle, a richer texture than tonight's sparse node colony; tonight's dark core reads clearly, but its 20s frame is smaller and emptier.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Replace the flat per-node glow at shot-08s with a continuous khaki boundary-layer haze between branches, so the halo reads as a field and adds a second rendering layer behind the sphere nodes.", "expected_gain": 4 },
+    { "rank": 2, "change": "Keep the colony at full scale in shot-20s instead of shrinking it, and let the lit khaki shell re-thicken around the dark core so the end frame resolves against the 2s composition.", "expected_gain": 3 },
+    { "rank": 3, "change": "Make the 6 s threshold crossing visible: fade shielded nodes progressively between the 5 s and 8 s frames instead of a single state flip, so the dimming reads as a development step.", "expected_gain": 2 }
+  ]
+}

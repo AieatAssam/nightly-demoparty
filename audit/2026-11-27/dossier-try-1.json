@@ -1,0 +1,75 @@
+{
+  "topic": "Coral branching emerging from local competition for a diffusing resource at the growing surface, with no built-in branching rule",
+  "domain": "coral-accretion-morphology",
+  "wildcard_chosen": false,
+  "summary": "Early coral growth models forced branching with an explicit curvature rule. A later model shows branching appears on its own when a growth velocity depends locally on how much of a diffusing, advected resource each surface point absorbs, provided the resource field is computed precisely enough. Form then depends on the ratio of growth rate to nutrient transport: fast growth relative to transport gives open forms, slow growth gives compact ones. Real colonies show the same flow and light dependence: compact under high flow, thin open branches under low flow, and shaded sides receive about half the light.",
+  "facts": [
+    {
+      "claim": "An earlier coral growth model used an explicit curvature rule to produce branching. A revised version of the model shows spontaneous branching, provided the resource field is computed with enough precision.",
+      "source_url": "https://dare.uva.nl/id/ffdc8367-d037-4600-b3c0-21f3aebda84c",
+      "source_title": "Models of coral growth: spontaneous branching, compactification and the Laplacian growth assumption"
+    },
+    {
+      "claim": "In the Merks et al. coral growth model, growth velocity depends locally on the absorption of a resource that is dispersed by advection and diffusion.",
+      "source_url": "https://dare.uva.nl/id/ffdc8367-d037-4600-b3c0-21f3aebda84c",
+      "source_title": "Models of coral growth: spontaneous branching, compactification and the Laplacian growth assumption"
+    },
+    {
+      "claim": "In the same model, the compactness of growth forms depends on the ratio of the rates of growth and nutrient transport.",
+      "source_url": "https://dare.uva.nl/id/ffdc8367-d037-4600-b3c0-21f3aebda84c",
+      "source_title": "Models of coral growth: spontaneous branching, compactification and the Laplacian growth assumption"
+    },
+    {
+      "claim": "Light and water motion are the main environmental factors linked to morphological variation in a coral colony.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3542083",
+      "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+    },
+    {
+      "claim": "Pocillopora verrucosa shows a compact shape under high flow and a more open growth form with thin branches under lower flow.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3542083",
+      "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+    },
+    {
+      "claim": "Sparsely spaced branches let flow penetrate deeper into the colony, while flow starts to circumvent the colony at about 20 cm/s.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3542083",
+      "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+    },
+    {
+      "claim": "In a 3D light model of a scanned coral fragment, inclined branch tips received less light than the flat central area, and shaded rear sides received around half the incident irradiance.",
+      "source_url": "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1160208/full",
+      "source_title": "Modeling the radiative, thermal and chemical microenvironment of 3D scanned corals"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "resource-diffusion tip competition",
+      "description": "Each point on the growing surface advances at a rate set by how much of a diffusing, advected resource it absorbs locally. Points that stick out take more resource and outgrow their neighbours, so a bump splits into competing tips once the resource field resolves local differences.",
+      "render_or_sonify_hint": "Start from one small rounded bud. Over the piece, tips split into two, then four, each new tip pushing outward and starving the gaps between it and its neighbours. Draw the growth front as a bright edge with a dim, thinning trail behind it."
+    },
+    {
+      "name": "growth-to-transport compactness dial",
+      "description": "The ratio of growth rate to nutrient transport rate sets how compact or open the colony is. Fast growth against slow transport yields open, spread forms, and the reverse yields dense, compact forms.",
+      "render_or_sonify_hint": "Show two colonies side by side that share one seed. One grows with a slider-controlled ratio, so branches spread wide or pack tight. Keep branch count, not colour, as the visible difference."
+    },
+    {
+      "name": "flow-stagnation core",
+      "description": "Dense branching blocks flow and creates a stagnant region inside the colony. Sparse branching lets flow penetrate deeper, so the interior stays ventilated.",
+      "render_or_sonify_hint": "Draw flow lines that bend around a dense colony and leave a dim, still pocket in its middle. Thin the branches gradually and the flow lines enter the interior, lighting it up."
+    },
+    {
+      "name": "rear-shade halving",
+      "description": "Light falls off with the angle of each surface facet. Shaded rear sides get about half the light of the flat top, so the lit side and the shaded side differ by a fixed ratio.",
+      "render_or_sonify_hint": "Shade each branch by its facet angle to the light: top faces bright, rear faces near half that brightness. Hold the ratio constant as the colony rotates."
+    }
+  ],
+  "open_questions": [
+    "The sources found do not give a measured link between flow speed and calcification rate, so any flow-to-growth mapping in the piece is a design choice.",
+    "The precision threshold at which branching appears in the Merks et al. model is not given as a number in the fetched text.",
+    "Whether the same spontaneous branching holds in 3D colony models was not confirmed by the sources read."
+  ],
+  "surprise": {
+    "score": 72,
+    "justification": "A generalist expects branching to be written into coral growth as a rule. The model shows branching can emerge from local resource competition alone, with the rule only needed to get the precision right."
+  },
+  "dataset": null
+}

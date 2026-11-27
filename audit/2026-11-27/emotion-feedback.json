@@ -1,0 +1,291 @@
+{
+  "event": {
+    "event": "Tonight's audiovisual piece on coral-accretion-morphology went to the B-sides at 70.",
+    "event_id": "2026-11-27:verdict:b-side",
+    "topics": [
+      "coral-accretion-morphology",
+      "audiovisual",
+      "grammar"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "thread": "night-2026-11-27",
+    "relevance": 0.8,
+    "congruence": 0.05,
+    "novelty": 0.3,
+    "praiseworthiness": 0.1,
+    "control": 0.6
+  },
+  "elicited": {
+    "joy": 0.04578950920303226,
+    "pride": 0.15733727182388801,
+    "interest": 0.25432738191702386,
+    "boredom": 0.05805491464981836
+  },
+  "consolidated": {
+    "topic:simulation": 0.119,
+    "topic:physics": 0.094,
+    "topic:grammar": 0.047,
+    "topic:coral-accretion-morphology": 0.165,
+    "topic:flow-threshold": 0.305,
+    "topic:stagnant-interior": 0.274,
+    "thread:night-2026-11-27": 0.165,
+    "topic:flow-set-form": 0.264,
+    "topic:boundary-layer": 0.193,
+    "topic:flow-distribution": 0.157,
+    "topic:optics-light": 0.254,
+    "topic:branch-geometry": 0.144,
+    "topic:shade-light-split": 0.254,
+    "topic:branch-thinning": 0.241,
+    "topic:boundary-layer-halo": 0.165,
+    "topic:audiovisual": 0.1
+  },
+  "mood": {
+    "timestamp": "2026-11-27T11:21:12.466Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "joy",
+        "intensity": 0.685
+      },
+      {
+        "label": "interest",
+        "intensity": 0.68
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.212
+      },
+      {
+        "label": "pride",
+        "intensity": 0.157
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.058
+      }
+    ],
+    "pad": {
+      "pleasure": 0.449,
+      "arousal": 0.546,
+      "dominance": 0.403
+    },
+    "neurochemistry": {
+      "dopamine": 0.929,
+      "noradrenaline": 0.861,
+      "serotonin": 1,
+      "cortisol": 0.273,
+      "oxytocin": 0.425,
+      "opioids": 0.972
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.996,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.68,
+      "boredom": 0.058,
+      "frustration": 0.068
+    },
+    "likes": [
+      {
+        "topic": "simulation",
+        "score": 0.51
+      },
+      {
+        "topic": "physics",
+        "score": 0.372
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.323
+      },
+      {
+        "topic": "flow-threshold",
+        "score": 0.305
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.284
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.28
+      },
+      {
+        "topic": "stagnant-interior",
+        "score": 0.274
+      },
+      {
+        "topic": "toppling-cascade",
+        "score": 0.274
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.273
+      },
+      {
+        "topic": "abelian-property",
+        "score": 0.27
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.266
+      },
+      {
+        "topic": "flow-set-form",
+        "score": 0.264
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.263
+      },
+      {
+        "topic": "pile-growth",
+        "score": 0.262
+      },
+      {
+        "topic": "optics-light",
+        "score": 0.254
+      },
+      {
+        "topic": "shade-light-split",
+        "score": 0.254
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.249
+      },
+      {
+        "topic": "grammar",
+        "score": 0.244
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.244
+      },
+      {
+        "topic": "avalanche-cascade",
+        "score": 0.243
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.243
+      },
+      {
+        "topic": "branch-thinning",
+        "score": 0.241
+      },
+      {
+        "topic": "fractal-pattern",
+        "score": 0.226
+      },
+      {
+        "topic": "self-organised-criticality-sandpiles",
+        "score": 0.221
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.211
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.211
+      },
+      {
+        "topic": "stable-threshold",
+        "score": 0.199
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.197
+      },
+      {
+        "topic": "boundary-layer",
+        "score": 0.193
+      },
+      {
+        "topic": "cellular-automaton",
+        "score": 0.193
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.179
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.17
+      },
+      {
+        "topic": "boundary-layer-halo",
+        "score": 0.165
+      },
+      {
+        "topic": "coral-accretion-morphology",
+        "score": 0.165
+      },
+      {
+        "topic": "flow-distribution",
+        "score": 0.157
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.15
+      },
+      {
+        "topic": "branch-geometry",
+        "score": 0.144
+      },
+      {
+        "topic": "audiovisual",
+        "score": 0.1
+      },
+      {
+        "topic": "self-organised criticality sandpiles",
+        "score": 0.099
+      },
+      {
+        "topic": "kinetic-type",
+        "score": 0.096
+      },
+      {
+        "topic": "typography-sdf",
+        "score": 0.096
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.079
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.773,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.449,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.403,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "moderate",
+        "value": 0.68,
+        "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.068,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  }
+}

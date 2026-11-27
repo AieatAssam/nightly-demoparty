@@ -1,0 +1,28 @@
+[
+  {
+    "sample": 1,
+    "file": "/home/runner/work/nightly-demoparty/nightly-demoparty/audit/2026-11-27/attempt-1/verdict-sample-1.json",
+    "ok": true,
+    "errors": []
+  },
+  {
+    "sample": 2,
+    "file": "/home/runner/work/nightly-demoparty/nightly-demoparty/audit/2026-11-27/attempt-1/verdict-sample-2.json",
+    "ok": true,
+    "errors": []
+  },
+  {
+    "sample": 3,
+    "file": "/home/runner/work/nightly-demoparty/nightly-demoparty/audit/2026-11-27/attempt-1/verdict-sample-3.json",
+    "ok": true,
+    "errors": []
+  },
+  {
+    "sample": 4,
+    "file": "/home/runner/work/nightly-demoparty/nightly-demoparty/audit/2026-11-27/attempt-1/verdict-sample-4.json",
+    "ok": false,
+    "errors": [
+      "not written"
+    ]
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 62,
+  "reason": "Attempt 1: scored 62, below 72. Retrying (2/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "At shot-08s replace the overplotted dark strokes in the core with fewer slate node fills and dimmed halos so the stagnant pocket reads as a shaped region with a clear edge rather than scribble.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 2,
+        "change": "Add a second rendering idea such as shaded tube depth or soft occlusion on shielded tips, so shot-02s and shot-08s show shelter as light falling off inside the colony, not only as line colour.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 3,
+        "change": "Enlarge the 20 cm/s tick and dial readout and let the dial visibly cross it at 6 s, so the threshold reads from the frame itself, not from the small caption at the bottom edge.",
+        "expected_gain": 3
+      }
+    ],
+    "build_failed": false
+  }
+}

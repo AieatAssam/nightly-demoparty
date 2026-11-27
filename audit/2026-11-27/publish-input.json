@@ -1,0 +1,993 @@
+{
+  "status": "b-side",
+  "reason": "B-side: best attempt 3 scored 70, below the publish threshold 72.",
+  "publishThreshold": 72,
+  "plan": {
+    "date": "2026-11-27",
+    "compo": "audiovisual",
+    "size_budget_bytes": 24576,
+    "constraint": null,
+    "domain": "coral-accretion-morphology",
+    "wildcard": false,
+    "banned": {
+      "techniques": [
+        "abelian toppling cascade on integer height grid",
+        "four-neighbour threshold relaxation per frame",
+        "ping-pong integer height buffers",
+        "flash-decay topple front rendering with umber scars",
+        "signed-distance glyph edges",
+        "fixed-lag defect birth behind the tip",
+        "six-fold mirrored lattice arms",
+        "latency-controlled arm length",
+        "recursive substitution tiling",
+        "generation shell reveal",
+        "kite-dart count bars"
+      ],
+      "domains": [
+        "self-organised criticality sandpiles",
+        "dendritic-solidification",
+        "penrose-inflation"
+      ],
+      "palette_hexes": [
+        "#f2c9a0",
+        "#d9703f",
+        "#6e5a3c",
+        "#d8a193",
+        "#b8665a",
+        "#7a2636",
+        "#efe3c8",
+        "#c8912e",
+        "#9c4a24",
+        "#e6b45c",
+        "#3a332c"
+      ],
+      "slop_patterns": [
+        "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+        "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+        "Matrix rain is on the permanent slop list.",
+        "Four-sine plasma boilerplate. Build a field with development instead.",
+        "Plain plasma: sine sums as the whole picture.",
+        "Plain starfield: points drifting toward the camera with no structure behind them.",
+        "Plain tunnel: concentric rings flying past with nothing else happening.",
+        "Matrix rain: falling glyph columns.",
+        "Mouse-following particles with no system behind them.",
+        "A single raymarched sphere or torus on a gradient.",
+        "Untouched Mandelbrot or Julia zoom.",
+        "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+        "Bloom or chromatic aberration used to hide an empty scene.",
+        "Math.random() noise as the main visual idea.",
+        "A loop with no development: the 20 s frame looks like the 2 s frame.",
+        "Title cards or captions doing the work the visuals should do.",
+        "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+      ]
+    },
+    "boredom_override": false,
+    "requires_audio": true,
+    "seed": "2026-11-27",
+    "dry_run": false,
+    "overrides": {
+      "domain": null,
+      "compo": null,
+      "mood_preset": null
+    }
+  },
+  "dossier": {
+    "topic": "Dense branching coral colonies shelter an interior stagnant zone once flow passes about 20 cm/s; branch spacing sets how far water reaches inside",
+    "domain": "coral-accretion-morphology",
+    "wildcard_chosen": false,
+    "summary": "Densely branched coral colonies act like a solid body. Flow of about 20 cm/s wraps around the colony and leaves a stagnant pocket inside it, while sparser branching lets water reach deeper. Corals reshape with flow: compact forms under high flow, open forms with thin branches under low flow. Flow sets the diffusive boundary layer that controls passive transport of oxygen and dissolved inorganic carbon to the tissue. Geometry also shapes light: in one model, shaded rear sides get about half the incident light while light near the skeleton reaches about 1.7 times incident.",
+    "facts": [
+      {
+        "claim": "Densely packed branching colonies act as a solid body; flow at about 20 cm/s starts to circumvent the colony, creating a stagnant region inside.",
+        "source_url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002849",
+        "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+      },
+      {
+        "claim": "Pocillopora verrucosa shows a compact shape under high flow and a more open growth form with thin branches under lower flow, as cited from Kaandorp (1999).",
+        "source_url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002849",
+        "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+      },
+      {
+        "claim": "Gradients in the Diffusive Boundary Layer around corals are directly influenced by flow and drive passive diffusion of ions, dissolved inorganic carbon and oxygen at tissue level.",
+        "source_url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002849",
+        "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+      },
+      {
+        "claim": "Colonies from low-flow sites were reported to distribute flow velocity more evenly throughout the colony interior (Chang et al., cited in the paper).",
+        "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3542083",
+        "source_title": "Modelling Growth and Form of the Scleractinian Coral Pocillopora verrucosa and the Influence of Hydrodynamics"
+      },
+      {
+        "claim": "The paper states that the morphology and degree of branching in coral colonies affect both the light field and the water flow around the colony.",
+        "source_url": "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1160208/full",
+        "source_title": "Modeling the radiative, thermal and chemical microenvironment of 3D scanned corals"
+      },
+      {
+        "claim": "In a simulation of a 3D-scanned branched coral fragment, shaded rear sides received around half the incident irradiance, and light near the tissue-skeleton interface reached up to about 1.7 times incident.",
+        "source_url": "https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1160208/full",
+        "source_title": "Modeling the radiative, thermal and chemical microenvironment of 3D scanned corals"
+      }
+    ],
+    "visualisable_mechanisms": [
+      {
+        "name": "solid-body flow threshold",
+        "description": "Densely packed branches shield one another so the colony behaves as one solid body. Above about 20 cm/s, flow wraps around the outside and leaves a stagnant region inside, so the core stops being ventilated.",
+        "render_or_sonify_hint": "A branching lattice of many nodes where inner nodes dim or fade as a flow-speed value rises past a visible 20 cm/s mark, and a stagnant core appears as a dark zone with the outer shell still lit."
+      },
+      {
+        "name": "flow-set branch thinning",
+        "description": "Colony form tracks flow over time: strong flow favours compact, thick branches, while weak flow produces open growth with thin, widely spaced branches. Growth responds to the flow field as it changes.",
+        "render_or_sonify_hint": "Branches accrete tip by tip over the piece; a flow value ramps up and down, and each new branch thickens or thins and its spacing tightens or opens to match, so the silhouette visibly breathes."
+      },
+      {
+        "name": "boundary-layer halo",
+        "description": "Each branch is wrapped in a diffusive boundary layer whose thickness is set by flow. The gradients inside it drive passive diffusion of oxygen and dissolved inorganic carbon to the tissue.",
+        "render_or_sonify_hint": "A thin translucent halo around every branch whose width shrinks with flow speed; halos from neighbouring branches merge into a single haze where spacing is tight."
+      },
+      {
+        "name": "shade-and-light split",
+        "description": "Branch geometry splits light: rear, shaded sides receive about half the incident irradiance, while light near the skeleton can reach about 1.7 times incident in simulation.",
+        "render_or_sonify_hint": "Each branch is lit on one face and dim on the other; brightness peaks in the crotches between branches and falls to half on the shaded side, shifting as the colony grows."
+      }
+    ],
+    "open_questions": [
+      "Does the stagnant-interior threshold near 20 cm/s hold for coral species other than Pocillopora verrucosa?",
+      "The 2023 light model did not simulate calcification; how strongly do the light and flow gradients inside a colony change calcification rate?",
+      "What flow speed in the field marks the switch between compact and open growth forms?"
+    ],
+    "surprise": {
+      "score": 58,
+      "justification": "A generalist expects each coral branch to be bathed in flow and calcify alike. In fact dense branches shield one another, and above about 20 cm/s the colony interior can become a stagnant, diffusion-limited pocket."
+    },
+    "dataset": null
+  },
+  "mood": {
+    "timestamp": "2026-11-27T10:59:55.955Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.783
+      },
+      {
+        "label": "joy",
+        "intensity": 0.728
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.48
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.055
+      }
+    ],
+    "pad": {
+      "pleasure": 0.449,
+      "arousal": 0.546,
+      "dominance": 0.403
+    },
+    "neurochemistry": {
+      "dopamine": 1,
+      "noradrenaline": 1,
+      "serotonin": 0.994,
+      "cortisol": 0.288,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.996,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.783,
+      "boredom": 0.055,
+      "frustration": 0.072
+    },
+    "likes": [
+      {
+        "topic": "simulation",
+        "score": 0.49
+      },
+      {
+        "topic": "physics",
+        "score": 0.343
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.323
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.284
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.28
+      },
+      {
+        "topic": "toppling-cascade",
+        "score": 0.274
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.273
+      },
+      {
+        "topic": "flow-threshold",
+        "score": 0.271
+      },
+      {
+        "topic": "abelian-property",
+        "score": 0.27
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.266
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.263
+      },
+      {
+        "topic": "pile-growth",
+        "score": 0.262
+      },
+      {
+        "topic": "coral-accretion-morphology",
+        "score": 0.249
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.249
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.244
+      },
+      {
+        "topic": "avalanche-cascade",
+        "score": 0.243
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.243
+      },
+      {
+        "topic": "stagnant-interior",
+        "score": 0.24
+      },
+      {
+        "topic": "flow-set-form",
+        "score": 0.23
+      },
+      {
+        "topic": "fractal-pattern",
+        "score": 0.226
+      },
+      {
+        "topic": "self-organised-criticality-sandpiles",
+        "score": 0.221
+      },
+      {
+        "topic": "optics-light",
+        "score": 0.22
+      },
+      {
+        "topic": "shade-light-split",
+        "score": 0.22
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.211
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.211
+      },
+      {
+        "topic": "branch-thinning",
+        "score": 0.207
+      },
+      {
+        "topic": "stable-threshold",
+        "score": 0.199
+      },
+      {
+        "topic": "grammar",
+        "score": 0.197
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.197
+      },
+      {
+        "topic": "cellular-automaton",
+        "score": 0.193
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.179
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.17
+      },
+      {
+        "topic": "boundary-layer",
+        "score": 0.159
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.15
+      },
+      {
+        "topic": "boundary-layer-halo",
+        "score": 0.131
+      },
+      {
+        "topic": "flow-distribution",
+        "score": 0.124
+      },
+      {
+        "topic": "branch-geometry",
+        "score": 0.11
+      },
+      {
+        "topic": "self-organised criticality sandpiles",
+        "score": 0.099
+      },
+      {
+        "topic": "kinetic-type",
+        "score": 0.096
+      },
+      {
+        "topic": "typography-sdf",
+        "score": 0.096
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.079
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.773,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.449,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.403,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "experimental",
+        "value": 0.783,
+        "guidance": "Experimental risk: the main technique itself may be unfamiliar to the crew."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.072,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  },
+  "brief": {
+    "title": "Stagnant Core: Coral Branches Past 20 cm/s",
+    "concept": "Densely branched coral tips shield one another, so once flow passes 20 cm/s the colony's inner tips go dark while a lit khaki shell stays exposed.",
+    "mechanism_embodied": {
+      "mechanism_name": "solid-body flow threshold",
+      "how_visualised": "Each branch tip is a node of a stochastic L-system colony. A node counts its live neighbours within one spacing radius. A flow dial, a column of ticks at the left edge, rises; when it passes its 20 cm/s tick, shielded nodes with many neighbours dim to dark slate, so a stagnant core forms while the outer shell stays khaki-lit. New khaki tips keep accreting at the edge."
+    },
+    "discarded_obvious_idea": "Obvious: a glowing coral tree whose brightness follows current speed. Rejected: it is a glow effect with no shelter rule, so the 20 cm/s threshold becomes decoration and the stagnant core never forms.",
+    "compo": "audiovisual",
+    "constraint_honoured": null,
+    "techniques": [
+      "Stochastic L-system",
+      "shelter-count node occlusion",
+      "flow-threshold stagnant-core dimming",
+      "boundary-layer halo around branches"
+    ],
+    "novel_technique": "Stochastic L-system",
+    "technique_family": "grammar",
+    "palette": [
+      "#c9bf98",
+      "#8fa592",
+      "#4f6b63",
+      "#2f3e4c",
+      "#b5476a"
+    ],
+    "motion_sound_plan": "High tempo: dense growth, six hard cuts between 3 and 18 s, none closer than 0.34 s, 120 BPM. Warm-consonant: khaki ground, mirrored colony, major third and fifth intervals. Assertive: colony fills the frame, push-in between beats. Experimental: the L-system is the main technique. Sound starts after one click: a two-operator FM bell at 1:2 ratio sounds each new tip, with its modulation index decaying. When the core opens the pitch drops a fifth. Peak kept under 0.9. Bells and visuals share the 120 BPM grid. No constraint.",
+    "storyboard": [
+      {
+        "beat": 1,
+        "t_start_s": 0,
+        "t_end_s": 5,
+        "description": "At 2 s a mirrored colony of about 1200 celadon L-system branch tips fills the frame, all lit on khaki ground. A flow dial, a column of short ticks at the left edge, sits low. Hard cut at 3.2 s to a tighter crop of one half."
+      },
+      {
+        "beat": 2,
+        "t_start_s": 5,
+        "t_end_s": 10,
+        "description": "The flow dial passes its 20 cm/s tick at 6 s. Shielded tips fade to dark slate, a stagnant core opens in the centre, and the outer shell stays khaki-lit. Hard cuts at 6.4 s and 8.9 s. The 8 s frame shows a half-dark core with halos merging."
+      },
+      {
+        "beat": 3,
+        "t_start_s": 10,
+        "t_end_s": 15,
+        "description": "Flow peaks. Thin translucent halos merge into a khaki haze between tight branches, and rose accent tips light up on the newest growth. The camera pushes in to a close crop of the dark core. Cuts at 11.6 s and 14.8 s alternate wide and close framing."
+      },
+      {
+        "beat": 4,
+        "t_start_s": 15,
+        "t_end_s": 20,
+        "description": "Flow eases back and the core thins as branches reopen. At 17.5 s the camera pulls back to the whole mirrored colony with margin around it, dark core still visible, shell lit. The 20 s frame is the full colony at smaller scale."
+      }
+    ],
+    "memorable_moment": "A dark stagnant core opening inside a lit khaki colony as the flow dial passes its 20 cm/s tick, with one falling fifth in the bells.",
+    "self_declared_risk": "L-system growth may overfill the frame or stall, and recounting shelter neighbours across about 1200 tips may be slow. The core may read as flicker rather than a stagnant pocket.",
+    "liner_note": "A PLOS Computational Biology modelling study of Pocillopora verrucosa found that densely packed branches shield one another and act as a single solid body. Flow at about 20 cm/s starts to wrap around the colony and leaves a stagnant region inside it. On screen a mirrored colony of celadon branch tips grows tip by tip, and its shielded tips fade to dark slate as the flow dial passes its 20 cm/s tick, leaving a lit khaki shell around a dark core. Each new tip sounds a short FM bell, and the pitch drops a fifth when the core opens. Click once to start the score."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-27/attempt-1/index.html",
+        "compo": "audiovisual",
+        "byte_size": 10309,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 214.3402,
+          "t8": 284.3524,
+          "t20": 223.4363,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 6.0449,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 5.2771,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.3,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": {
+          "required": true,
+          "autoplayed": false,
+          "rms": 0.113955,
+          "peak": 0.424455,
+          "clipped_ratio": 0,
+          "passed": true
+        },
+        "novelty_b": {
+          "phashes": {
+            "t2": "903070d4e8f03010",
+            "t8": "903070cce8f03010",
+            "t20": "88107068f0701008"
+          },
+          "color_histogram": [
+            0,
+            0.001107,
+            0,
+            0,
+            0,
+            0.001447,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.021552,
+            0,
+            0,
+            0,
+            0.005753,
+            0.000352,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000145,
+            0,
+            0,
+            0,
+            0.003319,
+            0.089167,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.877157,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "min_hamming_distance": 15,
+          "min_histogram_distance": 0.732632,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 8.9455,
+          "reduced_motion": 0.7904,
+          "ratio": 0.0884
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-27/attempt-1/shot-02s.png",
+          "t8": "audit/2026-11-27/attempt-1/shot-08s.png",
+          "t20": "audit/2026-11-27/attempt-1/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 14,
+          "ambition": 13,
+          "craft": 14,
+          "distinctness": 14,
+          "polish": 7
+        },
+        "total": 62,
+        "evidence": {
+          "mechanism": "shot-08s: dark slate node clump fills the top-centre core of the khaki colony while the flanks stay teal-lit; by shot-20s the core is smaller and the dial arrow sits above the 20 cm/s tick.",
+          "ambition": "shot-08s: one line-stroked L-system colony with a flow dial, hairline halos and a dark core; no material, lighting or second layer is visible, so a single rendering idea carries the piece.",
+          "craft": "shot-08s: thin teal strokes and hairline halos on flat khaki; the dark core is a dense tangle of overlapping slate strokes that reads as scribble, and the caption sits small at the bottom edge.",
+          "distinctness": "shot-02s: khaki ground with celadon branching coral and no grid, tiles or sand; it differs from the apricot sand grid, dendrite type and ochre Penrose kites of recent nights, though its cream tone is close to the Penrose strip.",
+          "polish": "shot-02s: colony centred and fully framed with the dial low; by shot-20s the colony shrinks with clear margin and the dark core persists, so the 20s frame resolves rather than repeating the 2s frame."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-23",
+        "pairwise_justification": "shot-08s vs median: the Penrose strip has dense ochre and rust kites with strong contrast on cream, while tonight's thin teal strokes on khaki and the dark-slate clump read fainter, so the median wins the vote.",
+        "calibration_anchors_used": [
+          "anchor-02",
+          "anchor-08",
+          "anchor-09",
+          "anchor-12"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "At shot-08s replace the overplotted dark strokes in the core with fewer slate node fills and dimmed halos so the stagnant pocket reads as a shaped region with a clear edge rather than scribble.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Add a second rendering idea such as shaded tube depth or soft occlusion on shielded tips, so shot-02s and shot-08s show shelter as light falling off inside the colony, not only as line colour.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Enlarge the 20 cm/s tick and dial readout and let the dial visibly cross it at 6 s, so the threshold reads from the frame itself, not from the small caption at the bottom edge.",
+            "expected_gain": 3
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-27/attempt-2/index.html",
+        "compo": "audiovisual",
+        "byte_size": 11873,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 518.1061,
+          "t8": 1901.8933,
+          "t20": 780.499,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 5.3814,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 7.2219,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 33.3,
+          "p90": 33.4,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": {
+          "required": true,
+          "autoplayed": false,
+          "rms": 0.117922,
+          "peak": 0.4355,
+          "clipped_ratio": 0,
+          "passed": true
+        },
+        "novelty_b": {
+          "phashes": {
+            "t2": "8808303068687090",
+            "t8": "884c687068687090",
+            "t20": "8808282870701088"
+          },
+          "color_histogram": [
+            0,
+            0.011043,
+            0,
+            0,
+            0,
+            0.030188,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000011,
+            0,
+            0,
+            0,
+            0.062442,
+            0,
+            0,
+            0,
+            0.010367,
+            0.003288,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.003444,
+            0,
+            0,
+            0,
+            0.005513,
+            0.02074,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.852963,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "min_hamming_distance": 15,
+          "min_histogram_distance": 0.729333,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 8.45,
+          "reduced_motion": 0.6061,
+          "ratio": 0.0717
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-27/attempt-2/shot-02s.png",
+          "t8": "audit/2026-11-27/attempt-2/shot-08s.png",
+          "t20": "audit/2026-11-27/attempt-2/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 14,
+          "ambition": 14,
+          "craft": 14,
+          "distinctness": 14,
+          "polish": 7
+        },
+        "total": 63,
+        "evidence": {
+          "mechanism": "shot-02s: flow dial reads 9.0 cm/s below its 20 cm/s tick over a mirrored celadon branch colony; by shot-08s at 22.4 cm/s the tips go dark slate, but the lit khaki outer shell barely reads.",
+          "ambition": "shot-02s: one rendering idea, shaded spheres on thin links, plus a flow dial inset; shot-08s adds a colony-wide dark state change, and no halos, second layer or new rendering idea appears by shot-20s.",
+          "craft": "shot-02s: clean khaki ground and soft-shaded celadon spheres with no visible artefacts at full size; shot-08s dark slate tips lose separation from the ground, and the rose accent glow at shot-20s is blurred.",
+          "distinctness": "shot-02s: khaki ground with celadon and slate spheres on a mirrored branched colony differs from the apricot sand grid, the dendrite lettering and the ochre Penrose kites of the recent nights; rose tips add one accent.",
+          "polish": "shot-02s: colony sits right of centre with empty khaki upper-left, a composed start; shot-20s returns to a lit state with the dial back under 20 cm/s, so the loop resolves, but its layout stays close to shot-02s."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-23",
+        "pairwise_justification": "shot-08s is mostly dark slate spheres on khaki, while the median's shot-20s packs dense ochre and rust kites into a triangle with visible growth; the Penrose frame is the stronger head-to-head image.",
+        "calibration_anchors_used": [
+          "anchor-02",
+          "anchor-08",
+          "anchor-09",
+          "anchor-12"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "At shot-08s keep the outer khaki shell at full brightness above the 20 cm/s tick, so the dark core contrasts with a lit rim instead of the whole colony going dark slate.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 2,
+            "change": "Add the boundary-layer halo from the brief as translucent khaki rings around branch tips, a second rendering idea visible in shot-08s and shot-20s beyond shaded spheres on lines.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 3,
+            "change": "Change the shot-20s composition: pull the camera back so the colony sits smaller with margin, giving the loop a distinct end state rather than a near-copy of the shot-02s layout.",
+            "expected_gain": 2
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-27/attempt-3/index.html",
+        "compo": "audiovisual",
+        "byte_size": 9945,
+        "size_budget_bytes": 24576,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 511.8455,
+          "t8": 616.3174,
+          "t20": 369.1534,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 2.4934,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 5.2698,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 0,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 33.3,
+          "p90": 50,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": {
+          "required": true,
+          "autoplayed": false,
+          "rms": 0.08304,
+          "peak": 0.309584,
+          "clipped_ratio": 0,
+          "passed": true
+        },
+        "novelty_b": {
+          "phashes": {
+            "t2": "4a2a4e0e160e4a89",
+            "t8": "4a16324c170e4a89",
+            "t20": "4a2a72324e0e4a89"
+          },
+          "color_histogram": [
+            0,
+            0.020458,
+            0,
+            0,
+            0,
+            0.086889,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.660134,
+            0,
+            0,
+            0,
+            0.157571,
+            0.00329,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000126,
+            0,
+            0,
+            0,
+            0.001167,
+            0.06592,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.004445,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "min_hamming_distance": 23,
+          "min_histogram_distance": 0.99415,
+          "closest_date": "2026-11-26",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 4.6314,
+          "reduced_motion": 0.4495,
+          "ratio": 0.0971
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-27/attempt-3/shot-02s.png",
+          "t8": "audit/2026-11-27/attempt-3/shot-08s.png",
+          "t20": "audit/2026-11-27/attempt-3/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 17,
+          "ambition": 16,
+          "craft": 17,
+          "distinctness": 14,
+          "polish": 6
+        },
+        "total": 70,
+        "evidence": {
+          "mechanism": "shot-02s: about a thousand khaki-lit tips in a fan-shaped mirrored colony, dial at 10 cm/s with no dark nodes; by shot-08s the dial reads 25 cm/s and a dark slate cluster forms in the upper centre under a lit khaki shell.",
+          "ambition": "shot-08s: roughly a thousand nodes in three visible states (khaki, dark slate, rose tips), faint halos and a live flow dial, all on one flat 2D canvas; shot-20s keeps the same single layer at smaller scale.",
+          "craft": "shot-08s: flat dots render cleanly at 1280 px with no visible aliasing, but the halos are barely visible and the dark core reads as a grey smudge where tips overlap; shot-20s is equally clean.",
+          "distinctness": "shot-02s: khaki-sage fan of branching tips on a slate ground, unlike the apricot sand grid, the ochre Penrose kites or the dendrite typography of the last three nights; its earthy palette overlaps slightly with the Penrose piece.",
+          "polish": "shot-02s: colony centred with an even margin and already composed; by shot-20s it has shrunk to roughly a third of the frame width in a mostly empty field, so the piece resolves but loses weight."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": "2026-11-23",
+        "pairwise_justification": "Head-to-head, tonight's 8s frame has a dark slate core against a lit khaki shell that reads at a glance; the median's cream ground holds one ochre kite triangle whose detail is fine but low-contrast.",
+        "calibration_anchors_used": [
+          "anchor-02",
+          "anchor-08",
+          "anchor-09",
+          "anchor-12"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Re-frame shot-20s so the colony stays near its shot-08s scale with a tighter margin; the current pull-back shrinks it to about a third of the frame and leaves the dark core too small to read at a glance.",
+            "expected_gain": 3
+          },
+          {
+            "rank": 2,
+            "change": "At shot-08s give the stagnant core a clear edge: thin out the dark slate tips at the core boundary so an empty pocket shows inside the khaki shell instead of a grey cloud of overlapping dots.",
+            "expected_gain": 3
+          },
+          {
+            "rank": 3,
+            "change": "Make the boundary-layer halos visible at shot-08s: raise the halo alpha around lit tips so the khaki haze between branches becomes a second rendering layer rather than a faint ring around a few tips.",
+            "expected_gain": 3
+          }
+        ]
+      }
+    }
+  ],
+  "bestAttempt": 3,
+  "dryRun": false
+}

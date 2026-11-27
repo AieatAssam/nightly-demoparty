@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 13,
+    "ambition": 11,
+    "craft": 15,
+    "distinctness": 14,
+    "polish": 7
+  },
+  "total": 60,
+  "evidence": {
+    "mechanism": "shot-02s: all celadon branch tips lit on khaki, with the flow arrow low on the left tick column; by shot-08s the top-centre crown turns dark slate as the arrow passes the 20 cm/s tick.",
+    "ambition": "shot-08s: one line-drawn L-system tree with a faint halo and a tick-column dial, with no second layer, shading or simulation depth visible; shot-20s is the same single stroke style at smaller scale.",
+    "craft": "shot-02s: cohesive khaki, celadon and slate palette with crisp thin strokes and clean mirrored symmetry; flaws are a small caption line at bottom-left and sparse wire-thin branches in the lower fan.",
+    "distinctness": "shot-08s: slate-on-khaki mirrored tree with a dark crown is unlike last nights' apricot sand grid, dendrite type or cream Penrose tiling; shot-20s keeps that palette and form.",
+    "polish": "shot-02s: centred colony with the dial already set at 2s; shot-20s shrinks to a margin-framed colony with the arrow back near the threshold, so the loop closes, but the crown change is subtle."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-23",
+  "pairwise_justification": "The median Penrose at 20s is a dense ochre and rust tiling filling the frame, while tonight at 20s is a sparse thin-line tree with a small dark crown; the median shows more visible development and material.",
+  "calibration_anchors_used": ["anchor-02", "anchor-08", "anchor-09", "anchor-12"],
+  "critique": [
+    { "rank": 1, "change": "Give the branches solid material at shot-02s: fill the lit shell with shaded or thickened tips instead of single strokes, and let the shielded crown darken those filled surfaces so the mechanism has a second visual layer to act on.", "expected_gain": 6 },
+    { "rank": 2, "change": "Make the stagnant zone a real interior pocket: at shot-08s darken the centre of the colony, not only the top crown, so the dark core reads inside the lit shell as the caption promises.", "expected_gain": 4 },
+    { "rank": 3, "change": "Give shot-20s a visibly different state from shot-02s, for example the dark core spreading into the lower fan or new khaki tips accreting at the edge, so the loop resolves with more than a rescale.", "expected_gain": 2 }
+  ]
+}

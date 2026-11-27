@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stagnant Core</title>
+<style>*{margin:0}html,body{background:#c9bf98;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+const srng=e=>()=>{e=e+1831565813|0;let t=Math.imul(e^e>>>15,1|e);return t=t+Math.imul(t^t>>>7,61|t)^t,((t^t>>>14)>>>0)/4294967296},mtof=e=>440*2**((e-69)/12);function synthBus(e,{delay:t=.3,feedback:n=.35,wet:l=.25}={}){const a=h=>{const p=e.createGain();return p.gain.value=h,p},i=a(1),o=a(1),u=a(l),c=a(n),r=e.createDelay(2),s=e.createDelay(2),f=e.createChannelMerger(2),d=e.createDynamicsCompressor(),A=e.createWaveShaper(),g=e.createAnalyser(),q=new Float32Array(1024);for(let h=0;h<1024;h++)q[h]=.9*Math.tanh(2*(h/511.5-1));A.curve=q,d.threshold.value=-18,d.ratio.value=4,d.attack.value=.003,d.release.value=.2,r.delayTime.value=s.delayTime.value=t,i.connect(o),i.connect(u).connect(r).connect(s).connect(c).connect(r),r.connect(f,0,0),s.connect(f,0,1),f.connect(o),o.connect(d).connect(A).connect(g).connect(e.destination),g.fftSize=1024;const w=new Uint8Array(g.frequencyBinCount),v=new Float32Array(g.fftSize),y={bass:0,mid:0,high:0,rms:0};let R=0;const M=(h,p)=>{const b=e.sampleRate/g.fftSize,m=Math.round(h/b),k=Math.max(m+1,Math.round(p/b));let B=0;for(let T=m;T<k;T++)B+=w[T];return B/(k-m)/255};return{input:i,analyser:g,bands:()=>{g.getByteFrequencyData(w),g.getFloatTimeDomainData(v);let h=0;for(const m of v)h+=m*m;const p={bass:M(20,250),mid:M(250,2e3),high:M(2e3,1e4),rms:Math.min(1,Math.sqrt(h/v.length)*2)},b=Math.max(0,e.currentTime-R);R=e.currentTime;for(const m in y)y[m]=p[m]+(y[m]-p[m])*Math.exp(-b/(p[m]>y[m]?.05:.25));return{...y}}}}const env=(e,t,n,l,a)=>{const i=e.createGain();return i.gain.setValueAtTime(0,t),i.gain.linearRampToValueAtTime(a,t+n),i.gain.exponentialRampToValueAtTime(1e-4,t+n+l),i};function fm(e,t,n,l,a=.4,{ratio:i=2,index:o=3,vol:u=.3}={}){const c=e.createOscillator(),r=e.createOscillator(),s=e.createGain(),f=env(e,n,.005,a,u);c.frequency.value=l,r.frequency.value=l*i,s.gain.setValueAtTime(l*o,n),s.gain.exponentialRampToValueAtTime(l*o*.05+.001,n+a),r.connect(s).connect(c.frequency),c.connect(f).connect(t);for(const d of[c,r])d.start(n),d.stop(n+a+.05)}function sub(e,t,n,l,a=.3,{cutoff:i=1800,q:o=6,vol:u=.25,type:c="sawtooth"}={}){const r=e.createOscillator(),s=e.createBiquadFilter(),f=env(e,n,.005,a,u);r.type=c,r.frequency.value=l,s.type="lowpass",s.Q.value=o,s.frequency.setValueAtTime(i,n),s.frequency.exponentialRampToValueAtTime(Math.max(60,l),n+a),r.connect(s).connect(f).connect(t),r.start(n),r.stop(n+a+.05)}function ksBuffer(e,t,n=1,l=1,a=.996){const i=Math.max(2,Math.round(e/t)),o=new Float32Array(Math.ceil(e*n)),u=srng(l);for(let c=0;c<i&&c<o.length;c++)o[c]=u()*2-1;for(let c=i;c<o.length;c++)o[c]=a*.5*(o[c-i]+o[c-i+1]);return o}function pluck(e,t,n,l,a=1,{vol:i=.4,seed:o=1,damp:u=.996}={}){const c=e.createBuffer(1,Math.ceil(e.sampleRate*a),e.sampleRate),r=e.createBufferSource(),s=e.createGain();c.copyToChannel(ksBuffer(e.sampleRate,l,a,o,u),0),r.buffer=c,s.gain.value=i,r.connect(s).connect(t),r.start(n)}const seq=({bpm:e=120,div:t=4,seed:n=1}={},l)=>(a,i,o,u,c=0)=>{const r=60/e/t;for(let s=Math.max(0,Math.ceil(o/r-1e-9));s*r<u;s++)l(a,i,c+s*r,s,srng(n^Math.imul(s+1,2654435761)))};function startSynth(e,{target:t=document,ahead:n=.2,bus:l}={}){const a={ctx:null,bus:null,bands:()=>({bass:0,mid:0,high:0,rms:0})},i=()=>{if(a.ctx)return void a.ctx.resume();const o=a.ctx=new AudioContext,u=a.bus=synthBus(o,l),c=o.currentTime+.05;let r=0;a.bands=u.bands;const s=()=>{const f=o.currentTime-c+n;f>r&&(e(o,u.input,r,f,c),r=f)};s(),setInterval(s,50)};for(const o of["pointerdown","keydown"])t.addEventListener(o,i);return a}const registerAudioProbe=(e,t)=>{window.__demopartyAudioProbe=async n=>e(n,synthBus(n,t).input,0,n.length/n.sampleRate,0)};export{mtof,synthBus,fm,sub,ksBuffer,pluck,seq,startSynth,registerAudioProbe};
+const clamp01=t=>t<0?0:t>1?1:t,lerp=(t,n,c)=>t+(n-t)*c,smooth=t=>(t=clamp01(t),t*t*(3-2*t)),quintic=t=>(t=clamp01(t),t*t*t*(t*(t*6-15)+10)),cubicInOut=t=>(t=clamp01(t),t<.5?4*t*t*t:1-(-2*t+2)**3/2),expoOut=t=>(t=clamp01(t),t===1?1:1-2**(-10*t)),backOut=(t,n=1.70158)=>(t=clamp01(t)-1,1+t*t*((n+1)*t+n)),elasticOut=t=>(t=clamp01(t),t===0||t===1?t:2**(-10*t)*Math.sin((t*10-.75)*(2*Math.PI/3))+1),beat=(t,n,c,e=smooth)=>n===c?t>=c?1:0:e((t-n)/(c-n)),CUTS=[0,5,10,15,20],act=(t,n=CUTS)=>{let c=0;for(;c<n.length-2&&t>=n[c+1];)c++;return{i:c,p:clamp01((t-n[c])/(n[c+1]-n[c]))}},acts=(t,n=CUTS,c=1)=>{const e=o=>o===0?1:o===n.length-1?0:smooth((t-n[o])/c+.5);return n.slice(0,-1).map((o,s)=>e(s)-e(s+1))},storyClock=({reduce:t=.2,cuts:n=CUTS}={})=>{const c=matchMedia("(prefers-reduced-motion: reduce)");let e=0,o=-1;return s=>{const r=c.matches;return e+=o<0?0:Math.min((s-o)/1e3,.5)*(r?t:1),o=s,{t:e,reduced:r,...act(e,n)}}};export{clamp01,lerp,smooth,quintic,cubicInOut,expoOut,backOut,elasticOut,beat,CUTS,act,acts,storyClock};
+
+// ---- Stagnant Core: stochastic L-system colony, shelter-count dimming, flow dial ----
+const cv=document.getElementById('c'),g0=cv.getContext('2d');
+const PAL={khaki:'#c9bf98',celadon:'#8fa592',teal:'#4f6b63',slate:'#2f3e4c',rose:'#b5476a'};
+const mb=s=>()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const rnd=mb(2026);
+
+// stochastic L-system: A = growth point, F = branch segment, [ ] = side branch, + - = turn
+let lsys='A';
+const rule=c=>{if(c==='A'){const r=rnd();return r<.5?'F[+A][-A]FA':r<.8?'F[+A]FA':'FA'}if(c==='F')return rnd()<.3?'FF':'F';return c};
+for(let k=0;k<9;k++){let n='';for(const c of lsys)n+=rule(c);lsys=n;let f=0;for(const c of lsys)if(c==='F')f++;if(f>=600)break}
+
+// turtle: one half-colony (up to 600 nodes), then mirrored about the vertical axis
+const X=[0],Y=[0],P=[0],D=[0],stk=[];
+let x=0,y=0,a=Math.PI/2,cur=0,dep=0;
+for(const c of lsys){
+  if(c==='F'){if(X.length<600){const L=.024*Math.pow(.965,dep);x+=L*Math.cos(a);y+=L*Math.sin(a);dep++;X.push(x);Y.push(y);P.push(cur);D.push(dep);cur=X.length-1}}
+  else if(c==='+')a+=.42*(.8+.4*rnd());
+  else if(c==='-')a-=.42*(.8+.4*rnd());
+  else if(c==='[')stk.push([x,y,a,cur,dep]);
+  else if(c===']'){const s=stk.pop();x=s[0];y=s[1];a=s[2];cur=s[3];dep=s[4]}
+}
+const N0=X.length;
+for(let j=1;j<N0;j++){X.push(-X[j]);Y.push(Y[j]);P.push(P[j]===0?0:P[j]+N0-1);D.push(D[j])}
+const NN=X.length;
+
+// growth order: by depth with a small seeded jitter, so a parent always precedes its children
+const key=[];
+for(let i=0;i<NN;i++)key.push(i===0?-1:D[i]+rnd()*.9);
+const ord=[...Array(NN).keys()].sort((p,q)=>key[p]-key[q]),pos=[];
+ord.forEach((o,k)=>{pos[o]=k});
+const GX=ord.map(o=>X[o]),GY=ord.map(o=>Y[o]),GP=ord.map(o=>pos[P[o]]);
+
+// neighbour lists within one spacing radius (static, built once)
+const NB=[],R2=.035*.035;
+for(let i=0;i<NN;i++){const nl=[];for(let j=0;j<NN;j++)if(j!==i){const dx=GX[i]-GX[j],dy=GY[i]-GY[j];if(dx*dx+dy*dy<R2)nl.push(j)}NB.push(nl)}
+
+// pre-rendered sprites: lit khaki shell, shaded slate occlusion, rose accent, celadon halo
+const mk=(stops,ox,oy)=>{const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),q=g.createRadialGradient(32+ox,32+oy,0,32,32,32);for(const[o,col]of stops)q.addColorStop(o,col);g.fillStyle=q;g.fillRect(0,0,64,64);return c};
+const LIT=mk([[0,PAL.khaki],[.4,PAL.celadon],[.85,PAL.teal],[1,'rgba(79,107,99,0)']],-9,-9);
+const DARK=mk([[0,PAL.teal],[.6,PAL.slate],[1,'rgba(47,62,76,0)']],5,7);
+const ROSE=mk([[0,PAL.rose],[.5,'rgba(181,71,106,.6)'],[1,'rgba(181,71,106,0)']],0,0);
+const HALO=mk([[0,'rgba(143,165,146,.6)'],[1,'rgba(143,165,146,0)']],0,0);
+
+// story curves
+const FT=[0,2,5,6,9,12,15,18,20],FV=[8,9,15,20.5,23,27,25,17,14];
+const flowAt=t=>{if(t>=20)return 14;let k=0;for(;FT[k+1]<t;)k++;return FV[k]+(FV[k+1]-FV[k])*smooth((t-FT[k])/(FT[k+1]-FT[k]))};
+// stagnant core opens as the dial crosses 20 cm/s (6 s), then thins to about half by 18 s
+const coreAmt=t=>smooth(beat(t,5.9,6.9))*(1-.45*smooth(beat(t,15,18)));
+// hard cuts at the storyboard times; per-shot camera (x, y, zoom)
+const CUT=[3.2,6.4,8.9,11.6,14.8,17.5];
+const SHOT=[[0,.25,1],[-.3,.36,1.9],[0,.22,1.15],[.05,.36,1.05],[0,.14,2.3],[0,.28,1.12],[0,.25,.8]];
+
+function draw(t){
+  const W=cv.width,H=cv.height,g=g0;
+  const fl=flowAt(t),cA=coreAmt(t),G=Math.floor(NN*(.82+.18*smooth(t/9)));
+  let si=0;for(;si<CUT.length&&t>=CUT[si];)si++;
+  const s0=si?CUT[si-1]:0,s1=si<CUT.length?CUT[si]:s0+10,p=clamp01((t-s0)/(s1-s0));
+  const sh=SHOT[si],z=sh[2]*(1+.06*p),S=H*1.5*z;
+  const ax=new Float32Array(G),ay=new Float32Array(G),cnt=new Int32Array(G),dk=new Float32Array(G);
+  for(let i=0;i<G;i++){ax[i]=W/2+(GX[i]-sh[0])*S;ay[i]=H*.5-(GY[i]-sh[1])*S}
+  // live shelter count: neighbours already grown; shielded nodes darken once the core opens
+  for(let i=0;i<G;i++){let c=0;for(const j of NB[i])if(j<G)c++;cnt[i]=c;dk[i]=cA*smooth((c-5)/4)}
+
+  g.globalAlpha=1;g.fillStyle=PAL.khaki;g.fillRect(0,0,W,H);
+  const lw=Math.max(1,1.5*Math.sqrt(z)),hr=(15-6*fl/30)*Math.pow(z,.6),ts=9*Math.pow(z,.6);
+
+  // boundary-layer halos: thinner and fainter inside the stagnant core
+  for(let i=0;i<G;i++){g.globalAlpha=Math.min(.5,.2*(1-.6*dk[i])*(1+cnt[i]*.05));g.drawImage(HALO,ax[i]-hr,ay[i]-hr,2*hr,2*hr)}
+  // branches: lit teal, then slate over shielded segments
+  g.lineWidth=lw;g.strokeStyle=PAL.teal;g.globalAlpha=.75;g.beginPath();
+  for(let i=1;i<G;i++){const q=GP[i];g.moveTo(ax[q],ay[q]);g.lineTo(ax[i],ay[i])}
+  g.stroke();
+  g.strokeStyle=PAL.slate;
+  for(let i=1;i<G;i++)if(dk[i]>.03){const q=GP[i];g.globalAlpha=dk[i]*.9;g.beginPath();g.moveTo(ax[q],ay[q]);g.lineTo(ax[i],ay[i]);g.stroke()}
+  // tips: khaki-lit shell, slate occlusion on shielded tips, rose on the newest growth in beat 3
+  const ro=smooth(beat(t,9.6,11))*(1-.5*smooth(beat(t,14.8,16)));
+  for(let i=0;i<G;i++){
+    g.globalAlpha=1-dk[i];g.drawImage(LIT,ax[i]-ts,ay[i]-ts,2*ts,2*ts);
+    if(dk[i]>.02){g.globalAlpha=dk[i];g.drawImage(DARK,ax[i]-ts,ay[i]-ts,2*ts,2*ts)}
+    const ra=ro*(i>=G-70?(i-G+70)/70:0);
+    if(ra>.02){const r2=ts*1.5;g.globalAlpha=ra;g.drawImage(ROSE,ax[i]-r2,ay[i]-r2,2*r2,2*r2)}
+  }
+
+  // flow dial: left-edge tick column, enlarged 20 cm/s tick and readout
+  const dT=H*.2,dB=H*.86,dx=44,yv=v=>dB-v/30*(dB-dT);
+  g.globalAlpha=1;g.fillStyle=PAL.slate;g.fillRect(dx-1,dT,2,dB-dT);
+  g.fillStyle=fl>=20?PAL.rose:PAL.teal;g.fillRect(dx-6,yv(fl),12,dB-yv(fl));
+  for(let v=0;v<=30;v+=2){const y=yv(v);if(v===20){g.fillStyle=PAL.rose;g.fillRect(dx,y-3,150,6)}else{g.fillStyle=PAL.slate;g.fillRect(dx,y-.5,v%10?10:24,1.5)}}
+  g.fillStyle=PAL.rose;g.font='700 24px ui-monospace,Menlo,monospace';g.fillText('20 cm/s',dx+162,yv(20)+8);
+  g.fillStyle=PAL.slate;g.font='700 30px ui-monospace,Menlo,monospace';g.fillText('FLOW '+fl.toFixed(1)+' cm/s',dx-20,dT-30);
+  g.font='13px ui-monospace,Menlo,monospace';g.fillText('STAGNANT CORE  shelter-count colony',24,H-22);
+}
+
+// ---- score: 120 BPM D-major bells, a fifth lower once the core opens; probe renders the same score ----
+const play=seq({bpm:120,div:1,seed:7},(ctx,out,t,i,rnd)=>{
+  const m=[62,66,69,74][i%4]-(i*.5>=6?7:0);
+  fm(ctx,out,t,mtof(m),1.1,{ratio:2,index:2.5,vol:.22});
+  if(i%4===0)sub(ctx,out,t,mtof(38),.5,{vol:.18});
+});
+registerAudioProbe(play);
+let off=null,now=0;
+for(const e of['pointerdown','keydown'])document.addEventListener(e,()=>{if(off===null)off=now});
+const syn=startSynth((ctx,out,t0,t1,base)=>play(ctx,out,t0+off,t1+off,base-off));
+
+// ---- loop: story clock slows to 0.2x under reduced motion ----
+const clock=storyClock({reduce:.2});
+function frame(ms){
+  if(cv.width!==innerWidth||cv.height!==innerHeight){cv.width=innerWidth;cv.height=innerHeight}
+  const c=clock(ms);now=c.t;draw(c.t);requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
