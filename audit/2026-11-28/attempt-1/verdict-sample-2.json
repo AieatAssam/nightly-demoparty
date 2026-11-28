@@ -1,0 +1,38 @@
+{
+  "scores": {
+    "mechanism": 16,
+    "ambition": 14,
+    "craft": 12,
+    "distinctness": 16,
+    "polish": 7
+  },
+  "total": 65,
+  "evidence": {
+    "mechanism": "shot-08s: about 14 diagonal blue and olive bands separated by cream gaps, with pitch denser at the right and sparser at the left; by shot-20s the same banding mirrors into a chevron about the centre line.",
+    "ambition": "shot-08s: one flat 2D band field with a domain warp that bends the stripes; shot-20s adds a mirrored copy and two overlapping rectangles, but there is no simulation, lighting or material layer.",
+    "craft": "shot-08s: stair-stepped aliasing along every blue and olive band edge at full size; by shot-20s small notches show where the two rectangles meet near the top and bottom of the centre seam.",
+    "distinctness": "shot-08s: indigo, olive and cream striped bands, unlike the apricot grain of 2026-11-26, the coral, the dendrite and the Penrose kites; no recent night shows a striped cloth.",
+    "polish": "shot-02s: a near-empty indigo rectangle with a thin sliver at the left, composed but sparse; by shot-20s the mirrored chevron fills the frame and resolves cleanly on the cream ground."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-26",
+  "pairwise_justification": "Shot-08s blue and olive stripes read as one clear graphic; the median's apricot grain square is noisier and monochrome, so tonight wins the head-to-head vote.",
+  "calibration_anchors_used": ["anchor-03", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Supersample or antialias the band edges so blue and olive stripes stop stair-stepping at full size, and blend the two rectangles where they meet at the centre seam so no notch shows at shot-20s.",
+      "expected_gain": 2
+    },
+    {
+      "rank": 2,
+      "change": "Start shot-02s with three or four bands already pushed in along the diagonal instead of one flat rectangle and a sliver, so the first frame already shows the wrap rule and reads as composed from the start.",
+      "expected_gain": 2
+    },
+    {
+      "rank": 3,
+      "change": "Shade each compressed band with a darker fold crease and light falloff so the stripes read as gathered cloth, not flat ink; this adds a rendering idea the 8s and 20s frames currently lack.",
+      "expected_gain": 5
+    }
+  ]
+}

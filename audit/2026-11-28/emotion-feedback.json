@@ -1,0 +1,322 @@
+{
+  "event": {
+    "event": "Tonight's 4k-shader piece on shibori-resist-folds went to the B-sides at 66.",
+    "event_id": "2026-11-28:verdict:b-side",
+    "topics": [
+      "shibori-resist-folds",
+      "4k-shader",
+      "noise-field"
+    ],
+    "agency": "self",
+    "certainty": 1,
+    "thread": "night-2026-11-28",
+    "relevance": 0.8,
+    "congruence": 0.05,
+    "novelty": 0.3,
+    "praiseworthiness": 0.1,
+    "control": 0.6
+  },
+  "elicited": {
+    "joy": 0.04935908693027097,
+    "pride": 0.16453185911636078,
+    "interest": 0.2642623721073381,
+    "boredom": 0.05703039115592265
+  },
+  "consolidated": {
+    "topic:tiling-geometry": 0.14,
+    "topic:physics": 0.104,
+    "topic:shibori-resist-folds": 0.161,
+    "topic:pleat-compression": 0.228,
+    "thread:night-2026-11-28": 0.161,
+    "topic:pole-wrap-setup": 0.197,
+    "topic:band-pitch": 0.255,
+    "topic:fold-measurement": 0.109,
+    "topic:dye-resist": 0.171,
+    "topic:clamp-resist": 0.138,
+    "topic:board-clamp": 0.069,
+    "topic:diagonal-bands": 0.3,
+    "topic:edge-exposure": 0.228,
+    "topic:4k-shader": 0.103,
+    "topic:noise-field": 0.103
+  },
+  "mood": {
+    "timestamp": "2026-11-28T10:47:26.384Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "joy",
+        "intensity": 0.677
+      },
+      {
+        "label": "interest",
+        "intensity": 0.669
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.203
+      },
+      {
+        "label": "pride",
+        "intensity": 0.165
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.102
+      }
+    ],
+    "pad": {
+      "pleasure": 0.435,
+      "arousal": 0.524,
+      "dominance": 0.421
+    },
+    "neurochemistry": {
+      "dopamine": 0.994,
+      "noradrenaline": 0.932,
+      "serotonin": 0.955,
+      "cortisol": 0.277,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.998,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.669,
+      "boredom": 0.102,
+      "frustration": 0.069
+    },
+    "likes": [
+      {
+        "topic": "simulation",
+        "score": 0.506
+      },
+      {
+        "topic": "physics",
+        "score": 0.472
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.46
+      },
+      {
+        "topic": "flow-threshold",
+        "score": 0.302
+      },
+      {
+        "topic": "diagonal-bands",
+        "score": 0.3
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.281
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.277
+      },
+      {
+        "topic": "stagnant-interior",
+        "score": 0.271
+      },
+      {
+        "topic": "toppling-cascade",
+        "score": 0.271
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.27
+      },
+      {
+        "topic": "abelian-property",
+        "score": 0.267
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.263
+      },
+      {
+        "topic": "flow-set-form",
+        "score": 0.261
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.26
+      },
+      {
+        "topic": "pile-growth",
+        "score": 0.259
+      },
+      {
+        "topic": "band-pitch",
+        "score": 0.255
+      },
+      {
+        "topic": "optics-light",
+        "score": 0.251
+      },
+      {
+        "topic": "shade-light-split",
+        "score": 0.251
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.246
+      },
+      {
+        "topic": "grammar",
+        "score": 0.242
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.241
+      },
+      {
+        "topic": "avalanche-cascade",
+        "score": 0.24
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.24
+      },
+      {
+        "topic": "branch-thinning",
+        "score": 0.238
+      },
+      {
+        "topic": "edge-exposure",
+        "score": 0.228
+      },
+      {
+        "topic": "pleat-compression",
+        "score": 0.228
+      },
+      {
+        "topic": "fractal-pattern",
+        "score": 0.224
+      },
+      {
+        "topic": "self-organised-criticality-sandpiles",
+        "score": 0.218
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.209
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.209
+      },
+      {
+        "topic": "pole-wrap-setup",
+        "score": 0.197
+      },
+      {
+        "topic": "stable-threshold",
+        "score": 0.197
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.195
+      },
+      {
+        "topic": "boundary-layer",
+        "score": 0.191
+      },
+      {
+        "topic": "cellular-automaton",
+        "score": 0.191
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.177
+      },
+      {
+        "topic": "dye-resist",
+        "score": 0.171
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.168
+      },
+      {
+        "topic": "boundary-layer-halo",
+        "score": 0.163
+      },
+      {
+        "topic": "coral-accretion-morphology",
+        "score": 0.163
+      },
+      {
+        "topic": "shibori-resist-folds",
+        "score": 0.161
+      },
+      {
+        "topic": "flow-distribution",
+        "score": 0.156
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.149
+      },
+      {
+        "topic": "branch-geometry",
+        "score": 0.142
+      },
+      {
+        "topic": "clamp-resist",
+        "score": 0.138
+      },
+      {
+        "topic": "fold-measurement",
+        "score": 0.109
+      },
+      {
+        "topic": "4k-shader",
+        "score": 0.103
+      },
+      {
+        "topic": "noise-field",
+        "score": 0.103
+      },
+      {
+        "topic": "audiovisual",
+        "score": 0.099
+      },
+      {
+        "topic": "self-organised criticality sandpiles",
+        "score": 0.098
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.762,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.435,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.421,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "moderate",
+        "value": 0.669,
+        "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.069,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  }
+}

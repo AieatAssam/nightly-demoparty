@@ -1,0 +1,135 @@
+{
+  "passed": false,
+  "piece_path": "audit/2026-11-28/attempt-2/index.html",
+  "compo": "4k-shader",
+  "byte_size": 2495,
+  "size_budget_bytes": 4096,
+  "console_errors": [],
+  "network_requests": [],
+  "luminance_variance": {
+    "t2": 8028.2519,
+    "t8": 5031.7805,
+    "t20": 2706.0308,
+    "floor": 12,
+    "passed": true
+  },
+  "motion": {
+    "frame_diff_mean": 5.7466,
+    "frame_diff_floor": 0.8,
+    "development_diff_t2_t20": 49.8864,
+    "development_floor": 2.5,
+    "passed": true
+  },
+  "strobe": {
+    "max_flashes_per_sec": 5,
+    "limit": 3,
+    "passed": false
+  },
+  "frame_time_ms": {
+    "median": 16.7,
+    "p90": 33.3,
+    "budget_ms": 250,
+    "passed": true
+  },
+  "audio_probe": null,
+  "novelty_b": {
+    "phashes": {
+      "t2": "98b8f8f0c0f0e0e0",
+      "t8": "98b8f0e4c8d0e0e0",
+      "t20": "e8f0e8f0e8f0b088"
+    },
+    "color_histogram": [
+      0,
+      0.178358,
+      0,
+      0,
+      0,
+      0.008624,
+      0.000001,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.017734,
+      0.025021,
+      0,
+      0,
+      0.001267,
+      0.006509,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.000792,
+      0,
+      0,
+      0,
+      0.023907,
+      0.025148,
+      0.000016,
+      0,
+      0,
+      0.000239,
+      0.000132,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.000932,
+      0,
+      0,
+      0,
+      0.008469,
+      0.702849
+    ],
+    "min_hamming_distance": 22,
+    "min_histogram_distance": 0.293647,
+    "closest_date": "2026-11-23",
+    "passed": true
+  },
+  "slop_lint": {
+    "passed": true,
+    "violations": []
+  },
+  "reduced_motion": {
+    "passed": true,
+    "normal_motion": 20.1715,
+    "reduced_motion": 0.0157,
+    "ratio": 0.0008
+  },
+  "screenshots": {
+    "t2": "audit/2026-11-28/attempt-2/shot-02s.png",
+    "t8": "audit/2026-11-28/attempt-2/shot-08s.png",
+    "t20": "audit/2026-11-28/attempt-2/shot-20s.png"
+  },
+  "failures": [
+    {
+      "gate": "strobe",
+      "message": "5 flashes per second over 9.5% of the screen (limit 3)",
+      "measured": 5,
+      "threshold": 3
+    }
+  ]
+}

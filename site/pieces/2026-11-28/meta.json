@@ -1,0 +1,992 @@
+{
+  "date": "2026-11-28",
+  "status": "b-side",
+  "reason": "B-side: best attempt 3 scored 66, below the publish threshold 72.",
+  "publish_threshold": 72,
+  "best_attempt": 3,
+  "plan": {
+    "date": "2026-11-28",
+    "compo": "4k-shader",
+    "size_budget_bytes": 4096,
+    "constraint": null,
+    "domain": "shibori-resist-folds",
+    "wildcard": false,
+    "banned": {
+      "techniques": [
+        "Stochastic L-system",
+        "shelter-count node occlusion",
+        "flow-threshold stagnant-core dimming",
+        "boundary-layer halo around branches",
+        "abelian toppling cascade on integer height grid",
+        "four-neighbour threshold relaxation per frame",
+        "ping-pong integer height buffers",
+        "flash-decay topple front rendering with umber scars",
+        "signed-distance glyph edges",
+        "fixed-lag defect birth behind the tip",
+        "six-fold mirrored lattice arms",
+        "latency-controlled arm length",
+        "recursive substitution tiling",
+        "generation shell reveal",
+        "kite-dart count bars"
+      ],
+      "domains": [
+        "coral-accretion-morphology",
+        "self-organised criticality sandpiles",
+        "dendritic-solidification",
+        "penrose-inflation"
+      ],
+      "palette_hexes": [
+        "#c9bf98",
+        "#8fa592",
+        "#4f6b63",
+        "#2f3e4c",
+        "#b5476a",
+        "#f2c9a0",
+        "#d9703f",
+        "#6e5a3c",
+        "#d8a193",
+        "#b8665a",
+        "#7a2636",
+        "#efe3c8",
+        "#c8912e",
+        "#9c4a24",
+        "#e6b45c",
+        "#3a332c"
+      ],
+      "slop_patterns": [
+        "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+        "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+        "Matrix rain is on the permanent slop list.",
+        "Four-sine plasma boilerplate. Build a field with development instead.",
+        "Plain plasma: sine sums as the whole picture.",
+        "Plain starfield: points drifting toward the camera with no structure behind them.",
+        "Plain tunnel: concentric rings flying past with nothing else happening.",
+        "Matrix rain: falling glyph columns.",
+        "Mouse-following particles with no system behind them.",
+        "A single raymarched sphere or torus on a gradient.",
+        "Untouched Mandelbrot or Julia zoom.",
+        "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+        "Bloom or chromatic aberration used to hide an empty scene.",
+        "Math.random() noise as the main visual idea.",
+        "A loop with no development: the 20 s frame looks like the 2 s frame.",
+        "Title cards or captions doing the work the visuals should do.",
+        "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+      ]
+    },
+    "boredom_override": false,
+    "requires_audio": false,
+    "seed": "2026-11-28",
+    "dry_run": false,
+    "overrides": {
+      "domain": null,
+      "compo": null,
+      "mood_preset": null
+    }
+  },
+  "dossier": {
+    "topic": "Arashi pole-wrap shibori: diagonal thread compression gathers cloth into pleats, and the undyed bands of the pleats form the pattern",
+    "domain": "shibori-resist-folds",
+    "wildcard_chosen": false,
+    "summary": "In arashi (pole-wrap) shibori, cloth is bound tightly to a pole with thread wound diagonally, then pushed along the pole so it gathers into pleats. Dye cannot penetrate the tightly compressed folds, so the pattern is the undyed negative left by the squeezed bands. Wrap direction sets the diagonal, and wrap spacing sets the band pitch. The result is a pattern built row by row, with the thread geometry, not a painted image, determining where dye goes.",
+    "facts": [
+      {
+        "claim": "The arashi pole-wrap method wraps thread up and down the pole to bind the cloth very tightly, then scrunches the cloth on the pole, producing a pleated cloth with a diagonal design.",
+        "source_url": "https://en.wikipedia.org/wiki/Shibori",
+        "source_title": "Shibori - Wikipedia"
+      },
+      {
+        "claim": "One pole-wrap workshop guide uses a 4.5 inch diameter pole, with a rectangle of cloth wrapped diagonally around the pole.",
+        "source_url": "https://fibersfolding.omeka.net/exhibits/show/shibori/shibori--pole-wrapping-",
+        "source_title": "FOLDING FIBERS | Shibori (Pole Wrapping)"
+      },
+      {
+        "claim": "The same pole-wrapping guide gives thread spacing of approximately 1/8 to 1/4 inch between wraps.",
+        "source_url": "https://fibersfolding.omeka.net/exhibits/show/shibori/shibori--pole-wrapping-",
+        "source_title": "FOLDING FIBERS | Shibori (Pole Wrapping)"
+      },
+      {
+        "claim": "Pole-wrap shibori creates tension with wrapped thread to compress the fabric into folds around the pole; the guide notes the compressed folds cannot be measured exactly because of the winding method.",
+        "source_url": "https://fibersfolding.omeka.net/exhibits/show/shibori/shibori--pole-wrapping-",
+        "source_title": "FOLDING FIBERS | Shibori (Pole Wrapping)"
+      },
+      {
+        "claim": "In modern itajime shibori, the shapes clamped onto folded cloth prevent dye from penetrating the fabric they cover.",
+        "source_url": "https://en.wikipedia.org/wiki/Shibori",
+        "source_title": "Shibori - Wikipedia"
+      },
+      {
+        "claim": "In itajime shibori, the area covered by the clamp remains undyed during the dyeing process.",
+        "source_url": "https://www.selvedge.org/blogs/selvedge/how-to-make-itajime-shibori",
+        "source_title": "How To Make Itajime Shibori"
+      },
+      {
+        "claim": "A Textile Society of America paper describes itajime clamp resist as folded cloth sandwiched between wooden boards that are clamped tightly to protect selected areas of fabric from dye.",
+        "source_url": "https://digitalcommons.unl.edu/tsaconf/5/",
+        "source_title": "Textile Society of America symposium proceedings (Beni Itajime paper, Arai and Wada 2010)"
+      }
+    ],
+    "visualisable_mechanisms": [
+      {
+        "name": "diagonal wrap-and-scrunch band",
+        "description": "Thread is wound diagonally down the pole. Each wrap pulls the cloth tight, then the cloth is pushed along the pole, so each new wrap gathers a fresh compressed band. Bands that were squeezed resist dye, and the diagonal wrap direction sets the orientation of every band.",
+        "render_or_sonify_hint": "Draw a rectangle on a diagonal, with parallel undyed bands at an angle across it. Build the bands one at a time from one end, each new band pushing the earlier ones along. Keep the bands at a fixed angle to the frame."
+      },
+      {
+        "name": "spacing-set band pitch",
+        "description": "The gap between wraps, around 1/8 to 1/4 inch in the cited guide, sets how often a compressed undyed band occurs. Tighter wraps give denser bands, and looser wraps give wider dyed gaps between them.",
+        "render_or_sonify_hint": "Show two pitches in the same frame, with dense bands in one area and sparse bands in another. Let the pitch change slowly across the piece, so the rhythm of the bands shifts."
+      },
+      {
+        "name": "clamp-edge exposure grid",
+        "description": "In a board-clamped fold, only the exposed edges of the folded cloth take dye, because the boards cover the rest. The dyed pattern is therefore the set of folded edges, not the faces of the fold.",
+        "render_or_sonify_hint": "Draw a grid of thin dyed lines, with the interior of each cell left light. Build the grid from the edges inward, so the cell walls are dark first and the centres fill in last."
+      }
+    ],
+    "open_questions": [
+      "Does the wrap spacing change the stripe period after the cloth compresses, given the cited guide says the folds cannot be measured exactly?",
+      "What fold count or layer count changes dye penetration depth? No quantitative model was found in these sources.",
+      "Which compression pressure gives a repeatable undyed band, and how does it vary with cloth weight?"
+    ],
+    "surprise": {
+      "score": 55,
+      "justification": "A generalist expects tie-dye to be painted or random. In arashi shibori the pattern is the undyed negative left by compressed cloth, and the diagonal and spacing come from the thread wrap geometry rather than from any drawn design."
+    },
+    "dataset": null
+  },
+  "mood": {
+    "timestamp": "2026-11-28T10:32:30.133Z",
+    "preset_override": null,
+    "dominant_emotions": [
+      {
+        "label": "interest",
+        "intensity": 0.729
+      },
+      {
+        "label": "joy",
+        "intensity": 0.72
+      },
+      {
+        "label": "surprise",
+        "intensity": 0.361
+      },
+      {
+        "label": "boredom",
+        "intensity": 0.118
+      }
+    ],
+    "pad": {
+      "pleasure": 0.435,
+      "arousal": 0.524,
+      "dominance": 0.421
+    },
+    "neurochemistry": {
+      "dopamine": 1,
+      "noradrenaline": 1,
+      "serotonin": 0.945,
+      "cortisol": 0.287,
+      "oxytocin": 0.425,
+      "opioids": 1
+    },
+    "drives": {
+      "novelty": 0,
+      "social": 0.998,
+      "fatigue": 0
+    },
+    "derived_signals": {
+      "interest": 0.729,
+      "boredom": 0.118,
+      "frustration": 0.072
+    },
+    "likes": [
+      {
+        "topic": "simulation",
+        "score": 0.506
+      },
+      {
+        "topic": "physics",
+        "score": 0.448
+      },
+      {
+        "topic": "tiling-geometry",
+        "score": 0.436
+      },
+      {
+        "topic": "flow-threshold",
+        "score": 0.302
+      },
+      {
+        "topic": "side-branch-defect",
+        "score": 0.281
+      },
+      {
+        "topic": "golden-ratio",
+        "score": 0.277
+      },
+      {
+        "topic": "stagnant-interior",
+        "score": 0.271
+      },
+      {
+        "topic": "toppling-cascade",
+        "score": 0.271
+      },
+      {
+        "topic": "tip-speed-radius-lock",
+        "score": 0.27
+      },
+      {
+        "topic": "abelian-property",
+        "score": 0.267
+      },
+      {
+        "topic": "diagonal-bands",
+        "score": 0.266
+      },
+      {
+        "topic": "tip-instability",
+        "score": 0.263
+      },
+      {
+        "topic": "flow-set-form",
+        "score": 0.261
+      },
+      {
+        "topic": "substitution-rules",
+        "score": 0.26
+      },
+      {
+        "topic": "pile-growth",
+        "score": 0.259
+      },
+      {
+        "topic": "optics-light",
+        "score": 0.251
+      },
+      {
+        "topic": "shade-light-split",
+        "score": 0.251
+      },
+      {
+        "topic": "growth-latency",
+        "score": 0.246
+      },
+      {
+        "topic": "grammar",
+        "score": 0.242
+      },
+      {
+        "topic": "growth-shells",
+        "score": 0.241
+      },
+      {
+        "topic": "avalanche-cascade",
+        "score": 0.24
+      },
+      {
+        "topic": "iterated-map",
+        "score": 0.24
+      },
+      {
+        "topic": "shibori-resist-folds",
+        "score": 0.239
+      },
+      {
+        "topic": "branch-thinning",
+        "score": 0.238
+      },
+      {
+        "topic": "fractal-pattern",
+        "score": 0.224
+      },
+      {
+        "topic": "band-pitch",
+        "score": 0.221
+      },
+      {
+        "topic": "self-organised-criticality-sandpiles",
+        "score": 0.218
+      },
+      {
+        "topic": "aperiodicity",
+        "score": 0.209
+      },
+      {
+        "topic": "six-fold-symmetry",
+        "score": 0.209
+      },
+      {
+        "topic": "stable-threshold",
+        "score": 0.197
+      },
+      {
+        "topic": "recursive-branching",
+        "score": 0.195
+      },
+      {
+        "topic": "edge-exposure",
+        "score": 0.194
+      },
+      {
+        "topic": "pleat-compression",
+        "score": 0.194
+      },
+      {
+        "topic": "boundary-layer",
+        "score": 0.191
+      },
+      {
+        "topic": "cellular-automaton",
+        "score": 0.191
+      },
+      {
+        "topic": "convection-regimes",
+        "score": 0.177
+      },
+      {
+        "topic": "penrose-inflation",
+        "score": 0.168
+      },
+      {
+        "topic": "boundary-layer-halo",
+        "score": 0.163
+      },
+      {
+        "topic": "coral-accretion-morphology",
+        "score": 0.163
+      },
+      {
+        "topic": "pole-wrap-setup",
+        "score": 0.163
+      },
+      {
+        "topic": "flow-distribution",
+        "score": 0.156
+      },
+      {
+        "topic": "dendritic-solidification",
+        "score": 0.149
+      },
+      {
+        "topic": "branch-geometry",
+        "score": 0.142
+      },
+      {
+        "topic": "dye-resist",
+        "score": 0.137
+      },
+      {
+        "topic": "clamp-resist",
+        "score": 0.104
+      },
+      {
+        "topic": "audiovisual",
+        "score": 0.099
+      },
+      {
+        "topic": "self-organised criticality sandpiles",
+        "score": 0.098
+      },
+      {
+        "topic": "kinetic-type",
+        "score": 0.095
+      },
+      {
+        "topic": "typography-sdf",
+        "score": 0.095
+      },
+      {
+        "topic": "kite-dart-angles",
+        "score": 0.079
+      }
+    ],
+    "dislikes": [],
+    "creative_parameters": {
+      "tempo_density_cut_rate": {
+        "level": "high",
+        "value": 0.762,
+        "guidance": "Fast tempo: dense fields or many elements, frequent cuts and an urgent rhythm."
+      },
+      "palette_warmth_consonance_symmetry": {
+        "level": "warm-consonant",
+        "value": 0.435,
+        "guidance": "Warm palette, mirrored or radial symmetry and consonant, major harmony."
+      },
+      "scale_contrast_camera": {
+        "level": "assertive",
+        "value": 0.421,
+        "guidance": "Assertive, bold framing: subject fills the frame, high contrast, strong camera moves."
+      },
+      "technical_risk_budget": {
+        "level": "moderate",
+        "value": 0.729,
+        "guidance": "Moderate risk: add one unfamiliar technique on top of a safe base."
+      },
+      "boredom_force_unused_30d": false,
+      "frustration_scope_polish_weight": {
+        "shrink_scope": false,
+        "polish_weight_boost": 0.072,
+        "guidance": "Normal scope: polish weight follows the usual rubric."
+      }
+    }
+  },
+  "brief": {
+    "title": "Arashi pole-wrap bands: undyed stripes gathered by diagonal thread",
+    "concept": "Arashi pole-wrap shibori thread wound diagonally down a pole gathers cloth into pleats, and a rectangle of cloth builds its undyed bands one at a time from one end.",
+    "mechanism_embodied": {
+      "mechanism_name": "diagonal wrap-and-scrunch band",
+      "how_visualised": "Each diagonal wrap pulls a fresh band of cloth into a compressed pleat that pushes the earlier bands along the diagonal; the band angle stays fixed by the wrap direction, and the band spacing follows the wrap pitch, which drifts from dense to sparse across the frame."
+    },
+    "discarded_obvious_idea": "Obvious: a tie-dye swirl of random coloured blobs spreading from the centre. Rejected: the dossier says the pattern is set by thread geometry, not by a drawn or random design, so a swirl would hide the wrap rule.",
+    "compo": "4k-shader",
+    "constraint_honoured": null,
+    "techniques": [
+      "diagonal wrap-and-scrunch band field",
+      "two-pitch band spacing",
+      "domain warping of band coordinates"
+    ],
+    "novel_technique": "domain warping of band coordinates",
+    "technique_family": "noise-field",
+    "palette": [
+      "#1f3a5f",
+      "#5e7fa8",
+      "#a8b06a",
+      "#c98a5a",
+      "#f6eedc"
+    ],
+    "motion_sound_plan": "No audio. Mood applied: high tempo with dense band fields and four beats, each boundary eased; warm-consonant palette with mirrored symmetry about the vertical centre line; assertive framing with a push-in at beat 3 and a pull-back at beat 4; moderate risk, with one unfamiliar technique (domain warping) on a safe 2D canvas base. Constraint: none.",
+    "storyboard": [
+      {
+        "beat": 1,
+        "t_start_s": 0,
+        "t_end_s": 5,
+        "description": "A diagonal indigo rectangle of cloth fills most of the frame on a pale cream ground; the first undyed band already sits at the top-left end, sharp and structured at a fixed angle."
+      },
+      {
+        "beat": 2,
+        "t_start_s": 5,
+        "t_end_s": 10,
+        "description": "Bands are added one by one from the top-left end; each new band pushes the earlier ones along the diagonal, so about 14 parallel undyed bands cross the cloth, with olive and blue dyed gaps between them."
+      },
+      {
+        "beat": 3,
+        "t_start_s": 10,
+        "t_end_s": 15,
+        "description": "Peak density: band pitch tightens in the upper half and loosens in the lower half, so dense and sparse bands sit side by side; the camera pushes in until the cloth fills the frame, and a mirror copy reflects across the vertical centre line."
+      },
+      {
+        "beat": 4,
+        "t_start_s": 15,
+        "t_end_s": 20,
+        "description": "The camera pulls back to a settled, mirrored composition: the full diagonal rectangle sits centred on cream, every band locked at its final pitch, with the sparse band zone on the left edge."
+      }
+    ],
+    "memorable_moment": "A diagonal row of undyed bands, each one shoved along by the next, until the whole cloth is striped at one fixed angle.",
+    "self_declared_risk": "Band spacing may read as uniform stripes rather than a dense-to-sparse pitch change, and domain warping could smear the bands into noise if its amplitude is set too high.",
+    "liner_note": "The Folding Fibers pole-wrapping guide gives a thread spacing of about 1/8 to 1/4 inch between wraps on a 4.5 inch pole. Wound diagonally, the thread binds cloth tightly and scrunches it into pleats with a diagonal design. The guide notes that these compressed folds cannot be measured exactly because of the winding method. On screen a rectangle of cloth fills one diagonal band at a time, starting from one end, and each new band pushes the earlier ones along. Dense bands give way to sparse ones as the wrap pitch drifts across the frame."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-28/attempt-1/index.html",
+        "compo": "4k-shader",
+        "byte_size": 2359,
+        "size_budget_bytes": 4096,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 7197.313,
+          "t8": 1879.721,
+          "t20": 1832.9115,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 1.8092,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 45.3061,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 1,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.4,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "98b8f0e0e0e0e0e0",
+            "t8": "98b8f8fcece0e0e0",
+            "t20": "e8e8f8f4c8e0e8e8"
+          },
+          "color_histogram": [
+            0,
+            0.090872,
+            0,
+            0,
+            0,
+            0.003665,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.006294,
+            0.066785,
+            0,
+            0,
+            0,
+            0.013214,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.071492,
+            0.014399,
+            0.000655,
+            0,
+            0,
+            0.000145,
+            0.000753,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000024,
+            0,
+            0,
+            0,
+            0.007504,
+            0.724198
+          ],
+          "min_hamming_distance": 22,
+          "min_histogram_distance": 0.273189,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 3.6879,
+          "reduced_motion": 0.0561,
+          "ratio": 0.0152
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-28/attempt-1/shot-02s.png",
+          "t8": "audit/2026-11-28/attempt-1/shot-08s.png",
+          "t20": "audit/2026-11-28/attempt-1/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 13,
+          "craft": 13,
+          "distinctness": 15,
+          "polish": 7
+        },
+        "total": 63,
+        "evidence": {
+          "mechanism": "shot-08s: dyed olive and blue stripes separated by cream undyed gaps at one fixed diagonal, with pitch dense on the right and sparse on the left; by shot-20s the bands mirror into a centred bowtie.",
+          "ambition": "shot-08s: one flat 2D band field with thin white thread lines and a mirror copy; no shading, lighting or simulation is visible, so the bytes buy a single layer.",
+          "craft": "shot-20s: indigo, olive, blue and cream palette is harmonious and the composition is centred, but band edges are visibly stair-stepped at full size and the central overlap is untidy.",
+          "distinctness": "shot-08s: diagonal olive and blue stripes on cream differ from the coral tips, apricot sand and Penrose kites of the last nights; striped fields are still a familiar cliche.",
+          "polish": "shot-02s: a single indigo slab with one thin band at the left is composed but nearly empty; by shot-20s the bands have grown into a centred mirrored bowtie that resolves cleanly."
+        },
+        "pairwise_beats_median": true,
+        "pairwise_median_ref": "2026-11-26",
+        "pairwise_justification": "Tonight's 20s bowtie of olive and blue bands on cream reads cleaner and more composed than the median's apricot sand square, whose 8s frame is a noisy diamond blob of grain.",
+        "calibration_anchors_used": [
+          "anchor-03",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Add a second rendering idea: shade each band with a soft light falloff across its width so the compression reads as cloth in shot-02s, which is currently a flat indigo slab.",
+            "expected_gain": 5
+          },
+          {
+            "rank": 2,
+            "change": "Make the shove visible: animate each new band pushing the earlier ones along the diagonal between shot-02s and shot-08s, so the wrap rule shows as motion rather than a finished stripe field.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 3,
+            "change": "Anti-alias the band borders with a one-pixel smoothstep so the stair-stepped edges visible at shot-08s and shot-20s are removed at full size.",
+            "expected_gain": 3
+          }
+        ]
+      },
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "model": "haiku",
+      "effort": null,
+      "gates": {
+        "passed": false,
+        "piece_path": "audit/2026-11-28/attempt-2/index.html",
+        "compo": "4k-shader",
+        "byte_size": 2495,
+        "size_budget_bytes": 4096,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 8028.2519,
+          "t8": 5031.7805,
+          "t20": 2706.0308,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 5.7466,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 49.8864,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 5,
+          "limit": 3,
+          "passed": false
+        },
+        "frame_time_ms": {
+          "median": 16.7,
+          "p90": 33.3,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "98b8f8f0c0f0e0e0",
+            "t8": "98b8f0e4c8d0e0e0",
+            "t20": "e8f0e8f0e8f0b088"
+          },
+          "color_histogram": [
+            0,
+            0.178358,
+            0,
+            0,
+            0,
+            0.008624,
+            0.000001,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.017734,
+            0.025021,
+            0,
+            0,
+            0.001267,
+            0.006509,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000792,
+            0,
+            0,
+            0,
+            0.023907,
+            0.025148,
+            0.000016,
+            0,
+            0,
+            0.000239,
+            0.000132,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000932,
+            0,
+            0,
+            0,
+            0.008469,
+            0.702849
+          ],
+          "min_hamming_distance": 22,
+          "min_histogram_distance": 0.293647,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 20.1715,
+          "reduced_motion": 0.0157,
+          "ratio": 0.0008
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-28/attempt-2/shot-02s.png",
+          "t8": "audit/2026-11-28/attempt-2/shot-08s.png",
+          "t20": "audit/2026-11-28/attempt-2/shot-20s.png"
+        },
+        "failures": [
+          {
+            "gate": "strobe",
+            "message": "5 flashes per second over 9.5% of the screen (limit 3)",
+            "measured": 5,
+            "threshold": 3
+          }
+        ]
+      },
+      "verdict": null,
+      "outcome": "gates_failed"
+    },
+    {
+      "attempt": 3,
+      "model": "opus",
+      "effort": "low",
+      "gates": {
+        "passed": true,
+        "piece_path": "audit/2026-11-28/attempt-3/index.html",
+        "compo": "4k-shader",
+        "byte_size": 2583,
+        "size_budget_bytes": 4096,
+        "console_errors": [],
+        "network_requests": [],
+        "luminance_variance": {
+          "t2": 1946.921,
+          "t8": 1788.6432,
+          "t20": 1015.8404,
+          "floor": 12,
+          "passed": true
+        },
+        "motion": {
+          "frame_diff_mean": 4.8731,
+          "frame_diff_floor": 0.8,
+          "development_diff_t2_t20": 21.7134,
+          "development_floor": 2.5,
+          "passed": true
+        },
+        "strobe": {
+          "max_flashes_per_sec": 2,
+          "limit": 3,
+          "passed": true
+        },
+        "frame_time_ms": {
+          "median": 33.3,
+          "p90": 33.4,
+          "budget_ms": 250,
+          "passed": true
+        },
+        "audio_probe": null,
+        "novelty_b": {
+          "phashes": {
+            "t2": "0f0b1b3973272f0f",
+            "t8": "0f0b1b3973272f0f",
+            "t20": "0f0f2b6933170f0f"
+          },
+          "color_histogram": [
+            0,
+            0.018534,
+            0,
+            0,
+            0,
+            0.028598,
+            0.000725,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.007435,
+            0.032555,
+            0,
+            0,
+            0.000011,
+            0.002328,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.000009,
+            0,
+            0,
+            0,
+            0.00003,
+            0.019477,
+            0.000055,
+            0,
+            0,
+            0.000044,
+            0.000082,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.029443,
+            0,
+            0,
+            0,
+            0.090481,
+            0.770191
+          ],
+          "min_hamming_distance": 16,
+          "min_histogram_distance": 0.228416,
+          "closest_date": "2026-11-23",
+          "passed": true
+        },
+        "slop_lint": {
+          "passed": true,
+          "violations": []
+        },
+        "reduced_motion": {
+          "passed": true,
+          "normal_motion": 5.0248,
+          "reduced_motion": 0.6197,
+          "ratio": 0.1233
+        },
+        "screenshots": {
+          "t2": "audit/2026-11-28/attempt-3/shot-02s.png",
+          "t8": "audit/2026-11-28/attempt-3/shot-08s.png",
+          "t20": "audit/2026-11-28/attempt-3/shot-20s.png"
+        },
+        "failures": []
+      },
+      "verdict": {
+        "scores": {
+          "mechanism": 15,
+          "ambition": 14,
+          "craft": 15,
+          "distinctness": 15,
+          "polish": 7
+        },
+        "total": 66,
+        "evidence": {
+          "mechanism": "shot-08s: undyed bands sweep in from the lower-left end and stack along one fixed diagonal, each new band shoving the earlier ones; by shot-20s the cloth has folded into a mirrored V with the same banding.",
+          "ambition": "shot-08s: a paper drop-shadow, warped band coordinates and a mirror fold make the cloth read as fabric; by shot-20s a chevron fold adds a second geometric act, though only one flat banded layer is visible.",
+          "craft": "shot-20s: a moire shimmer runs through the V's central fold where band pitch aliases, and the shot-02s stripes wobble at the edges; the indigo-on-cream palette and soft shadow stay clean.",
+          "distinctness": "shot-02s: indigo cloth bands on a pale cream ground; the recent sand grid is apricot and vermilion and the Penrose is ochre and rust, so this textile subject and palette read apart.",
+          "polish": "shot-02s: a diagonal rectangle sits slightly off-centre with bands starting at its lower-left; by shot-20s the piece resolves into a symmetric V, so start and end frames are clearly different and settled."
+        },
+        "pairwise_beats_median": false,
+        "pairwise_median_ref": "2026-11-26",
+        "pairwise_justification": "The median sand grid fills the frame with apricot branching fronts and vermilion scars; tonight's shot-02s and shot-08s show one indigo rectangle on flat cream, so the median reads richer in a head-to-head thumbnail.",
+        "calibration_anchors_used": [
+          "anchor-03",
+          "anchor-05",
+          "anchor-06",
+          "anchor-10"
+        ],
+        "critique": [
+          {
+            "rank": 1,
+            "change": "Remove the moire at shot-20s: where the V's central fold shimmers, lower the band frequency near the fold or low-pass the warp so the bands resolve cleanly at full 1280x720 size.",
+            "expected_gain": 4
+          },
+          {
+            "rank": 2,
+            "change": "Make shot-20s show the settled diagonal rectangle the storyboard promises instead of only a mirrored V, so the final frame keeps the wrap rule visible and the dense-to-sparse pitch drift shows across the cloth.",
+            "expected_gain": 3
+          },
+          {
+            "rank": 3,
+            "change": "Add a second rendering act: a visible thread line wrapping diagonally across the cloth with self-shadow in the pleats, so the gathering reads as material rather than one flat banded layer.",
+            "expected_gain": 4
+          }
+        ]
+      },
+      "outcome": "below_threshold"
+    }
+  ],
+  "liner_note": "The Folding Fibers pole-wrapping guide gives a thread spacing of about 1/8 to 1/4 inch between wraps on a 4.5 inch pole. Wound diagonally, the thread binds cloth tightly and scrunches it into pleats with a diagonal design. The guide notes that these compressed folds cannot be measured exactly because of the winding method. On screen a rectangle of cloth fills one diagonal band at a time, starting from one end, and each new band pushes the earlier ones along. Dense bands give way to sparse ones as the wrap pitch drifts across the frame.",
+  "screenshots": {
+    "t2": "shot-02s.png",
+    "t8": "shot-08s.png",
+    "t20": "shot-20s.png"
+  },
+  "piece_rel_path": "pieces/2026-11-28/index.html"
+}

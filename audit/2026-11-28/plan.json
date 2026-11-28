@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-28",
+  "compo": "4k-shader",
+  "size_budget_bytes": 4096,
+  "constraint": null,
+  "domain": "shibori-resist-folds",
+  "wildcard": false,
+  "banned": {
+    "techniques": [
+      "Stochastic L-system",
+      "shelter-count node occlusion",
+      "flow-threshold stagnant-core dimming",
+      "boundary-layer halo around branches",
+      "abelian toppling cascade on integer height grid",
+      "four-neighbour threshold relaxation per frame",
+      "ping-pong integer height buffers",
+      "flash-decay topple front rendering with umber scars",
+      "signed-distance glyph edges",
+      "fixed-lag defect birth behind the tip",
+      "six-fold mirrored lattice arms",
+      "latency-controlled arm length",
+      "recursive substitution tiling",
+      "generation shell reveal",
+      "kite-dart count bars"
+    ],
+    "domains": [
+      "coral-accretion-morphology",
+      "self-organised criticality sandpiles",
+      "dendritic-solidification",
+      "penrose-inflation"
+    ],
+    "palette_hexes": [
+      "#c9bf98",
+      "#8fa592",
+      "#4f6b63",
+      "#2f3e4c",
+      "#b5476a",
+      "#f2c9a0",
+      "#d9703f",
+      "#6e5a3c",
+      "#d8a193",
+      "#b8665a",
+      "#7a2636",
+      "#efe3c8",
+      "#c8912e",
+      "#9c4a24",
+      "#e6b45c",
+      "#3a332c"
+    ],
+    "slop_patterns": [
+      "Unseeded Math.random() drives the render. Use the seeded PRNG from lib/noise.js.",
+      "Shadertoy boilerplate or link found. Write the piece from the brief, not from a copied template.",
+      "Matrix rain is on the permanent slop list.",
+      "Four-sine plasma boilerplate. Build a field with development instead.",
+      "Plain plasma: sine sums as the whole picture.",
+      "Plain starfield: points drifting toward the camera with no structure behind them.",
+      "Plain tunnel: concentric rings flying past with nothing else happening.",
+      "Matrix rain: falling glyph columns.",
+      "Mouse-following particles with no system behind them.",
+      "A single raymarched sphere or torus on a gradient.",
+      "Untouched Mandelbrot or Julia zoom.",
+      "Purple-to-blue or teal-to-orange gradient as the whole palette. Neon on black by default.",
+      "Bloom or chromatic aberration used to hide an empty scene.",
+      "Math.random() noise as the main visual idea.",
+      "A loop with no development: the 20 s frame looks like the 2 s frame.",
+      "Title cards or captions doing the work the visuals should do.",
+      "A copy of a well-known Shadertoy piece. The builder must not reproduce a known work."
+    ]
+  },
+  "boredom_override": false,
+  "requires_audio": false,
+  "seed": "2026-11-28",
+  "dry_run": false,
+  "overrides": {
+    "domain": null,
+    "compo": null,
+    "mood_preset": null
+  }
+}

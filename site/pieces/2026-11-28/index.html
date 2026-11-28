@@ -1,0 +1,43 @@
+<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; media-src blob:"><html><head><meta charset=utf-8><title>Arashi pole-wrap bands</title><style>*{margin:0}canvas{width:100vw;height:100vh;display:block}</style></head><body><canvas id=c></canvas><script type="module">
+const F=`#version 300 es
+precision highp float;uniform vec4 U;out vec4 o;
+float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p);f*=f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+1.),f.x),f.y);}
+#define S smoothstep
+const vec3 A=vec3(.122,.227,.373),B=vec3(.369,.498,.659),C=vec3(.659,.69,.416),D=vec3(.788,.541,.353),E=vec3(.965,.933,.863);
+float N,W;
+vec4 cl(vec2 p){
+vec2 q=vec2(dot(p,vec2(.866,.5)),dot(p,vec2(-.5,.866)));
+vec2 b=abs(q)-vec2(.66,.3);float e=max(b.x,b.y);
+if(e>.004)return vec4(0,0,0,e);
+float v=q.y/.3,s=q.x+.66+.3*q.y;
+vec2 w=vec2(n(q*5.),n(q*5.+7.))-.5;
+s+=.035*w.x+.01*(n(q*31.+w*3.)-.5);
+float P=mix(.045,mix(.03,.07,S(-.3,.3,-v)),W);
+float f=log(1.+.9*s)/(.9*P);
+float d=fract(f-N),fr=S(N+.2,N-.2,f);
+float r=.3+.1*(n(q*vec2(9,40))-.5);
+float u=S(0.,.05,d)*S(r,r-.08,d)*fr;
+vec3 c=mix(A,B,.5+.5*cos(6.283*d))*mix(.85,1.,n(q*60.));
+c=mix(c,C,.35*S(r,r+.1,d)*S(r+.25,r+.1,d)*fr);
+c=mix(c,E*.97,u);
+c=mix(c,D,S(.012,0.,abs(d-r*.5))*fr*.8);
+c*=1.-.25*S(-.03,0.,e);
+return vec4(c,e);}
+void main(){
+float t=U.x;vec2 p=(2.*gl_FragCoord.xy-U.yz)/U.z;
+N=1.5+.4*t+8.*S(4.,11.,t)+7.*S(10.,16.,t);W=S(10.,14.,t);
+float m=S(10.,14.,t),z=1.+.4*S(9.,13.,t)-.75*S(15.,19.,t);
+p/=z;
+vec3 c=E*(.94+.04*n(gl_FragCoord.xy*.7*(1.-U.w)+U.w))*(1.-.15*dot(p*.4,p*.4));
+vec2 a=p-vec2(.38*S(15.,19.,t),0.);
+vec4 k=cl(a+vec2(.03,-.03));c*=1.-.18*S(.03,-.01,k.w);
+k=cl(a);c=mix(c,k.rgb,S(.004,-.004,k.w));
+if(m>0.){vec2 g=vec2(-p.x,p.y)-vec2(.38*S(15.,19.,t),0.);k=cl(g);c=mix(c,k.rgb,m*S(.004,-.004,k.w)*step(p.x,0.));}
+o=vec4(c,1);}`;
+const c=document.getElementById('c'),g=c.getContext('webgl2'),R=matchMedia('(prefers-reduced-motion: reduce)'),P=g.createProgram();
+[[35633,'#version 300 es\nvoid main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}'],[35632,F]].forEach(([k,s])=>{const h=g.createShader(k);g.shaderSource(h,s);g.compileShader(h);g.attachShader(P,h)});
+g.linkProgram(P);g.useProgram(P);const L=g.getUniformLocation(P,'U');let T=0,M=-1;
+const f=m=>{requestAnimationFrame(f);const w=c.clientWidth>>1,h=c.clientHeight>>1;if(c.width!=w||c.height!=h){c.width=w;c.height=h}T+=M<0?0:Math.min((m-M)/1e3,.5)*(R.matches?.1:1);M=m;g.viewport(0,0,w,h);g.uniform4f(L,T,w,h,R.matches?1:0);g.drawArrays(4,0,3)};
+requestAnimationFrame(f);
+</script></body></html>

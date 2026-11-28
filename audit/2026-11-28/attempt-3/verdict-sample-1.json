@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 14,
+    "craft": 15,
+    "distinctness": 16,
+    "polish": 7
+  },
+  "total": 67,
+  "evidence": {
+    "mechanism": "shot-08s: undyed bands sweep in from the lower-left end and stack along one fixed diagonal, each new band shoving the earlier ones; by shot-20s the cloth has folded into a mirrored V with the same banding.",
+    "ambition": "shot-08s: a paper drop-shadow, warped band coordinates and a mirror fold make the cloth read as fabric; by shot-20s a chevron fold adds a second geometric act, though only one flat banded layer is visible.",
+    "craft": "shot-20s: a moire shimmer runs through the V's central fold where band pitch aliases, and the shot-02s stripes wobble at the edges; the indigo-on-cream palette and soft shadow stay clean.",
+    "distinctness": "shot-02s: indigo cloth bands on a pale cream ground; the recent sand grid is apricot and vermilion and the Penrose is ochre and rust, so this textile subject and palette read apart.",
+    "polish": "shot-02s: a diagonal rectangle sits slightly off-centre with bands starting at its lower-left; by shot-20s the piece resolves into a symmetric V, so start and end frames are clearly different and settled."
+  },
+  "pairwise_beats_median": false,
+  "pairwise_median_ref": "2026-11-26",
+  "pairwise_justification": "The median sand grid fills the frame with apricot branching fronts and vermilion scars; tonight's shot-02s and shot-08s show one indigo rectangle on flat cream, so the median reads richer in a head-to-head thumbnail.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-05",
+    "anchor-06",
+    "anchor-10"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Remove the moire at shot-20s: where the V's central fold shimmers, lower the band frequency near the fold or low-pass the warp so the bands resolve cleanly at full 1280x720 size.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 2,
+      "change": "Make shot-20s show the settled diagonal rectangle the storyboard promises instead of only a mirrored V, so the final frame keeps the wrap rule visible and the dense-to-sparse pitch drift shows across the cloth.",
+      "expected_gain": 3
+    },
+    {
+      "rank": 3,
+      "change": "Add a second rendering act: a visible thread line wrapping diagonally across the cloth with self-shadow in the pleats, so the gathering reads as material rather than one flat banded layer.",
+      "expected_gain": 4
+    }
+  ]
+}

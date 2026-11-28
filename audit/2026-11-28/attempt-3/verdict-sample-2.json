@@ -1,0 +1,26 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 14,
+    "craft": 13,
+    "distinctness": 15,
+    "polish": 6
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-08s: about eight undyed cream bands gather at the lower-left end of an indigo rectangle set on a fixed diagonal; by shot-20s the same bands fold into a mirrored chevron.",
+    "ambition": "shot-02s: one flat 2D layer with a soft drop shadow on cream paper and a domain-warped band texture; by shot-20s a mirror fold reflects the cloth into a second composition step.",
+    "craft": "shot-20s: moire and aliasing shimmer along the fold seam where the bands meet, and the warped stripes blur at the edges; the cream ground and indigo palette otherwise stay clean.",
+    "distinctness": "shot-02s: indigo and cream cloth on paper with one tilted rectangle; the recent nights are apricot grids, coral and kite tilings, so this palette and cloth idea share nothing with them.",
+    "polish": "shot-02s: a composed off-centre diagonal rectangle is already in frame; by shot-20s it resolves into a centred mirrored V rather than the settled full rectangle the brief promised."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-26",
+  "pairwise_justification": "Tonight's shot-08s has crisp undyed bands on indigo cloth; the median's apricot grid is a muddy orange blob on tan noise, so tonight wins a head-to-head vote on clarity.",
+  "calibration_anchors_used": ["anchor-03", "anchor-05", "anchor-06", "anchor-10"],
+  "critique": [
+    { "rank": 1, "change": "At shot-20s, soften or anti-alias the band frequency along the mirror seam so the chevron reads as cloth instead of shimmering moire hatch.", "expected_gain": 3 },
+    { "rank": 2, "change": "Keep the settled end state as the full centred diagonal rectangle the brief describes, instead of the mirrored V at shot-20s, so the start and end frames read as one object.", "expected_gain": 3 },
+    { "rank": 3, "change": "Make the wrap pitch visibly drift from dense to sparse across shot-02s and shot-08s, so the spacing rule reads without captions instead of as uniform wavy stripes.", "expected_gain": 4 }
+  ]
+}

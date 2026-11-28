@@ -1,0 +1,34 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 63,
+  "reason": "Attempt 1: scored 63, below 72. Retrying (2/3).",
+  "feedback": {
+    "gate_failures": [],
+    "critique": [
+      {
+        "rank": 1,
+        "change": "Add a second rendering idea: shade each band with a soft light falloff across its width so the compression reads as cloth in shot-02s, which is currently a flat indigo slab.",
+        "expected_gain": 5
+      },
+      {
+        "rank": 2,
+        "change": "Make the shove visible: animate each new band pushing the earlier ones along the diagonal between shot-02s and shot-08s, so the wrap rule shows as motion rather than a finished stripe field.",
+        "expected_gain": 4
+      },
+      {
+        "rank": 3,
+        "change": "Anti-alias the band borders with a one-pixel smoothstep so the stair-stepped edges visible at shot-08s and shot-20s are removed at full size.",
+        "expected_gain": 3
+      }
+    ],
+    "build_failed": false
+  }
+}

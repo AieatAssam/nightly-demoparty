@@ -1,0 +1,70 @@
+{
+  "topic": "Arashi pole-wrap shibori: diagonal thread compression gathers cloth into pleats, and the undyed bands of the pleats form the pattern",
+  "domain": "shibori-resist-folds",
+  "wildcard_chosen": false,
+  "summary": "In arashi (pole-wrap) shibori, cloth is bound tightly to a pole with thread wound diagonally, then pushed along the pole so it gathers into pleats. Dye cannot penetrate the tightly compressed folds, so the pattern is the undyed negative left by the squeezed bands. Wrap direction sets the diagonal, and wrap spacing sets the band pitch. The result is a pattern built row by row, with the thread geometry, not a painted image, determining where dye goes.",
+  "facts": [
+    {
+      "claim": "The arashi pole-wrap method wraps thread up and down the pole to bind the cloth very tightly, then scrunches the cloth on the pole, producing a pleated cloth with a diagonal design.",
+      "source_url": "https://en.wikipedia.org/wiki/Shibori",
+      "source_title": "Shibori - Wikipedia"
+    },
+    {
+      "claim": "One pole-wrap workshop guide uses a 4.5 inch diameter pole, with a rectangle of cloth wrapped diagonally around the pole.",
+      "source_url": "https://fibersfolding.omeka.net/exhibits/show/shibori/shibori--pole-wrapping-",
+      "source_title": "FOLDING FIBERS | Shibori (Pole Wrapping)"
+    },
+    {
+      "claim": "The same pole-wrapping guide gives thread spacing of approximately 1/8 to 1/4 inch between wraps.",
+      "source_url": "https://fibersfolding.omeka.net/exhibits/show/shibori/shibori--pole-wrapping-",
+      "source_title": "FOLDING FIBERS | Shibori (Pole Wrapping)"
+    },
+    {
+      "claim": "Pole-wrap shibori creates tension with wrapped thread to compress the fabric into folds around the pole; the guide notes the compressed folds cannot be measured exactly because of the winding method.",
+      "source_url": "https://fibersfolding.omeka.net/exhibits/show/shibori/shibori--pole-wrapping-",
+      "source_title": "FOLDING FIBERS | Shibori (Pole Wrapping)"
+    },
+    {
+      "claim": "In modern itajime shibori, the shapes clamped onto folded cloth prevent dye from penetrating the fabric they cover.",
+      "source_url": "https://en.wikipedia.org/wiki/Shibori",
+      "source_title": "Shibori - Wikipedia"
+    },
+    {
+      "claim": "In itajime shibori, the area covered by the clamp remains undyed during the dyeing process.",
+      "source_url": "https://www.selvedge.org/blogs/selvedge/how-to-make-itajime-shibori",
+      "source_title": "How To Make Itajime Shibori"
+    },
+    {
+      "claim": "A Textile Society of America paper describes itajime clamp resist as folded cloth sandwiched between wooden boards that are clamped tightly to protect selected areas of fabric from dye.",
+      "source_url": "https://digitalcommons.unl.edu/tsaconf/5/",
+      "source_title": "Textile Society of America symposium proceedings (Beni Itajime paper, Arai and Wada 2010)"
+    }
+  ],
+  "visualisable_mechanisms": [
+    {
+      "name": "diagonal wrap-and-scrunch band",
+      "description": "Thread is wound diagonally down the pole. Each wrap pulls the cloth tight, then the cloth is pushed along the pole, so each new wrap gathers a fresh compressed band. Bands that were squeezed resist dye, and the diagonal wrap direction sets the orientation of every band.",
+      "render_or_sonify_hint": "Draw a rectangle on a diagonal, with parallel undyed bands at an angle across it. Build the bands one at a time from one end, each new band pushing the earlier ones along. Keep the bands at a fixed angle to the frame."
+    },
+    {
+      "name": "spacing-set band pitch",
+      "description": "The gap between wraps, around 1/8 to 1/4 inch in the cited guide, sets how often a compressed undyed band occurs. Tighter wraps give denser bands, and looser wraps give wider dyed gaps between them.",
+      "render_or_sonify_hint": "Show two pitches in the same frame, with dense bands in one area and sparse bands in another. Let the pitch change slowly across the piece, so the rhythm of the bands shifts."
+    },
+    {
+      "name": "clamp-edge exposure grid",
+      "description": "In a board-clamped fold, only the exposed edges of the folded cloth take dye, because the boards cover the rest. The dyed pattern is therefore the set of folded edges, not the faces of the fold.",
+      "render_or_sonify_hint": "Draw a grid of thin dyed lines, with the interior of each cell left light. Build the grid from the edges inward, so the cell walls are dark first and the centres fill in last."
+    }
+  ],
+  "open_questions": [
+    "Does the wrap spacing change the stripe period after the cloth compresses, given the cited guide says the folds cannot be measured exactly?",
+    "What fold count or layer count changes dye penetration depth? No quantitative model was found in these sources.",
+    "Which compression pressure gives a repeatable undyed band, and how does it vary with cloth weight?"
+  ],
+  "surprise": {
+    "score": 55,
+    "justification": "A generalist expects tie-dye to be painted or random. In arashi shibori the pattern is the undyed negative left by compressed cloth, and the diagonal and spacing come from the thread wrap geometry rather than from any drawn design."
+  },
+  "dataset": null
+}

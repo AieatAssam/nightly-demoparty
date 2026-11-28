@@ -1,0 +1,29 @@
+{
+  "publish_threshold": 72,
+  "outcomes": [
+    {
+      "attempt": 1,
+      "outcome": "below_threshold"
+    },
+    {
+      "attempt": 2,
+      "outcome": "gates_failed"
+    }
+  ],
+  "action": "retry",
+  "best_attempt": 1,
+  "best_total": 63,
+  "reason": "Attempt 2: hard gates failed: strobe. Retrying (3/3).",
+  "feedback": {
+    "gate_failures": [
+      {
+        "gate": "strobe",
+        "message": "5 flashes per second over 9.5% of the screen (limit 3)",
+        "measured": 5,
+        "threshold": 3
+      }
+    ],
+    "critique": [],
+    "build_failed": false
+  }
+}

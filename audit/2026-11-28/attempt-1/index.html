@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Arashi</title><style>*{margin:0}body{background:#f6eedc;overflow:hidden}canvas{width:100vw;height:100vh;display:block}</style></head><body><canvas id=c></canvas><script type="module">
+const F=`#version 300 es
+precision highp float;uniform vec4 U;out vec4 o;
+float hh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hh(i),hh(i+vec2(1,0)),f.x),mix(hh(i+vec2(0,1)),hh(i+1.),f.x),f.y);}
+vec4 pat(vec2 p,float T,float b2,float b3){
+ vec2 d=vec2(.8776,.4794),n=vec2(-.4794,.8776);
+ float lx=dot(p,d),ly=dot(p,n);
+ vec2 a=vec2(abs(lx)-.5,abs(ly)-.28);
+ float dd=max(a.x,a.y),w=max(fwidth(dd),1e-4);
+ float ins=smoothstep(w,-w,dd);
+ float s=clamp(lx+.5,0.,1.);
+ float ph=13.*s+2.*s*s+.08*sin(T*.4)*s+(.4+.4*b3)*(vn(p*2.5+vec2(0.,T*.12))-.5);
+ float cnt=1.+12.*b2+2.*b3;
+ float n0=floor(ph),f=fract(ph);
+ float vis=clamp(cnt-n0,0.,1.);
+ float bw=.2*vis,fw=max(fwidth(ph),1e-3);
+ float und=smoothstep(bw+fw,bw-fw,abs(f-.5));
+ vec3 gap=mix(vec3(.122,.227,.373),mod(n0,2.)<.5?vec3(.369,.498,.659):vec3(.659,.690,.416),smoothstep(5.,8.,T));
+ gap*=.8+.2*smoothstep(0.,.5,abs(f-.5));
+ vec3 c=mix(gap,vec3(.965,.933,.863),und);
+ return vec4(c,ins);
+}
+void main(){
+ float T=U.x;vec2 r=U.yz;
+ vec2 p=(gl_FragCoord.xy-.5*r)/r.y;
+ float b2=smoothstep(5.,9.5,T),b3=smoothstep(10.,13.,T),b4=smoothstep(15.,18.,T);
+ p/=1.+.55*(b3-b4);
+ vec4 A=pat(p,T,b2,b3),B=pat(vec2(-p.x,p.y),T,b2,b3);
+ vec3 c=mix(vec3(.965,.933,.863),A.rgb,A.a);
+ c=mix(c,B.rgb,B.a*b3*(1.-A.a));
+ o=vec4(c,1.);
+}`;
+const c=document.getElementById('c'),g=c.getContext('webgl2'),R=matchMedia('(prefers-reduced-motion: reduce)'),P=g.createProgram();
+[[35633,'#version 300 es\nvoid main(){gl_Position=vec4(vec2(gl_VertexID&1,gl_VertexID>>1)*4.-1.,0,1);}'],[35632,F]].forEach(([k,s])=>{const h=g.createShader(k);g.shaderSource(h,s);g.compileShader(h);g.attachShader(P,h)});
+g.linkProgram(P);g.useProgram(P);const L=g.getUniformLocation(P,'U');let T=0,M=-1;
+const f=m=>{requestAnimationFrame(f);const w=c.clientWidth>>1,h=c.clientHeight>>1;if(c.width!=w||c.height!=h){c.width=w;c.height=h}T+=M<0?0:Math.min((m-M)/1e3,.5)*(R.matches?.1:1);M=m;g.viewport(0,0,w,h);g.uniform4f(L,T,w,h,R.matches?1:0);g.drawArrays(4,0,3)};
+requestAnimationFrame(f);
+</script></body></html>

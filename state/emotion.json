@@ -18,337 +18,415 @@
   0.287
  ],
  "mood": [
-  0.4491679295097758,
-  0.546219533430321,
-  0.4033102936201458
+  0.43523130316767056,
+  0.524133903786406,
+  0.4214049092785648
  ],
  "emotions": {
   "joy": {
-   "i": 0.6845694998276726,
+   "i": 0.67697674895864,
    "target": null,
-   "cause": "Found a buildable mechanism: shade-and-light split.",
+   "cause": "Found a buildable mechanism: clamp-edge exposure grid.",
    "source": null,
-   "thread": "night-2026-11-27"
+   "thread": "night-2026-11-28"
   },
   "surprise": {
-   "i": 0.21158088322438173,
+   "i": 0.2029321642666209,
    "target": null,
-   "cause": "Found a buildable mechanism: solid-body flow threshold.",
+   "cause": "Found a buildable mechanism: clamp-edge exposure grid.",
    "source": null,
-   "thread": "night-2026-11-27"
+   "thread": "night-2026-11-28"
   },
   "interest": {
-   "i": 0.6803748640423732,
+   "i": 0.6689058571579354,
    "target": null,
-   "cause": "Found a buildable mechanism: shade-and-light split.",
+   "cause": "Found a buildable mechanism: clamp-edge exposure grid.",
    "source": null,
-   "thread": "night-2026-11-27"
+   "thread": "night-2026-11-28"
   },
   "boredom": {
-   "i": 0.05805491464981836,
+   "i": 0.10221486984367052,
    "target": null,
-   "cause": "Tonight's audiovisual piece on coral-accretion-morphology went to the B-sides at 70.",
+   "cause": "Tonight's 4k-shader piece on shibori-resist-folds went to the B-sides at 66.",
    "source": null,
-   "thread": "night-2026-11-27"
+   "thread": "night-2026-11-28"
   },
   "pride": {
-   "i": 0.15733727182388801,
+   "i": 0.16453185911636078,
    "target": null,
-   "cause": "Tonight's audiovisual piece on coral-accretion-morphology went to the B-sides at 70.",
+   "cause": "Tonight's 4k-shader piece on shibori-resist-folds went to the B-sides at 66.",
    "source": null,
-   "thread": "night-2026-11-27"
+   "thread": "night-2026-11-28"
   }
  },
  "chem": {
-  "da": 0.9286571357538155,
-  "ne": 0.8611494941310174,
-  "sht": 1,
-  "cort": 0.27304546108815353,
+  "da": 0.9943390387403029,
+  "ne": 0.9324830345406183,
+  "sht": 0.9550955556575491,
+  "cort": 0.2770827362413097,
   "oxt": 0.42500000000000004,
-  "opi": 0.9723081595580315
+  "opi": 1
  },
  "stress": 0.0,
  "load": 0.0,
- "opp": 0.07540990719868837,
+ "opp": 0.062291257668913275,
  "drives": {
   "novelty": 0,
-  "social": 0.9956179197932691,
+  "social": 0.9984665208163722,
   "fatigue": 0.0
  },
  "sentiments": {
   "topic:penrose-inflation": {
-   "L": 0.16962241918115123,
-   "W": 0.7157819680132449,
+   "L": 0.16789167360000326,
+   "W": 0.681997651342874,
    "n": 1,
    "ep": null
   },
   "topic:tiling-geometry": {
-   "L": 0.32335503139816196,
-   "W": 0.7485231529967754,
-   "n": 2,
+   "L": 0.4599311731022666,
+   "W": 0.8757343406167696,
+   "n": 3,
    "ep": null
   },
   "topic:kite-dart-angles": {
-   "L": 0.07930128391006432,
-   "W": 0.07055698279522025,
+   "L": 0.07849213175099667,
+   "W": 0.06722675158434471,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-23": {
-   "L": 0.16962241918115123,
-   "W": 0.7157819680132449,
+   "L": 0.16789167360000326,
+   "W": 0.681997651342874,
    "n": 1,
    "ep": null
   },
   "topic:substitution-rules": {
-   "L": 0.2629488722072398,
-   "W": 0.382366996308766,
+   "L": 0.2602658683871227,
+   "W": 0.3643195904437515,
    "n": 1,
    "ep": null
   },
   "topic:golden-ratio": {
-   "L": 0.2801826169564785,
-   "W": 0.47918067038225876,
+   "L": 0.27732376829394395,
+   "W": 0.456563739202155,
    "n": 1,
    "ep": null
   },
   "topic:aperiodicity": {
-   "L": 0.2108992691293795,
-   "W": 0.3392229082616451,
+   "L": 0.20874735442450082,
+   "W": 0.32321186765613,
    "n": 1,
    "ep": null
   },
   "topic:iterated-map": {
-   "L": 0.24274634520261373,
-   "W": 0.27387984549644784,
+   "L": 0.24026947825113745,
+   "W": 0.2609529433902565,
    "n": 1,
    "ep": null
   },
   "topic:growth-shells": {
-   "L": 0.24360506552100514,
-   "W": 0.2772752371664741,
+   "L": 0.24111943660042315,
+   "W": 0.2641880753827185,
    "n": 1,
    "ep": null
   },
   "topic:simulation": {
-   "L": 0.51012765509654,
-   "W": 0.9272767739131781,
+   "L": 0.5060334462502007,
+   "W": 0.8835100773897712,
    "n": 4,
    "ep": null
   },
   "topic:dendritic-solidification": {
-   "L": 0.15023573266159826,
-   "W": 0.8506496378750065,
+   "L": 0.14870279950518042,
+   "W": 0.8104996787732515,
    "n": 1,
    "ep": null
   },
   "topic:physics": {
-   "L": 0.3718305498904564,
-   "W": 0.6248863542613509,
-   "n": 2,
+   "L": 0.4721209541437943,
+   "W": 0.6959539423966213,
+   "n": 3,
    "ep": null
   },
   "topic:tip-speed-radius-lock": {
-   "L": 0.2731441094687026,
-   "W": 0.445077542644226,
+   "L": 0.2703570783512258,
+   "W": 0.42407025087729405,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-25": {
-   "L": 0.15023573266159826,
-   "W": 0.8506496378750065,
+   "L": 0.14870279950518042,
+   "W": 0.8104996787732515,
    "n": 1,
    "ep": null
   },
   "topic:convection-regimes": {
-   "L": 0.17926834858821705,
-   "W": 0.19582417678854308,
+   "L": 0.17743918058285216,
+   "W": 0.18658143766408333,
    "n": 1,
    "ep": null
   },
   "topic:side-branch-defect": {
-   "L": 0.2839132223930267,
-   "W": 0.4826544229145523,
+   "L": 0.2810163084269463,
+   "W": 0.45987353348901905,
    "n": 1,
    "ep": null
   },
   "topic:tip-instability": {
-   "L": 0.2660891009286241,
-   "W": 0.32233546878030356,
+   "L": 0.2633740557250061,
+   "W": 0.3071215013460685,
    "n": 1,
    "ep": null
   },
   "topic:grammar": {
-   "L": 0.24446292928023072,
-   "W": 0.27230140674468206,
+   "L": 0.2421754366036553,
+   "W": 0.25944900564161383,
    "n": 2,
    "ep": null
   },
   "topic:recursive-branching": {
-   "L": 0.1972528719652001,
-   "W": 0.24367510982669766,
+   "L": 0.19524019853340616,
+   "W": 0.23217384625348594,
    "n": 1,
    "ep": null
   },
   "topic:growth-latency": {
-   "L": 0.24886870096660027,
-   "W": 0.4519773247291711,
+   "L": 0.24632936444160955,
+   "W": 0.4306443689565345,
    "n": 1,
    "ep": null
   },
   "topic:six-fold-symmetry": {
-   "L": 0.2114122465981999,
-   "W": 0.3496990742985254,
+   "L": 0.2092550977179588,
+   "W": 0.3331935673237838,
    "n": 1,
    "ep": null
   },
   "topic:kinetic-type": {
-   "L": 0.09596222945899242,
-   "W": 0.1034271799027576,
+   "L": 0.09498307702504509,
+   "W": 0.09854550258437407,
    "n": 1,
    "ep": null
   },
   "topic:typography-sdf": {
-   "L": 0.09596222945899242,
-   "W": 0.1034271799027576,
+   "L": 0.09498307702504509,
+   "W": 0.09854550258437407,
    "n": 1,
    "ep": null
   },
   "topic:self-organised-criticality-sandpiles": {
-   "L": 0.2205452881035701,
-   "W": 0.8978810607696907,
+   "L": 0.21829495006057464,
+   "W": 0.8555018175853886,
    "n": 1,
    "ep": null
   },
   "topic:cellular-automaton": {
-   "L": 0.19288756992948974,
-   "W": 0.7216255544951649,
+   "L": 0.19091943794006616,
+   "W": 0.6875654253776827,
    "n": 1,
    "ep": null
   },
   "topic:toppling-cascade": {
-   "L": 0.27376452701245657,
-   "W": 0.4660030674162802,
+   "L": 0.2709711654527688,
+   "W": 0.444008108193356,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-26": {
-   "L": 0.14370185870278687,
-   "W": 0.8990764026899454,
+   "L": 0.1422355940536134,
+   "W": 0.8566407403560028,
    "n": 1,
    "ep": null
   },
   "topic:abelian-property": {
-   "L": 0.27002037039371224,
-   "W": 0.47356912729953327,
+   "L": 0.26726521240731566,
+   "W": 0.45121705631008563,
    "n": 1,
    "ep": null
   },
   "topic:pile-growth": {
-   "L": 0.26164852670045685,
-   "W": 0.4723446263662594,
+   "L": 0.25897879098045706,
+   "W": 0.45005035080774125,
    "n": 1,
    "ep": null
   },
   "topic:fractal-pattern": {
-   "L": 0.22640682109833665,
-   "W": 0.4164509127814347,
+   "L": 0.22409667479191459,
+   "W": 0.39679477425907866,
    "n": 1,
    "ep": null
   },
   "topic:stable-threshold": {
-   "L": 0.19890288626488487,
-   "W": 0.2404628815239367,
+   "L": 0.19687337688079287,
+   "W": 0.229113232468899,
    "n": 1,
    "ep": null
   },
   "topic:avalanche-cascade": {
-   "L": 0.24274907983473457,
-   "W": 0.4603736358662863,
+   "L": 0.2402721849803874,
+   "W": 0.43864438115487286,
    "n": 1,
    "ep": null
   },
   "topic:self-organised criticality sandpiles": {
-   "L": 0.09918447965047514,
-   "W": 0.11219545220504985,
+   "L": 0.09817244892539632,
+   "W": 0.10689991968864436,
    "n": 1,
    "ep": null
   },
   "topic:coral-accretion-morphology": {
-   "L": 0.16458201970245367,
-   "W": 0.9075875726266573,
+   "L": 0.16290270393327919,
+   "W": 0.8647501901136282,
    "n": 1,
    "ep": null
   },
   "topic:flow-threshold": {
-   "L": 0.3049094246259756,
-   "W": 0.5508540285822127,
+   "L": 0.30179827551096267,
+   "W": 0.5248541741957906,
    "n": 1,
    "ep": null
   },
   "topic:stagnant-interior": {
-   "L": 0.2740353243345976,
-   "W": 0.3550598597412415,
+   "L": 0.27123919968928145,
+   "W": 0.3383013281289816,
    "n": 1,
    "ep": null
   },
   "thread:night-2026-11-27": {
-   "L": 0.16458201970245367,
-   "W": 0.9075875726266573,
+   "L": 0.16290270393327919,
+   "W": 0.8647501901136282,
    "n": 1,
    "ep": null
   },
   "topic:flow-set-form": {
-   "L": 0.26365644126675397,
-   "W": 0.3282955478402927,
+   "L": 0.2609662177522768,
+   "W": 0.31280026960564444,
    "n": 1,
    "ep": null
   },
   "topic:boundary-layer": {
-   "L": 0.19283261899135368,
-   "W": 0.23708302977408385,
+   "L": 0.19086504769487278,
+   "W": 0.2258929069252356,
    "n": 1,
    "ep": null
   },
   "topic:flow-distribution": {
-   "L": 0.15748421173309002,
-   "W": 0.18777574895682683,
+   "L": 0.15587731858256532,
+   "W": 0.17891288896695895,
    "n": 1,
    "ep": null
   },
   "topic:optics-light": {
-   "L": 0.2540255754438335,
-   "W": 0.5578147063259574,
+   "L": 0.25143362065200575,
+   "W": 0.5314863137091189,
    "n": 1,
    "ep": null
   },
   "topic:branch-geometry": {
-   "L": 0.14384034195468764,
-   "W": 0.1762312248716693,
+   "L": 0.14237266428901882,
+   "W": 0.16791325686697428,
    "n": 1,
    "ep": null
   },
   "topic:shade-light-split": {
-   "L": 0.2540255754438335,
-   "W": 0.49764193967405995,
+   "L": 0.25143362065200575,
+   "W": 0.47415365185776936,
    "n": 1,
    "ep": null
   },
   "topic:branch-thinning": {
-   "L": 0.2406720785129003,
-   "W": 0.3221166785921116,
+   "L": 0.23821637638105503,
+   "W": 0.30691303787373775,
    "n": 1,
    "ep": null
   },
   "topic:boundary-layer-halo": {
-   "L": 0.16458757110498584,
-   "W": 0.2092166102939848,
+   "L": 0.16290819869196999,
+   "W": 0.19934175938862816,
    "n": 1,
    "ep": null
   },
   "topic:audiovisual": {
-   "L": 0.09965764966480782,
-   "W": 0.11675035524472932,
+   "L": 0.0986407909404858,
+   "W": 0.11123983507346226,
+   "n": 1,
+   "ep": null
+  },
+  "topic:shibori-resist-folds": {
+   "L": 0.16051658694046328,
+   "W": 0.8647073533512524,
+   "n": 1,
+   "ep": null
+  },
+  "topic:pleat-compression": {
+   "L": 0.2278252101118367,
+   "W": 0.2960131955794373,
+   "n": 1,
+   "ep": null
+  },
+  "thread:night-2026-11-28": {
+   "L": 0.16051658694046328,
+   "W": 0.8647073533512524,
+   "n": 1,
+   "ep": null
+  },
+  "topic:pole-wrap-setup": {
+   "L": 0.19651380888187536,
+   "W": 0.23739763104871084,
+   "n": 1,
+   "ep": null
+  },
+  "topic:band-pitch": {
+   "L": 0.2552469607122646,
+   "W": 0.4788662173383872,
+   "n": 1,
+   "ep": null
+  },
+  "topic:fold-measurement": {
+   "L": 0.10856284142229193,
+   "W": 0.1178810340019208,
+   "n": 1,
+   "ep": null
+  },
+  "topic:dye-resist": {
+   "L": 0.17100512067545193,
+   "W": 0.21159796447782597,
+   "n": 1,
+   "ep": null
+  },
+  "topic:clamp-resist": {
+   "L": 0.13788834860972413,
+   "W": 0.16864784526758034,
+   "n": 1,
+   "ep": null
+  },
+  "topic:board-clamp": {
+   "L": 0.0689820178621949,
+   "W": 0.0602613121461241,
+   "n": 1,
+   "ep": null
+  },
+  "topic:diagonal-bands": {
+   "L": 0.30003445639091886,
+   "W": 0.3912982945249886,
+   "n": 1,
+   "ep": null
+  },
+  "topic:edge-exposure": {
+   "L": 0.22834036116346246,
+   "W": 0.3050050535226849,
+   "n": 1,
+   "ep": null
+  },
+  "topic:4k-shader": {
+   "L": 0.10333997664620256,
+   "W": 0.12274320945573569,
+   "n": 1,
+   "ep": null
+  },
+  "topic:noise-field": {
+   "L": 0.10333997664620256,
+   "W": 0.12274320945573569,
    "n": 1,
    "ep": null
   }
@@ -356,19 +434,46 @@
  "relationships": {},
  "threads": {
   "night-2026-11-23": {
-   "exposure": 0.004949490227408742
+   "exposure": 0.0012782623219983723
   },
   "night-2026-11-25": {
-   "exposure": 0.11309148239822707
+   "exposure": 0.029207165636587002
   },
   "night-2026-11-26": {
-   "exposure": 0.4413498123166352
+   "exposure": 0.1139836245723368
   },
   "night-2026-11-27": {
-   "exposure": 1.6195932169168963
+   "exposure": 0.41827842687404854
+  },
+  "night-2026-11-28": {
+   "exposure": 1.6285860805950598
   }
  },
  "memory": [
+  {
+   "t": 136.43725644641452,
+   "event": "Learned that the same pole-wrap guide gives thread spacing of about 1/8 to 1/4 inch between wraps.",
+   "emotion": "interest",
+   "i": 1.111,
+   "source": null,
+   "thread": "night-2026-11-28"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Learned that one pole-wrap guide uses a 4.5 inch pole with cloth wrapped diagonally around it.",
+   "emotion": "interest",
+   "i": 1.098,
+   "source": null,
+   "thread": "night-2026-11-28"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Found a buildable mechanism: diagonal wrap-and-scrunch band.",
+   "emotion": "joy",
+   "i": 1.069,
+   "source": null,
+   "thread": "night-2026-11-28"
+  },
   {
    "t": 112.89448796212673,
    "event": "Learned that Pocillopora verrucosa grows compact under high flow and open, thin-branched under lower flow.",
@@ -376,6 +481,22 @@
    "i": 1.185,
    "source": null,
    "thread": "night-2026-11-27"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Learned that in modern itajime shibori, the shapes clamped onto folded cloth stop dye from penetrating the fabric they cover.",
+   "emotion": "interest",
+   "i": 0.878,
+   "source": null,
+   "thread": "night-2026-11-28"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Learned that arashi pole-wrap shibori binds cloth tightly with diagonal thread and scrunches it on the pole into pleats with a diagonal desi",
+   "emotion": "interest",
+   "i": 0.857,
+   "source": null,
+   "thread": "night-2026-11-28"
   },
   {
    "t": 112.89448796212673,
@@ -394,12 +515,36 @@
    "thread": "night-2026-11-27"
   },
   {
+   "t": 136.43725644641452,
+   "event": "Found a buildable mechanism: spacing-set band pitch.",
+   "emotion": "interest",
+   "i": 0.82,
+   "source": null,
+   "thread": "night-2026-11-28"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Found a buildable mechanism: clamp-edge exposure grid.",
+   "emotion": "interest",
+   "i": 0.816,
+   "source": null,
+   "thread": "night-2026-11-28"
+  },
+  {
    "t": 112.89448796212673,
    "event": "Learned that the diffusive boundary layer around coral is set by flow and drives passive diffusion of oxygen and dissolved inorganic carbon ",
    "emotion": "interest",
    "i": 1.01,
    "source": null,
    "thread": "night-2026-11-27"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Learned that pole-wrap tension compresses the fabric into folds around the pole, and the compressed folds cannot be measured exactly because",
+   "emotion": "interest",
+   "i": 0.792,
+   "source": null,
+   "thread": "night-2026-11-28"
   },
   {
    "t": 88.89304561628235,
@@ -432,6 +577,14 @@
    "i": 1.116,
    "source": null,
    "thread": "night-2026-11-26"
+  },
+  {
+   "t": 136.43725644641452,
+   "event": "Learned that the area under an itajime clamp stays undyed through the whole dyeing process.",
+   "emotion": "interest",
+   "i": 0.692,
+   "source": null,
+   "thread": "night-2026-11-28"
   },
   {
    "t": 112.89448796212673,
@@ -536,88 +689,16 @@
    "i": 0.843,
    "source": null,
    "thread": "night-2026-11-26"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Learned that tip speed and tip radius in succinonitrile dendrites obey V*R^2 = constant, so faster tips are sharper.",
-   "emotion": "interest",
-   "i": 1.032,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Found a buildable mechanism: avalanche duration bursts.",
-   "emotion": "interest",
-   "i": 0.798,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Learned that the same simulation reproduces the tip instability and the start of side branching seen in Gonda and Nakahara's lab sequences.",
-   "emotion": "interest",
-   "i": 1.0,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 88.89304561628235,
-   "event": "Found a buildable mechanism: order-independent relaxation.",
-   "emotion": "interest",
-   "i": 0.783,
-   "source": null,
-   "thread": "night-2026-11-26"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Learned that in Li and Schaposnik's model, side-branch length records growth latency, the time a boundary cell waits before it freezes.",
-   "emotion": "interest",
-   "i": 0.926,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Found a buildable mechanism: V-R sharpness lock.",
-   "emotion": "joy",
-   "i": 0.92,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Found a buildable mechanism: fixed-lag side-branch birth.",
-   "emotion": "joy",
-   "i": 0.86,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Found a buildable mechanism: latency-length coupling.",
-   "emotion": "joy",
-   "i": 0.793,
-   "source": null,
-   "thread": "night-2026-11-25"
-  },
-  {
-   "t": 65.31174585819244,
-   "event": "Found a buildable mechanism: six-axis lattice arms.",
-   "emotion": "joy",
-   "i": 0.792,
-   "source": null,
-   "thread": "night-2026-11-25"
   }
  ],
- "t": 113.24903549902969,
- "wall": 1795778472.457421,
+ "t": 136.68618761122227,
+ "wall": 1795862846.3764482,
  "emotion_adaptation": {
-  "joy": 0.5841707885901035,
-  "surprise": 0.32069620031000834,
-  "interest": 0.7315970179980895,
-  "boredom": 0.04906016913456327,
-  "pride": 0.039334317955972004
+  "joy": 0.5342839607855514,
+  "surprise": 0.27627415243047504,
+  "interest": 0.7640129273654649,
+  "boredom": 0.08666140092286169,
+  "pride": 0.041132964779090196
  },
  "seen_event_ids": [
   "2026-11-23:1:fact-1",
@@ -664,6 +745,17 @@
   "2026-11-27:8:mech-2",
   "2026-11-27:9:mech-3",
   "2026-11-27:10:mech-4",
-  "2026-11-27:verdict:b-side"
+  "2026-11-27:verdict:b-side",
+  "2026-11-28:1:fact-1",
+  "2026-11-28:2:fact-2",
+  "2026-11-28:3:fact-3",
+  "2026-11-28:4:fact-4",
+  "2026-11-28:5:fact-5",
+  "2026-11-28:6:fact-6",
+  "2026-11-28:7:fact-7",
+  "2026-11-28:8:mech-1",
+  "2026-11-28:9:mech-2",
+  "2026-11-28:10:mech-3",
+  "2026-11-28:verdict:b-side"
  ]
 }

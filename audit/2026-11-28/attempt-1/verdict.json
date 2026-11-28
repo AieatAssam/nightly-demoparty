@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "mechanism": 15,
+    "ambition": 13,
+    "craft": 13,
+    "distinctness": 15,
+    "polish": 7
+  },
+  "total": 63,
+  "evidence": {
+    "mechanism": "shot-08s: dyed olive and blue stripes separated by cream undyed gaps at one fixed diagonal, with pitch dense on the right and sparse on the left; by shot-20s the bands mirror into a centred bowtie.",
+    "ambition": "shot-08s: one flat 2D band field with thin white thread lines and a mirror copy; no shading, lighting or simulation is visible, so the bytes buy a single layer.",
+    "craft": "shot-20s: indigo, olive, blue and cream palette is harmonious and the composition is centred, but band edges are visibly stair-stepped at full size and the central overlap is untidy.",
+    "distinctness": "shot-08s: diagonal olive and blue stripes on cream differ from the coral tips, apricot sand and Penrose kites of the last nights; striped fields are still a familiar cliche.",
+    "polish": "shot-02s: a single indigo slab with one thin band at the left is composed but nearly empty; by shot-20s the bands have grown into a centred mirrored bowtie that resolves cleanly."
+  },
+  "pairwise_beats_median": true,
+  "pairwise_median_ref": "2026-11-26",
+  "pairwise_justification": "Tonight's 20s bowtie of olive and blue bands on cream reads cleaner and more composed than the median's apricot sand square, whose 8s frame is a noisy diamond blob of grain.",
+  "calibration_anchors_used": [
+    "anchor-03",
+    "anchor-05",
+    "anchor-06",
+    "anchor-10"
+  ],
+  "critique": [
+    {
+      "rank": 1,
+      "change": "Add a second rendering idea: shade each band with a soft light falloff across its width so the compression reads as cloth in shot-02s, which is currently a flat indigo slab.",
+      "expected_gain": 5
+    },
+    {
+      "rank": 2,
+      "change": "Make the shove visible: animate each new band pushing the earlier ones along the diagonal between shot-02s and shot-08s, so the wrap rule shows as motion rather than a finished stripe field.",
+      "expected_gain": 4
+    },
+    {
+      "rank": 3,
+      "change": "Anti-alias the band borders with a one-pixel smoothstep so the stair-stepped edges visible at shot-08s and shot-20s are removed at full size.",
+      "expected_gain": 3
+    }
+  ]
+}
